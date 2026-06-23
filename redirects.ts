@@ -14,5 +14,11 @@ export const redirects: NextConfig['redirects'] = async () => {
     source: '/:path((?!ie-incompatible.html$).*)', // all pages except the incompatibility page
   }
 
-  return [internetExplorerRedirect]
+  const kizunaRedirect = {
+    source: '/kizuna-india-japan-study-forum',
+    destination: 'https://www.kizunamosai.in',
+    permanent: false,
+  }
+
+  return [internetExplorerRedirect, kizunaRedirect]
 }

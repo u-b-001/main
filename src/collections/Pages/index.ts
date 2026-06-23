@@ -1,13 +1,13 @@
 import type { CollectionConfig } from 'payload'
 
-import { authenticated } from '../../access/authenticated'
-import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
-import { Archive } from '../../blocks/ArchiveBlock/config'
+import { anyone } from '../../access/anyone'
+import { isEditor } from '../../access/roles'
+import { RichTextBlock } from '../../blocks/RichTextBlock/config'
+import { ImageWithTextBlock } from '../../blocks/ImageWithTextBlock/config'
+import { InfoCardBlock } from '../../blocks/InfoCardBlock/config'
+import { TableBlock } from '../../blocks/TableBlock/config'
+import { EmbedBlock } from '../../blocks/EmbedBlock/config'
 import { CallToAction } from '../../blocks/CallToAction/config'
-import { Content } from '../../blocks/Content/config'
-import { FormBlock } from '../../blocks/Form/config'
-import { MediaBlock } from '../../blocks/MediaBlock/config'
-import { hero } from '@/heros/config'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
@@ -24,19 +24,17 @@ import {
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
   access: {
-    create: authenticated,
-    delete: authenticated,
-    read: authenticatedOrPublished,
-    update: authenticated,
+    create: isEditor,
+    delete: isEditor,
+    read: anyone,
+    update: isEditor,
   },
-  // This config controls what's populated by default when a page is referenced
-  // https://payloadcms.com/docs/queries/select#defaultpopulate-collection-config-property
-  // Type safe if the collection slug generic is passed to `CollectionConfig` - `CollectionConfig<'pages'>
   defaultPopulate: {
     title: true,
     slug: true,
   },
   admin: {
+    group: 'Content',
     defaultColumns: ['title', 'slug', 'updatedAt'],
     livePreview: {
       url: ({ data, req }) =>
@@ -61,53 +59,53 @@ export const Pages: CollectionConfig<'pages'> = {
       required: true,
     },
     {
-      type: 'tabs',
-      tabs: [
-        {
-          fields: [hero],
-          label: 'Hero',
-        },
-        {
-          fields: [
-            {
-              name: 'layout',
-              type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock],
-              required: true,
-              admin: {
-                initCollapsed: true,
-              },
-            },
-          ],
-          label: 'Content',
-        },
-        {
-          name: 'meta',
-          label: 'SEO',
-          fields: [
-            OverviewField({
-              titlePath: 'meta.title',
-              descriptionPath: 'meta.description',
-              imagePath: 'meta.image',
-            }),
-            MetaTitleField({
-              hasGenerateFn: true,
-            }),
-            MetaImageField({
-              relationTo: 'media',
-            }),
-
-            MetaDescriptionField({}),
-            PreviewField({
-              // if the `generateUrl` function is configured
-              hasGenerateFn: true,
-
-              // field paths to match the target field for data
-              titlePath: 'meta.title',
-              descriptionPath: 'meta.description',
-            }),
-          ],
-        },
+      name: 'hero',
+      type: 'upload',
+      relationTo: 'media',
+      admin: {
+        description: 'Banner image shown at the top of inner pages',
+      },
+    },
+    {
+      name: 'layout',
+      type: 'blocks',
+      blocks: [
+        RichTextBlock,
+        ImageWithTextBlock,
+        InfoCardBlock,
+        TableBlock,
+        EmbedBlock,
+        CallToAction,
+      ],
+      required: true,
+      admin: {
+        initCollapsed: true,
+      },
+    },
+    {
+      name: 'seo',
+      type: 'group',
+      admin: {
+        position: 'sidebar',
+      },
+      fields: [
+        OverviewField({
+          titlePath: 'seo.metaTitle',
+          descriptionPath: 'seo.metaDescription',
+          imagePath: 'seo.ogImage',
+        }),
+        MetaTitleField({
+          hasGenerateFn: true,
+        }),
+        MetaImageField({
+          relationTo: 'media',
+        }),
+        MetaDescriptionField({}),
+        PreviewField({
+          hasGenerateFn: true,
+          titlePath: 'seo.metaTitle',
+          descriptionPath: 'seo.metaDescription',
+        }),
       ],
     },
     {
@@ -127,7 +125,7 @@ export const Pages: CollectionConfig<'pages'> = {
   versions: {
     drafts: {
       autosave: {
-        interval: 100, // We set this interval for optimal live preview
+        interval: 100,
       },
       schedulePublish: true,
     },

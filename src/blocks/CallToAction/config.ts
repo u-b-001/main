@@ -1,42 +1,35 @@
 import type { Block } from 'payload'
 
-import {
-  FixedToolbarFeature,
-  HeadingFeature,
-  InlineToolbarFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
-
-import { linkGroup } from '../../fields/linkGroup'
-
 export const CallToAction: Block = {
   slug: 'cta',
   interfaceName: 'CallToActionBlock',
   fields: [
     {
-      name: 'richText',
-      type: 'richText',
-      editor: lexicalEditor({
-        features: ({ rootFeatures }) => {
-          return [
-            ...rootFeatures,
-            HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-            FixedToolbarFeature(),
-            InlineToolbarFeature(),
-          ]
-        },
-      }),
-      label: false,
+      name: 'heading',
+      type: 'text',
     },
-    linkGroup({
-      appearances: ['default', 'outline'],
-      overrides: {
-        maxRows: 2,
-      },
-    }),
+    {
+      name: 'body',
+      type: 'textarea',
+    },
+    {
+      name: 'buttonText',
+      type: 'text',
+    },
+    {
+      name: 'buttonLink',
+      type: 'text',
+    },
+    {
+      name: 'buttonStyle',
+      type: 'select',
+      options: [
+        { label: 'Primary', value: 'primary' },
+        { label: 'Secondary', value: 'secondary' },
+        { label: 'Outline', value: 'outline' },
+      ],
+      defaultValue: 'primary',
+      required: true,
+    },
   ],
-  labels: {
-    plural: 'Calls to Action',
-    singular: 'Call to Action',
-  },
 }

@@ -1,26 +1,34 @@
 import type { CollectionConfig } from 'payload'
-
+import { isSuperAdmin, isSuperAdminOrSelf } from '../../access/roles'
 import { authenticated } from '../../access/authenticated'
 
 export const Users: CollectionConfig = {
   slug: 'users',
+  auth: true,
   access: {
     admin: authenticated,
-    create: authenticated,
-    delete: authenticated,
-    read: authenticated,
-    update: authenticated,
+    create: isSuperAdmin,
+    delete: isSuperAdmin,
+    read: isSuperAdminOrSelf,
+    update: isSuperAdminOrSelf,
   },
   admin: {
-    defaultColumns: ['name', 'email'],
-    useAsTitle: 'name',
+    useAsTitle: 'email',
+    group: 'Admin',
+    defaultColumns: ['name', 'email', 'role'],
   },
-  auth: true,
   fields: [
+    { name: 'name', type: 'text', required: true },
     {
-      name: 'name',
-      type: 'text',
+      name: 'role',
+      type: 'select',
+      options: [
+        { label: 'Super Admin', value: 'superAdmin' },
+        { label: 'Editor',      value: 'editor' },
+      ],
+      defaultValue: 'editor',
+      required: true,
+      admin: { position: 'sidebar' },
     },
   ],
-  timestamps: true,
 }
