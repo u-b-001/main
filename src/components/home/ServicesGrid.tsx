@@ -7,22 +7,53 @@ import { ArrowRight } from 'lucide-react'
 interface ServicesGridProps {
   heading: string
   services: (string | ServiceType)[]
+  headingAlignment?: 'left' | 'center' | 'right'
+  headingSize?: 'small' | 'medium' | 'large'
+  backgroundColor?: 'white' | 'slate' | 'cream'
+  showUnderline?: boolean
 }
 
-export const ServicesGrid: React.FC<ServicesGridProps> = ({ heading, services }) => {
+export const ServicesGrid: React.FC<ServicesGridProps> = ({
+  heading,
+  services,
+  headingAlignment = 'center',
+  headingSize = 'medium',
+  backgroundColor = 'slate',
+  showUnderline = true,
+}) => {
   const list = (services || []).filter((s): s is ServiceType => typeof s === 'object')
 
   if (list.length === 0) return null
 
+  // Sizing styles mapping
+  const sizeClasses = {
+    small: 'text-xl md:text-2xl',
+    medium: 'text-2xl md:text-4xl',
+    large: 'text-3xl md:text-5xl',
+  }
+
+  // Alignment styles mapping
+  const alignClass = headingAlignment === 'left' ? 'text-left' : headingAlignment === 'right' ? 'text-right' : 'text-center'
+  const underlineAlignClass = headingAlignment === 'left' ? 'mr-auto ml-0' : headingAlignment === 'right' ? 'ml-auto mr-0' : 'mx-auto'
+
+  // Background style mapping
+  const bgClasses = {
+    white: 'bg-white dark:bg-slate-950',
+    slate: 'bg-slate-50 dark:bg-slate-900/50',
+    cream: 'bg-brand-cream/40 dark:bg-slate-900/20',
+  }
+
   return (
-    <section className="py-16 bg-slate-50 dark:bg-slate-900/50">
+    <section className={`py-16 bg-pattern ${bgClasses[backgroundColor] || bgClasses.slate}`}>
       <div className="container mx-auto px-4">
         {/* Section Title */}
-        <div className="text-center mb-12">
-          <h2 className="text-2xl md:text-4xl font-bold font-serif text-brand-navy dark:text-white tracking-wide uppercase relative inline-block pb-3">
+        <div className={`${alignClass} mb-12`}>
+          <h2 className={`font-bold font-serif text-brand-navy dark:text-white tracking-wide uppercase relative inline-block pb-3 ${sizeClasses[headingSize]}`}>
             {heading}
           </h2>
-          <div className="w-12 h-1 bg-brand-red mx-auto mt-2 rounded-full" />
+          {showUnderline && (
+            <div className={`w-12 h-1 bg-brand-red mt-2 rounded-full ${underlineAlignClass}`} />
+          )}
         </div>
 
         {/* 4-column Grid */}
@@ -40,7 +71,9 @@ export const ServicesGrid: React.FC<ServicesGridProps> = ({ heading, services })
                   {hasImage && (
                     <Media
                       resource={item.image}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      fill
+                      className="w-full h-full"
+                      imgClassName="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                   )}
                 </div>

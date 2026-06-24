@@ -9,12 +9,22 @@ interface GallerySectionProps {
   heading: string
   images: GalleryType[]
   displayCount: number
+  headingAlignment?: 'left' | 'center' | 'right'
+  headingSize?: 'small' | 'medium' | 'large'
+  backgroundColor?: 'white' | 'slate' | 'cream'
+  showUnderline?: boolean
+  viewAllLabel?: string
 }
 
 export const GallerySection: React.FC<GallerySectionProps> = ({
   heading,
   images,
-  displayCount = 8,
+  displayCount = 4,
+  headingAlignment = 'center',
+  headingSize = 'medium',
+  backgroundColor = 'slate',
+  showUnderline = true,
+  viewAllLabel = 'View More',
 }) => {
   const [showAll, setShowAll] = useState(false)
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
@@ -45,15 +55,35 @@ export const GallerySection: React.FC<GallerySectionProps> = ({
 
   const currentLightboxImage = lightboxIndex !== null ? images[lightboxIndex] : null
 
+  // Sizing styles mapping
+  const sizeClasses = {
+    small: 'text-xl md:text-2xl',
+    medium: 'text-2xl md:text-4xl',
+    large: 'text-3xl md:text-5xl',
+  }
+
+  // Alignment styles mapping
+  const alignClass = headingAlignment === 'left' ? 'text-left' : headingAlignment === 'right' ? 'text-right' : 'text-center'
+  const underlineAlignClass = headingAlignment === 'left' ? 'mr-auto ml-0' : headingAlignment === 'right' ? 'ml-auto mr-0' : 'mx-auto'
+
+  // Background style mapping
+  const bgClasses = {
+    white: 'bg-white dark:bg-slate-950',
+    slate: 'bg-slate-50 dark:bg-slate-900/50',
+    cream: 'bg-brand-cream/40 dark:bg-slate-900/20',
+  }
+
   return (
-    <section className="py-16 bg-slate-50 dark:bg-slate-900/50">
+    <section className={`py-16 bg-pattern ${bgClasses[backgroundColor] || bgClasses.slate}`}>
       <div className="container mx-auto px-4">
         {/* Section Title */}
-        <div className="text-center mb-12">
-          <h2 className="text-2xl md:text-4xl font-bold font-serif text-brand-navy dark:text-white tracking-wide uppercase relative inline-block pb-3">
+        <div className={`${alignClass} mb-12`}>
+          <h2 className={`font-bold font-serif text-brand-navy dark:text-white tracking-wide uppercase relative inline-block pb-3 ${sizeClasses[headingSize]}`}>
             {heading}
           </h2>
-          <div className="w-12 h-1 bg-brand-red mx-auto mt-2 rounded-full" />
+          {showUnderline && (
+            <div className={`w-12 h-1 bg-brand-red mt-2 rounded-full ${underlineAlignClass}`} />
+          )}
         </div>
 
         {/* 4-column Grid */}
@@ -70,7 +100,9 @@ export const GallerySection: React.FC<GallerySectionProps> = ({
                 {hasImage && (
                   <Media
                     resource={item.image}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    fill
+                    className="w-full h-full"
+                    imgClassName="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                 )}
                 {/* Overlay Hover Effect */}
@@ -97,7 +129,7 @@ export const GallerySection: React.FC<GallerySectionProps> = ({
               onClick={() => setShowAll(!showAll)}
               className="inline-flex items-center gap-1.5 bg-transparent border-2 border-brand-navy dark:border-slate-200 text-brand-navy dark:text-slate-200 font-semibold px-6 py-2.5 rounded-lg hover:bg-brand-navy hover:text-white dark:hover:bg-slate-200 dark:hover:text-slate-900 transition-all duration-200 uppercase text-xs tracking-wider cursor-pointer"
             >
-              {showAll ? 'Show Less' : 'View All Images'}
+              {showAll ? 'Show Less' : viewAllLabel}
             </button>
           </div>
         )}

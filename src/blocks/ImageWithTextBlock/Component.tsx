@@ -24,7 +24,8 @@ export const ImageWithTextBlock: React.FC<ImageWithTextBlockProps> = ({
           {image && typeof image === 'object' && (
             <Media
               resource={image}
-              className="rounded-lg shadow-md overflow-hidden w-full max-h-[450px] object-cover"
+              className="rounded-lg shadow-md overflow-hidden w-full max-h-[450px]"
+              imgClassName="w-full h-full object-cover max-h-[450px] rounded-lg"
             />
           )}
         </div>

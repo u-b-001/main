@@ -107,6 +107,70 @@ html[data-color-scheme='terracotta'] {
   --brand-cream: #FDF4EB;
 }
 
+html[data-color-scheme='emerald'] {
+  --brand-navy: #1B4D3E;
+  --brand-red: #2D6A4F;
+  --brand-gold: #D4AF37;
+  --brand-cream: #F4F9F4;
+}
+
+html[data-color-scheme='modern'] {
+  --brand-navy: #1E293B;
+  --brand-red: #4F46E5;
+  --brand-gold: #06B6D4;
+  --brand-cream: #F8FAFC;
+}
+
+/* Font override logic based on HTML data-attributes */
+html[data-heading-font='sans'] h1,
+html[data-heading-font='sans'] h2,
+html[data-heading-font='sans'] h3,
+html[data-heading-font='sans'] h4,
+html[data-heading-font='sans'] h5,
+html[data-heading-font='sans'] h6,
+html[data-heading-font='sans'] .font-serif {
+  font-family: var(--font-sans) !important;
+}
+
+html[data-heading-font='mono'] h1,
+html[data-heading-font='mono'] h2,
+html[data-heading-font='mono'] h3,
+html[data-heading-font='mono'] h4,
+html[data-heading-font='mono'] h5,
+html[data-heading-font='mono'] h6,
+html[data-heading-font='mono'] .font-serif {
+  font-family: var(--font-mono) !important;
+}
+
+html[data-heading-font='serif'] h1,
+html[data-heading-font='serif'] h2,
+html[data-heading-font='serif'] h3,
+html[data-heading-font='serif'] h4,
+html[data-heading-font='serif'] h5,
+html[data-heading-font='serif'] h6 {
+  font-family: var(--font-serif) !important;
+}
+
+html[data-body-font='serif'] body,
+html[data-body-font='serif'] p,
+html[data-body-font='serif'] span,
+html[data-body-font='serif'] li,
+html[data-body-font='serif'] a,
+html[data-body-font='serif'] div:not(.font-serif) {
+  font-family: var(--font-serif) !important;
+}
+
+/* Sizing scaling factor logic */
+html[data-text-size='medium'] {
+  font-size: 16px;
+}
+html[data-text-size='large'] {
+  font-size: 18px;
+}
+html[data-text-size='small'] {
+  font-size: 15px;
+}
+
 :root {
   --brand-red: #C0392B;
   --brand-navy: #1A2B4A;
@@ -250,3 +314,68 @@ html[data-theme='dark'],
 html[data-theme='light'] {
   opacity: initial;
 }
+
+/* Background pattern styling */
+.bg-pattern {
+  position: relative;
+}
+
+/* Ensure container children and contents are placed above the background pattern */
+.bg-pattern > .container {
+  position: relative;
+  z-index: 10;
+}
+
+body.has-pattern::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url('/pattern.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center bottom;
+  opacity: var(--bg-pattern-opacity, 0.05);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Make main content wrapper transparent so body background is visible */
+body.has-pattern main {
+  background-color: transparent !important;
+}
+
+/* Semi-transparent section backgrounds so the body background shows through */
+body.has-pattern .bg-pattern {
+  background-color: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(4px);
+}
+
+html[data-theme='dark'] body.has-pattern .bg-pattern {
+  background-color: rgba(15, 23, 42, 0.9) !important;
+}
+
+/* Disable individual section patterns when body fixed pattern is active */
+body.has-pattern .bg-pattern::before {
+  display: none;
+}
+
+/* Also style specific section backgrounds when they are slate or cream */
+body.has-pattern .bg-pattern.bg-slate-50,
+body.has-pattern .bg-pattern.bg-slate-100,
+body.has-pattern .bg-pattern.bg-slate-50\/50,
+body.has-pattern .bg-pattern.bg-slate-900\/50 {
+  background-color: rgba(248, 250, 252, 0.88) !important;
+}
+
+html[data-theme='dark'] body.has-pattern .bg-pattern.bg-slate-900\/50 {
+  background-color: rgba(15, 23, 42, 0.9) !important;
+}
+
+body.has-pattern .bg-pattern.bg-brand-cream\/40 {
+  background-color: rgba(253, 251, 247, 0.88) !important;
+}
+
+html[data-theme='dark'] body.has-pattern .bg-pattern.bg-brand-cream\/40 {
+  background-color: rgba(15, 23, 42, 0.9) !important;
+}
+

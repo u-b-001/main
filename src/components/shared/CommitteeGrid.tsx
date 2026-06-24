@@ -50,7 +50,9 @@ export const CommitteeGrid: React.FC<CommitteeGridProps> = async ({ type }) => {
                   {hasPhoto ? (
                     <Media
                       resource={member.photo}
-                      className="w-full h-full object-cover"
+                      fill
+                      className="w-full h-full"
+                      imgClassName="object-cover"
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center bg-slate-250 text-slate-450 dark:bg-slate-800 dark:text-slate-500 font-bold text-xl uppercase font-serif">

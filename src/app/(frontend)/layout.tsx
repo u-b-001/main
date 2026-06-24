@@ -33,12 +33,21 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const siteSettings = await getCachedGlobal('siteSettings', 1)()
   const defaultTheme = siteSettings?.defaultTheme || 'light'
   const colorScheme = siteSettings?.colorScheme || 'classic'
+  const headingFont = siteSettings?.headingFont || 'serif'
+  const bodyFont = siteSettings?.bodyFont || 'sans'
+  const siteTextSize = siteSettings?.siteTextSize || 'small'
+  const showBgPattern = siteSettings?.showBgPattern !== false
+  const bgPatternOpacity = showBgPattern ? (Number(siteSettings?.bgPatternOpacity || 15) / 100).toFixed(2) : '0'
 
   return (
     <html
       className={cn(inter.variable, notoSerifJp.variable, GeistMono.variable)}
       lang="en"
       data-color-scheme={colorScheme}
+      data-heading-font={headingFont}
+      data-body-font={bodyFont}
+      data-text-size={siteTextSize}
+      style={{ '--bg-pattern-opacity': bgPatternOpacity } as React.CSSProperties}
       suppressHydrationWarning
     >
       <head>
@@ -46,7 +55,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
       </head>
-      <body>
+      <body className={cn(showBgPattern ? 'has-pattern' : '')}>
         <Providers>
           <AdminBar
             adminBarProps={{

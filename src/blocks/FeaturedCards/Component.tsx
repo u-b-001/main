@@ -87,7 +87,12 @@ export const FeaturedCardsComponent: React.FC<FeaturedCardsProps> = ({
               {/* Optional Top Image */}
               {hasImage && (
                 <div className="w-full h-48 overflow-hidden relative">
-                  <Media resource={card.image} className="w-full h-full object-cover" />
+                  <Media
+                    resource={card.image}
+                    fill
+                    className="w-full h-full"
+                    imgClassName="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
                   {card.tag && (
                     <span className="absolute top-4 right-4 bg-brand-red text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shadow-sm">
                       {card.tag}
