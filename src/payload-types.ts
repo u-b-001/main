@@ -1756,6 +1756,95 @@ export interface Footer {
  */
 export interface Homepage {
   id: number;
+  /**
+   * Configure and reorder sections on the homepage. If left empty, all default sections will render in the standard sequence.
+   */
+  layout?:
+    | (
+        | {
+            carouselHeight: 'short' | 'medium' | 'tall' | 'fullscreen';
+            carouselLayout: 'fullWidth' | 'boxed';
+            carouselImageOpacity: '100' | '90' | '80' | '70' | '60' | '50';
+            carouselAutoplay?: boolean | null;
+            carouselAutoplayInterval?: number | null;
+            slides?:
+              | {
+                  /**
+                   * Slide image. WARNING: To change this image, click the "X" button to clear the field, then select or upload a new one. DO NOT click the pencil "Edit" icon to replace the file inside the media drawer, as that will overwrite the shared media asset globally across all pages!
+                   */
+                  image: number | Media;
+                  alt?: string | null;
+                  /**
+                   * Optional: clicking the slide goes here
+                   */
+                  link?: string | null;
+                  imageAlignment?: ('center' | 'top' | 'bottom' | 'left' | 'right') | null;
+                  overlayOpacity?: ('none' | 'light' | 'medium' | 'dark' | 'extraDark') | null;
+                  textAlignment?: ('left' | 'center' | 'right') | null;
+                  title?: string | null;
+                  subtitle?: string | null;
+                  buttonLabel?: string | null;
+                  buttonLink?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'carousel';
+          }
+        | {
+            heading: string;
+            align: 'left' | 'center' | 'right';
+            size: 'small' | 'medium' | 'large';
+            /**
+             * Select up to 4 service cards to display
+             */
+            services?: (number | Service)[] | null;
+            bg: 'white' | 'slate' | 'cream';
+            showUnderline: boolean;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'services';
+          }
+        | {
+            heading: string;
+            align: 'left' | 'center' | 'right';
+            size: 'small' | 'medium' | 'large';
+            newsSubheading?: string | null;
+            limit: number;
+            newsViewAllLink: string;
+            newsViewAllLabel: string;
+            bg: 'white' | 'slate' | 'cream';
+            showUnderline: boolean;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'news';
+          }
+        | {
+            heading: string;
+            align: 'left' | 'center' | 'right';
+            size: 'small' | 'medium' | 'large';
+            limit: number;
+            galleryViewAllLabel: string;
+            bg: 'white' | 'slate' | 'cream';
+            showUnderline: boolean;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'gallery';
+          }
+        | {
+            heading: string;
+            align: 'left' | 'center' | 'right';
+            size: 'small' | 'medium' | 'large';
+            limit: number;
+            bg: 'white' | 'slate' | 'cream';
+            showUnderline: boolean;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'events';
+          }
+      )[]
+    | null;
   carouselHeight: 'short' | 'medium' | 'tall' | 'fullscreen';
   carouselLayout: 'fullWidth' | 'boxed';
   carouselImageOpacity: '100' | '90' | '80' | '70' | '60' | '50';
@@ -1783,11 +1872,15 @@ export interface Homepage {
       }[]
     | null;
   offersHeading: string;
+  offersHeadingAlignment: 'left' | 'center' | 'right';
+  offersHeadingSize: 'small' | 'medium' | 'large';
   /**
    * Select up to 4 service cards to display
    */
   services?: (number | Service)[] | null;
   newsHeading: string;
+  newsHeadingAlignment: 'left' | 'center' | 'right';
+  newsHeadingSize: 'small' | 'medium' | 'large';
   newsSubheading?: string | null;
   /**
    * How many notification items to show on the homepage
@@ -1795,8 +1888,12 @@ export interface Homepage {
   newsDisplayCount: number;
   newsViewAllLink: string;
   galleryHeading: string;
+  galleryHeadingAlignment: 'left' | 'center' | 'right';
+  galleryHeadingSize: 'small' | 'medium' | 'large';
   galleryDisplayCount: number;
   eventsHeading: string;
+  eventsHeadingAlignment: 'left' | 'center' | 'right';
+  eventsHeadingSize: 'small' | 'medium' | 'large';
   eventsDisplayCount: number;
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -1810,7 +1907,12 @@ export interface SiteSetting {
   siteName: string;
   siteTagline: string;
   defaultTheme: 'light' | 'dark';
-  colorScheme: 'classic' | 'sunset' | 'terracotta';
+  colorScheme: 'classic' | 'sunset' | 'terracotta' | 'emerald' | 'modern';
+  headingFont: 'serif' | 'sans' | 'mono';
+  bodyFont: 'sans' | 'serif';
+  siteTextSize: 'small' | 'medium' | 'large';
+  showBgPattern: boolean;
+  bgPatternOpacity?: ('0' | '5' | '10' | '15' | '20' | '30' | '40' | '50' | '70' | '90') | null;
   /**
    * Site favicon image. WARNING: To change this image, click the "X" button to clear the field, then select or upload a new one. DO NOT click the pencil "Edit" icon to replace the file inside the media drawer, as that will overwrite the shared media asset globally across all pages!
    */
@@ -1891,6 +1993,88 @@ export interface FooterSelect<T extends boolean = true> {
  * via the `definition` "homepage_select".
  */
 export interface HomepageSelect<T extends boolean = true> {
+  layout?:
+    | T
+    | {
+        carousel?:
+          | T
+          | {
+              carouselHeight?: T;
+              carouselLayout?: T;
+              carouselImageOpacity?: T;
+              carouselAutoplay?: T;
+              carouselAutoplayInterval?: T;
+              slides?:
+                | T
+                | {
+                    image?: T;
+                    alt?: T;
+                    link?: T;
+                    imageAlignment?: T;
+                    overlayOpacity?: T;
+                    textAlignment?: T;
+                    title?: T;
+                    subtitle?: T;
+                    buttonLabel?: T;
+                    buttonLink?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        services?:
+          | T
+          | {
+              heading?: T;
+              align?: T;
+              size?: T;
+              services?: T;
+              bg?: T;
+              showUnderline?: T;
+              id?: T;
+              blockName?: T;
+            };
+        news?:
+          | T
+          | {
+              heading?: T;
+              align?: T;
+              size?: T;
+              newsSubheading?: T;
+              limit?: T;
+              newsViewAllLink?: T;
+              newsViewAllLabel?: T;
+              bg?: T;
+              showUnderline?: T;
+              id?: T;
+              blockName?: T;
+            };
+        gallery?:
+          | T
+          | {
+              heading?: T;
+              align?: T;
+              size?: T;
+              limit?: T;
+              galleryViewAllLabel?: T;
+              bg?: T;
+              showUnderline?: T;
+              id?: T;
+              blockName?: T;
+            };
+        events?:
+          | T
+          | {
+              heading?: T;
+              align?: T;
+              size?: T;
+              limit?: T;
+              bg?: T;
+              showUnderline?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
   carouselHeight?: T;
   carouselLayout?: T;
   carouselImageOpacity?: T;
@@ -1912,14 +2096,22 @@ export interface HomepageSelect<T extends boolean = true> {
         id?: T;
       };
   offersHeading?: T;
+  offersHeadingAlignment?: T;
+  offersHeadingSize?: T;
   services?: T;
   newsHeading?: T;
+  newsHeadingAlignment?: T;
+  newsHeadingSize?: T;
   newsSubheading?: T;
   newsDisplayCount?: T;
   newsViewAllLink?: T;
   galleryHeading?: T;
+  galleryHeadingAlignment?: T;
+  galleryHeadingSize?: T;
   galleryDisplayCount?: T;
   eventsHeading?: T;
+  eventsHeadingAlignment?: T;
+  eventsHeadingSize?: T;
   eventsDisplayCount?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1934,6 +2126,11 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   siteTagline?: T;
   defaultTheme?: T;
   colorScheme?: T;
+  headingFont?: T;
+  bodyFont?: T;
+  siteTextSize?: T;
+  showBgPattern?: T;
+  bgPatternOpacity?: T;
   favicon?: T;
   defaultOgImage?: T;
   googleAnalyticsId?: T;

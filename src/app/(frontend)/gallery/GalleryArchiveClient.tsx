@@ -106,7 +106,9 @@ export const GalleryArchiveClient: React.FC<GalleryArchiveClientProps> = ({ item
               {hasImage && (
                 <Media
                   resource={item.image}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  fill
+                  className="w-full h-full"
+                  imgClassName="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
               )}
               {/* Overlay Hover */}
@@ -166,7 +168,8 @@ export const GalleryArchiveClient: React.FC<GalleryArchiveClientProps> = ({ item
               <div className="relative overflow-hidden rounded-lg bg-slate-950 border border-slate-900 shadow-2xl flex items-center justify-center max-h-[70vh] w-auto">
                 <Media
                   resource={currentLightboxImage.image}
-                  className="max-h-[70vh] max-w-full object-contain"
+                  className="max-h-[70vh] max-w-full"
+                  imgClassName="max-h-[70vh] max-w-full object-contain"
                 />
               </div>
             )}
