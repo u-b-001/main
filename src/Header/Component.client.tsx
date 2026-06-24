@@ -7,6 +7,7 @@ import type { Header as HeaderType } from '@/payload-types'
 import { Media } from '@/components/Media'
 import { Menu, X, ChevronDown, ChevronUp, ChevronRight } from 'lucide-react'
 import { cn } from '@/utilities/ui'
+import { ThemeSelector } from '@/providers/Theme/ThemeSelector'
 
 interface HeaderClientProps {
   data: HeaderType
@@ -19,6 +20,10 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   const [activeDropdown, setActiveDropdown] = useState<number | null>(null)
   const [activeMobileDropdown, setActiveMobileDropdown] = useState<number | null>(null)
   const [activeMobileSubDropdown, setActiveMobileSubDropdown] = useState<number | null>(null)
+
+  const isSticky = data?.sticky !== false
+  const isHomepage = pathname === '/'
+  const shouldOverlap = data?.overlapHomepageHero && isHomepage
 
   useEffect(() => {
     const handleScroll = () => {
@@ -45,24 +50,41 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
     <>
       <header
         className={cn(
-          'fixed top-0 left-0 w-full z-50 transition-all duration-300',
-          scrolled
-            ? 'bg-white/95 backdrop-blur-md shadow-md py-3 dark:bg-slate-950/95'
-            : 'bg-white py-5 dark:bg-slate-950'
+          'w-full z-50 transition-all duration-300',
+          isSticky ? 'fixed top-0 left-0' : 'relative',
+          isSticky && scrolled
+            ? 'bg-white/95 backdrop-blur-md shadow-md py-3 dark:bg-slate-950/95 text-brand-navy dark:text-white'
+            : shouldOverlap
+              ? 'bg-transparent py-5 text-white'
+              : 'bg-white py-5 dark:bg-slate-950 text-brand-navy dark:text-white'
         )}
       >
         <div className="container mx-auto px-4 flex justify-between items-center">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3">
             {data?.logo && typeof data.logo === 'object' ? (
-              <div className="h-12 w-auto relative flex items-center">
+              <div
+                className={cn(
+                  'relative flex items-center transition-all duration-300',
+                  isSticky && scrolled ? 'h-10 lg:h-12' : 'h-14 lg:h-16',
+                )}
+              >
                 <Media
                   resource={data.logo}
-                  className="max-h-12 w-auto object-contain dark:brightness-110"
+                  className="h-full w-auto"
+                  imgClassName={cn(
+                    'h-full w-auto object-contain transition-all duration-300',
+                    shouldOverlap && !scrolled ? 'brightness-0 invert' : 'dark:brightness-110',
+                  )}
                 />
               </div>
             ) : (
-              <span className="font-serif font-bold text-2xl tracking-wide text-brand-navy dark:text-white">
+              <span
+                className={cn(
+                  'font-serif font-bold text-2xl tracking-wide transition-colors duration-200',
+                  shouldOverlap && !scrolled ? 'text-white' : 'text-brand-navy dark:text-white',
+                )}
+              >
                 MOSAI
               </span>
             )}
@@ -89,12 +111,21 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
                       className={cn(
                         'px-4 py-2 rounded-lg text-sm font-semibold tracking-wide flex items-center gap-1 transition-all duration-200',
                         isActive
-                          ? 'text-brand-red dark:text-brand-red'
-                          : 'text-brand-navy hover:text-brand-red dark:text-slate-200 dark:hover:text-brand-red'
+                          ? 'text-brand-red'
+                          : shouldOverlap && !scrolled
+                            ? 'text-white hover:text-brand-red/90'
+                            : 'text-brand-navy hover:text-brand-red dark:text-slate-200 dark:hover:text-brand-red',
                       )}
                     >
                       {item.label}
-                      {hasChildren && <ChevronDown className="w-4 h-4 opacity-70 group-hover:rotate-180 transition-transform duration-200" />}
+                      {hasChildren && (
+                        <ChevronDown
+                          className={cn(
+                            'w-4 h-4 group-hover:rotate-180 transition-transform duration-200',
+                            shouldOverlap && !scrolled ? 'text-white opacity-80' : 'opacity-70',
+                          )}
+                        />
+                      )}
                     </Link>
                   ) : (
                     <button
@@ -102,11 +133,18 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
                         'px-4 py-2 rounded-lg text-sm font-semibold tracking-wide flex items-center gap-1 transition-all duration-200 cursor-pointer',
                         isActive
                           ? 'text-brand-red'
-                          : 'text-brand-navy hover:text-brand-red dark:text-slate-200 dark:hover:text-brand-red'
+                          : shouldOverlap && !scrolled
+                            ? 'text-white hover:text-brand-red/90'
+                            : 'text-brand-navy hover:text-brand-red dark:text-slate-200 dark:hover:text-brand-red',
                       )}
                     >
                       {item.label}
-                      <ChevronDown className="w-4 h-4 opacity-70 group-hover:rotate-180 transition-transform duration-200" />
+                      <ChevronDown
+                        className={cn(
+                          'w-4 h-4 group-hover:rotate-180 transition-transform duration-200',
+                          shouldOverlap && !scrolled ? 'text-white opacity-80' : 'opacity-70',
+                        )}
+                      />
                     </button>
                   )}
 
@@ -170,12 +208,25 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
                 </div>
               )
             })}
+            <div
+              className={cn(
+                'ml-3 pl-3 border-l',
+                shouldOverlap && !scrolled ? 'border-white/20' : 'border-slate-200 dark:border-slate-800',
+              )}
+            >
+              <ThemeSelector />
+            </div>
           </nav>
 
           {/* Hamburger Icon (Mobile) */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden p-2 rounded-lg text-brand-navy hover:text-brand-red dark:text-slate-200 dark:hover:text-brand-red focus:outline-hidden"
+            className={cn(
+              'lg:hidden p-2 rounded-lg transition-colors focus:outline-hidden',
+              shouldOverlap && !scrolled
+                ? 'text-white hover:text-brand-red/90'
+                : 'text-brand-navy hover:text-brand-red dark:text-slate-200 dark:hover:text-brand-red',
+            )}
             aria-label="Toggle Menu"
           >
             {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -184,7 +235,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
       </header>
 
       {/* Spacer to avoid content being covered by the sticky header */}
-      <div className="h-[76px] lg:h-[88px] w-full" />
+      {isSticky && !shouldOverlap && <div className="h-[96px] lg:h-[104px] w-full" />}
 
       {/* Mobile Slide-in Menu */}
       <div
@@ -313,6 +364,12 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
               </div>
             )
           })}
+        </div>
+        <div className="p-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+          <span className="text-sm font-semibold text-brand-navy dark:text-slate-200">
+            Appearance
+          </span>
+          <ThemeSelector />
         </div>
       </div>
 

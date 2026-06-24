@@ -46,12 +46,12 @@
   --font-mono: var(--font-geist-mono);
   --font-sans: var(--font-sans);
   --font-serif: var(--font-serif);
-  --color-brand-red: #C0392B;
-  --color-brand-navy: #1A2B4A;
-  --color-brand-gold: #C9A84C;
-  --color-brand-cream: #FAF6F0;
-  --color-brand-lightgray: #F2F2F2;
-  --color-brand-text: #2C2C2C;
+  --color-brand-red: var(--brand-red);
+  --color-brand-navy: var(--brand-navy);
+  --color-brand-gold: var(--brand-gold);
+  --color-brand-cream: var(--brand-cream);
+  --color-brand-lightgray: var(--brand-lightgray);
+  --color-brand-text: var(--brand-text);
 }
 
 @layer utilities {
@@ -93,7 +93,28 @@
   }
 }
 
+html[data-color-scheme='sunset'] {
+  --brand-navy: #9E1B1B;
+  --brand-red: #D2381E;
+  --brand-gold: #F5C75D;
+  --brand-cream: #FDF3C2;
+}
+
+html[data-color-scheme='terracotta'] {
+  --brand-navy: #6B3E49;
+  --brand-red: #9B565F;
+  --brand-gold: #E07255;
+  --brand-cream: #FDF4EB;
+}
+
 :root {
+  --brand-red: #C0392B;
+  --brand-navy: #1A2B4A;
+  --brand-gold: #C9A84C;
+  --brand-cream: #FAF6F0;
+  --brand-lightgray: #F2F2F2;
+  --brand-text: #2C2C2C;
+
   --background: oklch(100% 0 0deg);
   --foreground: oklch(14.5% 0 0deg);
   --card: oklch(96.5% 0.005 265deg);

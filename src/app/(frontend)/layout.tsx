@@ -12,6 +12,7 @@ import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { draftMode } from 'next/headers'
+import { getCachedGlobal } from '@/utilities/getGlobals'
 
 import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
@@ -29,11 +30,19 @@ const notoSerifJp = Noto_Serif_JP({
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
+  const siteSettings = await getCachedGlobal('siteSettings', 1)()
+  const defaultTheme = siteSettings?.defaultTheme || 'light'
+  const colorScheme = siteSettings?.colorScheme || 'classic'
 
   return (
-    <html className={cn(inter.variable, notoSerifJp.variable, GeistMono.variable)} lang="en" suppressHydrationWarning>
+    <html
+      className={cn(inter.variable, notoSerifJp.variable, GeistMono.variable)}
+      lang="en"
+      data-color-scheme={colorScheme}
+      suppressHydrationWarning
+    >
       <head>
-        <InitTheme />
+        <InitTheme defaultTheme={defaultTheme} />
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
       </head>

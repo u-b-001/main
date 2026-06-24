@@ -162,11 +162,22 @@ export interface UserAuthOperations {
 export interface Page {
   id: number;
   title: string;
+  layoutStyle: 'sidebar' | 'rightSidebar' | 'centered' | 'fullWidth';
+  heroStyle: 'none' | 'small' | 'medium' | 'large';
   /**
-   * Banner image shown at the top of inner pages
+   * Banner image shown at the top of inner pages. WARNING: To change this image, click the "X" button to clear the field, then select or upload a new one. DO NOT click the pencil "Edit" icon to replace the file inside the media drawer, as that will overwrite the shared media asset globally across all pages!
    */
   hero?: (number | null) | Media;
-  layout: (RichTextBlock | ImageWithTextBlock | InfoCardBlock | TableBlock | EmbedBlock | CallToActionBlock)[];
+  layout: (
+    | RichTextBlock
+    | ImageWithTextBlock
+    | InfoCardBlock
+    | TableBlock
+    | EmbedBlock
+    | CallToActionBlock
+    | FlexibleRowBlock
+    | FeaturedCardsBlock
+  )[];
   seo?: {
     title?: string | null;
     /**
@@ -277,6 +288,9 @@ export interface RichTextBlock {
  * via the `definition` "ImageWithTextBlock".
  */
 export interface ImageWithTextBlock {
+  /**
+   * Image for this block. WARNING: To change this image, click the "X" button to clear the field, then select or upload a new one. DO NOT click the pencil "Edit" icon to replace the file inside the media drawer, as that will overwrite the shared media asset globally across all pages!
+   */
   image: number | Media;
   imagePosition: 'left' | 'right';
   content: {
@@ -374,6 +388,79 @@ export interface CallToActionBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'cta';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FlexibleRowBlock".
+ */
+export interface FlexibleRowBlock {
+  containerWidth: 'boxed' | 'fullWidth';
+  rowBackground: 'transparent' | 'slate50' | 'brandNavy' | 'brandRed' | 'brandCream';
+  rowPadding: 'none' | 'small' | 'medium' | 'large';
+  gridGap: 'small' | 'medium' | 'large';
+  alignItems: 'start' | 'center' | 'end' | 'stretch';
+  columns: {
+    width: 'col-span-12' | 'col-span-6' | 'col-span-4' | 'col-span-8' | 'col-span-3' | 'col-span-9';
+    columnStyle: 'simple' | 'card' | 'bordered' | 'glassmorphism';
+    backgroundColor: 'transparent' | 'slate50' | 'brandNavy' | 'brandRed' | 'brandCream';
+    textColor: 'dark' | 'light';
+    columnPadding: 'none' | 'small' | 'medium' | 'large';
+    alignment: 'left' | 'center' | 'right';
+    /**
+     * Image for this column. WARNING: To change this image, click the "X" button to clear the field, then select or upload a new one. DO NOT click the pencil "Edit" icon to replace the file inside the media drawer, as that will overwrite the shared media asset globally across all pages!
+     */
+    image?: (number | null) | Media;
+    imagePosition?: ('top' | 'bottom') | null;
+    imageShape: 'rounded' | 'circle' | 'square' | 'original';
+    title?: string | null;
+    content?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    ctaLabel?: string | null;
+    ctaLink?: string | null;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'flexibleRow';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeaturedCardsBlock".
+ */
+export interface FeaturedCardsBlock {
+  heading?: string | null;
+  subheading?: string | null;
+  columns: '2' | '3' | '4';
+  cardStyle: 'standard' | 'glassmorphism' | 'navy' | 'red' | 'bordered';
+  cards: {
+    title: string;
+    description: string;
+    icon?: ('none' | 'academic' | 'globe' | 'calendar' | 'award' | 'book' | 'group' | 'info' | 'star') | null;
+    /**
+     * Image for this card. WARNING: To change this image, click the "X" button to clear the field, then select or upload a new one. DO NOT click the pencil "Edit" icon to replace the file inside the media drawer, as that will overwrite the shared media asset globally across all pages!
+     */
+    image?: (number | null) | Media;
+    tag?: string | null;
+    linkLabel?: string | null;
+    link?: string | null;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'featuredCards';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1003,6 +1090,8 @@ export interface PayloadMigration {
  */
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
+  layoutStyle?: T;
+  heroStyle?: T;
   hero?: T;
   layout?:
     | T
@@ -1013,6 +1102,8 @@ export interface PagesSelect<T extends boolean = true> {
         table?: T | TableBlockSelect<T>;
         embed?: T | EmbedBlockSelect<T>;
         cta?: T | CallToActionBlockSelect<T>;
+        flexibleRow?: T | FlexibleRowBlockSelect<T>;
+        featuredCards?: T | FeaturedCardsBlockSelect<T>;
       };
   seo?:
     | T
@@ -1110,6 +1201,61 @@ export interface CallToActionBlockSelect<T extends boolean = true> {
   buttonText?: T;
   buttonLink?: T;
   buttonStyle?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FlexibleRowBlock_select".
+ */
+export interface FlexibleRowBlockSelect<T extends boolean = true> {
+  containerWidth?: T;
+  rowBackground?: T;
+  rowPadding?: T;
+  gridGap?: T;
+  alignItems?: T;
+  columns?:
+    | T
+    | {
+        width?: T;
+        columnStyle?: T;
+        backgroundColor?: T;
+        textColor?: T;
+        columnPadding?: T;
+        alignment?: T;
+        image?: T;
+        imagePosition?: T;
+        imageShape?: T;
+        title?: T;
+        content?: T;
+        ctaLabel?: T;
+        ctaLink?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeaturedCardsBlock_select".
+ */
+export interface FeaturedCardsBlockSelect<T extends boolean = true> {
+  heading?: T;
+  subheading?: T;
+  columns?: T;
+  cardStyle?: T;
+  cards?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        icon?: T;
+        image?: T;
+        tag?: T;
+        linkLabel?: T;
+        link?: T;
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }
@@ -1543,6 +1689,14 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 export interface Header {
   id: number;
   logo: number | Media;
+  /**
+   * If checked, the header will remain visible at the top of the screen during scrolling.
+   */
+  sticky: boolean;
+  /**
+   * If checked, the header will overlap the homepage hero carousel and will be transparent initially.
+   */
+  overlapHomepageHero?: boolean | null;
   nav?:
     | {
         label: string;
@@ -1602,14 +1756,29 @@ export interface Footer {
  */
 export interface Homepage {
   id: number;
+  carouselHeight: 'short' | 'medium' | 'tall' | 'fullscreen';
+  carouselLayout: 'fullWidth' | 'boxed';
+  carouselImageOpacity: '100' | '90' | '80' | '70' | '60' | '50';
+  carouselAutoplay?: boolean | null;
+  carouselAutoplayInterval?: number | null;
   carousel?:
     | {
+        /**
+         * Slide image. WARNING: To change this image, click the "X" button to clear the field, then select or upload a new one. DO NOT click the pencil "Edit" icon to replace the file inside the media drawer, as that will overwrite the shared media asset globally across all pages!
+         */
         image: number | Media;
         alt?: string | null;
         /**
          * Optional: clicking the slide goes here
          */
         link?: string | null;
+        imageAlignment?: ('center' | 'top' | 'bottom' | 'left' | 'right') | null;
+        overlayOpacity?: ('none' | 'light' | 'medium' | 'dark' | 'extraDark') | null;
+        textAlignment?: ('left' | 'center' | 'right') | null;
+        title?: string | null;
+        subtitle?: string | null;
+        buttonLabel?: string | null;
+        buttonLink?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -1640,7 +1809,15 @@ export interface SiteSetting {
   id: number;
   siteName: string;
   siteTagline: string;
+  defaultTheme: 'light' | 'dark';
+  colorScheme: 'classic' | 'sunset' | 'terracotta';
+  /**
+   * Site favicon image. WARNING: To change this image, click the "X" button to clear the field, then select or upload a new one. DO NOT click the pencil "Edit" icon to replace the file inside the media drawer, as that will overwrite the shared media asset globally across all pages!
+   */
   favicon?: (number | null) | Media;
+  /**
+   * Site default Open Graph share image. WARNING: To change this image, click the "X" button to clear the field, then select or upload a new one. DO NOT click the pencil "Edit" icon to replace the file inside the media drawer, as that will overwrite the shared media asset globally across all pages!
+   */
   defaultOgImage?: (number | null) | Media;
   googleAnalyticsId?: string | null;
   updatedAt?: string | null;
@@ -1652,6 +1829,8 @@ export interface SiteSetting {
  */
 export interface HeaderSelect<T extends boolean = true> {
   logo?: T;
+  sticky?: T;
+  overlapHomepageHero?: T;
   nav?:
     | T
     | {
@@ -1712,12 +1891,24 @@ export interface FooterSelect<T extends boolean = true> {
  * via the `definition` "homepage_select".
  */
 export interface HomepageSelect<T extends boolean = true> {
+  carouselHeight?: T;
+  carouselLayout?: T;
+  carouselImageOpacity?: T;
+  carouselAutoplay?: T;
+  carouselAutoplayInterval?: T;
   carousel?:
     | T
     | {
         image?: T;
         alt?: T;
         link?: T;
+        imageAlignment?: T;
+        overlayOpacity?: T;
+        textAlignment?: T;
+        title?: T;
+        subtitle?: T;
+        buttonLabel?: T;
+        buttonLink?: T;
         id?: T;
       };
   offersHeading?: T;
@@ -1741,6 +1932,8 @@ export interface HomepageSelect<T extends boolean = true> {
 export interface SiteSettingsSelect<T extends boolean = true> {
   siteName?: T;
   siteTagline?: T;
+  defaultTheme?: T;
+  colorScheme?: T;
   favicon?: T;
   defaultOgImage?: T;
   googleAnalyticsId?: T;

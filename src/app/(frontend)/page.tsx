@@ -42,7 +42,14 @@ export default async function HomePage() {
   return (
     <main className="min-h-screen bg-white dark:bg-slate-950">
       {/* 1. Hero Carousel */}
-      <HeroCarousel slides={slides as any} />
+      <HeroCarousel
+        slides={slides as any}
+        height={homepage?.carouselHeight || 'medium'}
+        layout={homepage?.carouselLayout || 'fullWidth'}
+        autoplay={homepage?.carouselAutoplay !== false}
+        autoplayInterval={homepage?.carouselAutoplayInterval || 5000}
+        imageOpacity={homepage?.carouselImageOpacity || '100'}
+      />
 
       {/* 2. "We Offer" Services Grid */}
       <ServicesGrid

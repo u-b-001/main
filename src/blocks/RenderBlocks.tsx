@@ -6,6 +6,8 @@ import { ImageWithTextBlock } from '@/blocks/ImageWithTextBlock/Component'
 import { InfoCardBlock } from '@/blocks/InfoCardBlock/Component'
 import { TableBlock } from '@/blocks/TableBlock/Component'
 import { EmbedBlock } from '@/blocks/EmbedBlock/Component'
+import { FlexibleRowComponent } from '@/blocks/FlexibleRow/Component'
+import { FeaturedCardsComponent } from '@/blocks/FeaturedCards/Component'
 
 const blockComponents = {
   cta: CallToActionBlock,
@@ -14,6 +16,8 @@ const blockComponents = {
   infoCard: InfoCardBlock,
   table: TableBlock,
   embed: EmbedBlock,
+  flexibleRow: FlexibleRowComponent,
+  featuredCards: FeaturedCardsComponent,
 }
 
 export const RenderBlocks: React.FC<{

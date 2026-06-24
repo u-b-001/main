@@ -80,6 +80,36 @@ export const seed = async ({
     file: imageHeroBuffer,
   })
 
+  const mediaAboutDoc = await payload.create({
+    collection: 'media',
+    data: { alt: 'About MOSAI Banner', caption: 'About MOSAI' },
+    file: imageHeroBuffer,
+  })
+
+  const mediaLangDoc = await payload.create({
+    collection: 'media',
+    data: { alt: 'Japanese Language Banner', caption: 'Japanese Language' },
+    file: imageHeroBuffer,
+  })
+
+  const mediaExamDoc = await payload.create({
+    collection: 'media',
+    data: { alt: 'Exams & Contests Banner', caption: 'Exams & Contests' },
+    file: imageHeroBuffer,
+  })
+
+  const mediaStudyDoc = await payload.create({
+    collection: 'media',
+    data: { alt: 'Study in Japan Banner', caption: 'Study in Japan' },
+    file: imageHeroBuffer,
+  })
+
+  const mediaMembershipDoc = await payload.create({
+    collection: 'media',
+    data: { alt: 'Membership Banner', caption: 'Membership Portal' },
+    file: imageHeroBuffer,
+  })
+
   const mediaAvatarDoc = await payload.create({
     collection: 'media',
     data: { alt: 'Member Avatar Placeholder', caption: 'Profile Photo' },
@@ -92,6 +122,8 @@ export const seed = async ({
     data: {
       siteName: 'MOSAI',
       siteTagline: 'Mombusho Scholars Association of India',
+      defaultTheme: 'light',
+      colorScheme: 'classic',
       favicon: mediaDoc.id,
       defaultOgImage: mediaDoc.id,
     },
@@ -233,7 +265,9 @@ export const seed = async ({
     data: {
       title: 'The Association',
       slug: 'about-mosai/the-association',
-      hero: mediaDoc.id,
+      hero: mediaAboutDoc.id,
+      layoutStyle: 'sidebar',
+      heroStyle: 'medium',
       layout: [
         {
           blockType: 'richText',
@@ -266,7 +300,9 @@ export const seed = async ({
     data: {
       title: 'About Institute',
       slug: 'japanese-language/about-institute',
-      hero: mediaDoc.id,
+      hero: mediaLangDoc.id,
+      layoutStyle: 'sidebar',
+      heroStyle: 'medium',
       layout: [
         {
           blockType: 'richText',
@@ -328,12 +364,29 @@ export const seed = async ({
 
   for (const slug of slugsList) {
     const title = slug.split('/').pop()?.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) || slug
+
+    // Assign category-specific hero image to avoid sharing a single media record
+    let heroImageId = mediaDoc.id
+    if (slug.startsWith('about-mosai')) {
+      heroImageId = mediaAboutDoc.id
+    } else if (slug.startsWith('japanese-language')) {
+      heroImageId = mediaLangDoc.id
+    } else if (slug.startsWith('examination-and-contest')) {
+      heroImageId = mediaExamDoc.id
+    } else if (slug.startsWith('study-in-japan')) {
+      heroImageId = mediaStudyDoc.id
+    } else if (slug.startsWith('membership')) {
+      heroImageId = mediaMembershipDoc.id
+    }
+
     await payload.create({
       collection: 'pages',
       data: {
         title,
         slug,
-        hero: mediaDoc.id,
+        hero: heroImageId,
+        layoutStyle: 'sidebar',
+        heroStyle: 'medium',
         layout: [
           {
             blockType: 'richText',
@@ -366,9 +419,36 @@ export const seed = async ({
   await payload.updateGlobal({
     slug: 'homepage',
     data: {
+      carouselHeight: 'medium',
+      carouselLayout: 'fullWidth',
+      carouselImageOpacity: '100',
+      carouselAutoplay: true,
+      carouselAutoplayInterval: 5000,
       carousel: [
-        { image: mediaDoc.id, alt: 'Slide 1', link: '/about-mosai' },
-        { image: mediaDoc.id, alt: 'Slide 2', link: '/japanese-language' },
+        {
+          image: mediaDoc.id,
+          alt: 'Slide 1',
+          link: '/about-mosai',
+          imageAlignment: 'center',
+          overlayOpacity: 'medium',
+          textAlignment: 'left',
+          title: 'Learn Japanese with Experts',
+          subtitle: 'Join the premier language institute promoted by former MEXT scholars.',
+          buttonLabel: 'Explore Courses',
+          buttonLink: '/japanese-language/about-institute',
+        },
+        {
+          image: mediaDoc.id,
+          alt: 'Slide 2',
+          link: '/japanese-language',
+          imageAlignment: 'center',
+          overlayOpacity: 'medium',
+          textAlignment: 'center',
+          title: 'Study & Research in Japan',
+          subtitle: 'Discover counselling, guidelines, and exclusive government scholarships.',
+          buttonLabel: 'Learn More',
+          buttonLink: '/study-in-japan',
+        },
       ],
       offersHeading: 'WE OFFER',
       services: serviceDocs,
@@ -388,6 +468,8 @@ export const seed = async ({
     slug: 'header',
     data: {
       logo: mediaDoc.id,
+      sticky: true,
+      overlapHomepageHero: false,
       nav: [
         { label: 'Home', link: '/', openInNewTab: false },
         {
