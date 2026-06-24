@@ -175,7 +175,6 @@ export interface Page {
     | TableBlock
     | EmbedBlock
     | CallToActionBlock
-<<<<<<< HEAD
     | {
         heading: string;
         subheading?: string | null;
@@ -285,6 +284,7 @@ export interface Page {
         blockName?: string | null;
         blockType: 'imageGallery';
       }
+    | HelpSupportBlock
     | {
         heading?: string | null;
         description?: string | null;
@@ -387,10 +387,8 @@ export interface Page {
         blockName?: string | null;
         blockType: 'careerPosting';
       }
-=======
     | FlexibleRowBlock
     | FeaturedCardsBlock
->>>>>>> ef8792bb6d82f6b9d84f0efa5947b176900fe8d7
   )[];
   seo?: {
     title?: string | null;
@@ -602,6 +600,47 @@ export interface CallToActionBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'cta';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HelpSupportBlock".
+ */
+export interface HelpSupportBlock {
+  sectionTitle?: string | null;
+  sectionSubtitle?: string | null;
+  layout: 'sideBySide' | 'stacked';
+  supportCards?:
+    | {
+        title: string;
+        description?: string | null;
+        /**
+         * Example: LifeBuoy, Headphones, BookOpen, GraduationCap
+         */
+        icon?: string | null;
+        iconColor?: string | null;
+        buttonLabel?: string | null;
+        buttonUrl?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  video?: {
+    enabled?: boolean | null;
+    title?: string | null;
+    videoUrl?: string | null;
+    /**
+     * WARNING: To replace this image, clear the field first and then upload/select a new image. Do not edit the media asset directly.
+     */
+    poster?: (number | null) | Media;
+    /**
+     * Upload MP4/WebM video directly.
+     */
+    uploadedVideo?: (number | null) | Media;
+  };
+  backgroundColor?: string | null;
+  cardBgColor?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'helpSupport';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1316,7 +1355,6 @@ export interface PagesSelect<T extends boolean = true> {
         table?: T | TableBlockSelect<T>;
         embed?: T | EmbedBlockSelect<T>;
         cta?: T | CallToActionBlockSelect<T>;
-<<<<<<< HEAD
         hero?:
           | T
           | {
@@ -1430,6 +1468,7 @@ export interface PagesSelect<T extends boolean = true> {
               id?: T;
               blockName?: T;
             };
+        helpSupport?: T | HelpSupportBlockSelect<T>;
         formBlock?:
           | T
           | {
@@ -1500,10 +1539,8 @@ export interface PagesSelect<T extends boolean = true> {
               id?: T;
               blockName?: T;
             };
-=======
         flexibleRow?: T | FlexibleRowBlockSelect<T>;
         featuredCards?: T | FeaturedCardsBlockSelect<T>;
->>>>>>> ef8792bb6d82f6b9d84f0efa5947b176900fe8d7
       };
   seo?:
     | T
@@ -1601,6 +1638,39 @@ export interface CallToActionBlockSelect<T extends boolean = true> {
   buttonText?: T;
   buttonLink?: T;
   buttonStyle?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HelpSupportBlock_select".
+ */
+export interface HelpSupportBlockSelect<T extends boolean = true> {
+  sectionTitle?: T;
+  sectionSubtitle?: T;
+  layout?: T;
+  supportCards?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        icon?: T;
+        iconColor?: T;
+        buttonLabel?: T;
+        buttonUrl?: T;
+        id?: T;
+      };
+  video?:
+    | T
+    | {
+        enabled?: T;
+        title?: T;
+        videoUrl?: T;
+        poster?: T;
+        uploadedVideo?: T;
+      };
+  backgroundColor?: T;
+  cardBgColor?: T;
   id?: T;
   blockName?: T;
 }

@@ -8,7 +8,7 @@ import { InfoCardBlock } from '../../blocks/InfoCardBlock/config'
 import { TableBlock } from '../../blocks/TableBlock/config'
 import { EmbedBlock } from '../../blocks/EmbedBlock/config'
 import { CallToAction } from '../../blocks/CallToAction/config'
-<<<<<<< HEAD
+
 import { Hero } from '../../blocks/Hero/config'
 import { Marquee } from '../../blocks/Marquee/config'
 import { StatsImpact } from '../../blocks/Statistics/config'
@@ -20,13 +20,14 @@ import {FeatureCards} from '../../blocks/FeaturedCard/config'
 import {FormBlock} from '../../blocks/Form/config'
 import {DataSnapshot} from '../../blocks/DataSnapshot/config'
 import {CareerPosting} from '../../blocks/CareerPosting/config'
+import {HelpSupport} from '../../blocks/HelpAndSupport/config'
 
 
 
-=======
+
 import { FlexibleRowBlock } from '../../blocks/FlexibleRow/config'
 import { FeaturedCardsBlock } from '../../blocks/FeaturedCards/config'
->>>>>>> ef8792bb6d82f6b9d84f0efa5947b176900fe8d7
+
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
@@ -129,7 +130,6 @@ export const Pages: CollectionConfig<'pages'> = {
         TableBlock,
         EmbedBlock,
         CallToAction,
-<<<<<<< HEAD
         Hero,
         StatsImpact,
         Marquee,
@@ -137,14 +137,13 @@ export const Pages: CollectionConfig<'pages'> = {
         Testimonials,
         FAQ,
         ImageGallery,
+        HelpSupport,
         // FeaturedCard,
         FormBlock,
         DataSnapshot,
-        CareerPosting
-=======
+        CareerPosting,
         FlexibleRowBlock,
         FeaturedCardsBlock,
->>>>>>> ef8792bb6d82f6b9d84f0efa5947b176900fe8d7
       ],
       required: true,
       admin: {

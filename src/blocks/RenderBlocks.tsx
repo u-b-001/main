@@ -6,7 +6,6 @@ import { ImageWithTextBlock } from '@/blocks/ImageWithTextBlock/Component'
 import { InfoCardBlock } from '@/blocks/InfoCardBlock/Component'
 import { TableBlock } from '@/blocks/TableBlock/Component'
 import { EmbedBlock } from '@/blocks/EmbedBlock/Component'
-<<<<<<< HEAD
 import { HeroBlock } from '@/blocks/Hero/Component'
 import { MarqueeBlock } from '@/blocks/Marquee/Component'
 import { StatsImpactBlock } from '@/blocks/Statistics/Component'
@@ -18,11 +17,10 @@ import {ImageGalleryBlock} from '@/blocks/ImageGallery/Component'
 import { FormBlockComponent } from './Form/Component'
 import {DataSnapshotBlock} from './DataSnapshot/Component'
 import {CareerPostingBlock} from './CareerPosting/Component'
+import {HelpSupportBlock} from './HelpAndSupport/Component'
 
-=======
 import { FlexibleRowComponent } from '@/blocks/FlexibleRow/Component'
 import { FeaturedCardsComponent } from '@/blocks/FeaturedCards/Component'
->>>>>>> ef8792bb6d82f6b9d84f0efa5947b176900fe8d7
 
 const blockComponents = {
   cta: CallToActionBlock,
@@ -31,7 +29,7 @@ const blockComponents = {
   infoCard: InfoCardBlock,
   table: TableBlock,
   embed: EmbedBlock,
-<<<<<<< HEAD
+
   hero : HeroBlock,
   marquee: MarqueeBlock,
   statistics: StatsImpactBlock,
@@ -42,11 +40,10 @@ const blockComponents = {
   imageGallery: ImageGalleryBlock,
   formBlockComponent: FormBlockComponent,
   dataSnapshotBlock : DataSnapshotBlock ,
-  careerPostingBlock : CareerPostingBlock
-=======
+  careerPostingBlock : CareerPostingBlock,
   flexibleRow: FlexibleRowComponent,
   featuredCards: FeaturedCardsComponent,
->>>>>>> ef8792bb6d82f6b9d84f0efa5947b176900fe8d7
+  helpSupportBlock: HelpSupportBlock,
 }
 
 export const RenderBlocks: React.FC<{

@@ -8,7 +8,7 @@ export const SiteSettings: GlobalConfig = {
     read: () => true,
     update: isSuperAdmin,
   },
-  admin: { group: 'Site Settings' },
+  admin: { group: 'Global' },
   fields: [
     { name: 'siteName',    type: 'text', defaultValue: 'MOSAI', required: true },
     { name: 'siteTagline', type: 'text', defaultValue: 'Mombusho Scholars Association of India', required: true },
