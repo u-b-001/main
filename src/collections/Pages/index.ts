@@ -8,6 +8,7 @@ import { InfoCardBlock } from '../../blocks/InfoCardBlock/config'
 import { TableBlock } from '../../blocks/TableBlock/config'
 import { EmbedBlock } from '../../blocks/EmbedBlock/config'
 import { CallToAction } from '../../blocks/CallToAction/config'
+<<<<<<< HEAD
 import { Hero } from '../../blocks/Hero/config'
 import { Marquee } from '../../blocks/Marquee/config'
 import { StatsImpact } from '../../blocks/Statistics/config'
@@ -22,6 +23,10 @@ import {CareerPosting} from '../../blocks/CareerPosting/config'
 
 
 
+=======
+import { FlexibleRowBlock } from '../../blocks/FlexibleRow/config'
+import { FeaturedCardsBlock } from '../../blocks/FeaturedCards/config'
+>>>>>>> ef8792bb6d82f6b9d84f0efa5947b176900fe8d7
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
@@ -75,11 +80,43 @@ export const Pages: CollectionConfig<'pages'> = {
       required: true,
     },
     {
+      name: 'layoutStyle',
+      type: 'select',
+      label: 'Page Layout Style',
+      defaultValue: 'sidebar',
+      options: [
+        { label: 'Left Sidebar (if sibling links exist)', value: 'sidebar' },
+        { label: 'Right Sidebar (if sibling links exist)', value: 'rightSidebar' },
+        { label: 'Centered Content (Text-focused)', value: 'centered' },
+        { label: 'Full Width (Complex grids/tables)', value: 'fullWidth' },
+      ],
+      required: true,
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'heroStyle',
+      type: 'select',
+      label: 'Page Hero Banner Style',
+      defaultValue: 'medium',
+      options: [
+        { label: 'No Hero (Minimal Text Header)', value: 'none' },
+        { label: 'Small Banner', value: 'small' },
+        { label: 'Medium Banner (Default)', value: 'medium' },
+        { label: 'Large Banner', value: 'large' },
+      ],
+      required: true,
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
       name: 'hero',
       type: 'upload',
       relationTo: 'media',
       admin: {
-        description: 'Banner image shown at the top of inner pages',
+        description: 'Banner image shown at the top of inner pages. WARNING: To change this image, click the "X" button to clear the field, then select or upload a new one. DO NOT click the pencil "Edit" icon to replace the file inside the media drawer, as that will overwrite the shared media asset globally across all pages!',
       },
     },
     {
@@ -92,6 +129,7 @@ export const Pages: CollectionConfig<'pages'> = {
         TableBlock,
         EmbedBlock,
         CallToAction,
+<<<<<<< HEAD
         Hero,
         StatsImpact,
         Marquee,
@@ -103,6 +141,10 @@ export const Pages: CollectionConfig<'pages'> = {
         FormBlock,
         DataSnapshot,
         CareerPosting
+=======
+        FlexibleRowBlock,
+        FeaturedCardsBlock,
+>>>>>>> ef8792bb6d82f6b9d84f0efa5947b176900fe8d7
       ],
       required: true,
       admin: {

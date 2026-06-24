@@ -1,14 +1,15 @@
-import Script from 'next/script'
+'use client'
+import { useServerInsertedHTML } from 'next/navigation'
 import React from 'react'
 
 import { defaultTheme, themeLocalStorageKey } from '../ThemeSelector/types'
 
-export const InitTheme: React.FC = () => {
-  return (
-    // eslint-disable-next-line @next/next/no-before-interactive-script-outside-document
-    <Script
-      dangerouslySetInnerHTML={{
-        __html: `
+export const InitTheme: React.FC<{ defaultTheme?: string }> = ({ defaultTheme = 'light' }) => {
+  useServerInsertedHTML(() => {
+    return (
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
   (function () {
     function getImplicitPreference() {
       var mediaQuery = '(prefers-color-scheme: dark)'
@@ -42,9 +43,11 @@ export const InitTheme: React.FC = () => {
     document.documentElement.setAttribute('data-theme', themeToSet)
   })();
   `,
-      }}
-      id="theme-script"
-      strategy="beforeInteractive"
-    />
-  )
+        }}
+        id="theme-script"
+      />
+    )
+  })
+
+  return null
 }
