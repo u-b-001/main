@@ -6,6 +6,18 @@ import { ImageWithTextBlock } from '@/blocks/ImageWithTextBlock/Component'
 import { InfoCardBlock } from '@/blocks/InfoCardBlock/Component'
 import { TableBlock } from '@/blocks/TableBlock/Component'
 import { EmbedBlock } from '@/blocks/EmbedBlock/Component'
+import { HeroBlock } from '@/blocks/Hero/Component'
+import { MarqueeBlock } from '@/blocks/Marquee/Component'
+import { StatsImpactBlock } from '@/blocks/Statistics/Component'
+import { ShowcaseCardsBlock} from '@/blocks/Showcase/Component' 
+import { TestimonialsBlock } from '@/blocks/Testimonials/Component'
+import { FAQBlock } from '@/blocks/Faq/Component'
+import { FeatureCardsBlock } from '@/blocks/FeaturedCard/Component'
+import {ImageGalleryBlock} from '@/blocks/ImageGallery/Component'
+import { FormBlockComponent } from './Form/Component'
+import {DataSnapshotBlock} from './DataSnapshot/Component'
+import {CareerPostingBlock} from './CareerPosting/Component'
+
 
 const blockComponents = {
   cta: CallToActionBlock,
@@ -14,6 +26,17 @@ const blockComponents = {
   infoCard: InfoCardBlock,
   table: TableBlock,
   embed: EmbedBlock,
+  hero : HeroBlock,
+  marquee: MarqueeBlock,
+  statistics: StatsImpactBlock,
+  showcaseCards: ShowcaseCardsBlock,
+  testimonials: TestimonialsBlock,
+  faq: FAQBlock,
+  featureCards: FeatureCardsBlock,
+  imageGallery: ImageGalleryBlock,
+  formBlockComponent: FormBlockComponent,
+  dataSnapshotBlock : DataSnapshotBlock ,
+  careerPostingBlock : CareerPostingBlock
 }
 
 export const RenderBlocks: React.FC<{

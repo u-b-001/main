@@ -166,7 +166,225 @@ export interface Page {
    * Banner image shown at the top of inner pages
    */
   hero?: (number | null) | Media;
-  layout: (RichTextBlock | ImageWithTextBlock | InfoCardBlock | TableBlock | EmbedBlock | CallToActionBlock)[];
+  layout: (
+    | RichTextBlock
+    | ImageWithTextBlock
+    | InfoCardBlock
+    | TableBlock
+    | EmbedBlock
+    | CallToActionBlock
+    | {
+        heading: string;
+        subheading?: string | null;
+        image?: (number | null) | Media;
+        buttons?:
+          | {
+              label: string;
+              url: string;
+              style?: ('primary' | 'secondary') | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'hero';
+      }
+    | {
+        heading?: string | null;
+        stats?:
+          | {
+              value: string;
+              label: string;
+              suffix?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'statsImpact';
+      }
+    | {
+        items?:
+          | {
+              text?: string | null;
+              logo?: (number | null) | Media;
+              id?: string | null;
+            }[]
+          | null;
+        /**
+         * Animation duration in seconds — lower = faster
+         */
+        speed?: number | null;
+        direction?: ('left' | 'right') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'marquee';
+      }
+    | {
+        heading?: string | null;
+        subheading?: string | null;
+        cards?:
+          | {
+              image?: (number | null) | Media;
+              title: string;
+              description?: string | null;
+              link?: string | null;
+              linkLabel?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        columns?: ('2' | '3' | '4') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'showcaseCards';
+      }
+    | {
+        heading?: string | null;
+        displayStyle?: ('grid' | 'carousel') | null;
+        testimonials?:
+          | {
+              quote: string;
+              name: string;
+              role?: string | null;
+              avatar?: (number | null) | Media;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'testimonials';
+      }
+    | {
+        heading?: string | null;
+        items?:
+          | {
+              question: string;
+              answer: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'faq';
+      }
+    | {
+        heading?: string | null;
+        images?:
+          | {
+              image: number | Media;
+              caption?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        layout?: ('grid' | 'masonry') | null;
+        columns?: ('2' | '3' | '4') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'imageGallery';
+      }
+    | {
+        heading?: string | null;
+        description?: string | null;
+        fields?:
+          | {
+              label: string;
+              /**
+               * Unique key used in submitted data, e.g. "email"
+               */
+              name: string;
+              type?: ('text' | 'email' | 'tel' | 'textarea' | 'number' | 'select' | 'checkbox') | null;
+              placeholder?: string | null;
+              required?: boolean | null;
+              width?: ('full' | 'half') | null;
+              options?:
+                | {
+                    label: string;
+                    value: string;
+                    id?: string | null;
+                  }[]
+                | null;
+              id?: string | null;
+            }[]
+          | null;
+        submitLabel?: string | null;
+        /**
+         * API route this form posts to, e.g. /api/contact
+         */
+        submitEndpoint: string;
+        successMessage?: string | null;
+        errorMessage?: string | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'formBlock';
+      }
+    | {
+        heading?: string | null;
+        description?: string | null;
+        metrics?:
+          | {
+              label: string;
+              value: string;
+              /**
+               * e.g. "+12%" or "-3 states"
+               */
+              change?: string | null;
+              trend?: ('up' | 'down' | 'neutral') | null;
+              icon?: (number | null) | Media;
+              id?: string | null;
+            }[]
+          | null;
+        /**
+         * Shown as "Data as of ..."
+         */
+        lastUpdated?: string | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'dataSnapshot';
+      }
+    | {
+        heading?: string | null;
+        description?: string | null;
+        postings?:
+          | {
+              title: string;
+              /**
+               * e.g. Engineering, Research, Operations
+               */
+              department?: string | null;
+              /**
+               * e.g. Delhi, Remote, Hybrid
+               */
+              location?: string | null;
+              type?: ('fullTime' | 'partTime' | 'internship' | 'contract') | null;
+              description?: {
+                root: {
+                  type: string;
+                  children: {
+                    type: any;
+                    version: number;
+                    [k: string]: unknown;
+                  }[];
+                  direction: ('ltr' | 'rtl') | null;
+                  format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                  indent: number;
+                  version: number;
+                };
+                [k: string]: unknown;
+              } | null;
+              /**
+               * External application URL, or leave blank to use the form below
+               */
+              applyLink?: string | null;
+              postedDate?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        emptyStateMessage?: string | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'careerPosting';
+      }
+  )[];
   seo?: {
     title?: string | null;
     /**
@@ -1013,6 +1231,189 @@ export interface PagesSelect<T extends boolean = true> {
         table?: T | TableBlockSelect<T>;
         embed?: T | EmbedBlockSelect<T>;
         cta?: T | CallToActionBlockSelect<T>;
+        hero?:
+          | T
+          | {
+              heading?: T;
+              subheading?: T;
+              image?: T;
+              buttons?:
+                | T
+                | {
+                    label?: T;
+                    url?: T;
+                    style?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        statsImpact?:
+          | T
+          | {
+              heading?: T;
+              stats?:
+                | T
+                | {
+                    value?: T;
+                    label?: T;
+                    suffix?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        marquee?:
+          | T
+          | {
+              items?:
+                | T
+                | {
+                    text?: T;
+                    logo?: T;
+                    id?: T;
+                  };
+              speed?: T;
+              direction?: T;
+              id?: T;
+              blockName?: T;
+            };
+        showcaseCards?:
+          | T
+          | {
+              heading?: T;
+              subheading?: T;
+              cards?:
+                | T
+                | {
+                    image?: T;
+                    title?: T;
+                    description?: T;
+                    link?: T;
+                    linkLabel?: T;
+                    id?: T;
+                  };
+              columns?: T;
+              id?: T;
+              blockName?: T;
+            };
+        testimonials?:
+          | T
+          | {
+              heading?: T;
+              displayStyle?: T;
+              testimonials?:
+                | T
+                | {
+                    quote?: T;
+                    name?: T;
+                    role?: T;
+                    avatar?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        faq?:
+          | T
+          | {
+              heading?: T;
+              items?:
+                | T
+                | {
+                    question?: T;
+                    answer?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        imageGallery?:
+          | T
+          | {
+              heading?: T;
+              images?:
+                | T
+                | {
+                    image?: T;
+                    caption?: T;
+                    id?: T;
+                  };
+              layout?: T;
+              columns?: T;
+              id?: T;
+              blockName?: T;
+            };
+        formBlock?:
+          | T
+          | {
+              heading?: T;
+              description?: T;
+              fields?:
+                | T
+                | {
+                    label?: T;
+                    name?: T;
+                    type?: T;
+                    placeholder?: T;
+                    required?: T;
+                    width?: T;
+                    options?:
+                      | T
+                      | {
+                          label?: T;
+                          value?: T;
+                          id?: T;
+                        };
+                    id?: T;
+                  };
+              submitLabel?: T;
+              submitEndpoint?: T;
+              successMessage?: T;
+              errorMessage?: T;
+              id?: T;
+              blockName?: T;
+            };
+        dataSnapshot?:
+          | T
+          | {
+              heading?: T;
+              description?: T;
+              metrics?:
+                | T
+                | {
+                    label?: T;
+                    value?: T;
+                    change?: T;
+                    trend?: T;
+                    icon?: T;
+                    id?: T;
+                  };
+              lastUpdated?: T;
+              id?: T;
+              blockName?: T;
+            };
+        careerPosting?:
+          | T
+          | {
+              heading?: T;
+              description?: T;
+              postings?:
+                | T
+                | {
+                    title?: T;
+                    department?: T;
+                    location?: T;
+                    type?: T;
+                    description?: T;
+                    applyLink?: T;
+                    postedDate?: T;
+                    id?: T;
+                  };
+              emptyStateMessage?: T;
+              id?: T;
+              blockName?: T;
+            };
       };
   seo?:
     | T
