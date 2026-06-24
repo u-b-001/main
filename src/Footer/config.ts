@@ -9,7 +9,7 @@ export const Footer: GlobalConfig = {
     update: isSuperAdmin,
   },
   admin: {
-    group: 'Site Settings',
+    group: 'Global',
   },
   fields: [
     {
