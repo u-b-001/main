@@ -135,7 +135,7 @@ export const Pages: CollectionConfig<'pages'> = {
         FAQ,
         ImageGallery,
         HelpSupport,
-        // FeaturedCard,
+        FeatureCards,
         FormBlock,
         DataSnapshot,
         CareerPosting,

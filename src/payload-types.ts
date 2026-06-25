@@ -289,6 +289,22 @@ export interface Page {
     | HelpSupportBlock
     | {
         heading?: string | null;
+        subheading?: string | null;
+        features?:
+          | {
+              icon?: (number | null) | Media;
+              title: string;
+              description?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        columns?: ('2' | '3' | '4') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'featureCards';
+      }
+    | {
+        heading?: string | null;
         description?: string | null;
         fields?:
           | {
@@ -1547,6 +1563,23 @@ export interface PagesSelect<T extends boolean = true> {
               blockName?: T;
             };
         helpSupport?: T | HelpSupportBlockSelect<T>;
+        featureCards?:
+          | T
+          | {
+              heading?: T;
+              subheading?: T;
+              features?:
+                | T
+                | {
+                    icon?: T;
+                    title?: T;
+                    description?: T;
+                    id?: T;
+                  };
+              columns?: T;
+              id?: T;
+              blockName?: T;
+            };
         formBlock?:
           | T
           | {
@@ -2520,9 +2553,9 @@ export interface SiteSetting {
    */
   homePage?: string | null;
   /**
-   * One-click theme change. Selecting a preset changes colors, fonts, and layout styles across the entire site.
+   * Choose a website theme. Selecting a preset automatically updates the colors, typography, header, and block layouts.
    */
-  themePreset?: ('ducc' | 'learner') | null;
+  themePreset?: ('mosai' | 'mosaiClassic' | 'learner') | null;
   headingFont?: ('Playfair Display' | 'Raleway' | 'Montserrat' | 'Inter' | 'Roboto' | 'Poppins') | null;
   bodyFont?: ('Inter' | 'Roboto' | 'Open Sans' | 'Poppins' | 'Lato') | null;
   themeColors?: {

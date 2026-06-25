@@ -82,14 +82,24 @@ export const SiteSettings: GlobalConfig = {
       name: 'themePreset',
       type: 'select',
       label: 'Theme Preset',
-      defaultValue: 'ducc',
+      defaultValue: 'mosai',
       options: [
-        { label: 'Theme A (Purple & Gold)', value: 'ducc' },
-        { label: 'Theme B (Teal & Dark)', value: 'learner' },
+        {
+          label: 'MOSAI Modern (Purple & Gold)',
+          value: 'mosai',
+        },
+        {
+          label: 'MOSAI Classic (Red, Blue & Teal)',
+          value: 'mosaiClassic',
+        },
+        {
+          label: 'Learner (Teal & Navy)',
+          value: 'learner',
+        },
       ],
       admin: {
         description:
-          'One-click theme change. Selecting a preset changes colors, fonts, and layout styles across the entire site.',
+          'Choose a website theme. Selecting a preset automatically updates the colors, typography, header, and block layouts.',
       },
     },
     {

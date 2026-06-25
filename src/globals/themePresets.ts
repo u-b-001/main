@@ -8,39 +8,71 @@ export interface ThemePreset {
     muted: string
     text: string
   }
+
   fonts: {
     heading: string
     body: string
   }
+
   /** Header style overrides */
   header: {
-    /** 'ducc' = centered logo + nav below, 'learner' = logo left + nav right (single row) */
-    layout: 'ducc' | 'learner'
-    /** Show the top bar announcement strip */
+    /**
+     * mosai = Modern MOSAI
+     * mosaiClassic = Original MOSAI website
+     * learner = Learning theme
+     */
+    layout: 'mosai' | 'mosaiClassic' | 'learner'
+
     showTopBar: boolean
-    /** Header height in px */
     height: number
-    /** Show bottom border/shadow */
     showBottomBorder: boolean
-    /** CTA button style: 'square' or 'pill' */
     ctaStyle: 'square' | 'pill'
   }
-  /** Layout overrides — which layout variant to use for each block type */
+
+  /** Layout overrides */
   layouts: {
-    hero: 'duccFullscreen' | 'split'
-    featureCards: 'duccService' | 'classic'
+    hero:
+      | 'mosaiFullscreen'
+      | 'mosaiClassicHero'
+      | 'split'
+
+    featureCards:
+      | 'mosaiService'
+      | 'mosaiClassicCards'
+      | 'classic'
+
     featureCardsTheme: 'dark' | 'light'
+
     featureCardsShowButton: boolean
-    news: 'duccCards' | 'spotlight'
-    statistics: 'duccStrip' | 'cardGrid'
-    testimonials: 'duccQuote' | 'default'
-    callToAction: 'duccBanner' | 'default'
-    faq: 'duccAccordion' | 'default'
+
+    news:
+      | 'mosaiCards'
+      | 'mosaiClassicNews'
+      | 'spotlight'
+
+    statistics:
+      | 'mosaiStrip'
+      | 'cardGrid'
+
+    testimonials:
+      | 'mosaiQuote'
+      | 'default'
+
+    callToAction:
+      | 'mosaiBanner'
+      | 'default'
+
+    faq:
+      | 'mosaiAccordion'
+      | 'default'
   }
 }
 
 export const themePresets: Record<string, ThemePreset> = {
-  ducc: {
+  /**
+   * Modern MOSAI
+   */
+  mosai: {
     colors: {
       primary: '#4B2E83',
       secondary: '#1A103D',
@@ -50,29 +82,36 @@ export const themePresets: Record<string, ThemePreset> = {
       muted: '#F8F4FF',
       text: '#1A103D',
     },
+
     fonts: {
       heading: 'Playfair Display',
       body: 'Inter',
     },
+
     header: {
-      layout: 'ducc',
+      layout: 'mosai',
       showTopBar: true,
       height: 100,
       showBottomBorder: false,
       ctaStyle: 'square',
     },
+
     layouts: {
-      hero: 'duccFullscreen',
-      featureCards: 'duccService',
+      hero: 'mosaiFullscreen',
+      featureCards: 'mosaiService',
       featureCardsTheme: 'dark',
       featureCardsShowButton: false,
-      news: 'duccCards',
-      statistics: 'duccStrip',
-      testimonials: 'duccQuote',
-      callToAction: 'duccBanner',
-      faq: 'duccAccordion',
+      news: 'mosaiCards',
+      statistics: 'mosaiStrip',
+      testimonials: 'mosaiQuote',
+      callToAction: 'mosaiBanner',
+      faq: 'mosaiAccordion',
     },
   },
+
+  /**
+   * Learner Theme
+   */
   learner: {
     colors: {
       primary: '#04415f',
@@ -83,10 +122,12 @@ export const themePresets: Record<string, ThemePreset> = {
       muted: '#e6edf0',
       text: '#010608',
     },
+
     fonts: {
       heading: 'Raleway',
       body: 'Roboto',
     },
+
     header: {
       layout: 'learner',
       showTopBar: false,
@@ -94,20 +135,58 @@ export const themePresets: Record<string, ThemePreset> = {
       showBottomBorder: true,
       ctaStyle: 'pill',
     },
+
     layouts: {
       hero: 'split',
       featureCards: 'classic',
       featureCardsTheme: 'light',
       featureCardsShowButton: true,
       news: 'spotlight',
-      statistics: 'duccStrip',
-      testimonials: 'duccQuote',
-      callToAction: 'duccBanner',
-      faq: 'duccAccordion',
+      statistics: 'mosaiStrip',
+      testimonials: 'mosaiQuote',
+      callToAction: 'mosaiBanner',
+      faq: 'mosaiAccordion',
+    },
+  },
+
+  mosaiClassic: {
+    colors: {
+      primary: '#C62828',
+      secondary: '#0F4C81',
+      accent: '#18A0AE',
+      background: '#EEF3F7',
+      surface: '#FFFFFF',
+      muted: '#F8FAFC',
+      text: '#1F2937',
+    },
+
+    fonts: {
+      heading: 'Playfair Display',
+      body: 'Inter',
+    },
+
+    header: {
+      layout: 'mosaiClassic',
+      showTopBar: false,
+      height: 110,
+      showBottomBorder: true,
+      ctaStyle: 'square',
+    },
+
+    layouts: {
+      hero: 'mosaiClassicHero',
+      featureCards: 'mosaiClassicCards',
+      featureCardsTheme: 'light',
+      featureCardsShowButton: true,
+      news: 'mosaiClassicNews',
+      statistics: 'mosaiStrip',
+      testimonials: 'mosaiQuote',
+      callToAction: 'mosaiBanner',
+      faq: 'mosaiAccordion',
     },
   },
 }
 
 export function getPreset(name?: string | null): ThemePreset {
-  return themePresets[name || 'ducc'] || themePresets.ducc
+  return themePresets[name ?? 'mosai'] ?? themePresets.mosai
 }
