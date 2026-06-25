@@ -117,6 +117,18 @@ export const SiteSettings: GlobalConfig = {
         description: 'Site default Open Graph share image. WARNING: To change this image, click the "X" button to clear the field, then select or upload a new one. DO NOT click the pencil "Edit" icon to replace the file inside the media drawer, as that will overwrite the shared media asset globally across all pages!',
       },
     },
+    {
+      name: 'homepage',
+      type: 'relationship',
+      relationTo: 'pages',
+      hasMany: false,
+      admin: {
+        description: 'Select the page that acts as the system root home page (/).',
+        components: {
+          Field: '@/components/admin/HomePageSelectorField',
+        },
+      },
+    },
     { name: 'googleAnalyticsId', type: 'text' },
   ],
   hooks: {

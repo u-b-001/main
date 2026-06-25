@@ -31,6 +31,6 @@ export const Media: CollectionConfig = {
       { name: 'gallery', width: 600, height: 450, position: 'centre' },
     ],
     adminThumbnail: 'thumbnail',
-    mimeTypes: ['image/*', 'application/pdf'],
+    mimeTypes: ['image/*', 'application/pdf', 'video/*'],
   },
 }

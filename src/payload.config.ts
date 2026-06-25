@@ -12,6 +12,7 @@ import { Events } from './collections/Events'
 import { Services } from './collections/Services'
 import { Committee } from './collections/Committee'
 import { Users } from './collections/Users'
+import { JobApplications } from './collections/JobApplications'
 
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
@@ -64,7 +65,7 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URL || '',
     },
   }),
-  collections: [Pages, Media, Users, News, Gallery, Events, Services, Committee],
+  collections: [Pages, Media, Users, News, Gallery, Events, Services, Committee, JobApplications],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer, Homepage, SiteSettings],
   plugins,

@@ -1,19 +1,13 @@
 import type { CollectionConfig } from 'payload'
 
 import { anyone } from '../../access/anyone'
-import { isEditor } from '../../access/roles'
-import { RichTextBlock } from '../../blocks/RichTextBlock/config'
-import { ImageWithTextBlock } from '../../blocks/ImageWithTextBlock/config'
-import { InfoCardBlock } from '../../blocks/InfoCardBlock/config'
-import { TableBlock } from '../../blocks/TableBlock/config'
-import { EmbedBlock } from '../../blocks/EmbedBlock/config'
-import { CallToAction } from '../../blocks/CallToAction/config'
-import { FlexibleRowBlock } from '../../blocks/FlexibleRow/config'
-import { FeaturedCardsBlock } from '../../blocks/FeaturedCards/config'
+import { isEditor, isSchoolAdmin } from '../../access/roles'
+import { allBlocks } from '../../blocks/allBlocks'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
+import { syncNavAfterChange, syncNavAfterDelete } from '../../hooks/syncNavItems'
 
 import {
   MetaDescriptionField,
@@ -22,13 +16,14 @@ import {
   OverviewField,
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
+import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
   access: {
     create: isEditor,
-    delete: isEditor,
-    read: anyone,
+    delete: isSchoolAdmin,
+    read: authenticatedOrPublished,
     update: isEditor,
   },
   defaultPopulate: {
@@ -103,16 +98,7 @@ export const Pages: CollectionConfig<'pages'> = {
     {
       name: 'layout',
       type: 'blocks',
-      blocks: [
-        RichTextBlock,
-        ImageWithTextBlock,
-        InfoCardBlock,
-        TableBlock,
-        EmbedBlock,
-        CallToAction,
-        FlexibleRowBlock,
-        FeaturedCardsBlock,
-      ],
+      blocks: allBlocks,
       required: true,
       admin: {
         initCollapsed: true,
@@ -151,12 +137,29 @@ export const Pages: CollectionConfig<'pages'> = {
         position: 'sidebar',
       },
     },
+    {
+      name: 'showInNav',
+      type: 'checkbox',
+      label: 'Show in Navigation',
+      defaultValue: false,
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'navOrder',
+      type: 'number',
+      label: 'Navigation Order',
+      admin: {
+        position: 'sidebar',
+      },
+    },
     slugField(),
   ],
   hooks: {
-    afterChange: [revalidatePage],
+    afterChange: [revalidatePage, syncNavAfterChange],
     beforeChange: [populatePublishedAt],
-    afterDelete: [revalidateDelete],
+    afterDelete: [revalidateDelete, syncNavAfterDelete],
   },
   versions: {
     drafts: {

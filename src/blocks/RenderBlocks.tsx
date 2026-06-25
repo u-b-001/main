@@ -8,6 +8,7 @@ import { TableBlock } from '@/blocks/TableBlock/Component'
 import { EmbedBlock } from '@/blocks/EmbedBlock/Component'
 import { FlexibleRowComponent } from '@/blocks/FlexibleRow/Component'
 import { FeaturedCardsComponent } from '@/blocks/FeaturedCards/Component'
+import { MediaContactComponent } from '@/blocks/MediaContact/Component'
 
 const blockComponents = {
   cta: CallToActionBlock,
@@ -17,7 +18,9 @@ const blockComponents = {
   table: TableBlock,
   embed: EmbedBlock,
   flexibleRow: FlexibleRowComponent,
+  flexibleColumn: FlexibleRowComponent,
   featuredCards: FeaturedCardsComponent,
+  mediaContact: MediaContactComponent,
 }
 
 export const RenderBlocks: React.FC<{
