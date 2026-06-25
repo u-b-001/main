@@ -2239,23 +2239,54 @@ export interface Header {
   id: number;
   logo: number | Media;
   /**
-   * If checked, the header will remain visible at the top of the screen during scrolling.
+   * Optional compact logo for small screens. Falls back to main logo if not set.
+   */
+  logoMobile?: (number | null) | Media;
+  /**
+   * Header stays visible at the top of the screen while scrolling.
    */
   sticky: boolean;
   /**
-   * If checked, the header will overlap the homepage hero carousel and will be transparent initially.
+   * Header overlaps the homepage hero and is transparent initially.
    */
   overlapHomepageHero?: boolean | null;
+  /**
+   * Show/hide the light-dark mode toggle in the header.
+   */
+  showThemeSelector?: boolean | null;
+  /**
+   * Optional thin bar above the header, e.g. for urgent notices (admit cards, deadlines).
+   */
+  announcementBar?: {
+    enabled?: boolean | null;
+    message?: string | null;
+    /**
+     * Optional URL to link the announcement to
+     */
+    link?: string | null;
+    dismissible?: boolean | null;
+  };
+  /**
+   * Top-level navigation items. Keep to 8 or fewer for a clean desktop layout.
+   */
   nav?:
     | {
         label: string;
         link?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Render this item as a filled CTA button instead of a plain link (e.g. "Apply Now").
+         */
+        highlight?: boolean | null;
         children?:
           | {
               label: string;
               link: string;
               openInNewTab?: boolean | null;
+              /**
+               * Optional one-line description shown under the label in the dropdown (mega-menu style).
+               */
+              description?: string | null;
               subChildren?:
                 | {
                     label: string;
@@ -2480,20 +2511,32 @@ export interface SiteSetting {
  */
 export interface HeaderSelect<T extends boolean = true> {
   logo?: T;
+  logoMobile?: T;
   sticky?: T;
   overlapHomepageHero?: T;
+  showThemeSelector?: T;
+  announcementBar?:
+    | T
+    | {
+        enabled?: T;
+        message?: T;
+        link?: T;
+        dismissible?: T;
+      };
   nav?:
     | T
     | {
         label?: T;
         link?: T;
         openInNewTab?: T;
+        highlight?: T;
         children?:
           | T
           | {
               label?: T;
               link?: T;
               openInNewTab?: T;
+              description?: T;
               subChildren?:
                 | T
                 | {
