@@ -18,6 +18,7 @@ import { FormBlockComponent } from './Form/Component'
 import {DataSnapshotBlock} from './DataSnapshot/Component'
 import {CareerPostingBlock} from './CareerPosting/Component'
 import {HelpSupportBlock} from './HelpAndSupport/Component'
+import {StatusBadgeBlock } from './CardStautsBadge/Component'
 
 import { FlexibleRowComponent } from '@/blocks/FlexibleRow/Component'
 import { FeaturedCardsComponent } from '@/blocks/FeaturedCards/Component'

@@ -12,18 +12,16 @@ import { CallToAction } from '../../blocks/CallToAction/config'
 import { Hero } from '../../blocks/Hero/config'
 import { Marquee } from '../../blocks/Marquee/config'
 import { StatsImpact } from '../../blocks/Statistics/config'
-import {ShowcaseCards} from '../../blocks/Showcase/config'
-import {Testimonials} from '../../blocks/Testimonials/config'
+import { ShowcaseCards } from '../../blocks/Showcase/config'
+import { Testimonials } from '../../blocks/Testimonials/config'
 import { FAQ } from '@/blocks/Faq/confg'
-import {ImageGallery} from '../../blocks/ImageGallery/config'
-import {FeatureCards} from '../../blocks/FeaturedCard/config'
-import {FormBlock} from '../../blocks/Form/config'
-import {DataSnapshot} from '../../blocks/DataSnapshot/config'
-import {CareerPosting} from '../../blocks/CareerPosting/config'
-import {HelpSupport} from '../../blocks/HelpAndSupport/config'
-
-
-
+import { ImageGallery } from '../../blocks/ImageGallery/config'
+import { FeatureCards } from '../../blocks/FeaturedCard/config'
+import { FormBlock } from '../../blocks/Form/config'
+import { DataSnapshot } from '../../blocks/DataSnapshot/config'
+import { CareerPosting } from '../../blocks/CareerPosting/config'
+import { HelpSupport } from '../../blocks/HelpAndSupport/config'
+import { StatusBadgeBlock } from '../../blocks/CardStautsBadge/config'
 
 import { FlexibleRowBlock } from '../../blocks/FlexibleRow/config'
 import { FeaturedCardsBlock } from '../../blocks/FeaturedCards/config'
@@ -33,7 +31,6 @@ import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
 
-
 import {
   MetaDescriptionField,
   MetaImageField,
@@ -41,7 +38,6 @@ import {
   OverviewField,
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
-
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -117,7 +113,8 @@ export const Pages: CollectionConfig<'pages'> = {
       type: 'upload',
       relationTo: 'media',
       admin: {
-        description: 'Banner image shown at the top of inner pages. WARNING: To change this image, click the "X" button to clear the field, then select or upload a new one. DO NOT click the pencil "Edit" icon to replace the file inside the media drawer, as that will overwrite the shared media asset globally across all pages!',
+        description:
+          'Banner image shown at the top of inner pages. WARNING: To change this image, click the "X" button to clear the field, then select or upload a new one. DO NOT click the pencil "Edit" icon to replace the file inside the media drawer, as that will overwrite the shared media asset globally across all pages!',
       },
     },
     {
@@ -144,6 +141,7 @@ export const Pages: CollectionConfig<'pages'> = {
         CareerPosting,
         FlexibleRowBlock,
         FeaturedCardsBlock,
+        StatusBadgeBlock,
       ],
       required: true,
       admin: {

@@ -1,125 +1,231 @@
 import type { GlobalConfig } from 'payload'
-import { isSuperAdmin } from '../access/roles'
-import { revalidateSiteSettings } from './hooks/revalidateSiteSettings'
+import { publicAccess, isSuperAdmin } from '../access/roles'
+import { themePresets } from '../globals/themePresets'
+import { applyThemeToBlocks } from '../lib/applyThemeToBlocks'
 
 export const SiteSettings: GlobalConfig = {
-  slug: 'siteSettings',
+  slug: 'site-settings',
+  label: 'Site Settings',
   access: {
-    read: () => true,
+    read: publicAccess,
     update: isSuperAdmin,
   },
-  admin: { group: 'Global' },
-  fields: [
-    { name: 'siteName',    type: 'text', defaultValue: 'MOSAI', required: true },
-    { name: 'siteTagline', type: 'text', defaultValue: 'Mombusho Scholars Association of India', required: true },
-    {
-      name: 'defaultTheme',
-      type: 'select',
-      label: 'Default Site Theme',
-      defaultValue: 'light',
-      options: [
-        { label: 'Light', value: 'light' },
-        { label: 'Dark', value: 'dark' },
-      ],
-      required: true,
-    },
-    {
-      name: 'colorScheme',
-      type: 'select',
-      label: 'Website Color Scheme',
-      defaultValue: 'classic',
-      options: [
-        { label: 'Classic (Navy & Red)', value: 'classic' },
-        { label: 'Warm Sunset (Crimson, Orange-Red & Gold)', value: 'sunset' },
-        { label: 'Cherry Dusk (Plum, Dusty Rose & Terracotta)', value: 'terracotta' },
-        { label: 'Emerald Forest (Green, Sage & Gold)', value: 'emerald' },
-        { label: 'Modern Digital (Slate Blue, Indigo & Teal)', value: 'modern' },
-      ],
-      required: true,
-    },
-    {
-      name: 'headingFont',
-      type: 'select',
-      label: 'Heading Font Style',
-      defaultValue: 'serif',
-      options: [
-        { label: 'Noto Serif JP (Classic Traditional)', value: 'serif' },
-        { label: 'Inter Sans (Modern Minimalist)', value: 'sans' },
-        { label: 'Geist Mono (Technical Sleek)', value: 'mono' },
-      ],
-      required: true,
-    },
-    {
-      name: 'bodyFont',
-      type: 'select',
-      label: 'Body Font Style',
-      defaultValue: 'sans',
-      options: [
-        { label: 'Inter Sans (Clean, Highly Readable)', value: 'sans' },
-        { label: 'Noto Serif JP (Classic Serif)', value: 'serif' },
-      ],
-      required: true,
-    },
-    {
-      name: 'siteTextSize',
-      type: 'select',
-      label: 'Base Site Sizing Scale',
-      defaultValue: 'small',
-      options: [
-        { label: 'Standard text scale (15px)', value: 'small' },
-        { label: 'Medium readable scale (16px)', value: 'medium' },
-        { label: 'Large accessible scale (18px)', value: 'large' },
-      ],
-      required: true,
-    },
-    {
-      name: 'showBgPattern',
-      type: 'checkbox',
-      label: 'Enable Background Pattern',
-      defaultValue: true,
-      required: true,
-    },
-    {
-      name: 'bgPatternOpacity',
-      type: 'select',
-      label: 'Background Pattern Opacity (%)',
-      defaultValue: '15',
-      options: [
-        { label: '0% (Disabled)', value: '0' },
-        { label: '5% (Subtle)', value: '5' },
-        { label: '10%', value: '10' },
-        { label: '15% (Recommended)', value: '15' },
-        { label: '20%', value: '20' },
-        { label: '30%', value: '30' },
-        { label: '40%', value: '40' },
-        { label: '50% (Semi-visible)', value: '50' },
-        { label: '70%', value: '70' },
-        { label: '90% (High)', value: '90' },
-      ],
-      required: true,
-      admin: {
-        condition: (data) => Boolean(data?.showBgPattern),
+  hooks: {
+    beforeChange: [
+      ({ data, originalDoc }) => {
+        // When themePreset changes, auto-populate colors and fonts from the preset
+        const newPreset = data?.themePreset
+        const oldPreset = originalDoc?.themePreset
+
+        if (newPreset && newPreset !== oldPreset && themePresets[newPreset]) {
+          const preset = themePresets[newPreset]
+
+          // Auto-fill colors
+          if (!data.themeColors) data.themeColors = {}
+          data.themeColors.primaryColor = preset.colors.primary
+          data.themeColors.secondaryColor = preset.colors.secondary
+          data.themeColors.accentColor = preset.colors.accent
+          data.themeColors.backgroundColor = preset.colors.background
+          data.themeColors.surfaceColor = preset.colors.surface
+          data.themeColors.mutedBackgroundColor = preset.colors.muted
+          data.themeColors.textColor = preset.colors.text
+
+          // Auto-fill fonts
+          data.headingFont = preset.fonts.heading
+          data.bodyFont = preset.fonts.body
+        }
+
+        return data
       },
+    ],
+    afterChange: [
+      async ({ doc, previousDoc, req }) => {
+        // When themePreset changes, update all block layouts in the database
+        const newPreset = doc?.themePreset
+        const oldPreset = previousDoc?.themePreset
+
+        if (newPreset && newPreset !== oldPreset) {
+          // Run non-blocking so the admin save doesn't hang
+          applyThemeToBlocks(req.payload, newPreset).catch((err) => {
+            req.payload.logger.error(`[Theme] Failed to apply theme to blocks: ${err.message}`)
+          })
+        }
+      },
+    ],
+  },
+  admin: {
+    group: 'Global',
+  },
+  fields: [
+    {
+      name: 'siteName',
+      type: 'text',
     },
     {
       name: 'favicon',
       type: 'upload',
       relationTo: 'media',
+    },
+    {
+      name: 'homePage',
+      type: 'text',
+      label: 'Home Page',
       admin: {
-        description: 'Site favicon image. WARNING: To change this image, click the "X" button to clear the field, then select or upload a new one. DO NOT click the pencil "Edit" icon to replace the file inside the media drawer, as that will overwrite the shared media asset globally across all pages!',
+        components: {
+          Field: '@/globals/HomePageSelectorField#HomePageSelectorField',
+        },
+        description:
+          'Select which page should be the home page. This will be displayed when visitors go to the root URL (/).',
       },
     },
     {
-      name: 'defaultOgImage',
-      type: 'upload',
-      relationTo: 'media',
+      name: 'themePreset',
+      type: 'select',
+      label: 'Theme Preset',
+      defaultValue: 'ducc',
+      options: [
+        { label: 'Theme A (Purple & Gold)', value: 'ducc' },
+        { label: 'Theme B (Teal & Dark)', value: 'learner' },
+      ],
       admin: {
-        description: 'Site default Open Graph share image. WARNING: To change this image, click the "X" button to clear the field, then select or upload a new one. DO NOT click the pencil "Edit" icon to replace the file inside the media drawer, as that will overwrite the shared media asset globally across all pages!',
+        description:
+          'One-click theme change. Selecting a preset changes colors, fonts, and layout styles across the entire site.',
       },
     },
-    { name: 'googleAnalyticsId', type: 'text' },
+    {
+      name: 'headingFont',
+      type: 'select',
+      label: 'Heading Font',
+      defaultValue: 'Playfair Display',
+      options: [
+        { label: 'Playfair Display (Serif)', value: 'Playfair Display' },
+        { label: 'Raleway (Sans)', value: 'Raleway' },
+        { label: 'Montserrat (Sans)', value: 'Montserrat' },
+        { label: 'Inter (Sans)', value: 'Inter' },
+        { label: 'Roboto (Sans)', value: 'Roboto' },
+        { label: 'Poppins (Sans)', value: 'Poppins' },
+      ],
+    },
+    {
+      name: 'bodyFont',
+      type: 'select',
+      label: 'Body Font',
+      defaultValue: 'Inter',
+      options: [
+        { label: 'Inter', value: 'Inter' },
+        { label: 'Roboto', value: 'Roboto' },
+        { label: 'Open Sans', value: 'Open Sans' },
+        { label: 'Poppins', value: 'Poppins' },
+        { label: 'Lato', value: 'Lato' },
+      ],
+    },
+    {
+      type: 'group',
+      name: 'themeColors',
+      label: 'Theme Colors',
+      fields: [
+        {
+          name: 'primaryColor',
+          type: 'text',
+          defaultValue: '#4B2E83',
+          admin: {
+            components: {
+              Field: '@/globals/ColorPickerField.tsx#ColorPickerField',
+            },
+            description: 'Pick primary brand color',
+          },
+        },
+        {
+          name: 'secondaryColor',
+          type: 'text',
+          defaultValue: '#1A103D',
+          admin: {
+            components: {
+              Field: '@/globals/ColorPickerField.tsx#ColorPickerField',
+            },
+            description: 'Pick secondary brand color',
+          },
+        },
+        {
+          name: 'accentColor',
+          type: 'text',
+          defaultValue: '#EAB308',
+          admin: {
+            components: {
+              Field: '@/globals/ColorPickerField.tsx#ColorPickerField',
+            },
+            description: 'Pick accent/highlight color',
+          },
+        },
+        {
+          name: 'backgroundColor',
+          type: 'text',
+          defaultValue: '#FFFFFF',
+          admin: {
+            components: {
+              Field: '@/globals/ColorPickerField.tsx#ColorPickerField',
+            },
+            description: 'Main page background color',
+          },
+        },
+        {
+          name: 'surfaceColor',
+          type: 'text',
+          defaultValue: '#FFFFFF',
+          admin: {
+            components: {
+              Field: '@/globals/ColorPickerField.tsx#ColorPickerField',
+            },
+            description: 'Card/surface background color',
+          },
+        },
+        {
+          name: 'mutedBackgroundColor',
+          type: 'text',
+          defaultValue: '#F8F4FF',
+          admin: {
+            components: {
+              Field: '@/globals/ColorPickerField.tsx#ColorPickerField',
+            },
+            description: 'Section muted background color',
+          },
+        },
+        {
+          name: 'textColor',
+          type: 'text',
+          defaultValue: '#1A103D',
+          admin: {
+            components: {
+              Field: '@/globals/ColorPickerField.tsx#ColorPickerField',
+            },
+            description: 'Default body text color',
+          },
+        },
+      ],
+    },
+    {
+      name: 'socialLinks',
+      type: 'array',
+      label: 'Social Media Links',
+      fields: [
+        {
+          name: 'platform',
+          type: 'select',
+          required: true,
+          options: [
+            { label: 'Facebook', value: 'facebook' },
+            { label: 'Twitter / X', value: 'twitter' },
+            { label: 'Instagram', value: 'instagram' },
+            { label: 'YouTube', value: 'youtube' },
+            { label: 'LinkedIn', value: 'linkedin' },
+          ],
+        },
+        {
+          name: 'url',
+          type: 'text',
+          required: true,
+        },
+      ],
+    },
   ],
-  hooks: {
-    afterChange: [revalidateSiteSettings],
-  },
 }

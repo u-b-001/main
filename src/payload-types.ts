@@ -115,13 +115,13 @@ export interface Config {
     header: Header;
     footer: Footer;
     homepage: Homepage;
-    siteSettings: SiteSetting;
+    'site-settings': SiteSetting;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
     homepage: HomepageSelect<false> | HomepageSelect<true>;
-    siteSettings: SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
   };
   locale: null;
   widgets: {
@@ -391,6 +391,26 @@ export interface Page {
       }
     | FlexibleRowBlock
     | FeaturedCardsBlock
+    | {
+        text: string;
+        variant?:
+          | (
+              | 'new'
+              | 'trending'
+              | 'featured'
+              | 'popular'
+              | 'hot'
+              | 'recommended'
+              | 'limited'
+              | 'coming-soon'
+              | 'updated'
+            )
+          | null;
+        size?: ('sm' | 'md' | 'lg') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'statusBadge';
+      }
   )[];
   seo?: {
     title?: string | null;
@@ -1599,6 +1619,15 @@ export interface PagesSelect<T extends boolean = true> {
             };
         flexibleRow?: T | FlexibleRowBlockSelect<T>;
         featuredCards?: T | FeaturedCardsBlockSelect<T>;
+        statusBadge?:
+          | T
+          | {
+              text?: T;
+              variant?: T;
+              size?: T;
+              id?: T;
+              blockName?: T;
+            };
       };
   seo?:
     | T
@@ -2480,28 +2509,59 @@ export interface Homepage {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "siteSettings".
+ * via the `definition` "site-settings".
  */
 export interface SiteSetting {
   id: number;
-  siteName: string;
-  siteTagline: string;
-  defaultTheme: 'light' | 'dark';
-  colorScheme: 'classic' | 'sunset' | 'terracotta' | 'emerald' | 'modern';
-  headingFont: 'serif' | 'sans' | 'mono';
-  bodyFont: 'sans' | 'serif';
-  siteTextSize: 'small' | 'medium' | 'large';
-  showBgPattern: boolean;
-  bgPatternOpacity?: ('0' | '5' | '10' | '15' | '20' | '30' | '40' | '50' | '70' | '90') | null;
-  /**
-   * Site favicon image. WARNING: To change this image, click the "X" button to clear the field, then select or upload a new one. DO NOT click the pencil "Edit" icon to replace the file inside the media drawer, as that will overwrite the shared media asset globally across all pages!
-   */
+  siteName?: string | null;
   favicon?: (number | null) | Media;
   /**
-   * Site default Open Graph share image. WARNING: To change this image, click the "X" button to clear the field, then select or upload a new one. DO NOT click the pencil "Edit" icon to replace the file inside the media drawer, as that will overwrite the shared media asset globally across all pages!
+   * Select which page should be the home page. This will be displayed when visitors go to the root URL (/).
    */
-  defaultOgImage?: (number | null) | Media;
-  googleAnalyticsId?: string | null;
+  homePage?: string | null;
+  /**
+   * One-click theme change. Selecting a preset changes colors, fonts, and layout styles across the entire site.
+   */
+  themePreset?: ('ducc' | 'learner') | null;
+  headingFont?: ('Playfair Display' | 'Raleway' | 'Montserrat' | 'Inter' | 'Roboto' | 'Poppins') | null;
+  bodyFont?: ('Inter' | 'Roboto' | 'Open Sans' | 'Poppins' | 'Lato') | null;
+  themeColors?: {
+    /**
+     * Pick primary brand color
+     */
+    primaryColor?: string | null;
+    /**
+     * Pick secondary brand color
+     */
+    secondaryColor?: string | null;
+    /**
+     * Pick accent/highlight color
+     */
+    accentColor?: string | null;
+    /**
+     * Main page background color
+     */
+    backgroundColor?: string | null;
+    /**
+     * Card/surface background color
+     */
+    surfaceColor?: string | null;
+    /**
+     * Section muted background color
+     */
+    mutedBackgroundColor?: string | null;
+    /**
+     * Default body text color
+     */
+    textColor?: string | null;
+  };
+  socialLinks?:
+    | {
+        platform: 'facebook' | 'twitter' | 'instagram' | 'youtube' | 'linkedin';
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -2711,21 +2771,33 @@ export interface HomepageSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "siteSettings_select".
+ * via the `definition` "site-settings_select".
  */
 export interface SiteSettingsSelect<T extends boolean = true> {
   siteName?: T;
-  siteTagline?: T;
-  defaultTheme?: T;
-  colorScheme?: T;
+  favicon?: T;
+  homePage?: T;
+  themePreset?: T;
   headingFont?: T;
   bodyFont?: T;
-  siteTextSize?: T;
-  showBgPattern?: T;
-  bgPatternOpacity?: T;
-  favicon?: T;
-  defaultOgImage?: T;
-  googleAnalyticsId?: T;
+  themeColors?:
+    | T
+    | {
+        primaryColor?: T;
+        secondaryColor?: T;
+        accentColor?: T;
+        backgroundColor?: T;
+        surfaceColor?: T;
+        mutedBackgroundColor?: T;
+        textColor?: T;
+      };
+  socialLinks?:
+    | T
+    | {
+        platform?: T;
+        url?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
