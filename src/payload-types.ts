@@ -75,7 +75,6 @@ export interface Config {
     events: Event;
     services: Service;
     committee: Committee;
-    courses: Course;
     members: Member;
     redirects: Redirect;
     forms: Form;
@@ -97,7 +96,6 @@ export interface Config {
     events: EventsSelect<false> | EventsSelect<true>;
     services: ServicesSelect<false> | ServicesSelect<true>;
     committee: CommitteeSelect<false> | CommitteeSelect<true>;
-    courses: CoursesSelect<false> | CoursesSelect<true>;
     members: MembersSelect<false> | MembersSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
@@ -906,38 +904,6 @@ export interface Committee {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "courses".
- */
-export interface Course {
-  id: number;
-  name: string;
-  level: 'basic' | 'intermediate' | 'advanced' | 'conversational';
-  /**
-   * e.g. "July 2026 – June 2027"
-   */
-  session: string;
-  mode: 'online' | 'offline' | 'hybrid';
-  admissionOpenDate?: string | null;
-  admissionCloseDate?: string | null;
-  /**
-   * Fee in INR
-   */
-  fee?: number | null;
-  description?: string | null;
-  syllabus?: (number | null) | Media;
-  /**
-   * Admission form URL (internal or external)
-   */
-  applyLink?: string | null;
-  /**
-   * Show on homepage "We Offer" section
-   */
-  featured?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "members".
  */
 export interface Member {
@@ -1366,10 +1332,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'committee';
         value: number | Committee;
-      } | null)
-    | ({
-        relationTo: 'courses';
-        value: number | Course;
       } | null)
     | ({
         relationTo: 'members';
@@ -1986,25 +1948,6 @@ export interface CommitteeSelect<T extends boolean = true> {
   bio?: T;
   type?: T;
   order?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "courses_select".
- */
-export interface CoursesSelect<T extends boolean = true> {
-  name?: T;
-  level?: T;
-  session?: T;
-  mode?: T;
-  admissionOpenDate?: T;
-  admissionCloseDate?: T;
-  fee?: T;
-  description?: T;
-  syllabus?: T;
-  applyLink?: T;
-  featured?: T;
   updatedAt?: T;
   createdAt?: T;
 }
