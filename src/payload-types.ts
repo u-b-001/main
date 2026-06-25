@@ -76,6 +76,7 @@ export interface Config {
     services: Service;
     committee: Committee;
     courses: Course;
+    members: Member;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -97,6 +98,7 @@ export interface Config {
     services: ServicesSelect<false> | ServicesSelect<true>;
     committee: CommitteeSelect<false> | CommitteeSelect<true>;
     courses: CoursesSelect<false> | CoursesSelect<true>;
+    members: MembersSelect<false> | MembersSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -425,8 +427,15 @@ export interface Page {
  */
 export interface Media {
   id: number;
+  /**
+   * Required for accessibility — describe the image for screen readers/SEO
+   */
   alt: string;
   caption?: string | null;
+  /**
+   * Photo credit/source, e.g. "Embassy of Japan" (optional, useful for event/official photos)
+   */
+  credit?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -798,10 +807,25 @@ export interface Gallery {
   title: string;
   image: number | Media;
   /**
-   * Group images by album/event name (optional)
+   * Optional caption shown under the image (e.g. "Dr. Ashok Jain, President MOSAI")
+   */
+  caption?: string | null;
+  /**
+   * Link this image to a specific event, if applicable
+   */
+  event?: (number | null) | Event;
+  /**
+   * Group images by album/event name (optional, use only if not linking via event above)
    */
   album?: string | null;
   date?: string | null;
+  /**
+   * Show in homepage gallery carousel
+   */
+  featured?: boolean | null;
+  /**
+   * Lower numbers appear first
+   */
   order?: number | null;
   updatedAt: string;
   createdAt: string;
@@ -909,6 +933,36 @@ export interface Course {
    * Show on homepage "We Offer" section
    */
   featured?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "members".
+ */
+export interface Member {
+  id: number;
+  name: string;
+  /**
+   * e.g. MOSAI-2024-0123
+   */
+  membershipId: string;
+  photo?: (number | null) | Media;
+  /**
+   * e.g. Professor, Researcher, Alumni
+   */
+  designation?: string | null;
+  /**
+   * Japanese university attended on Monbukagakusho Scholarship
+   */
+  university?: string | null;
+  joinDate?: string | null;
+  email?: string | null;
+  phone?: string | null;
+  /**
+   * Show this member in the public Members Directory
+   */
+  isPublic?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1316,6 +1370,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'courses';
         value: number | Course;
+      } | null)
+    | ({
+        relationTo: 'members';
+        value: number | Member;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1774,6 +1832,7 @@ export interface FeaturedCardsBlockSelect<T extends boolean = true> {
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
   caption?: T;
+  credit?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -1879,8 +1938,11 @@ export interface NewsSelect<T extends boolean = true> {
 export interface GallerySelect<T extends boolean = true> {
   title?: T;
   image?: T;
+  caption?: T;
+  event?: T;
   album?: T;
   date?: T;
+  featured?: T;
   order?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1943,6 +2005,23 @@ export interface CoursesSelect<T extends boolean = true> {
   syllabus?: T;
   applyLink?: T;
   featured?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "members_select".
+ */
+export interface MembersSelect<T extends boolean = true> {
+  name?: T;
+  membershipId?: T;
+  photo?: T;
+  designation?: T;
+  university?: T;
+  joinDate?: T;
+  email?: T;
+  phone?: T;
+  isPublic?: T;
   updatedAt?: T;
   createdAt?: T;
 }

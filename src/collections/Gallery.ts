@@ -13,6 +13,7 @@ export const Gallery: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     group: 'Media',
+    defaultColumns: ['title', 'album', 'date', 'order'],
   },
   fields: [
     { name: 'title', type: 'text', required: true },
@@ -23,16 +24,40 @@ export const Gallery: CollectionConfig = {
       required: true,
     },
     {
+      name: 'caption',
+      type: 'text',
+      admin: {
+        description:
+          'Optional caption shown under the image (e.g. "Dr. Ashok Jain, President MOSAI")',
+      },
+    },
+    {
+      name: 'event',
+      type: 'relationship',
+      relationTo: 'events',
+      admin: { description: 'Link this image to a specific event, if applicable' },
+    },
+    {
       name: 'album',
       type: 'text',
-      admin: { description: 'Group images by album/event name (optional)' },
+      index: true,
+      admin: {
+        description:
+          'Group images by album/event name (optional, use only if not linking via event above)',
+      },
     },
     { name: 'date', type: 'date' },
+    {
+      name: 'featured',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: { position: 'sidebar', description: 'Show in homepage gallery carousel' },
+    },
     {
       name: 'order',
       type: 'number',
       defaultValue: 0,
-      admin: { position: 'sidebar' },
+      admin: { position: 'sidebar', description: 'Lower numbers appear first' },
     },
   ],
 }

@@ -23,6 +23,7 @@ import {formBuilderPlugin} from '@payloadcms/plugin-form-builder'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
 import { Courses } from './collections/Courses'
+import { Members } from './collections/Members'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -66,7 +67,7 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URL || '',
     },
   }),
-  collections: [Pages, Media, Users, News, Gallery, Events, Services, Committee, Courses],
+  collections: [Pages, Media, Users, News, Gallery, Events, Services, Committee, Courses, Members],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer, Homepage, SiteSettings],
   plugins ,
