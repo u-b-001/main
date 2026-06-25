@@ -28,7 +28,9 @@ export const StatusBadgeBlock: Block = {
         { label: 'Recommended', value: 'recommended' },
         { label: 'Limited', value: 'limited' },
         { label: 'Coming Soon', value: 'coming-soon' },
-        { label: 'Updated', value: 'updated' },
+        {label : 'Opportunity', value: 'opportunity'},
+        {label : 'Event', value: 'event'},
+        {label : 'Announcement', value: 'announcement'},
       ],
     },
     {

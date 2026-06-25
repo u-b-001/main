@@ -419,7 +419,9 @@ export interface Page {
               | 'recommended'
               | 'limited'
               | 'coming-soon'
-              | 'updated'
+              | 'opportunity'
+              | 'event'
+              | 'announcement'
             )
           | null;
         size?: ('sm' | 'md' | 'lg') | null;
