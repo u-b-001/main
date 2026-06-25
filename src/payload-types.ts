@@ -75,7 +75,7 @@ export interface Config {
     events: Event;
     services: Service;
     committee: Committee;
-    jobApplications: JobApplication;
+    members: Member;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -96,7 +96,7 @@ export interface Config {
     events: EventsSelect<false> | EventsSelect<true>;
     services: ServicesSelect<false> | ServicesSelect<true>;
     committee: CommitteeSelect<false> | CommitteeSelect<true>;
-    jobApplications: JobApplicationsSelect<false> | JobApplicationsSelect<true>;
+    members: MembersSelect<false> | MembersSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -115,13 +115,13 @@ export interface Config {
     header: Header;
     footer: Footer;
     homepage: Homepage;
-    siteSettings: SiteSetting;
+    'site-settings': SiteSetting;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
     homepage: HomepageSelect<false> | HomepageSelect<true>;
-    siteSettings: SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
   };
   locale: null;
   widgets: {
@@ -1701,10 +1701,260 @@ export interface Page {
     | InfoCardBlock
     | TableBlock
     | EmbedBlock
+    | CallToActionBlock
+    | {
+        heading: string;
+        subheading?: string | null;
+        image?: (number | null) | Media;
+        buttons?:
+          | {
+              label: string;
+              url: string;
+              style?: ('primary' | 'secondary') | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'hero';
+      }
+    | {
+        heading?: string | null;
+        stats?:
+          | {
+              value: string;
+              label: string;
+              suffix?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'statsImpact';
+      }
+    | {
+        items?:
+          | {
+              text?: string | null;
+              logo?: (number | null) | Media;
+              id?: string | null;
+            }[]
+          | null;
+        /**
+         * Animation duration in seconds — lower = faster
+         */
+        speed?: number | null;
+        direction?: ('left' | 'right') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'marquee';
+      }
+    | {
+        heading?: string | null;
+        subheading?: string | null;
+        cards?:
+          | {
+              image?: (number | null) | Media;
+              title: string;
+              description?: string | null;
+              link?: string | null;
+              linkLabel?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        columns?: ('2' | '3' | '4') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'showcaseCards';
+      }
+    | {
+        heading?: string | null;
+        displayStyle?: ('grid' | 'carousel') | null;
+        testimonials?:
+          | {
+              quote: string;
+              name: string;
+              role?: string | null;
+              avatar?: (number | null) | Media;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'testimonials';
+      }
+    | {
+        heading?: string | null;
+        items?:
+          | {
+              question: string;
+              answer: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'faq';
+      }
+    | {
+        heading?: string | null;
+        images?:
+          | {
+              image: number | Media;
+              caption?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        layout?: ('grid' | 'masonry') | null;
+        columns?: ('2' | '3' | '4') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'imageGallery';
+      }
+    | HelpSupportBlock
+    | {
+        heading?: string | null;
+        subheading?: string | null;
+        features?:
+          | {
+              icon?: (number | null) | Media;
+              title: string;
+              description?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        columns?: ('2' | '3' | '4') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'featureCards';
+      }
+    | {
+        heading?: string | null;
+        description?: string | null;
+        fields?:
+          | {
+              label: string;
+              /**
+               * Unique key used in submitted data, e.g. "email"
+               */
+              name: string;
+              type?: ('text' | 'email' | 'tel' | 'textarea' | 'number' | 'select' | 'checkbox') | null;
+              placeholder?: string | null;
+              required?: boolean | null;
+              width?: ('full' | 'half') | null;
+              options?:
+                | {
+                    label: string;
+                    value: string;
+                    id?: string | null;
+                  }[]
+                | null;
+              id?: string | null;
+            }[]
+          | null;
+        submitLabel?: string | null;
+        /**
+         * API route this form posts to, e.g. /api/contact
+         */
+        submitEndpoint: string;
+        successMessage?: string | null;
+        errorMessage?: string | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'formBlock';
+      }
+    | {
+        heading?: string | null;
+        description?: string | null;
+        metrics?:
+          | {
+              label: string;
+              value: string;
+              /**
+               * e.g. "+12%" or "-3 states"
+               */
+              change?: string | null;
+              trend?: ('up' | 'down' | 'neutral') | null;
+              icon?: (number | null) | Media;
+              id?: string | null;
+            }[]
+          | null;
+        /**
+         * Shown as "Data as of ..."
+         */
+        lastUpdated?: string | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'dataSnapshot';
+      }
+    | {
+        heading?: string | null;
+        description?: string | null;
+        postings?:
+          | {
+              title: string;
+              /**
+               * e.g. Engineering, Research, Operations
+               */
+              department?: string | null;
+              /**
+               * e.g. Delhi, Remote, Hybrid
+               */
+              location?: string | null;
+              type?: ('fullTime' | 'partTime' | 'internship' | 'contract') | null;
+              description?: {
+                root: {
+                  type: string;
+                  children: {
+                    type: any;
+                    version: number;
+                    [k: string]: unknown;
+                  }[];
+                  direction: ('ltr' | 'rtl') | null;
+                  format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                  indent: number;
+                  version: number;
+                };
+                [k: string]: unknown;
+              } | null;
+              /**
+               * External application URL, or leave blank to use the form below
+               */
+              applyLink?: string | null;
+              postedDate?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        emptyStateMessage?: string | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'careerPosting';
+      }
     | FlexibleRowBlock
     | FlexibleColumnBlock
     | FeaturedCardsBlock
-    | MediaContactBlock
+    | {
+        text: string;
+        variant?:
+          | (
+              | 'new'
+              | 'trending'
+              | 'featured'
+              | 'popular'
+              | 'hot'
+              | 'recommended'
+              | 'limited'
+              | 'coming-soon'
+              | 'opportunity'
+              | 'event'
+              | 'announcement'
+            )
+          | null;
+        size?: ('sm' | 'md' | 'lg') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'statusBadge';
+      }
   )[];
   seo?: {
     title?: string | null;
@@ -1741,8 +1991,15 @@ export interface Page {
  */
 export interface Media {
   id: number;
+  /**
+   * Required for accessibility — describe the image for screen readers/SEO
+   */
   alt: string;
   caption?: string | null;
+  /**
+   * Photo credit/source, e.g. "Embassy of Japan" (optional, useful for event/official photos)
+   */
+  credit?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -2205,7 +2462,48 @@ export interface FlexibleRowBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FlexibleColumnBlock".
+ * via the `definition` "HelpSupportBlock".
+ */
+export interface HelpSupportBlock {
+  sectionTitle?: string | null;
+  sectionSubtitle?: string | null;
+  layout: 'sideBySide' | 'stacked';
+  supportCards?:
+    | {
+        title: string;
+        description?: string | null;
+        /**
+         * Example: LifeBuoy, Headphones, BookOpen, GraduationCap
+         */
+        icon?: string | null;
+        iconColor?: string | null;
+        buttonLabel?: string | null;
+        buttonUrl?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  video?: {
+    enabled?: boolean | null;
+    title?: string | null;
+    videoUrl?: string | null;
+    /**
+     * WARNING: To replace this image, clear the field first and then upload/select a new image. Do not edit the media asset directly.
+     */
+    poster?: (number | null) | Media;
+    /**
+     * Upload MP4/WebM video directly.
+     */
+    uploadedVideo?: (number | null) | Media;
+  };
+  backgroundColor?: string | null;
+  cardBgColor?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'helpSupport';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FlexibleRowBlock".
  */
 export interface FlexibleColumnBlock {
   containerWidth: 'boxed' | 'fullWidth';
@@ -2475,10 +2773,25 @@ export interface Gallery {
   title: string;
   image: number | Media;
   /**
-   * Group images by album/event name (optional)
+   * Optional caption shown under the image (e.g. "Dr. Ashok Jain, President MOSAI")
+   */
+  caption?: string | null;
+  /**
+   * Link this image to a specific event, if applicable
+   */
+  event?: (number | null) | Event;
+  /**
+   * Group images by album/event name (optional, use only if not linking via event above)
    */
   album?: string | null;
   date?: string | null;
+  /**
+   * Show in homepage gallery carousel
+   */
+  featured?: boolean | null;
+  /**
+   * Lower numbers appear first
+   */
   order?: number | null;
   updatedAt: string;
   createdAt: string;
@@ -2559,14 +2872,31 @@ export interface Committee {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "jobApplications".
+ * via the `definition` "members".
  */
-export interface JobApplication {
+export interface Member {
   id: number;
   name: string;
-  email: string;
-  resume: number | Media;
-  status: 'pending' | 'reviewed' | 'accepted' | 'rejected' | 'deleted';
+  /**
+   * e.g. MOSAI-2024-0123
+   */
+  membershipId: string;
+  photo?: (number | null) | Media;
+  /**
+   * e.g. Professor, Researcher, Alumni
+   */
+  designation?: string | null;
+  /**
+   * Japanese university attended on Monbukagakusho Scholarship
+   */
+  university?: string | null;
+  joinDate?: string | null;
+  email?: string | null;
+  phone?: string | null;
+  /**
+   * Show this member in the public Members Directory
+   */
+  isPublic?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -2798,8 +3128,8 @@ export interface PayloadLockedDocument {
         value: number | Committee;
       } | null)
     | ({
-        relationTo: 'jobApplications';
-        value: number | JobApplication;
+        relationTo: 'members';
+        value: number | Member;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -3697,10 +4027,220 @@ export interface PagesSelect<T extends boolean = true> {
         infoCard?: T | InfoCardBlockSelect<T>;
         table?: T | TableBlockSelect<T>;
         embed?: T | EmbedBlockSelect<T>;
+        cta?: T | CallToActionBlockSelect<T>;
+        hero?:
+          | T
+          | {
+              heading?: T;
+              subheading?: T;
+              image?: T;
+              buttons?:
+                | T
+                | {
+                    label?: T;
+                    url?: T;
+                    style?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        statsImpact?:
+          | T
+          | {
+              heading?: T;
+              stats?:
+                | T
+                | {
+                    value?: T;
+                    label?: T;
+                    suffix?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        marquee?:
+          | T
+          | {
+              items?:
+                | T
+                | {
+                    text?: T;
+                    logo?: T;
+                    id?: T;
+                  };
+              speed?: T;
+              direction?: T;
+              id?: T;
+              blockName?: T;
+            };
+        showcaseCards?:
+          | T
+          | {
+              heading?: T;
+              subheading?: T;
+              cards?:
+                | T
+                | {
+                    image?: T;
+                    title?: T;
+                    description?: T;
+                    link?: T;
+                    linkLabel?: T;
+                    id?: T;
+                  };
+              columns?: T;
+              id?: T;
+              blockName?: T;
+            };
+        testimonials?:
+          | T
+          | {
+              heading?: T;
+              displayStyle?: T;
+              testimonials?:
+                | T
+                | {
+                    quote?: T;
+                    name?: T;
+                    role?: T;
+                    avatar?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        faq?:
+          | T
+          | {
+              heading?: T;
+              items?:
+                | T
+                | {
+                    question?: T;
+                    answer?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        imageGallery?:
+          | T
+          | {
+              heading?: T;
+              images?:
+                | T
+                | {
+                    image?: T;
+                    caption?: T;
+                    id?: T;
+                  };
+              layout?: T;
+              columns?: T;
+              id?: T;
+              blockName?: T;
+            };
+        helpSupport?: T | HelpSupportBlockSelect<T>;
+        featureCards?:
+          | T
+          | {
+              heading?: T;
+              subheading?: T;
+              features?:
+                | T
+                | {
+                    icon?: T;
+                    title?: T;
+                    description?: T;
+                    id?: T;
+                  };
+              columns?: T;
+              id?: T;
+              blockName?: T;
+            };
+        formBlock?:
+          | T
+          | {
+              heading?: T;
+              description?: T;
+              fields?:
+                | T
+                | {
+                    label?: T;
+                    name?: T;
+                    type?: T;
+                    placeholder?: T;
+                    required?: T;
+                    width?: T;
+                    options?:
+                      | T
+                      | {
+                          label?: T;
+                          value?: T;
+                          id?: T;
+                        };
+                    id?: T;
+                  };
+              submitLabel?: T;
+              submitEndpoint?: T;
+              successMessage?: T;
+              errorMessage?: T;
+              id?: T;
+              blockName?: T;
+            };
+        dataSnapshot?:
+          | T
+          | {
+              heading?: T;
+              description?: T;
+              metrics?:
+                | T
+                | {
+                    label?: T;
+                    value?: T;
+                    change?: T;
+                    trend?: T;
+                    icon?: T;
+                    id?: T;
+                  };
+              lastUpdated?: T;
+              id?: T;
+              blockName?: T;
+            };
+        careerPosting?:
+          | T
+          | {
+              heading?: T;
+              description?: T;
+              postings?:
+                | T
+                | {
+                    title?: T;
+                    department?: T;
+                    location?: T;
+                    type?: T;
+                    description?: T;
+                    applyLink?: T;
+                    postedDate?: T;
+                    id?: T;
+                  };
+              emptyStateMessage?: T;
+              id?: T;
+              blockName?: T;
+            };
         flexibleRow?: T | FlexibleRowBlockSelect<T>;
         flexibleColumn?: T | FlexibleColumnBlockSelect<T>;
         featuredCards?: T | FeaturedCardsBlockSelect<T>;
-        mediaContact?: T | MediaContactBlockSelect<T>;
+        statusBadge?:
+          | T
+          | {
+              text?: T;
+              variant?: T;
+              size?: T;
+              id?: T;
+              blockName?: T;
+            };
       };
   seo?:
     | T
@@ -3884,7 +4424,40 @@ export interface FlexibleRowBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FlexibleColumnBlock_select".
+ * via the `definition` "HelpSupportBlock_select".
+ */
+export interface HelpSupportBlockSelect<T extends boolean = true> {
+  sectionTitle?: T;
+  sectionSubtitle?: T;
+  layout?: T;
+  supportCards?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        icon?: T;
+        iconColor?: T;
+        buttonLabel?: T;
+        buttonUrl?: T;
+        id?: T;
+      };
+  video?:
+    | T
+    | {
+        enabled?: T;
+        title?: T;
+        videoUrl?: T;
+        poster?: T;
+        uploadedVideo?: T;
+      };
+  backgroundColor?: T;
+  cardBgColor?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FlexibleRowBlock_select".
  */
 export interface FlexibleColumnBlockSelect<T extends boolean = true> {
   containerWidth?: T;
@@ -4023,6 +4596,7 @@ export interface MediaContactBlockSelect<T extends boolean = true> {
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
   caption?: T;
+  credit?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -4128,8 +4702,11 @@ export interface NewsSelect<T extends boolean = true> {
 export interface GallerySelect<T extends boolean = true> {
   title?: T;
   image?: T;
+  caption?: T;
+  event?: T;
   album?: T;
   date?: T;
+  featured?: T;
   order?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -4178,13 +4755,18 @@ export interface CommitteeSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "jobApplications_select".
+ * via the `definition` "members_select".
  */
-export interface JobApplicationsSelect<T extends boolean = true> {
+export interface MembersSelect<T extends boolean = true> {
   name?: T;
+  membershipId?: T;
+  photo?: T;
+  designation?: T;
+  university?: T;
+  joinDate?: T;
   email?: T;
-  resume?: T;
-  status?: T;
+  phone?: T;
+  isPublic?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -4459,23 +5041,54 @@ export interface Header {
   id: number;
   logo: number | Media;
   /**
-   * If checked, the header will remain visible at the top of the screen during scrolling.
+   * Optional compact logo for small screens. Falls back to main logo if not set.
+   */
+  logoMobile?: (number | null) | Media;
+  /**
+   * Header stays visible at the top of the screen while scrolling.
    */
   sticky: boolean;
   /**
-   * If checked, the header will overlap the homepage hero carousel and will be transparent initially.
+   * Header overlaps the homepage hero and is transparent initially.
    */
   overlapHomepageHero?: boolean | null;
+  /**
+   * Show/hide the light-dark mode toggle in the header.
+   */
+  showThemeSelector?: boolean | null;
+  /**
+   * Optional thin bar above the header, e.g. for urgent notices (admit cards, deadlines).
+   */
+  announcementBar?: {
+    enabled?: boolean | null;
+    message?: string | null;
+    /**
+     * Optional URL to link the announcement to
+     */
+    link?: string | null;
+    dismissible?: boolean | null;
+  };
+  /**
+   * Top-level navigation items. Keep to 8 or fewer for a clean desktop layout.
+   */
   nav?:
     | {
         label: string;
         link?: string | null;
         openInNewTab?: boolean | null;
+        /**
+         * Render this item as a filled CTA button instead of a plain link (e.g. "Apply Now").
+         */
+        highlight?: boolean | null;
         children?:
           | {
               label: string;
               link: string;
               openInNewTab?: boolean | null;
+              /**
+               * Optional one-line description shown under the label in the dropdown (mega-menu style).
+               */
+              description?: string | null;
               subChildren?:
                 | {
                     label: string;
@@ -4678,32 +5291,59 @@ export interface Homepage {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "siteSettings".
+ * via the `definition` "site-settings".
  */
 export interface SiteSetting {
   id: number;
-  siteName: string;
-  siteTagline: string;
-  defaultTheme: 'light' | 'dark';
-  colorScheme: 'classic' | 'sunset' | 'terracotta' | 'emerald' | 'modern';
-  headingFont: 'serif' | 'sans' | 'mono';
-  bodyFont: 'sans' | 'serif';
-  siteTextSize: 'small' | 'medium' | 'large';
-  showBgPattern: boolean;
-  bgPatternOpacity?: ('0' | '5' | '10' | '15' | '20' | '30' | '40' | '50' | '70' | '90') | null;
-  /**
-   * Site favicon image. WARNING: To change this image, click the "X" button to clear the field, then select or upload a new one. DO NOT click the pencil "Edit" icon to replace the file inside the media drawer, as that will overwrite the shared media asset globally across all pages!
-   */
+  siteName?: string | null;
   favicon?: (number | null) | Media;
   /**
-   * Site default Open Graph share image. WARNING: To change this image, click the "X" button to clear the field, then select or upload a new one. DO NOT click the pencil "Edit" icon to replace the file inside the media drawer, as that will overwrite the shared media asset globally across all pages!
+   * Select which page should be the home page. This will be displayed when visitors go to the root URL (/).
    */
-  defaultOgImage?: (number | null) | Media;
+  homePage?: string | null;
   /**
-   * Select the page that acts as the system root home page (/).
+   * Choose a website theme. Selecting a preset automatically updates the colors, typography, header, and block layouts.
    */
-  homepage?: (number | null) | Page;
-  googleAnalyticsId?: string | null;
+  themePreset?: ('mosai' | 'mosaiClassic' | 'learner') | null;
+  headingFont?: ('Playfair Display' | 'Raleway' | 'Montserrat' | 'Inter' | 'Roboto' | 'Poppins') | null;
+  bodyFont?: ('Inter' | 'Roboto' | 'Open Sans' | 'Poppins' | 'Lato') | null;
+  themeColors?: {
+    /**
+     * Pick primary brand color
+     */
+    primaryColor?: string | null;
+    /**
+     * Pick secondary brand color
+     */
+    secondaryColor?: string | null;
+    /**
+     * Pick accent/highlight color
+     */
+    accentColor?: string | null;
+    /**
+     * Main page background color
+     */
+    backgroundColor?: string | null;
+    /**
+     * Card/surface background color
+     */
+    surfaceColor?: string | null;
+    /**
+     * Section muted background color
+     */
+    mutedBackgroundColor?: string | null;
+    /**
+     * Default body text color
+     */
+    textColor?: string | null;
+  };
+  socialLinks?:
+    | {
+        platform: 'facebook' | 'twitter' | 'instagram' | 'youtube' | 'linkedin';
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -4713,20 +5353,32 @@ export interface SiteSetting {
  */
 export interface HeaderSelect<T extends boolean = true> {
   logo?: T;
+  logoMobile?: T;
   sticky?: T;
   overlapHomepageHero?: T;
+  showThemeSelector?: T;
+  announcementBar?:
+    | T
+    | {
+        enabled?: T;
+        message?: T;
+        link?: T;
+        dismissible?: T;
+      };
   nav?:
     | T
     | {
         label?: T;
         link?: T;
         openInNewTab?: T;
+        highlight?: T;
         children?:
           | T
           | {
               label?: T;
               link?: T;
               openInNewTab?: T;
+              description?: T;
               subChildren?:
                 | T
                 | {
@@ -4907,22 +5559,33 @@ export interface HomepageSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "siteSettings_select".
+ * via the `definition` "site-settings_select".
  */
 export interface SiteSettingsSelect<T extends boolean = true> {
   siteName?: T;
-  siteTagline?: T;
-  defaultTheme?: T;
-  colorScheme?: T;
+  favicon?: T;
+  homePage?: T;
+  themePreset?: T;
   headingFont?: T;
   bodyFont?: T;
-  siteTextSize?: T;
-  showBgPattern?: T;
-  bgPatternOpacity?: T;
-  favicon?: T;
-  defaultOgImage?: T;
-  homepage?: T;
-  googleAnalyticsId?: T;
+  themeColors?:
+    | T
+    | {
+        primaryColor?: T;
+        secondaryColor?: T;
+        accentColor?: T;
+        backgroundColor?: T;
+        surfaceColor?: T;
+        mutedBackgroundColor?: T;
+        textColor?: T;
+      };
+  socialLinks?:
+    | T
+    | {
+        platform?: T;
+        url?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

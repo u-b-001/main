@@ -1,6 +1,8 @@
 import type { Access, AccessArgs } from 'payload'
 import type { User } from '@/payload-types'
 
+export const publicAccess: Access = () => true
+
 export const isSuperAdmin: Access = ({ req: { user } }) => {
   return Boolean(user && user.role === 'superAdmin')
 }

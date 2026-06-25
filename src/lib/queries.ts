@@ -7,7 +7,7 @@ export async function getHomepageData() {
     payload.findGlobal({ slug: 'homepage', depth: 2 }),
     payload.findGlobal({ slug: 'header',   depth: 2 }),
     payload.findGlobal({ slug: 'footer',   depth: 1 }),
-    payload.findGlobal({ slug: 'siteSettings', depth: 1 }),
+    payload.findGlobal({ slug: 'site-settings', depth: 1 }),
   ])
   return { homepage, header, footer, settings }
 }

@@ -20,8 +20,10 @@ import { Homepage } from './globals/Homepage'
 import { SiteSettings } from './globals/SiteSettings'
 
 import { plugins } from './plugins'
+import {formBuilderPlugin} from '@payloadcms/plugin-form-builder'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
+import { Members } from './collections/Members'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -65,13 +67,14 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URL || '',
     },
   }),
-  collections: [Pages, Media, Users, News, Gallery, Events, Services, Committee, JobApplications],
+  collections: [Pages, Media, Users, News, Gallery, Events, Services, Committee],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer, Homepage, SiteSettings],
-  plugins,
+  plugins ,
   secret: process.env.PAYLOAD_SECRET,
   sharp,
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
+
 })
