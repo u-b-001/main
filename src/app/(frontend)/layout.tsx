@@ -30,7 +30,7 @@ const notoSerifJp = Noto_Serif_JP({
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
-  const siteSettings = await getCachedGlobal('siteSettings', 1)()
+  const siteSettings = (await getCachedGlobal('site-settings', 1)()) as any
   const defaultTheme = siteSettings?.defaultTheme || 'light'
   const colorScheme = siteSettings?.colorScheme || 'classic'
   const headingFont = siteSettings?.headingFont || 'serif'

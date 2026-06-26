@@ -10,7 +10,7 @@ const collections: CollectionSlug[] = [
   'committee',
 ]
 
-const globals: GlobalSlug[] = ['header', 'footer', 'homepage', 'siteSettings']
+const globals: GlobalSlug[] = ['header', 'footer', 'homepage', 'site-settings']
 
 export const seed = async ({
   payload,
@@ -118,7 +118,7 @@ export const seed = async ({
 
   payload.logger.info(`— Seeding siteSettings global...`)
   await payload.updateGlobal({
-    slug: 'siteSettings',
+    slug: 'site-settings',
     data: {
       siteName: 'MOSAI',
       siteTagline: 'Mombusho Scholars Association of India',

@@ -1,7 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { anyone } from '../../access/anyone'
-import { isEditor } from '../../access/roles'
+import { isEditor, isSchoolAdmin } from '../../access/roles'
 import { RichTextBlock } from '../../blocks/RichTextBlock/config'
 import { ImageWithTextBlock } from '../../blocks/ImageWithTextBlock/config'
 import { InfoCardBlock } from '../../blocks/InfoCardBlock/config'

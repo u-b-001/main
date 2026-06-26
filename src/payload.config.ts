@@ -67,7 +67,7 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URL || '',
     },
   }),
-  collections: [Pages, Media, Users, News, Gallery, Events, Services, Committee],
+  collections: [Pages, Media, Users, News, Gallery, Events, Services, Committee, JobApplications, Members],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer, Homepage, SiteSettings],
   plugins ,

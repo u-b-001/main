@@ -75,6 +75,7 @@ export interface Config {
     events: Event;
     services: Service;
     committee: Committee;
+    jobApplications: JobApplication;
     members: Member;
     redirects: Redirect;
     forms: Form;
@@ -96,6 +97,7 @@ export interface Config {
     events: EventsSelect<false> | EventsSelect<true>;
     services: ServicesSelect<false> | ServicesSelect<true>;
     committee: CommitteeSelect<false> | CommitteeSelect<true>;
+    jobApplications: JobApplicationsSelect<false> | JobApplicationsSelect<true>;
     members: MembersSelect<false> | MembersSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
@@ -171,1531 +173,6 @@ export interface Page {
    */
   hero?: (number | null) | Media;
   layout: (
-    | {
-        mode: 'single' | 'carousel';
-        layout: 'fullWidth' | 'fullscreenOverlayCarousel' | 'duccFullscreen' | 'split' | 'contained';
-        splitDirection?: ('textLeft' | 'textRight') | null;
-        /**
-         * Dark: dark bg with white text. Light: muted bg with dark text.
-         */
-        splitTheme?: ('dark' | 'light') | null;
-        /**
-         * Static: text stays fixed while images change. Slide: heading, subtitle, and buttons change with each slide.
-         */
-        splitTextBehavior?: ('static' | 'slide') | null;
-        /**
-         * Small icon + text tags shown below the buttons (e.g. "PHD Programs", "Internships")
-         */
-        splitFeatures?:
-          | {
-              icon?: string | null;
-              text: string;
-              id?: string | null;
-            }[]
-          | null;
-        /**
-         * Hero height in pixels (e.g. 600)
-         */
-        height?: number | null;
-        textAlignment?: ('left' | 'center' | 'right') | null;
-        textVerticalPosition?: ('top' | 'center' | 'bottom') | null;
-        /**
-         * Maximum content width in pixels for hero text container
-         */
-        contentMaxWidth?: number | null;
-        /**
-         * Horizontal content padding in pixels
-         */
-        contentPaddingX?: number | null;
-        /**
-         * Vertical content padding in pixels
-         */
-        contentPaddingY?: number | null;
-        /**
-         * Keep text/buttons constant while only the background slide changes
-         */
-        constantOverlayContent?: boolean | null;
-        constantOverlay?: {
-          showText?: boolean | null;
-          heading?: string | null;
-          /**
-           * Heading text color
-           */
-          headingColor?: string | null;
-          subtitle?: string | null;
-          /**
-           * Description text color
-           */
-          subtitleColor?: string | null;
-          buttons?:
-            | {
-                label: string;
-                url: string;
-                variant?: ('primary' | 'secondary' | 'outline') | null;
-                /**
-                 * Select button icon
-                 */
-                icon?: string | null;
-                id?: string | null;
-              }[]
-            | null;
-        };
-        overlay?: {
-          enabled?: boolean | null;
-          /**
-           * Pick overlay color
-           */
-          color?: string | null;
-          /**
-           * Overlay opacity (0-100)
-           */
-          opacity?: number | null;
-        };
-        headerGlass?: {
-          enabled?: boolean | null;
-          /**
-           * Glass overlay tint color for the fixed header
-           */
-          fillColor?: string | null;
-          /**
-           * Glass tint opacity in percent
-           */
-          fillOpacity?: number | null;
-          /**
-           * Background blur amount in pixels
-           */
-          blurAmount?: number | null;
-          /**
-           * Show thin divider under header while hero is active
-           */
-          showDivider?: boolean | null;
-        };
-        carouselSettings?: {
-          autoPlay?: boolean | null;
-          /**
-           * Interval in milliseconds (e.g. 5000 = 5 seconds)
-           */
-          autoPlayInterval?: number | null;
-          showArrows?: boolean | null;
-          showDots?: boolean | null;
-        };
-        singleSlide?: {
-          mediaType: 'textOnly' | 'image' | 'video' | 'externalVideo' | 'animation' | 'dataViz';
-          image?: (number | null) | Media;
-          /**
-           * URL to self-hosted video file (mp4, webm)
-           */
-          videoUrl?: string | null;
-          /**
-           * Poster/thumbnail image for the video
-           */
-          videoPoster?: (number | null) | Media;
-          /**
-           * YouTube or Vimeo URL (e.g. https://youtube.com/watch?v=...)
-           */
-          externalVideoUrl?: string | null;
-          /**
-           * URL to Lottie JSON file or GIF image
-           */
-          animationUrl?: string | null;
-          /**
-           * Embed code for map, chart, or data visualization
-           */
-          dataVizEmbed?: string | null;
-          /**
-           * Small badge text above the heading (e.g. "ESTABLISHED 1956", "CORE SERVICE DOMAINS")
-           */
-          eyebrowText?: string | null;
-          showText?: boolean | null;
-          heading?: string | null;
-          /**
-           * Heading text color
-           */
-          headingColor?: string | null;
-          subtitle?: string | null;
-          /**
-           * Description text color
-           */
-          subtitleColor?: string | null;
-          buttons?:
-            | {
-                label: string;
-                url: string;
-                variant?: ('primary' | 'secondary' | 'outline') | null;
-                /**
-                 * Select button icon
-                 */
-                icon?: string | null;
-                id?: string | null;
-              }[]
-            | null;
-        };
-        slides?:
-          | {
-              mediaType: 'textOnly' | 'image' | 'video' | 'externalVideo' | 'animation' | 'dataViz';
-              image?: (number | null) | Media;
-              /**
-               * URL to self-hosted video file (mp4, webm)
-               */
-              videoUrl?: string | null;
-              /**
-               * Poster/thumbnail image for the video
-               */
-              videoPoster?: (number | null) | Media;
-              /**
-               * YouTube or Vimeo URL (e.g. https://youtube.com/watch?v=...)
-               */
-              externalVideoUrl?: string | null;
-              /**
-               * URL to Lottie JSON file or GIF image
-               */
-              animationUrl?: string | null;
-              /**
-               * Embed code for map, chart, or data visualization
-               */
-              dataVizEmbed?: string | null;
-              /**
-               * Small badge text above the heading (e.g. "ESTABLISHED 1956", "CORE SERVICE DOMAINS")
-               */
-              eyebrowText?: string | null;
-              showText?: boolean | null;
-              heading?: string | null;
-              /**
-               * Heading text color
-               */
-              headingColor?: string | null;
-              subtitle?: string | null;
-              /**
-               * Description text color
-               */
-              subtitleColor?: string | null;
-              buttons?:
-                | {
-                    label: string;
-                    url: string;
-                    variant?: ('primary' | 'secondary' | 'outline') | null;
-                    /**
-                     * Select button icon
-                     */
-                    icon?: string | null;
-                    id?: string | null;
-                  }[]
-                | null;
-              id?: string | null;
-            }[]
-          | null;
-        duccFloatingCard?: {
-          enabled?: boolean | null;
-          badgeLabel?: string | null;
-          footerText?: string | null;
-          footerLink?: string | null;
-          footerLinkLabel?: string | null;
-          stats?:
-            | {
-                value: string;
-                label: string;
-                id?: string | null;
-              }[]
-            | null;
-        };
-        duccShowSlideCounter?: boolean | null;
-        duccShowPlayPause?: boolean | null;
-        /**
-         * Floating card grid that overlaps the bottom of the hero into the next section
-         */
-        quickAccessBar?: {
-          enabled?: boolean | null;
-          /**
-           * How many pixels the bar hangs below the hero (default: 80)
-           */
-          overlapAmount?: number | null;
-          items?:
-            | {
-                label: string;
-                /**
-                 * Select a Lucide icon
-                 */
-                icon?: string | null;
-                /**
-                 * Internal path (e.g. /it-services) or external URL
-                 */
-                link: string;
-                external?: boolean | null;
-                colorVariant?: ('primary' | 'dark') | null;
-                id?: string | null;
-              }[]
-            | null;
-        };
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'hero';
-      }
-    | {
-        items: {
-          text: string;
-          /**
-           * Optional link when clicked
-           */
-          url?: string | null;
-          /**
-           * Select a Lucide icon
-           */
-          icon?: string | null;
-          /**
-           * Optional badge/label (e.g. "NEW", "IMPORTANT")
-           */
-          badge?: string | null;
-          id?: string | null;
-        }[];
-        /**
-         * Pick a color or enter hex value
-         */
-        backgroundColor?: string | null;
-        /**
-         * Pick a color or enter hex value
-         */
-        textColor?: string | null;
-        speed?: ('slow' | 'normal' | 'fast') | null;
-        pauseOnHover?: boolean | null;
-        /**
-         * Character between items (e.g. "•", "|", "★")
-         */
-        separator?: string | null;
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'marquee';
-      }
-    | {
-        heading: string;
-        /**
-         * Optional descriptive text below the heading
-         */
-        description?: string | null;
-        /**
-         * Add the states that are currently onboarded
-         */
-        states: {
-          /**
-           * E.g., Maharashtra
-           */
-          stateName: string;
-          /**
-           * Link to this state's portal (e.g., https://portal.example.in)
-           */
-          portalUrl: string;
-          /**
-           * Optional short tagline (e.g., Active Since 2026)
-           */
-          tagline?: string | null;
-          /**
-           * Pick the theme color for the state card highlight and button
-           */
-          themeColor?: string | null;
-          /**
-           * Opacity of the background image (0 to 100)
-           */
-          imageOpacity?: number | null;
-          /**
-           * Optional subtle background image or map outline SVG for this card
-           */
-          backgroundImage?: (number | null) | Media;
-          id?: string | null;
-        }[];
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'statesOnboarded';
-      }
-    | {
-        /**
-         * Section heading displayed above this block
-         */
-        sectionHeading?: string | null;
-        /**
-         * Optional description below the heading
-         */
-        sectionDescription?: string | null;
-        headingAlignment?: ('left' | 'center' | 'right') | null;
-        /**
-         * Toggle between overlay cards and clean card layout
-         */
-        cardStyle: 'overlay' | 'clean';
-        columns?: ('2' | '3' | '4') | null;
-        cards: {
-          /**
-           * Card title (e.g. state name or project name)
-           */
-          title: string;
-          image: number | Media;
-          /**
-           * Short overlay caption (used in Overlay style)
-           */
-          caption?: string | null;
-          /**
-           * Small logo/emblem (used in Clean Card style)
-           */
-          logo?: (number | null) | Media;
-          /**
-           * Subtitle or location (e.g. "Rajasthan, India")
-           */
-          subtitle?: string | null;
-          /**
-           * Short description (used in Clean Card style)
-           */
-          description?: string | null;
-          /**
-           * Show a "Featured" badge on this card
-           */
-          featured?: boolean | null;
-          /**
-           * Custom badge text (e.g. "Featured", "New", "Live")
-           */
-          featuredLabel?: string | null;
-          /**
-           * Link when card is clicked
-           */
-          url?: string | null;
-          /**
-           * Select a Lucide icon
-           */
-          icon?: string | null;
-          id?: string | null;
-        }[];
-        /**
-         * Settings specific to the overlay card style
-         */
-        overlaySettings?: {
-          /**
-           * Pick a color or enter hex value
-           */
-          overlayColor?: string | null;
-          /**
-           * Overlay opacity (0-100)
-           */
-          overlayOpacity?: number | null;
-          /**
-           * Card height in pixels
-           */
-          cardHeight?: number | null;
-        };
-        bottomLink?: {
-          enabled?: boolean | null;
-          label?: string | null;
-          url?: string | null;
-        };
-        /**
-         * Pick a color or enter hex value
-         */
-        accentColor?: string | null;
-        /**
-         * Pick a color or enter hex value
-         */
-        backgroundColor?: string | null;
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'showcaseCards';
-      }
-    | {
-        /**
-         * Section heading displayed above this block
-         */
-        sectionHeading?: string | null;
-        /**
-         * Optional description below the heading
-         */
-        sectionDescription?: string | null;
-        headingAlignment?: ('left' | 'center' | 'right') | null;
-        /**
-         * Choose between card grid layout or circular ring/donut layout
-         */
-        layout: 'cardGrid' | 'circularRings' | 'interlockingRings' | 'duccStrip';
-        stats: {
-          /**
-           * e.g. "Students Enrolled", "Schools", "Pass Rate"
-           */
-          label: string;
-          /**
-           * Numeric value for count-up animation (e.g. 10000, 500, 98)
-           */
-          numericValue: number;
-          /**
-           * Suffix after the number (e.g. "+", "%", "K", "M")
-           */
-          suffix?: string | null;
-          /**
-           * Prefix before the number (e.g. "$", "₹")
-           */
-          prefix?: string | null;
-          /**
-           * Select a Lucide icon
-           */
-          icon?: string | null;
-          /**
-           * Pick a color or enter hex value
-           */
-          iconColor?: string | null;
-          /**
-           * Pick a color or enter hex value
-           */
-          ringGradientEnd?: string | null;
-          /**
-           * Pick a color or enter hex value
-           */
-          iconBgColor?: string | null;
-          /**
-           * Short description shown below the stat (optional)
-           */
-          description?: string | null;
-          /**
-           * Ring fill percentage (0-100). Used in Circular Rings layout.
-           */
-          ringPercentage?: number | null;
-          id?: string | null;
-        }[];
-        /**
-         * Color of the back ribbon (default gray)
-         */
-        ribbonBaseColor?: string | null;
-        /**
-         * Gradient start color of the front weave ribbon
-         */
-        ribbonWaveStartColor?: string | null;
-        /**
-         * Gradient end color of the front weave ribbon
-         */
-        ribbonWaveEndColor?: string | null;
-        /**
-         * Pick a color or enter hex value
-         */
-        backgroundColor?: string | null;
-        /**
-         * Pick a color or enter hex value
-         */
-        cardBgColor?: string | null;
-        /**
-         * Animate numbers counting up when scrolled into view
-         */
-        enableCountUp?: boolean | null;
-        /**
-         * Zoom effect on card hover
-         */
-        enableHoverZoom?: boolean | null;
-        columns?: ('2' | '3' | '4') | null;
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'statistics';
-      }
-    | {
-        /**
-         * Section heading displayed above this block
-         */
-        sectionHeading?: string | null;
-        /**
-         * Optional description below the heading
-         */
-        sectionDescription?: string | null;
-        headingAlignment?: ('left' | 'center' | 'right') | null;
-        /**
-         * Choose between a card grid or a featured spotlight layout
-         */
-        layout: 'cards' | 'spotlight' | 'duccCards';
-        /**
-         * Choose manual card entry or automatic fetch from News collection.
-         */
-        entryType: 'manual' | 'collection';
-        articles?:
-          | {
-              title: string;
-              /**
-               * Short summary or excerpt
-               */
-              excerpt?: string | null;
-              image?: (number | null) | Media;
-              /**
-               * Category label (e.g. "Update", "Press Release", "Event")
-               */
-              category?: string | null;
-              /**
-               * Published date
-               */
-              date?: string | null;
-              /**
-               * Link to the full article
-               */
-              url?: string | null;
-              /**
-               * Select a Lucide icon
-               */
-              icon?: string | null;
-              /**
-               * Pick a color or enter hex value
-               */
-              categoryColor?: string | null;
-              id?: string | null;
-            }[]
-          | null;
-        collectionSource?: {
-          /**
-           * Maximum number of cards to fetch
-           */
-          limit: number;
-          sortBy?: ('latest' | 'oldest') | null;
-          /**
-           * Optional category filter (exact match)
-           */
-          category?: string | null;
-          featuredOnly?: boolean | null;
-        };
-        columns?: ('2' | '3') | null;
-        bottomLink?: {
-          enabled?: boolean | null;
-          label?: string | null;
-          url?: string | null;
-        };
-        /**
-         * Pick a color or enter hex value
-         */
-        backgroundColor?: string | null;
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'newsUpdates';
-      }
-    | {
-        /**
-         * Section heading displayed above this block
-         */
-        sectionHeading?: string | null;
-        /**
-         * Optional description below the heading
-         */
-        sectionDescription?: string | null;
-        headingAlignment?: ('left' | 'center' | 'right') | null;
-        /**
-         * Map image (e.g. India map SVG/PNG)
-         */
-        mapImage?: (number | null) | Media;
-        /**
-         * Alternatively, embed URL for interactive map (iframe)
-         */
-        mapEmbedUrl?: string | null;
-        /**
-         * Map display height in pixels
-         */
-        mapHeight?: number | null;
-        /**
-         * Show progress bars alongside the map
-         */
-        showProgressBars?: boolean | null;
-        progressItems?:
-          | {
-              /**
-               * e.g. "Rajasthan", "Maharashtra"
-               */
-              label: string;
-              /**
-               * Progress percentage (0-100)
-               */
-              value: number;
-              /**
-               * Custom display text (e.g. "1,250 Schools")
-               */
-              displayValue?: string | null;
-              /**
-               * Pick a color or enter hex value
-               */
-              barColor?: string | null;
-              id?: string | null;
-            }[]
-          | null;
-        layout?: ('mapLeft' | 'mapRight' | 'stacked') | null;
-        /**
-         * Pick a color or enter hex value
-         */
-        backgroundColor?: string | null;
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'interactiveMap';
-      }
-    | {
-        /**
-         * Section heading displayed above this block
-         */
-        sectionHeading?: string | null;
-        /**
-         * Optional description below the heading
-         */
-        sectionDescription?: string | null;
-        headingAlignment?: ('left' | 'center' | 'right') | null;
-        screenshots: {
-          image: number | Media;
-          /**
-           * Title displayed below the screenshot
-           */
-          title?: string | null;
-          /**
-           * Short caption or description
-           */
-          caption?: string | null;
-          /**
-           * Category/module name (e.g. "Dashboard", "Reports")
-           */
-          category?: string | null;
-          id?: string | null;
-        }[];
-        columns?: ('2' | '3' | '4') | null;
-        /**
-         * Allow clicking to view full-size screenshot
-         */
-        enableLightbox?: boolean | null;
-        /**
-         * Wrap screenshots in a device frame (laptop/tablet)
-         */
-        showDeviceFrame?: boolean | null;
-        deviceType?: ('laptop' | 'tablet' | 'phone') | null;
-        /**
-         * Pick a color or enter hex value
-         */
-        backgroundColor?: string | null;
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'screenshotGallery';
-      }
-    | {
-        /**
-         * Section heading displayed above this block
-         */
-        sectionHeading?: string | null;
-        /**
-         * Optional description below the heading
-         */
-        sectionDescription?: string | null;
-        headingAlignment?: ('left' | 'center' | 'right') | null;
-        layout?: ('sideBySide' | 'stacked') | null;
-        supportCards?:
-          | {
-              /**
-               * e.g. "Technical Support", "Training Resources"
-               */
-              title: string;
-              description?: string | null;
-              /**
-               * Select a Lucide icon
-               */
-              icon?: string | null;
-              /**
-               * Pick a color or enter hex value
-               */
-              iconColor?: string | null;
-              /**
-               * e.g. "Contact Support", "View Resources"
-               */
-              buttonLabel?: string | null;
-              buttonUrl?: string | null;
-              id?: string | null;
-            }[]
-          | null;
-        video?: {
-          enabled?: boolean | null;
-          /**
-           * Video section title (e.g. "How to Get Started")
-           */
-          title?: string | null;
-          /**
-           * YouTube or Vimeo URL
-           */
-          videoUrl?: string | null;
-          /**
-           * Thumbnail/poster image for the video
-           */
-          poster?: (number | null) | Media;
-          /**
-           * Or upload a video file directly
-           */
-          uploadedVideo?: (number | null) | Media;
-        };
-        /**
-         * Pick a color or enter hex value
-         */
-        backgroundColor?: string | null;
-        /**
-         * Pick a color or enter hex value
-         */
-        cardBgColor?: string | null;
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'helpSupport';
-      }
-    | {
-        isEnabled?: boolean | null;
-        sectionTitle: string;
-        viewOptions: {
-          defaultView:
-            | 'district'
-            | 'taluka'
-            | 'schoolTypeManagement'
-            | 'minoritySchools'
-            | 'girlsOnlySchools'
-            | 'boysOnlySchools'
-            | 'mediumOfInstruction';
-          availableViews: (
-            | 'district'
-            | 'taluka'
-            | 'schoolTypeManagement'
-            | 'minoritySchools'
-            | 'girlsOnlySchools'
-            | 'boysOnlySchools'
-            | 'mediumOfInstruction'
-          )[];
-        };
-        layout?: {
-          showFilterPanel?: boolean | null;
-          showLeftPanel?: boolean | null;
-          showMiddlePanel?: boolean | null;
-          showRightPanel?: boolean | null;
-          columnsOnDesktop?: ('2' | '3' | '4') | null;
-          cardSpacing?: number | null;
-          cardBorderRadius?: number | null;
-          cardShadow?: ('none' | 'soft' | 'medium' | 'strong') | null;
-        };
-        filterSettings?: {
-          enableFilters?: boolean | null;
-          showApplyButton?: boolean | null;
-          applyFilterButton?: string | null;
-          filterBy?: ('district' | 'taluka' | 'schoolType' | 'managementType' | 'medium')[] | null;
-          districtData?:
-            | {
-                name: string;
-                totalSchools?: number | null;
-                percentage?: number | null;
-                /**
-                 * Optional marker latitude for map sync
-                 */
-                markerLat?: number | null;
-                /**
-                 * Optional marker longitude for map sync
-                 */
-                markerLng?: number | null;
-                highlightColor?: string | null;
-                id?: string | null;
-              }[]
-            | null;
-          talukaData?:
-            | {
-                name: string;
-                totalSchools?: number | null;
-                percentage?: number | null;
-                /**
-                 * Optional marker latitude for map sync
-                 */
-                markerLat?: number | null;
-                /**
-                 * Optional marker longitude for map sync
-                 */
-                markerLng?: number | null;
-                highlightColor?: string | null;
-                id?: string | null;
-              }[]
-            | null;
-          schoolTypeData?:
-            | {
-                name: string;
-                totalSchools?: number | null;
-                percentage?: number | null;
-                /**
-                 * Optional marker latitude for map sync
-                 */
-                markerLat?: number | null;
-                /**
-                 * Optional marker longitude for map sync
-                 */
-                markerLng?: number | null;
-                highlightColor?: string | null;
-                id?: string | null;
-              }[]
-            | null;
-        };
-        statistics?: {
-          minoritySchools?: number | null;
-          girlsOnlySchools?: number | null;
-          boysOnlySchools?: number | null;
-          englishMedium?: number | null;
-          konkaniMedium?: number | null;
-          marathiMedium?: number | null;
-        };
-        summaryCards?: {
-          enabled?: boolean | null;
-          /**
-           * When enabled and cards exceed 4, cards scroll smoothly from right to left.
-           */
-          animateScroll?: boolean | null;
-          scrollDurationSeconds?: number | null;
-          cards?:
-            | {
-                isEnabled?: boolean | null;
-                label: string;
-                /**
-                 * Select a Lucide icon
-                 */
-                iconName?: string | null;
-                valueSource:
-                  | 'totalSchools'
-                  | 'districtCount'
-                  | 'talukaCount'
-                  | 'currentViewItems'
-                  | 'minoritySchools'
-                  | 'girlsOnlySchools'
-                  | 'boysOnlySchools'
-                  | 'englishMedium'
-                  | 'konkaniMedium'
-                  | 'marathiMedium'
-                  | 'custom';
-                customValue?: number | null;
-                id?: string | null;
-              }[]
-            | null;
-        };
-        mapSettings?: {
-          zoom?: number | null;
-          centerLat?: number | null;
-          centerLng?: number | null;
-          colors?: {
-            mapBackground?: string | null;
-            markerColor?: string | null;
-            activeMarkerColor?: string | null;
-          };
-          markerSettings?: {
-            size?: number | null;
-            activeSize?: number | null;
-            showPulse?: boolean | null;
-          };
-        };
-        mergedTalukas?:
-          | {
-              originalName: string;
-              mergedName: string;
-              id?: string | null;
-            }[]
-          | null;
-        styles?: {
-          fontFamily?: string | null;
-          titleColor?: string | null;
-          cardBackground?: string | null;
-          tableHeaderBackground?: string | null;
-        };
-        animations?: {
-          enableHoverEffects?: boolean | null;
-          enableEntryAnimation?: boolean | null;
-        };
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'goaSnapshot';
-      }
-    | {
-        /**
-         * Section heading displayed above this block
-         */
-        sectionHeading?: string | null;
-        /**
-         * Optional rich-text description below the heading
-         */
-        sectionDescription?: {
-          root: {
-            type: string;
-            children: {
-              type: any;
-              version: number;
-              [k: string]: unknown;
-            }[];
-            direction: ('ltr' | 'rtl') | null;
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-            indent: number;
-            version: number;
-          };
-          [k: string]: unknown;
-        } | null;
-        headingAlignment?: ('left' | 'center' | 'right') | null;
-        /**
-         * Select a Form Builder form to display in this section.
-         */
-        form: number | Form;
-        maxWidth?: ('narrow' | 'medium' | 'wide' | 'full') | null;
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'formLayout';
-      }
-    | {
-        /**
-         * Section heading displayed above this block
-         */
-        sectionHeading?: string | null;
-        /**
-         * Optional description below the heading
-         */
-        sectionDescription?: string | null;
-        headingAlignment?: ('left' | 'center' | 'right') | null;
-        content: {
-          root: {
-            type: string;
-            children: {
-              type: any;
-              version: number;
-              [k: string]: unknown;
-            }[];
-            direction: ('ltr' | 'rtl') | null;
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-            indent: number;
-            version: number;
-          };
-          [k: string]: unknown;
-        };
-        maxWidth?: ('narrow' | 'medium' | 'full') | null;
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'richContent';
-      }
-    | {
-        /**
-         * Section heading displayed above this block
-         */
-        sectionHeading?: string | null;
-        /**
-         * Optional description below the heading
-         */
-        sectionDescription?: string | null;
-        headingAlignment?: ('left' | 'center' | 'right') | null;
-        /**
-         * Small uppercase text above the heading (used in Service Cards layout)
-         */
-        eyebrow?: string | null;
-        /**
-         * Link text shown next to heading (e.g. "Explore all services")
-         */
-        ctaLabel?: string | null;
-        /**
-         * URL for the CTA link
-         */
-        ctaLink?: string | null;
-        /**
-         * Choose how cards should be displayed.
-         */
-        cardLayout?:
-          | (
-              | 'classic'
-              | 'minimal'
-              | 'split'
-              | 'accentTop'
-              | 'duccService'
-              | 'duccServiceDetail'
-              | 'duccProject'
-              | 'duccTraining'
-            )
-          | null;
-        columns?: ('2' | '3' | '4') | null;
-        /**
-         * Dark: dark background with light text. Light: white cards with theme-colored icons and borders.
-         */
-        cardTheme?: ('dark' | 'light') | null;
-        /**
-         * Show a faded number (01, 02, 03...) next to the icon on each card
-         */
-        showCardNumbers?: boolean | null;
-        /**
-         * Show a full-width button at the bottom of each card (uses Button Label / Button URL fields)
-         */
-        showCardButton?: boolean | null;
-        cards?:
-          | {
-              /**
-               * Select a Lucide icon
-               */
-              icon?: string | null;
-              /**
-               * Optional image shown at the top of the card (used in Classic Light layout)
-               */
-              image?: (number | null) | Media;
-              /**
-               * Optional card title (rich text supported).
-               */
-              title?: {
-                root: {
-                  type: string;
-                  children: {
-                    type: any;
-                    version: number;
-                    [k: string]: unknown;
-                  }[];
-                  direction: ('ltr' | 'rtl') | null;
-                  format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-                  indent: number;
-                  version: number;
-                };
-                [k: string]: unknown;
-              } | null;
-              /**
-               * Optional card description/details (rich text supported).
-               */
-              description?: {
-                root: {
-                  type: string;
-                  children: {
-                    type: any;
-                    version: number;
-                    [k: string]: unknown;
-                  }[];
-                  direction: ('ltr' | 'rtl') | null;
-                  format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-                  indent: number;
-                  version: number;
-                };
-                [k: string]: unknown;
-              } | null;
-              /**
-               * Optional URL this card links to
-               */
-              link?: string | null;
-              /**
-               * Small tag label (e.g. "Platform", "Security") — used in Service Cards layout
-               */
-              tag?: string | null;
-              /**
-               * Open link in new tab
-               */
-              external?: boolean | null;
-              /**
-               * Bullet points for the Service Detail layout
-               */
-              features?:
-                | {
-                    text: string;
-                    id?: string | null;
-                  }[]
-                | null;
-              /**
-               * CTA button label (e.g. "Request Access")
-               */
-              buttonLabel?: string | null;
-              /**
-               * CTA button URL
-               */
-              buttonUrl?: string | null;
-              /**
-               * Project status badge (used in Project Cards layout)
-               */
-              status?: ('ongoing' | 'active' | 'live' | 'completed' | 'planned') | null;
-              /**
-               * Progress percentage 0-100 (used in Project Cards layout)
-               */
-              progress?: number | null;
-              /**
-               * Difficulty level (used in Training Cards layout)
-               */
-              level?: ('Beginner' | 'Intermediate' | 'Advanced') | null;
-              /**
-               * e.g. "5 Days", "1 Day" (used in Training Cards layout)
-               */
-              duration?: string | null;
-              /**
-               * e.g. "In-person", "Online", "Hybrid" (used in Training Cards layout)
-               */
-              mode?: string | null;
-              /**
-               * e.g. "Faculty", "Students & Faculty" (used in Training Cards layout)
-               */
-              audience?: string | null;
-              /**
-               * Next batch date (used in Training Cards layout)
-               */
-              date?: string | null;
-              id?: string | null;
-            }[]
-          | null;
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'featureCards';
-      }
-    | {
-        /**
-         * Section heading displayed above this block
-         */
-        sectionHeading?: string | null;
-        /**
-         * Optional description below the heading
-         */
-        sectionDescription?: string | null;
-        headingAlignment?: ('left' | 'center' | 'right') | null;
-        columns?: ('2' | '3' | '4') | null;
-        images: {
-          image: number | Media;
-          caption?: string | null;
-          id?: string | null;
-        }[];
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'imageGallery';
-      }
-    | {
-        /**
-         * Section heading displayed above this block
-         */
-        sectionHeading?: string | null;
-        /**
-         * Optional description below the heading
-         */
-        sectionDescription?: string | null;
-        headingAlignment?: ('left' | 'center' | 'right') | null;
-        /**
-         * Choose visual style for the FAQ section
-         */
-        layout?: ('default' | 'duccAccordion') | null;
-        items: {
-          question: string;
-          answer: {
-            root: {
-              type: string;
-              children: {
-                type: any;
-                version: number;
-                [k: string]: unknown;
-              }[];
-              direction: ('ltr' | 'rtl') | null;
-              format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-              indent: number;
-              version: number;
-            };
-            [k: string]: unknown;
-          };
-          id?: string | null;
-        }[];
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'faq';
-      }
-    | {
-        /**
-         * Section heading displayed above this block
-         */
-        sectionHeading?: string | null;
-        /**
-         * Optional description below the heading
-         */
-        sectionDescription?: string | null;
-        headingAlignment?: ('left' | 'center' | 'right') | null;
-        /**
-         * Choose visual style for testimonials
-         */
-        layout?: ('default' | 'duccQuote') | null;
-        items: {
-          quote: string;
-          name: string;
-          /**
-           * e.g. "Student, Class 10", "Parent", "Principal"
-           */
-          role?: string | null;
-          avatar?: (number | null) | Media;
-          /**
-           * Initials for avatar fallback (e.g. "SS") — used in Large Quote layout
-           */
-          initials?: string | null;
-          id?: string | null;
-        }[];
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'testimonials';
-      }
-    | {
-        /**
-         * Section heading displayed above this block
-         */
-        sectionHeading?: string | null;
-        /**
-         * Optional description below the heading
-         */
-        sectionDescription?: string | null;
-        headingAlignment?: ('left' | 'center' | 'right') | null;
-        type: 'info' | 'success' | 'warning' | 'error';
-        message: string;
-        dismissible?: boolean | null;
-        link?: {
-          label?: string | null;
-          url?: string | null;
-        };
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'bannerAlert';
-      }
-    | {
-        /**
-         * Section heading displayed above this block
-         */
-        sectionHeading?: string | null;
-        /**
-         * Optional description below the heading
-         */
-        sectionDescription?: string | null;
-        headingAlignment?: ('left' | 'center' | 'right') | null;
-        columns?: ('2' | '3' | '4' | '5' | '6') | null;
-        showStats?: boolean | null;
-        showSocialLinks?: boolean | null;
-        members: {
-          photo?: (number | null) | Media;
-          name: string;
-          /**
-           * URL slug for profile page. Auto-generated from name if empty.
-           */
-          slug?: string | null;
-          /**
-           * e.g. "Professor", "Research Scholar", "HOD Science"
-           */
-          role?: string | null;
-          bio?: string | null;
-          /**
-           * Rating out of 5 (e.g. 4.8)
-           */
-          rating?: number | null;
-          /**
-           * Number of courses
-           */
-          courseCount?: number | null;
-          /**
-           * Student count (e.g. "2.1k" or "2100")
-           */
-          studentCount?: string | null;
-          /**
-           * External profile URL. Leave empty to auto-link to /instructors/{slug}
-           */
-          profileLink?: string | null;
-          socialLinks?:
-            | {
-                platform:
-                  | 'linkedin'
-                  | 'twitter-x'
-                  | 'github'
-                  | 'instagram'
-                  | 'facebook'
-                  | 'youtube'
-                  | 'google'
-                  | 'globe'
-                  | 'envelope';
-                url: string;
-                id?: string | null;
-              }[]
-            | null;
-          biography?: string | null;
-          email?: string | null;
-          phone?: string | null;
-          office?: string | null;
-          researchInterests?:
-            | {
-                interest: string;
-                id?: string | null;
-              }[]
-            | null;
-          education?:
-            | {
-                degree: string;
-                institution: string;
-                year?: string | null;
-                id?: string | null;
-              }[]
-            | null;
-          experience?:
-            | {
-                position: string;
-                organization: string;
-                duration?: string | null;
-                expDescription?: string | null;
-                id?: string | null;
-              }[]
-            | null;
-          awards?:
-            | {
-                title: string;
-                year?: string | null;
-                organization?: string | null;
-                id?: string | null;
-              }[]
-            | null;
-          courses?:
-            | {
-                courseName: string;
-                courseCode?: string | null;
-                semester?: string | null;
-                courseDescription?: string | null;
-                id?: string | null;
-              }[]
-            | null;
-          publications?:
-            | {
-                title: string;
-                journal?: string | null;
-                year?: string | null;
-                link?: string | null;
-                id?: string | null;
-              }[]
-            | null;
-          academicLinks?:
-            | {
-                platform: 'google-scholar' | 'researchgate' | 'orcid' | 'academia' | 'scopus' | 'wos' | 'other';
-                url: string;
-                id?: string | null;
-              }[]
-            | null;
-          id?: string | null;
-        }[];
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'teamGrid';
-      }
-    | {
-        /**
-         * Section heading displayed above this block
-         */
-        sectionHeading?: string | null;
-        /**
-         * Optional description below the heading
-         */
-        sectionDescription?: string | null;
-        headingAlignment?: ('left' | 'center' | 'right') | null;
-        tabs: {
-          label: string;
-          content: {
-            root: {
-              type: string;
-              children: {
-                type: any;
-                version: number;
-                [k: string]: unknown;
-              }[];
-              direction: ('ltr' | 'rtl') | null;
-              format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-              indent: number;
-              version: number;
-            };
-            [k: string]: unknown;
-          };
-          id?: string | null;
-        }[];
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'tabs';
-      }
-    | {
-        /**
-         * Section heading displayed above this block
-         */
-        sectionHeading?: string | null;
-        /**
-         * Optional description below the heading
-         */
-        sectionDescription?: string | null;
-        headingAlignment?: ('left' | 'center' | 'right') | null;
-        content: {
-          root: {
-            type: string;
-            children: {
-              type: any;
-              version: number;
-              [k: string]: unknown;
-            }[];
-            direction: ('ltr' | 'rtl') | null;
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-            indent: number;
-            version: number;
-          };
-          [k: string]: unknown;
-        };
-        media: number | Media;
-        mediaPosition?: ('left' | 'right') | null;
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'contentWithMedia';
-      }
-    | {
-        /**
-         * Short description for preview (e.g. "Through hands-on project experience...")
-         */
-        excerpt?: string | null;
-        /**
-         * Display string like "Last Updated: March 2026"
-         */
-        effectiveDate?: string | null;
-        /**
-         * Full job description — supports headings, paragraphs, bold/italic, ordered and unordered lists
-         */
-        content?: {
-          root: {
-            type: string;
-            children: {
-              type: any;
-              version: number;
-              [k: string]: unknown;
-            }[];
-            direction: ('ltr' | 'rtl') | null;
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-            indent: number;
-            version: number;
-          };
-          [k: string]: unknown;
-        } | null;
-        /**
-         * Expandable sections describing different work areas or specializations
-         */
-        problemDomains?:
-          | {
-              /**
-               * Domain name (e.g. "ML/DL Based Systems for Education 4.0 Applications")
-               */
-              title?: string | null;
-              /**
-               * Overview of the domain
-               */
-              description?: string | null;
-              /**
-               * Specific tasks or responsibilities for this domain
-               */
-              challenges?:
-                | {
-                    text?: string | null;
-                    id?: string | null;
-                  }[]
-                | null;
-              /**
-               * Required technical skills
-               */
-              technicalSkills?:
-                | {
-                    skill?: string | null;
-                    id?: string | null;
-                  }[]
-                | null;
-              /**
-               * Required soft / non-technical skills
-               */
-              nonTechnicalSkills?:
-                | {
-                    skill?: string | null;
-                    id?: string | null;
-                  }[]
-                | null;
-              id?: string | null;
-            }[]
-          | null;
-        /**
-         * CTA label (e.g. "Apply Now")
-         */
-        applyButtonText?: string | null;
-        /**
-         * URL the button points to. Leave blank to use the built-in /apply page.
-         */
-        applyButtonLink?: string | null;
-        /**
-         * Whether this career posting is currently active
-         */
-        status?: ('active' | 'inactive') | null;
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'careerPosting';
-      }
-    | CallToActionBlock
     | RichTextBlock
     | ImageWithTextBlock
     | InfoCardBlock
@@ -1931,7 +408,6 @@ export interface Page {
         blockType: 'careerPosting';
       }
     | FlexibleRowBlock
-    | FlexibleColumnBlock
     | FeaturedCardsBlock
     | {
         text: string;
@@ -2045,194 +521,6 @@ export interface Media {
       filename?: string | null;
     };
   };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "forms".
- */
-export interface Form {
-  id: number;
-  title: string;
-  fields?:
-    | (
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            required?: boolean | null;
-            defaultValue?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'checkbox';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'country';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'email';
-          }
-        | {
-            message?: {
-              root: {
-                type: string;
-                children: {
-                  type: any;
-                  version: number;
-                  [k: string]: unknown;
-                }[];
-                direction: ('ltr' | 'rtl') | null;
-                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-                indent: number;
-                version: number;
-              };
-              [k: string]: unknown;
-            } | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'message';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            defaultValue?: number | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'number';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            defaultValue?: string | null;
-            placeholder?: string | null;
-            options?:
-              | {
-                  label: string;
-                  value: string;
-                  id?: string | null;
-                }[]
-              | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'select';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'state';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            defaultValue?: string | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'text';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            defaultValue?: string | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'textarea';
-          }
-      )[]
-    | null;
-  submitButtonLabel?: string | null;
-  /**
-   * Choose whether to display an on-page message or redirect to a different page after they submit the form.
-   */
-  confirmationType?: ('message' | 'redirect') | null;
-  confirmationMessage?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  redirect?: {
-    url: string;
-  };
-  /**
-   * Send custom emails when the form submits. Use comma separated lists to send the same email to multiple recipients. To reference a value from this form, wrap that field's name with double curly brackets, i.e. {{firstName}}. You can use a wildcard {{*}} to output all data and {{*:table}} to format it as an HTML table in the email.
-   */
-  emails?:
-    | {
-        emailTo?: string | null;
-        cc?: string | null;
-        bcc?: string | null;
-        replyTo?: string | null;
-        emailFrom?: string | null;
-        subject: string;
-        /**
-         * Enter the message that should be sent in this email.
-         */
-        message?: {
-          root: {
-            type: string;
-            children: {
-              type: any;
-              version: number;
-              [k: string]: unknown;
-            }[];
-            direction: ('ltr' | 'rtl') | null;
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-            indent: number;
-            version: number;
-          };
-          [k: string]: unknown;
-        } | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CallToActionBlock".
- */
-export interface CallToActionBlock {
-  heading?: string | null;
-  body?: string | null;
-  buttonText?: string | null;
-  buttonLink?: string | null;
-  buttonStyle: 'primary' | 'secondary' | 'outline';
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'cta';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2352,6 +640,61 @@ export interface EmbedBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CallToActionBlock".
+ */
+export interface CallToActionBlock {
+  heading?: string | null;
+  body?: string | null;
+  buttonText?: string | null;
+  buttonLink?: string | null;
+  buttonStyle: 'primary' | 'secondary' | 'outline';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'cta';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HelpSupportBlock".
+ */
+export interface HelpSupportBlock {
+  sectionTitle?: string | null;
+  sectionSubtitle?: string | null;
+  layout: 'sideBySide' | 'stacked';
+  supportCards?:
+    | {
+        title: string;
+        description?: string | null;
+        /**
+         * Example: LifeBuoy, Headphones, BookOpen, GraduationCap
+         */
+        icon?: string | null;
+        iconColor?: string | null;
+        buttonLabel?: string | null;
+        buttonUrl?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  video?: {
+    enabled?: boolean | null;
+    title?: string | null;
+    videoUrl?: string | null;
+    /**
+     * WARNING: To replace this image, clear the field first and then upload/select a new image. Do not edit the media asset directly.
+     */
+    poster?: (number | null) | Media;
+    /**
+     * Upload MP4/WebM video directly.
+     */
+    uploadedVideo?: (number | null) | Media;
+  };
+  backgroundColor?: string | null;
+  cardBgColor?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'helpSupport';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "FlexibleRowBlock".
  */
 export interface FlexibleRowBlock {
@@ -2462,157 +805,6 @@ export interface FlexibleRowBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "HelpSupportBlock".
- */
-export interface HelpSupportBlock {
-  sectionTitle?: string | null;
-  sectionSubtitle?: string | null;
-  layout: 'sideBySide' | 'stacked';
-  supportCards?:
-    | {
-        title: string;
-        description?: string | null;
-        /**
-         * Example: LifeBuoy, Headphones, BookOpen, GraduationCap
-         */
-        icon?: string | null;
-        iconColor?: string | null;
-        buttonLabel?: string | null;
-        buttonUrl?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  video?: {
-    enabled?: boolean | null;
-    title?: string | null;
-    videoUrl?: string | null;
-    /**
-     * WARNING: To replace this image, clear the field first and then upload/select a new image. Do not edit the media asset directly.
-     */
-    poster?: (number | null) | Media;
-    /**
-     * Upload MP4/WebM video directly.
-     */
-    uploadedVideo?: (number | null) | Media;
-  };
-  backgroundColor?: string | null;
-  cardBgColor?: string | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'helpSupport';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FlexibleRowBlock".
- */
-export interface FlexibleColumnBlock {
-  containerWidth: 'boxed' | 'fullWidth';
-  rowBackground: 'transparent' | 'slate50' | 'brandNavy' | 'brandRed' | 'brandCream';
-  rowPadding: 'none' | 'small' | 'medium' | 'large';
-  gridGap: 'small' | 'medium' | 'large';
-  alignItems: 'start' | 'center' | 'end' | 'stretch';
-  columns: {
-    width: 'col-span-12' | 'col-span-6' | 'col-span-4' | 'col-span-8' | 'col-span-3' | 'col-span-9';
-    columnStyle: 'simple' | 'card' | 'bordered' | 'glassmorphism';
-    backgroundColor: 'transparent' | 'slate50' | 'brandNavy' | 'brandRed' | 'brandCream';
-    textColor: 'dark' | 'light';
-    columnPadding: 'none' | 'small' | 'medium' | 'large';
-    alignment: 'left' | 'center' | 'right';
-    /**
-     * Legacy Image for this column. Kept for backward compatibility.
-     */
-    image?: (number | null) | Media;
-    imagePosition?: ('top' | 'bottom') | null;
-    imageShape: 'rounded' | 'circle' | 'square' | 'original';
-    title?: string | null;
-    content?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    ctaLabel?: string | null;
-    ctaLink?: string | null;
-    /**
-     * Add multiple elements of different styles (Rich Text, Cards, Images, Buttons, Videos) inside this column. If blocks are added here, they will display instead of the legacy content fields above.
-     */
-    blocks?:
-      | (
-          | {
-              content: {
-                root: {
-                  type: string;
-                  children: {
-                    type: any;
-                    version: number;
-                    [k: string]: unknown;
-                  }[];
-                  direction: ('ltr' | 'rtl') | null;
-                  format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-                  indent: number;
-                  version: number;
-                };
-                [k: string]: unknown;
-              };
-              id?: string | null;
-              blockName?: string | null;
-              blockType: 'colRichText';
-            }
-          | {
-              image?: (number | null) | Media;
-              title?: string | null;
-              description?: string | null;
-              ctaLabel?: string | null;
-              ctaLink?: string | null;
-              cardStyle?: ('standard' | 'slate' | 'border') | null;
-              id?: string | null;
-              blockName?: string | null;
-              blockType: 'colCard';
-            }
-          | {
-              image: number | Media;
-              caption?: string | null;
-              aspectRatio?: ('original' | 'square' | 'video' | 'circle') | null;
-              id?: string | null;
-              blockName?: string | null;
-              blockType: 'colImage';
-            }
-          | {
-              label: string;
-              link: string;
-              style?: ('primary' | 'secondary' | 'outline') | null;
-              id?: string | null;
-              blockName?: string | null;
-              blockType: 'colCta';
-            }
-          | {
-              /**
-               * Provide the full share link of the video (e.g. https://www.youtube.com/watch?v=...)
-               */
-              videoUrl: string;
-              id?: string | null;
-              blockName?: string | null;
-              blockType: 'colEmbed';
-            }
-        )[]
-      | null;
-    id?: string | null;
-  }[];
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'flexibleColumn';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "FeaturedCardsBlock".
  */
 export interface FeaturedCardsBlock {
@@ -2636,61 +828,6 @@ export interface FeaturedCardsBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'featuredCards';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "MediaContactBlock".
- */
-export interface MediaContactBlock {
-  layoutDirection: 'mediaLeft' | 'mediaRight';
-  mediaWidth: 'col-span-4' | 'col-span-5' | 'col-span-6' | 'col-span-7' | 'col-span-8';
-  verticalAlignment: 'items-start' | 'items-center' | 'items-end';
-  backgroundColor: 'transparent' | 'slate50' | 'brandNavy' | 'brandRed' | 'brandCream';
-  padding: 'none' | 'small' | 'medium' | 'large';
-  mediaType: 'upload' | 'videoUrl';
-  /**
-   * Upload or select an image file or a video file (e.g. mp4, png, jpg) from the media gallery. WARNING: To change this, clear the field first using the "X" button.
-   */
-  mediaFile?: (number | null) | Media;
-  /**
-   * Paste the share link of the video (e.g. https://www.youtube.com/watch?v=...)
-   */
-  videoUrl?: string | null;
-  aspectRatio: 'original' | 'video' | 'square' | 'portrait' | 'tall';
-  contactHeading: string;
-  contactSubheading?: string | null;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  contactDetails?:
-    | {
-        type: 'address' | 'phone' | 'email' | 'hours' | 'general';
-        label: string;
-        value: string;
-        /**
-         * Adds a link to the detail (e.g. tel:+91... for phone, mailto:foo@bar.com for email)
-         */
-        link?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  showForm: boolean;
-  formHeading?: string | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'mediaContact';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2872,6 +1009,19 @@ export interface Committee {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "jobApplications".
+ */
+export interface JobApplication {
+  id: number;
+  name: string;
+  email: string;
+  resume: number | Media;
+  status: 'pending' | 'reviewed' | 'accepted' | 'rejected' | 'deleted';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "members".
  */
 export interface Member {
@@ -2923,6 +1073,180 @@ export interface Redirect {
         } | null);
     url?: string | null;
   };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "forms".
+ */
+export interface Form {
+  id: number;
+  title: string;
+  fields?:
+    | (
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            required?: boolean | null;
+            defaultValue?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'checkbox';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'country';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'email';
+          }
+        | {
+            message?: {
+              root: {
+                type: string;
+                children: {
+                  type: any;
+                  version: number;
+                  [k: string]: unknown;
+                }[];
+                direction: ('ltr' | 'rtl') | null;
+                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                indent: number;
+                version: number;
+              };
+              [k: string]: unknown;
+            } | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'message';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            defaultValue?: number | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'number';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            defaultValue?: string | null;
+            placeholder?: string | null;
+            options?:
+              | {
+                  label: string;
+                  value: string;
+                  id?: string | null;
+                }[]
+              | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'select';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'state';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            defaultValue?: string | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'text';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            defaultValue?: string | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'textarea';
+          }
+      )[]
+    | null;
+  submitButtonLabel?: string | null;
+  /**
+   * Choose whether to display an on-page message or redirect to a different page after they submit the form.
+   */
+  confirmationType?: ('message' | 'redirect') | null;
+  confirmationMessage?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  redirect?: {
+    url: string;
+  };
+  /**
+   * Send custom emails when the form submits. Use comma separated lists to send the same email to multiple recipients. To reference a value from this form, wrap that field's name with double curly brackets, i.e. {{firstName}}. You can use a wildcard {{*}} to output all data and {{*:table}} to format it as an HTML table in the email.
+   */
+  emails?:
+    | {
+        emailTo?: string | null;
+        cc?: string | null;
+        bcc?: string | null;
+        replyTo?: string | null;
+        emailFrom?: string | null;
+        subject: string;
+        /**
+         * Enter the message that should be sent in this email.
+         */
+        message?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -3128,6 +1452,10 @@ export interface PayloadLockedDocument {
         value: number | Committee;
       } | null)
     | ({
+        relationTo: 'jobApplications';
+        value: number | JobApplication;
+      } | null)
+    | ({
         relationTo: 'members';
         value: number | Member;
       } | null)
@@ -3201,827 +1529,6 @@ export interface PagesSelect<T extends boolean = true> {
   layout?:
     | T
     | {
-        hero?:
-          | T
-          | {
-              mode?: T;
-              layout?: T;
-              splitDirection?: T;
-              splitTheme?: T;
-              splitTextBehavior?: T;
-              splitFeatures?:
-                | T
-                | {
-                    icon?: T;
-                    text?: T;
-                    id?: T;
-                  };
-              height?: T;
-              textAlignment?: T;
-              textVerticalPosition?: T;
-              contentMaxWidth?: T;
-              contentPaddingX?: T;
-              contentPaddingY?: T;
-              constantOverlayContent?: T;
-              constantOverlay?:
-                | T
-                | {
-                    showText?: T;
-                    heading?: T;
-                    headingColor?: T;
-                    subtitle?: T;
-                    subtitleColor?: T;
-                    buttons?:
-                      | T
-                      | {
-                          label?: T;
-                          url?: T;
-                          variant?: T;
-                          icon?: T;
-                          id?: T;
-                        };
-                  };
-              overlay?:
-                | T
-                | {
-                    enabled?: T;
-                    color?: T;
-                    opacity?: T;
-                  };
-              headerGlass?:
-                | T
-                | {
-                    enabled?: T;
-                    fillColor?: T;
-                    fillOpacity?: T;
-                    blurAmount?: T;
-                    showDivider?: T;
-                  };
-              carouselSettings?:
-                | T
-                | {
-                    autoPlay?: T;
-                    autoPlayInterval?: T;
-                    showArrows?: T;
-                    showDots?: T;
-                  };
-              singleSlide?:
-                | T
-                | {
-                    mediaType?: T;
-                    image?: T;
-                    videoUrl?: T;
-                    videoPoster?: T;
-                    externalVideoUrl?: T;
-                    animationUrl?: T;
-                    dataVizEmbed?: T;
-                    eyebrowText?: T;
-                    showText?: T;
-                    heading?: T;
-                    headingColor?: T;
-                    subtitle?: T;
-                    subtitleColor?: T;
-                    buttons?:
-                      | T
-                      | {
-                          label?: T;
-                          url?: T;
-                          variant?: T;
-                          icon?: T;
-                          id?: T;
-                        };
-                  };
-              slides?:
-                | T
-                | {
-                    mediaType?: T;
-                    image?: T;
-                    videoUrl?: T;
-                    videoPoster?: T;
-                    externalVideoUrl?: T;
-                    animationUrl?: T;
-                    dataVizEmbed?: T;
-                    eyebrowText?: T;
-                    showText?: T;
-                    heading?: T;
-                    headingColor?: T;
-                    subtitle?: T;
-                    subtitleColor?: T;
-                    buttons?:
-                      | T
-                      | {
-                          label?: T;
-                          url?: T;
-                          variant?: T;
-                          icon?: T;
-                          id?: T;
-                        };
-                    id?: T;
-                  };
-              duccFloatingCard?:
-                | T
-                | {
-                    enabled?: T;
-                    badgeLabel?: T;
-                    footerText?: T;
-                    footerLink?: T;
-                    footerLinkLabel?: T;
-                    stats?:
-                      | T
-                      | {
-                          value?: T;
-                          label?: T;
-                          id?: T;
-                        };
-                  };
-              duccShowSlideCounter?: T;
-              duccShowPlayPause?: T;
-              quickAccessBar?:
-                | T
-                | {
-                    enabled?: T;
-                    overlapAmount?: T;
-                    items?:
-                      | T
-                      | {
-                          label?: T;
-                          icon?: T;
-                          link?: T;
-                          external?: T;
-                          colorVariant?: T;
-                          id?: T;
-                        };
-                  };
-              id?: T;
-              blockName?: T;
-            };
-        marquee?:
-          | T
-          | {
-              items?:
-                | T
-                | {
-                    text?: T;
-                    url?: T;
-                    icon?: T;
-                    badge?: T;
-                    id?: T;
-                  };
-              backgroundColor?: T;
-              textColor?: T;
-              speed?: T;
-              pauseOnHover?: T;
-              separator?: T;
-              id?: T;
-              blockName?: T;
-            };
-        statesOnboarded?:
-          | T
-          | {
-              heading?: T;
-              description?: T;
-              states?:
-                | T
-                | {
-                    stateName?: T;
-                    portalUrl?: T;
-                    tagline?: T;
-                    themeColor?: T;
-                    imageOpacity?: T;
-                    backgroundImage?: T;
-                    id?: T;
-                  };
-              id?: T;
-              blockName?: T;
-            };
-        showcaseCards?:
-          | T
-          | {
-              sectionHeading?: T;
-              sectionDescription?: T;
-              headingAlignment?: T;
-              cardStyle?: T;
-              columns?: T;
-              cards?:
-                | T
-                | {
-                    title?: T;
-                    image?: T;
-                    caption?: T;
-                    logo?: T;
-                    subtitle?: T;
-                    description?: T;
-                    featured?: T;
-                    featuredLabel?: T;
-                    url?: T;
-                    icon?: T;
-                    id?: T;
-                  };
-              overlaySettings?:
-                | T
-                | {
-                    overlayColor?: T;
-                    overlayOpacity?: T;
-                    cardHeight?: T;
-                  };
-              bottomLink?:
-                | T
-                | {
-                    enabled?: T;
-                    label?: T;
-                    url?: T;
-                  };
-              accentColor?: T;
-              backgroundColor?: T;
-              id?: T;
-              blockName?: T;
-            };
-        statistics?:
-          | T
-          | {
-              sectionHeading?: T;
-              sectionDescription?: T;
-              headingAlignment?: T;
-              layout?: T;
-              stats?:
-                | T
-                | {
-                    label?: T;
-                    numericValue?: T;
-                    suffix?: T;
-                    prefix?: T;
-                    icon?: T;
-                    iconColor?: T;
-                    ringGradientEnd?: T;
-                    iconBgColor?: T;
-                    description?: T;
-                    ringPercentage?: T;
-                    id?: T;
-                  };
-              ribbonBaseColor?: T;
-              ribbonWaveStartColor?: T;
-              ribbonWaveEndColor?: T;
-              backgroundColor?: T;
-              cardBgColor?: T;
-              enableCountUp?: T;
-              enableHoverZoom?: T;
-              columns?: T;
-              id?: T;
-              blockName?: T;
-            };
-        newsUpdates?:
-          | T
-          | {
-              sectionHeading?: T;
-              sectionDescription?: T;
-              headingAlignment?: T;
-              layout?: T;
-              entryType?: T;
-              articles?:
-                | T
-                | {
-                    title?: T;
-                    excerpt?: T;
-                    image?: T;
-                    category?: T;
-                    date?: T;
-                    url?: T;
-                    icon?: T;
-                    categoryColor?: T;
-                    id?: T;
-                  };
-              collectionSource?:
-                | T
-                | {
-                    limit?: T;
-                    sortBy?: T;
-                    category?: T;
-                    featuredOnly?: T;
-                  };
-              columns?: T;
-              bottomLink?:
-                | T
-                | {
-                    enabled?: T;
-                    label?: T;
-                    url?: T;
-                  };
-              backgroundColor?: T;
-              id?: T;
-              blockName?: T;
-            };
-        interactiveMap?:
-          | T
-          | {
-              sectionHeading?: T;
-              sectionDescription?: T;
-              headingAlignment?: T;
-              mapImage?: T;
-              mapEmbedUrl?: T;
-              mapHeight?: T;
-              showProgressBars?: T;
-              progressItems?:
-                | T
-                | {
-                    label?: T;
-                    value?: T;
-                    displayValue?: T;
-                    barColor?: T;
-                    id?: T;
-                  };
-              layout?: T;
-              backgroundColor?: T;
-              id?: T;
-              blockName?: T;
-            };
-        screenshotGallery?:
-          | T
-          | {
-              sectionHeading?: T;
-              sectionDescription?: T;
-              headingAlignment?: T;
-              screenshots?:
-                | T
-                | {
-                    image?: T;
-                    title?: T;
-                    caption?: T;
-                    category?: T;
-                    id?: T;
-                  };
-              columns?: T;
-              enableLightbox?: T;
-              showDeviceFrame?: T;
-              deviceType?: T;
-              backgroundColor?: T;
-              id?: T;
-              blockName?: T;
-            };
-        helpSupport?:
-          | T
-          | {
-              sectionHeading?: T;
-              sectionDescription?: T;
-              headingAlignment?: T;
-              layout?: T;
-              supportCards?:
-                | T
-                | {
-                    title?: T;
-                    description?: T;
-                    icon?: T;
-                    iconColor?: T;
-                    buttonLabel?: T;
-                    buttonUrl?: T;
-                    id?: T;
-                  };
-              video?:
-                | T
-                | {
-                    enabled?: T;
-                    title?: T;
-                    videoUrl?: T;
-                    poster?: T;
-                    uploadedVideo?: T;
-                  };
-              backgroundColor?: T;
-              cardBgColor?: T;
-              id?: T;
-              blockName?: T;
-            };
-        goaSnapshot?:
-          | T
-          | {
-              isEnabled?: T;
-              sectionTitle?: T;
-              viewOptions?:
-                | T
-                | {
-                    defaultView?: T;
-                    availableViews?: T;
-                  };
-              layout?:
-                | T
-                | {
-                    showFilterPanel?: T;
-                    showLeftPanel?: T;
-                    showMiddlePanel?: T;
-                    showRightPanel?: T;
-                    columnsOnDesktop?: T;
-                    cardSpacing?: T;
-                    cardBorderRadius?: T;
-                    cardShadow?: T;
-                  };
-              filterSettings?:
-                | T
-                | {
-                    enableFilters?: T;
-                    showApplyButton?: T;
-                    applyFilterButton?: T;
-                    filterBy?: T;
-                    districtData?:
-                      | T
-                      | {
-                          name?: T;
-                          totalSchools?: T;
-                          percentage?: T;
-                          markerLat?: T;
-                          markerLng?: T;
-                          highlightColor?: T;
-                          id?: T;
-                        };
-                    talukaData?:
-                      | T
-                      | {
-                          name?: T;
-                          totalSchools?: T;
-                          percentage?: T;
-                          markerLat?: T;
-                          markerLng?: T;
-                          highlightColor?: T;
-                          id?: T;
-                        };
-                    schoolTypeData?:
-                      | T
-                      | {
-                          name?: T;
-                          totalSchools?: T;
-                          percentage?: T;
-                          markerLat?: T;
-                          markerLng?: T;
-                          highlightColor?: T;
-                          id?: T;
-                        };
-                  };
-              statistics?:
-                | T
-                | {
-                    minoritySchools?: T;
-                    girlsOnlySchools?: T;
-                    boysOnlySchools?: T;
-                    englishMedium?: T;
-                    konkaniMedium?: T;
-                    marathiMedium?: T;
-                  };
-              summaryCards?:
-                | T
-                | {
-                    enabled?: T;
-                    animateScroll?: T;
-                    scrollDurationSeconds?: T;
-                    cards?:
-                      | T
-                      | {
-                          isEnabled?: T;
-                          label?: T;
-                          iconName?: T;
-                          valueSource?: T;
-                          customValue?: T;
-                          id?: T;
-                        };
-                  };
-              mapSettings?:
-                | T
-                | {
-                    zoom?: T;
-                    centerLat?: T;
-                    centerLng?: T;
-                    colors?:
-                      | T
-                      | {
-                          mapBackground?: T;
-                          markerColor?: T;
-                          activeMarkerColor?: T;
-                        };
-                    markerSettings?:
-                      | T
-                      | {
-                          size?: T;
-                          activeSize?: T;
-                          showPulse?: T;
-                        };
-                  };
-              mergedTalukas?:
-                | T
-                | {
-                    originalName?: T;
-                    mergedName?: T;
-                    id?: T;
-                  };
-              styles?:
-                | T
-                | {
-                    fontFamily?: T;
-                    titleColor?: T;
-                    cardBackground?: T;
-                    tableHeaderBackground?: T;
-                  };
-              animations?:
-                | T
-                | {
-                    enableHoverEffects?: T;
-                    enableEntryAnimation?: T;
-                  };
-              id?: T;
-              blockName?: T;
-            };
-        formLayout?:
-          | T
-          | {
-              sectionHeading?: T;
-              sectionDescription?: T;
-              headingAlignment?: T;
-              form?: T;
-              maxWidth?: T;
-              id?: T;
-              blockName?: T;
-            };
-        richContent?:
-          | T
-          | {
-              sectionHeading?: T;
-              sectionDescription?: T;
-              headingAlignment?: T;
-              content?: T;
-              maxWidth?: T;
-              id?: T;
-              blockName?: T;
-            };
-        featureCards?:
-          | T
-          | {
-              sectionHeading?: T;
-              sectionDescription?: T;
-              headingAlignment?: T;
-              eyebrow?: T;
-              ctaLabel?: T;
-              ctaLink?: T;
-              cardLayout?: T;
-              columns?: T;
-              cardTheme?: T;
-              showCardNumbers?: T;
-              showCardButton?: T;
-              cards?:
-                | T
-                | {
-                    icon?: T;
-                    image?: T;
-                    title?: T;
-                    description?: T;
-                    link?: T;
-                    tag?: T;
-                    external?: T;
-                    features?:
-                      | T
-                      | {
-                          text?: T;
-                          id?: T;
-                        };
-                    buttonLabel?: T;
-                    buttonUrl?: T;
-                    status?: T;
-                    progress?: T;
-                    level?: T;
-                    duration?: T;
-                    mode?: T;
-                    audience?: T;
-                    date?: T;
-                    id?: T;
-                  };
-              id?: T;
-              blockName?: T;
-            };
-        imageGallery?:
-          | T
-          | {
-              sectionHeading?: T;
-              sectionDescription?: T;
-              headingAlignment?: T;
-              columns?: T;
-              images?:
-                | T
-                | {
-                    image?: T;
-                    caption?: T;
-                    id?: T;
-                  };
-              id?: T;
-              blockName?: T;
-            };
-        faq?:
-          | T
-          | {
-              sectionHeading?: T;
-              sectionDescription?: T;
-              headingAlignment?: T;
-              layout?: T;
-              items?:
-                | T
-                | {
-                    question?: T;
-                    answer?: T;
-                    id?: T;
-                  };
-              id?: T;
-              blockName?: T;
-            };
-        testimonials?:
-          | T
-          | {
-              sectionHeading?: T;
-              sectionDescription?: T;
-              headingAlignment?: T;
-              layout?: T;
-              items?:
-                | T
-                | {
-                    quote?: T;
-                    name?: T;
-                    role?: T;
-                    avatar?: T;
-                    initials?: T;
-                    id?: T;
-                  };
-              id?: T;
-              blockName?: T;
-            };
-        bannerAlert?:
-          | T
-          | {
-              sectionHeading?: T;
-              sectionDescription?: T;
-              headingAlignment?: T;
-              type?: T;
-              message?: T;
-              dismissible?: T;
-              link?:
-                | T
-                | {
-                    label?: T;
-                    url?: T;
-                  };
-              id?: T;
-              blockName?: T;
-            };
-        teamGrid?:
-          | T
-          | {
-              sectionHeading?: T;
-              sectionDescription?: T;
-              headingAlignment?: T;
-              columns?: T;
-              showStats?: T;
-              showSocialLinks?: T;
-              members?:
-                | T
-                | {
-                    photo?: T;
-                    name?: T;
-                    slug?: T;
-                    role?: T;
-                    bio?: T;
-                    rating?: T;
-                    courseCount?: T;
-                    studentCount?: T;
-                    profileLink?: T;
-                    socialLinks?:
-                      | T
-                      | {
-                          platform?: T;
-                          url?: T;
-                          id?: T;
-                        };
-                    biography?: T;
-                    email?: T;
-                    phone?: T;
-                    office?: T;
-                    researchInterests?:
-                      | T
-                      | {
-                          interest?: T;
-                          id?: T;
-                        };
-                    education?:
-                      | T
-                      | {
-                          degree?: T;
-                          institution?: T;
-                          year?: T;
-                          id?: T;
-                        };
-                    experience?:
-                      | T
-                      | {
-                          position?: T;
-                          organization?: T;
-                          duration?: T;
-                          expDescription?: T;
-                          id?: T;
-                        };
-                    awards?:
-                      | T
-                      | {
-                          title?: T;
-                          year?: T;
-                          organization?: T;
-                          id?: T;
-                        };
-                    courses?:
-                      | T
-                      | {
-                          courseName?: T;
-                          courseCode?: T;
-                          semester?: T;
-                          courseDescription?: T;
-                          id?: T;
-                        };
-                    publications?:
-                      | T
-                      | {
-                          title?: T;
-                          journal?: T;
-                          year?: T;
-                          link?: T;
-                          id?: T;
-                        };
-                    academicLinks?:
-                      | T
-                      | {
-                          platform?: T;
-                          url?: T;
-                          id?: T;
-                        };
-                    id?: T;
-                  };
-              id?: T;
-              blockName?: T;
-            };
-        tabs?:
-          | T
-          | {
-              sectionHeading?: T;
-              sectionDescription?: T;
-              headingAlignment?: T;
-              tabs?:
-                | T
-                | {
-                    label?: T;
-                    content?: T;
-                    id?: T;
-                  };
-              id?: T;
-              blockName?: T;
-            };
-        contentWithMedia?:
-          | T
-          | {
-              sectionHeading?: T;
-              sectionDescription?: T;
-              headingAlignment?: T;
-              content?: T;
-              media?: T;
-              mediaPosition?: T;
-              id?: T;
-              blockName?: T;
-            };
-        careerPosting?:
-          | T
-          | {
-              excerpt?: T;
-              effectiveDate?: T;
-              content?: T;
-              problemDomains?:
-                | T
-                | {
-                    title?: T;
-                    description?: T;
-                    challenges?:
-                      | T
-                      | {
-                          text?: T;
-                          id?: T;
-                        };
-                    technicalSkills?:
-                      | T
-                      | {
-                          skill?: T;
-                          id?: T;
-                        };
-                    nonTechnicalSkills?:
-                      | T
-                      | {
-                          skill?: T;
-                          id?: T;
-                        };
-                    id?: T;
-                  };
-              applyButtonText?: T;
-              applyButtonLink?: T;
-              status?: T;
-              id?: T;
-              blockName?: T;
-            };
-        cta?: T | CallToActionBlockSelect<T>;
         richText?: T | RichTextBlockSelect<T>;
         imageWithText?: T | ImageWithTextBlockSelect<T>;
         infoCard?: T | InfoCardBlockSelect<T>;
@@ -4230,7 +1737,6 @@ export interface PagesSelect<T extends boolean = true> {
               blockName?: T;
             };
         flexibleRow?: T | FlexibleRowBlockSelect<T>;
-        flexibleColumn?: T | FlexibleColumnBlockSelect<T>;
         featuredCards?: T | FeaturedCardsBlockSelect<T>;
         statusBadge?:
           | T
@@ -4266,19 +1772,6 @@ export interface PagesSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CallToActionBlock_select".
- */
-export interface CallToActionBlockSelect<T extends boolean = true> {
-  heading?: T;
-  body?: T;
-  buttonText?: T;
-  buttonLink?: T;
-  buttonStyle?: T;
-  id?: T;
-  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -4345,80 +1838,14 @@ export interface EmbedBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FlexibleRowBlock_select".
+ * via the `definition` "CallToActionBlock_select".
  */
-export interface FlexibleRowBlockSelect<T extends boolean = true> {
-  containerWidth?: T;
-  rowBackground?: T;
-  rowPadding?: T;
-  gridGap?: T;
-  alignItems?: T;
-  columns?:
-    | T
-    | {
-        width?: T;
-        columnStyle?: T;
-        backgroundColor?: T;
-        textColor?: T;
-        columnPadding?: T;
-        alignment?: T;
-        image?: T;
-        imagePosition?: T;
-        imageShape?: T;
-        title?: T;
-        content?: T;
-        ctaLabel?: T;
-        ctaLink?: T;
-        blocks?:
-          | T
-          | {
-              colRichText?:
-                | T
-                | {
-                    content?: T;
-                    id?: T;
-                    blockName?: T;
-                  };
-              colCard?:
-                | T
-                | {
-                    image?: T;
-                    title?: T;
-                    description?: T;
-                    ctaLabel?: T;
-                    ctaLink?: T;
-                    cardStyle?: T;
-                    id?: T;
-                    blockName?: T;
-                  };
-              colImage?:
-                | T
-                | {
-                    image?: T;
-                    caption?: T;
-                    aspectRatio?: T;
-                    id?: T;
-                    blockName?: T;
-                  };
-              colCta?:
-                | T
-                | {
-                    label?: T;
-                    link?: T;
-                    style?: T;
-                    id?: T;
-                    blockName?: T;
-                  };
-              colEmbed?:
-                | T
-                | {
-                    videoUrl?: T;
-                    id?: T;
-                    blockName?: T;
-                  };
-            };
-        id?: T;
-      };
+export interface CallToActionBlockSelect<T extends boolean = true> {
+  heading?: T;
+  body?: T;
+  buttonText?: T;
+  buttonLink?: T;
+  buttonStyle?: T;
   id?: T;
   blockName?: T;
 }
@@ -4459,7 +1886,7 @@ export interface HelpSupportBlockSelect<T extends boolean = true> {
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "FlexibleRowBlock_select".
  */
-export interface FlexibleColumnBlockSelect<T extends boolean = true> {
+export interface FlexibleRowBlockSelect<T extends boolean = true> {
   containerWidth?: T;
   rowBackground?: T;
   rowPadding?: T;
@@ -4555,37 +1982,6 @@ export interface FeaturedCardsBlockSelect<T extends boolean = true> {
         link?: T;
         id?: T;
       };
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "MediaContactBlock_select".
- */
-export interface MediaContactBlockSelect<T extends boolean = true> {
-  layoutDirection?: T;
-  mediaWidth?: T;
-  verticalAlignment?: T;
-  backgroundColor?: T;
-  padding?: T;
-  mediaType?: T;
-  mediaFile?: T;
-  videoUrl?: T;
-  aspectRatio?: T;
-  contactHeading?: T;
-  contactSubheading?: T;
-  description?: T;
-  contactDetails?:
-    | T
-    | {
-        type?: T;
-        label?: T;
-        value?: T;
-        link?: T;
-        id?: T;
-      };
-  showForm?: T;
-  formHeading?: T;
   id?: T;
   blockName?: T;
 }
@@ -4750,6 +2146,18 @@ export interface CommitteeSelect<T extends boolean = true> {
   bio?: T;
   type?: T;
   order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "jobApplications_select".
+ */
+export interface JobApplicationsSelect<T extends boolean = true> {
+  name?: T;
+  email?: T;
+  resume?: T;
+  status?: T;
   updatedAt?: T;
   createdAt?: T;
 }
