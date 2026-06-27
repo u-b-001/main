@@ -40,31 +40,72 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const bgPatternOpacity = showBgPattern ? (Number(siteSettings?.bgPatternOpacity || 15) / 100).toFixed(2) : '0'
 
   const themeColors = siteSettings?.themeColors || {}
-  const customStyles: React.CSSProperties = {
-    '--bg-pattern-opacity': bgPatternOpacity,
-    ...(themeColors.secondaryColor && { '--brand-navy': themeColors.secondaryColor, '--secondary': themeColors.secondaryColor }),
-    ...(themeColors.primaryColor && { '--brand-red': themeColors.primaryColor, '--primary': themeColors.primaryColor }),
-    ...(themeColors.accentColor && { '--brand-gold': themeColors.accentColor, '--accent': themeColors.accentColor }),
-    ...(themeColors.mutedBackgroundColor && { '--brand-cream': themeColors.mutedBackgroundColor, '--muted': themeColors.mutedBackgroundColor }),
-    ...(themeColors.textColor && { '--brand-text': themeColors.textColor, '--foreground': themeColors.textColor }),
-    ...(themeColors.surfaceColor && { '--brand-lightgray': themeColors.surfaceColor, '--card': themeColors.surfaceColor }),
-    ...(themeColors.backgroundColor && { '--background': themeColors.backgroundColor }),
-  } as React.CSSProperties
-
+  const themePreset = siteSettings?.themePreset || 'default'
+  const primaryColor = themeColors.primaryColor || '#000000'
+  const secondaryColor = themeColors.secondaryColor || '#ffffff'
+  const accentColor = themeColors.accentColor || '#ff0000'
+  const mutedBackgroundColor = themeColors.mutedBackgroundColor || '#f5f5f5'
+  const surfaceColor = themeColors.surfaceColor || '#ffffff'
+  const textColor = themeColors.textColor || '#000000'
+  const backgroundColor = themeColors.backgroundColor || '#ffffff'
+  
+  const headingFontFamily = siteSettings?.headingFontFamily || 'Inter'
+  const bodyFontFamily = siteSettings?.bodyFontFamily || 'Inter'
   return (
     <html
       className={cn(inter.variable, notoSerifJp.variable, GeistMono.variable)}
       lang="en"
-      data-heading-font={headingFont}
-      data-body-font={bodyFont}
+      data-color-scheme={themePreset}
+      data-heading-font="serif"
+      data-body-font="sans"
       data-text-size={siteTextSize}
       style={customStyles}
       suppressHydrationWarning
     >
       <head>
-        <InitTheme defaultTheme={defaultTheme} />
+        <InitTheme defaultTheme="light" />
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
+        
+        {/* Load custom selected Google Fonts */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link
+          href={`https://fonts.googleapis.com/css2?family=${headingFontFamily.replace(/\s+/g, '+')}:wght@300;400;500;600;700;800&family=${bodyFontFamily.replace(/\s+/g, '+')}:wght@300;400;500;600;700&display=swap`}
+          rel="stylesheet"
+        />
+
+        {/* Dynamic theme style overrides */}
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+              :root {
+                --brand-red: ${primaryColor};
+                --brand-navy: ${secondaryColor};
+                --brand-gold: ${accentColor};
+                --brand-cream: ${mutedBackgroundColor};
+                --brand-lightgray: ${surfaceColor};
+                --brand-text: ${textColor};
+                --font-sans: "${bodyFontFamily}", sans-serif;
+                --font-serif: "${headingFontFamily}", serif;
+              }
+              html[data-theme='light'] {
+                --background: ${backgroundColor};
+                --foreground: ${textColor};
+                --card: ${surfaceColor};
+                --card-foreground: ${textColor};
+                --popover: ${surfaceColor};
+                --popover-foreground: ${textColor};
+                --primary: ${primaryColor};
+                --primary-foreground: ${backgroundColor};
+                --secondary: ${secondaryColor};
+                --muted: ${mutedBackgroundColor};
+                --accent: ${accentColor};
+                --border: ${mutedBackgroundColor};
+              }
+            `,
+          }}
+        />
       </head>
       <body className={cn(showBgPattern ? 'has-pattern' : '')}>
         <Providers>

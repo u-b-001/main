@@ -91,15 +91,112 @@ export const FeaturedCardsBlock: Block = {
           label: 'Badge/Tag (Optional, e.g. "New")',
         },
         {
-          name: 'linkLabel',
-          type: 'text',
-          label: 'Link Label',
-          defaultValue: 'Learn More',
+          name: 'externalLink',
+          type: 'checkbox',
+          label: 'External Link',
+          defaultValue: false,
+          admin: {
+            description: 'Open link in new tab',
+          },
         },
         {
-          name: 'link',
+          name: 'featurePoints',
+          type: 'array',
+          label: 'Feature Points',
+          admin: {
+            description: 'Bullet points for the Service Detail layout',
+          },
+          fields: [
+            {
+              name: 'text',
+              type: 'text',
+              label: 'Point Text',
+              required: true,
+            },
+          ],
+        },
+        {
+          name: 'buttonLabel',
           type: 'text',
-          label: 'Link URL (Optional)',
+          label: 'Button Label',
+          defaultValue: 'View More',
+          admin: {
+            description: 'CTA button label (e.g. "Request Access")',
+          },
+        },
+        {
+          name: 'buttonUrl',
+          type: 'text',
+          label: 'Button Url',
+          admin: {
+            description: 'CTA button URL',
+          },
+        },
+        {
+          name: 'status',
+          type: 'select',
+          label: 'Status',
+          admin: {
+            description: 'Project status badge (used in Project Cards layout)',
+          },
+          options: [
+            { label: 'Ongoing', value: 'ongoing' },
+            { label: 'Completed', value: 'completed' },
+            { label: 'Upcoming', value: 'upcoming' },
+          ],
+        },
+        {
+          name: 'progress',
+          type: 'text',
+          label: 'Progress',
+          admin: {
+            description: 'Progress percentage 0-100 (used in Project Cards layout)',
+          },
+        },
+        {
+          name: 'level',
+          type: 'select',
+          label: 'Level',
+          admin: {
+            description: 'Difficulty level (used in Training Cards layout)',
+          },
+          options: [
+            { label: 'Beginner', value: 'beginner' },
+            { label: 'Intermediate', value: 'intermediate' },
+            { label: 'Advanced', value: 'advanced' },
+          ],
+        },
+        {
+          name: 'duration',
+          type: 'text',
+          label: 'Duration',
+          admin: {
+            description: 'e.g. "5 Days", "1 Day" (used in Training Cards layout)',
+          },
+        },
+        {
+          name: 'mode',
+          type: 'text',
+          label: 'Mode',
+          admin: {
+            description: 'e.g. "In-person", "Online", "Hybrid" (used in Training Cards layout)',
+          },
+        },
+        {
+          name: 'audience',
+          type: 'text',
+          label: 'Audience',
+          admin: {
+            description: 'e.g. "Faculty", "Students & Faculty" (used in Training Cards layout)',
+          },
+        },
+        {
+          name: 'date',
+          type: 'date',
+          label: 'Date',
+          admin: {
+            description: 'Next batch date (used in Training Cards layout)',
+          },
         },
       ],
     },

@@ -16,7 +16,6 @@ import { JobApplications } from './collections/JobApplications'
 
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
-import { Homepage } from './globals/Homepage'
 import { SiteSettings } from './globals/SiteSettings'
 
 import { plugins } from './plugins'
@@ -66,10 +65,11 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URL || '',
     },
+    push: process.env.DISABLE_DB_PUSH !== 'true',
   }),
   collections: [Pages, Media, Users, News, Gallery, Events, Services, Committee, JobApplications, Members],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer, Homepage, SiteSettings],
+  globals: [Header, Footer, SiteSettings],
   plugins ,
   secret: process.env.PAYLOAD_SECRET,
   sharp,

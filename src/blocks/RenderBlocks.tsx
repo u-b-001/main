@@ -12,7 +12,7 @@ import { StatsImpactBlock } from '@/blocks/Statistics/Component'
 import { ShowcaseCardsBlock} from '@/blocks/Showcase/Component' 
 import { TestimonialsBlock } from '@/blocks/Testimonials/Component'
 import { FAQBlock } from '@/blocks/Faq/Component'
-import { FeatureCardsBlock } from '@/blocks/FeaturedCard/Component'
+
 import {ImageGalleryBlock} from '@/blocks/ImageGallery/Component'
 import { FormBlockComponent } from './Form/Component'
 import {DataSnapshotBlock} from './DataSnapshot/Component'
@@ -28,6 +28,7 @@ import { ExamIntroComponent } from '@/blocks/ExamIntro/Component'
 import { ContentLayoutComponent } from '@/blocks/ContentLayout/Component'
 import { StepsComponent } from '@/blocks/Steps/Component'
 import { FileDownloadsComponent } from '@/blocks/FileDownloads/Component'
+import { NewsAndUpdatesComponent } from '@/blocks/NewsAndUpdates/Component'
 import { ResourceLinksComponent } from '@/blocks/ResourceLinks/Component'
 
 const blockComponents = {
@@ -44,13 +45,14 @@ const blockComponents = {
   showcaseCards: ShowcaseCardsBlock,
   testimonials: TestimonialsBlock,
   faq: FAQBlock,
-  featureCards: FeatureCardsBlock,
+
   imageGallery: ImageGalleryBlock,
   formBlockComponent: FormBlockComponent,
   dataSnapshotBlock : DataSnapshotBlock ,
   careerPostingBlock : CareerPostingBlock,
   flexibleRow: FlexibleRowComponent,
   featuredCards: FeaturedCardsComponent,
+  newsAndUpdates: NewsAndUpdatesComponent,
   helpSupportBlock: HelpSupportBlock,
   sidebarLayout: SidebarLayoutComponent,
   mediaContact: MediaContactComponent,

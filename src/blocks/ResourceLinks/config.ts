@@ -1,25 +1,27 @@
 import type { Block } from 'payload'
-import { iconField } from '../shared'
 
 export const ResourceLinksBlock: Block = {
   slug: 'resourceLinks',
   interfaceName: 'ResourceLinksBlock',
-  labels: { singular: 'Resource Links', plural: 'Resource Links' },
+  labels: {
+    singular: 'Resource Links',
+    plural: 'Resource Links Blocks',
+  },
   fields: [
     {
       name: 'title',
       type: 'text',
-      label: 'Section Title',
-      defaultValue: 'Helpful Resources',
+      label: 'Title',
     },
     {
       name: 'description',
       type: 'textarea',
-      label: 'Section Description',
+      label: 'Description',
     },
     {
       name: 'columns',
       type: 'select',
+      label: 'Columns',
       defaultValue: '2',
       options: [
         { label: '1 Column', value: '1' },
@@ -30,33 +32,36 @@ export const ResourceLinksBlock: Block = {
     {
       name: 'links',
       type: 'array',
-      required: true,
+      label: 'Links',
       minRows: 1,
-      labels: { singular: 'Link', plural: 'Links' },
       fields: [
         {
           name: 'title',
           type: 'text',
+          label: 'Title',
           required: true,
-          label: 'Link Title',
         },
         {
           name: 'description',
-          type: 'text',
-          label: 'Brief Description',
+          type: 'textarea',
+          label: 'Description',
         },
         {
           name: 'url',
           type: 'text',
-          required: true,
           label: 'URL',
+          required: true,
         },
-        iconField('icon', 'Icon'),
         {
           name: 'openInNewTab',
           type: 'checkbox',
-          defaultValue: true,
           label: 'Open in new tab',
+          defaultValue: false,
+        },
+        {
+          name: 'icon',
+          type: 'text',
+          label: 'Lucide Icon Name (e.g. FileText, Link, Download)',
         },
       ],
     },
