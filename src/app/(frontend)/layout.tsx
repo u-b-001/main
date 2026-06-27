@@ -43,17 +43,57 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html
       className={cn(inter.variable, notoSerifJp.variable, GeistMono.variable)}
       lang="en"
-      data-color-scheme={colorScheme}
-      data-heading-font={headingFont}
-      data-body-font={bodyFont}
+      data-color-scheme={themePreset}
+      data-heading-font="serif"
+      data-body-font="sans"
       data-text-size={siteTextSize}
       style={{ '--bg-pattern-opacity': bgPatternOpacity } as React.CSSProperties}
       suppressHydrationWarning
     >
       <head>
-        <InitTheme defaultTheme={defaultTheme} />
+        <InitTheme defaultTheme="light" />
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
+        
+        {/* Load custom selected Google Fonts */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link
+          href={`https://fonts.googleapis.com/css2?family=${headingFontFamily.replace(/\s+/g, '+')}:wght@300;400;500;600;700;800&family=${bodyFontFamily.replace(/\s+/g, '+')}:wght@300;400;500;600;700&display=swap`}
+          rel="stylesheet"
+        />
+
+        {/* Dynamic theme style overrides */}
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+              :root {
+                --brand-red: ${primaryColor};
+                --brand-navy: ${secondaryColor};
+                --brand-gold: ${accentColor};
+                --brand-cream: ${mutedBackgroundColor};
+                --brand-lightgray: ${surfaceColor};
+                --brand-text: ${textColor};
+                --font-sans: "${bodyFontFamily}", sans-serif;
+                --font-serif: "${headingFontFamily}", serif;
+              }
+              html[data-theme='light'] {
+                --background: ${backgroundColor};
+                --foreground: ${textColor};
+                --card: ${surfaceColor};
+                --card-foreground: ${textColor};
+                --popover: ${surfaceColor};
+                --popover-foreground: ${textColor};
+                --primary: ${primaryColor};
+                --primary-foreground: ${backgroundColor};
+                --secondary: ${secondaryColor};
+                --muted: ${mutedBackgroundColor};
+                --accent: ${accentColor};
+                --border: ${mutedBackgroundColor};
+              }
+            `,
+          }}
+        />
       </head>
       <body className={cn(showBgPattern ? 'has-pattern' : '')}>
         <Providers>

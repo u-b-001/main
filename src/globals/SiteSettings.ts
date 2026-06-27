@@ -2,6 +2,7 @@ import type { GlobalConfig } from 'payload'
 import { publicAccess, isSuperAdmin } from '../access/roles'
 import { themePresets } from '../globals/themePresets'
 import { applyThemeToBlocks } from '../lib/applyThemeToBlocks'
+import { revalidateSiteSettings } from './hooks/revalidateSiteSettings'
 
 export const SiteSettings: GlobalConfig = {
   slug: 'site-settings',
@@ -13,15 +14,22 @@ export const SiteSettings: GlobalConfig = {
   hooks: {
     beforeChange: [
       ({ data, originalDoc }) => {
-        // When themePreset changes, auto-populate colors and fonts from the preset
+        console.log('========================')
+        console.log('beforeChange fired')
+        console.log('New preset:', data?.themePreset)
+        console.log('Old preset:', originalDoc?.themePreset)
+
         const newPreset = data?.themePreset
         const oldPreset = originalDoc?.themePreset
+
+        console.log('Preset exists:', !!themePresets[newPreset])
+        console.log('Preset:', themePresets[newPreset])
 
         if (newPreset && newPreset !== oldPreset && themePresets[newPreset]) {
           const preset = themePresets[newPreset]
 
-          // Auto-fill colors
           if (!data.themeColors) data.themeColors = {}
+
           data.themeColors.primaryColor = preset.colors.primary
           data.themeColors.secondaryColor = preset.colors.secondary
           data.themeColors.accentColor = preset.colors.accent
@@ -30,15 +38,20 @@ export const SiteSettings: GlobalConfig = {
           data.themeColors.mutedBackgroundColor = preset.colors.muted
           data.themeColors.textColor = preset.colors.text
 
-          // Auto-fill fonts
           data.headingFont = preset.fonts.heading
           data.bodyFont = preset.fonts.body
+
+          console.log('Updated themeColors:', data.themeColors)
+          console.log('Updated fonts:', data.headingFont, data.bodyFont)
+        } else {
+          console.log('Condition failed')
         }
 
         return data
       },
     ],
     afterChange: [
+      revalidateSiteSettings,
       async ({ doc, previousDoc, req }) => {
         // When themePreset changes, update all block layouts in the database
         const newPreset = doc?.themePreset

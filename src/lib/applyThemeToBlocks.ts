@@ -1,60 +1,58 @@
 import type { Payload } from 'payload'
-import { getPreset, type ThemePreset } from '../globals/themePresets'
+import { getPreset, themePresets, type ThemePreset } from '../globals/themePresets'
+
+/**
+ * Translate layout names from themePresets.ts to the actual database/config enum values
+ */
+function translateLayout(blockType: string, layout: string): string {
+  if (blockType === 'hero') {
+    if (layout === 'mosaiFullscreen') return 'mosiaFullscreen'
+    if (layout === 'mosaiClassicHero') return 'fullWidth'
+    return layout
+  }
+  if (blockType === 'featuredCards') {
+    if (layout === 'mosaiService') return 'bordered'
+    if (layout === 'classic') return 'standard'
+    if (layout === 'mosaiClassicCards') return 'red'
+    return layout
+  }
+  return layout
+}
 
 /**
  * Layout mapping rules: maps block layouts between themes.
- * Key = blockType, value = mapping from old layout → new layout.
- *
- * IMPORTANT: fromLayouts should ONLY contain the OTHER theme's layout,
- * not the target layout. This prevents changing blocks that were manually
- * set to a specific layout on other pages.
- *
- * Example: switching to learner should only change 'duccService' → 'classic',
- * NOT touch blocks already set to 'classic' on other pages.
  */
 function getLayoutMappings(preset: ThemePreset, targetTheme: string) {
-  // Determine which layouts belong to the "other" theme
-  const isDucc = targetTheme === 'ducc'
+  const getFromLayouts = (blockName: keyof ThemePreset['layouts'], blockType: string) => {
+    const rawToLayout = preset.layouts[blockName]
+    if (typeof rawToLayout !== 'string') return []
+    const toLayout = translateLayout(blockType, rawToLayout)
+    const otherLayouts = new Set<string>()
+    for (const [name, p] of Object.entries(themePresets)) {
+      if (name !== targetTheme) {
+        const otherVal = p.layouts[blockName]
+        if (typeof otherVal === 'string') {
+          const translated = translateLayout(blockType, otherVal)
+          if (translated !== toLayout) {
+            otherLayouts.add(translated)
+          }
+        }
+      }
+    }
+    return Array.from(otherLayouts)
+  }
 
   return {
     hero: {
-      fromLayouts: isDucc ? ['split'] : ['duccFullscreen'],
-      toLayout: preset.layouts.hero,
+      fromLayouts: getFromLayouts('hero', 'hero'),
+      toLayout: translateLayout('hero', preset.layouts.hero),
       extraProps: preset.layouts.hero === 'split'
         ? { split_theme: 'light', split_direction: 'textLeft' }
         : {},
     },
-    featureCards: {
-      fromLayouts: isDucc ? ['classic'] : ['duccService'],
-      toLayout: preset.layouts.featureCards,
-      extraProps: {
-        card_theme: preset.layouts.featureCardsTheme,
-        show_card_button: preset.layouts.featureCardsShowButton,
-      },
-    },
-    newsUpdates: {
-      fromLayouts: isDucc ? ['spotlight'] : ['duccCards'],
-      toLayout: preset.layouts.news,
-      extraProps: {},
-    },
-    statistics: {
-      fromLayouts: isDucc ? ['cardGrid'] : ['duccStrip'],
-      toLayout: preset.layouts.statistics,
-      extraProps: {},
-    },
-    testimonials: {
-      fromLayouts: isDucc ? ['default'] : ['duccQuote'],
-      toLayout: preset.layouts.testimonials,
-      extraProps: {},
-    },
-    callToAction: {
-      fromLayouts: isDucc ? ['default'] : ['duccBanner'],
-      toLayout: preset.layouts.callToAction,
-      extraProps: {},
-    },
-    faq: {
-      fromLayouts: isDucc ? ['default'] : ['duccAccordion'],
-      toLayout: preset.layouts.faq,
+    featuredCards: {
+      fromLayouts: getFromLayouts('featureCards', 'featuredCards'),
+      toLayout: translateLayout('featuredCards', preset.layouts.featureCards),
       extraProps: {},
     },
   }
@@ -65,12 +63,7 @@ function getLayoutMappings(preset: ThemePreset, targetTheme: string) {
  */
 const blockLayoutColumns: Record<string, string> = {
   hero: 'layout',
-  featureCards: 'card_layout',
-  newsUpdates: 'layout',
-  statistics: 'layout',
-  testimonials: 'layout',
-  callToAction: 'layout',
-  faq: 'layout',
+  featuredCards: 'card_style',
 }
 
 /**
@@ -78,16 +71,11 @@ const blockLayoutColumns: Record<string, string> = {
  */
 const blockTableSuffixes: Record<string, string> = {
   hero: 'hero',
-  featureCards: 'feature_cards',
-  newsUpdates: 'news_updates',
-  statistics: 'statistics',
-  testimonials: 'testimonials',
-  callToAction: 'call_to_action',
-  faq: 'faq',
+  featuredCards: 'featured_cards',
 }
 
 /** All parent collections that have layout blocks */
-const parentTables = ['pages', 'news', 'projects', 'software', 'trainings']
+const parentTables = ['pages', 'news']
 
 /**
  * Apply theme layout overrides to all blocks in the database.

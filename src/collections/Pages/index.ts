@@ -16,7 +16,7 @@ import { ShowcaseCards } from '../../blocks/Showcase/config'
 import { Testimonials } from '../../blocks/Testimonials/config'
 import { FAQ } from '@/blocks/Faq/confg'
 import { ImageGallery } from '../../blocks/ImageGallery/config'
-import { FeatureCards } from '../../blocks/FeaturedCard/config'
+
 import { FormBlock } from '../../blocks/Form/config'
 import { DataSnapshot } from '../../blocks/DataSnapshot/config'
 import { CareerPosting } from '../../blocks/CareerPosting/config'
@@ -143,12 +143,13 @@ export const Pages: CollectionConfig<'pages'> = {
         FAQ,
         ImageGallery,
         HelpSupport,
-        FeatureCards,
+
         FormBlock,
         DataSnapshot,
         CareerPosting,
         FlexibleRowBlock,
         FeaturedCardsBlock,
+        NewsAndUpdatesBlock,
         StatusBadgeBlock,
         SidebarLayoutBlock,
         MediaContactBlock,
