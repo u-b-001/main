@@ -149,8 +149,8 @@ function TextBlock({
           {eyebrowText}
         </span>
       )}
-      <h1 className="text-4xl md:text-6xl font-bold max-w-3xl relative z-10">{heading}</h1>
-      {subheading && <p className="mt-4 text-lg text-gray-300 max-w-2xl relative z-10">{subheading}</p>}
+      <h1 className="text-4xl md:text-6xl font-bold max-w-3xl relative z-10" style={headingColor ? { color: headingColor } : undefined}>{heading}</h1>
+      {subtitle && <p className="mt-4 text-lg text-gray-300 max-w-2xl relative z-10" style={subtitleColor ? { color: subtitleColor } : undefined}>{subtitle}</p>}
       {buttons?.length ? (
         <div className="mt-8 flex gap-4 relative z-10">
           {buttons.map((btn, i) => (
