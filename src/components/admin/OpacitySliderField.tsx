@@ -3,7 +3,7 @@
 import React from 'react'
 import { useField } from '@payloadcms/ui'
 
-export default function OpacitySliderField(props: any) {
+export function OpacitySliderField(props: any) {
   const { value, setValue } = useField<number>({ path: props.path })
   
   return (

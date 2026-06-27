@@ -720,6 +720,41 @@ const DashboardMockSub: Block = {
   ],
 }
 
+/* ── Sub-block: Icon ── */
+const IconSub: Block = {
+  slug: 'flexIcon',
+  labels: { singular: 'Icon', plural: 'Icons' },
+  fields: [
+    iconField('icon', 'Select Icon'),
+    {
+      name: 'size',
+      type: 'select',
+      defaultValue: 'md',
+      options: [
+        { label: 'Small', value: 'sm' },
+        { label: 'Medium', value: 'md' },
+        { label: 'Large', value: 'lg' },
+        { label: 'XL', value: 'xl' },
+        { label: '2XL', value: '2xl' },
+        { label: '3XL', value: '3xl' },
+        { label: '4XL', value: '4xl' },
+        { label: '5XL', value: '5xl' },
+      ],
+    },
+    colorField('color', 'Icon Color', '#1F2937'),
+    {
+      name: 'alignment',
+      type: 'select',
+      defaultValue: 'left',
+      options: [
+        { label: 'Left', value: 'left' },
+        { label: 'Center', value: 'center' },
+        { label: 'Right', value: 'right' },
+      ],
+    },
+  ],
+}
+
 /* ── Main Block: Flexible Row ── */
 export const FlexibleRow: Block = {
   slug: 'flexibleRow',
@@ -813,6 +848,7 @@ export const FlexibleRow: Block = {
             HighlightCardsSub,
             ButtonsSub,
             DashboardMockSub,
+            IconSub,
           ],
         },
       ],

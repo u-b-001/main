@@ -27,10 +27,27 @@ export const sectionHeadingFields: Field[] = [
   },
 ]
 
+const commonLucideIcons = [
+  'ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown',
+  'ChevronRight', 'ChevronLeft', 'ChevronUp', 'ChevronDown',
+  'Check', 'CheckCircle2', 'X', 'XCircle',
+  'Info', 'AlertCircle', 'AlertTriangle', 'HelpCircle',
+  'Settings', 'Search', 'User', 'Users',
+  'Home', 'Menu', 'MoreHorizontal', 'MoreVertical',
+  'Star', 'Heart', 'ThumbsUp', 'ThumbsDown',
+  'MapPin', 'Phone', 'Mail', 'Clock',
+  'Calendar', 'Globe', 'Award', 'BookOpen',
+  'GraduationCap', 'Briefcase', 'Play', 'Shield',
+  'Zap', 'Download', 'Camera', 'Bell', 'Send',
+  'academic', 'globe', 'calendar', 'award', 'book', 'group', 'info', 'star', // legacy mapping support
+  'address', 'phone', 'email', 'hours', 'general' // legacy mapping support
+].map(icon => ({ label: icon, value: icon }));
+
 export const iconField = (name: string, label?: string): Field => ({
   name,
-  type: 'text',
+  type: 'select',
   label: label || 'Icon',
+  options: commonLucideIcons,
   admin: {
     components: {
       Field: '@/components/admin/IconPickerField#IconPickerField',

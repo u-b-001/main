@@ -1,342 +1,298 @@
 import React from 'react'
-import Link from 'next/link'
 import { Media } from '@/components/Media'
 import RichText from '@/components/RichText'
 import { cn } from '@/utilities/ui'
-import type { FlexibleRowBlock as FlexibleRowProps } from '@/payload-types'
+import Link from 'next/link'
+import * as LucideIcons from 'lucide-react'
+import { StatsImpactBlock } from '@/blocks/Statistics/Component'
+import { FileDownloadsComponent } from '@/blocks/FileDownloads/Component'
 
-const colSpanClasses = {
-  'col-span-12': 'col-span-12',
-  'col-span-6': 'col-span-12 lg:col-span-6',
-  'col-span-4': 'col-span-12 lg:col-span-4',
-  'col-span-8': 'col-span-12 lg:col-span-8',
-  'col-span-3': 'col-span-12 lg:col-span-3',
-  'col-span-9': 'col-span-12 lg:col-span-9',
-}
+// Simple placeholder renderer for missing complex blocks
+const PlaceholderBlock = ({ name }: { name: string }) => (
+  <div className="p-4 bg-gray-100 border border-dashed border-gray-400 rounded text-center text-sm text-gray-500">
+    [ {name} Block - Frontend implementation pending ]
+  </div>
+)
 
-const rowBgClasses = {
-  transparent: 'bg-transparent',
-  slate50: 'bg-slate-50 dark:bg-slate-900/60 border-y border-slate-100 dark:border-slate-800/80',
-  brandNavy: 'bg-brand-navy text-white border-y border-slate-850',
-  brandRed: 'bg-brand-red text-white border-y border-red-700',
-  brandCream: 'bg-brand-cream dark:bg-slate-900 border-y border-brand-gold/10',
-}
-
-const rowPaddingClasses = {
-  none: 'py-0',
-  small: 'py-6 md:py-8',
-  medium: 'py-12 md:py-16',
-  large: 'py-20 md:py-28',
-}
-
-const containerWidthClasses = {
-  boxed: 'container mx-auto px-4',
-  fullWidth: 'w-full px-4 md:px-8',
-}
-
-const pureBgClasses = {
-  transparent: 'bg-transparent',
-  slate50: 'bg-slate-50 dark:bg-slate-900/80 border border-slate-150 dark:border-slate-800',
-  brandNavy: 'bg-brand-navy text-white',
-  brandRed: 'bg-brand-red text-white',
-  brandCream: 'bg-brand-cream dark:bg-slate-900 border border-brand-gold/25 dark:border-slate-800',
-}
-
-const columnStyleThemeClasses = {
-  simple: 'bg-transparent',
-  card: 'bg-white dark:bg-slate-900 border border-slate-150 dark:border-slate-800 shadow-xs hover:shadow-md rounded-2xl transition-all duration-300 hover:-translate-y-0.5',
-  bordered: 'bg-transparent border-2 border-slate-200 dark:border-slate-800 rounded-2xl hover:border-brand-gold/50 transition-all duration-250',
-  glassmorphism: 'bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-white/20 dark:border-slate-850 shadow-xs hover:shadow-md rounded-2xl transition-all duration-300',
-}
-
-const paddingClasses = {
-  none: 'p-0',
-  small: 'p-4 md:p-5',
-  medium: 'p-6 md:p-8',
-  large: 'p-10 md:p-12',
-}
-
-const alignClasses = {
-  left: 'text-left',
-  center: 'text-center flex flex-col items-center justify-center',
-  right: 'text-right flex flex-col items-end justify-center',
-}
-
-const gapClasses = {
-  small: 'gap-4 md:gap-6',
-  medium: 'gap-8 md:gap-10',
-  large: 'gap-12 md:gap-16',
-}
-
-const alignItemClasses = {
-  start: 'items-start',
-  center: 'items-center',
-  end: 'items-end',
-  stretch: 'items-stretch',
-}
-
-const imageShapeClasses = {
-  rounded: 'rounded-xl object-cover w-full h-full',
-  circle: 'rounded-full aspect-square object-cover mx-auto max-w-[200px]',
-  square: 'rounded-none aspect-square object-cover w-full h-full',
-  original: 'rounded-xl object-contain w-full h-auto',
-}
-
-export const FlexibleRowComponent: React.FC<FlexibleRowProps> = ({
-  containerWidth = 'boxed',
-  rowBackground = 'transparent',
-  rowPadding = 'none',
-  gridGap = 'medium',
-  alignItems = 'stretch',
+export const FlexibleRowComponent: React.FC<any> = ({
+  sectionHeading,
+  sectionDescription,
+  headingAlignment,
+  sectionBgColor,
+  radialGlow,
+  gap,
+  verticalAlign,
   columns,
 }) => {
   if (!columns || columns.length === 0) return null
 
-  const isRowLightText = rowBackground === 'brandNavy' || rowBackground === 'brandRed'
+  // Process Gap
+  const gapClassMap: Record<string, string> = {
+    '0': 'gap-0',
+    '4': 'gap-4',
+    '6': 'gap-6',
+    '8': 'gap-8',
+    '12': 'gap-12',
+  }
+
+  // Process Alignment
+  const alignClassMap: Record<string, string> = {
+    start: 'items-start',
+    center: 'items-center',
+    end: 'items-end',
+    stretch: 'items-stretch',
+  }
+
+  // Process Width
+  const widthClassMap: Record<string, string> = {
+    auto: 'col-span-1 lg:col-span-auto flex-1',
+    '25': 'col-span-1 lg:col-span-3',
+    '33': 'col-span-1 lg:col-span-4',
+    '50': 'col-span-1 lg:col-span-6',
+    '66': 'col-span-1 lg:col-span-8',
+    '75': 'col-span-1 lg:col-span-9',
+    '100': 'col-span-1 lg:col-span-12 w-full',
+  }
+
+  const paddingClassMap: Record<string, string> = {
+    '0': 'p-0',
+    '4': 'p-4',
+    '6': 'p-6 md:p-8',
+    '8': 'p-8 md:p-12',
+  }
 
   return (
-    <div className={cn('w-full transition-all duration-300', rowBgClasses[rowBackground || 'transparent'], rowPaddingClasses[rowPadding || 'none'])}>
-      <div className={cn(containerWidthClasses[containerWidth || 'boxed'])}>
+    <div
+      className={cn('w-full relative overflow-hidden py-16')}
+      style={{ backgroundColor: sectionBgColor || 'transparent' }}
+    >
+      {radialGlow && (
+        <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
+          <div className="w-[800px] h-[800px] bg-brand-gold/10 rounded-full blur-[100px]" />
+        </div>
+      )}
+
+      <div className="container mx-auto px-4 relative z-10">
+        {(sectionHeading || sectionDescription) && (
+          <div
+            className={cn('mb-12 flex flex-col', {
+              'items-start text-left': headingAlignment === 'left',
+              'items-center text-center': headingAlignment === 'center' || !headingAlignment,
+              'items-end text-right': headingAlignment === 'right',
+            })}
+          >
+            {sectionHeading && <h2 className="text-3xl md:text-4xl font-bold mb-4">{sectionHeading}</h2>}
+            {sectionDescription && <p className="text-lg opacity-80 max-w-3xl">{sectionDescription}</p>}
+          </div>
+        )}
+
         <div
           className={cn(
-            'grid grid-cols-12 w-full',
-            gapClasses[gridGap || 'medium'],
-            alignItemClasses[alignItems || 'stretch']
+            'grid grid-cols-1 lg:grid-cols-12',
+            gapClassMap[gap || '6'],
+            alignClassMap[verticalAlign || 'start']
           )}
         >
-          {columns.map((column, idx) => {
-            const colSpan = colSpanClasses[column.width || 'col-span-6']
-            const isLightText = isRowLightText || column.textColor === 'light' || column.backgroundColor === 'brandNavy' || column.backgroundColor === 'brandRed'
-            const alignClass = alignClasses[column.alignment || 'left']
-
-            // Base style class
-            let styleClass = columnStyleThemeClasses[column.columnStyle || 'simple']
-            // If background is defined inside pureBgClasses, apply it
-            if (column.backgroundColor && column.backgroundColor !== 'transparent') {
-              styleClass = cn(styleClass, pureBgClasses[column.backgroundColor])
-            }
-            // Add padding class
-            styleClass = cn(styleClass, paddingClasses[column.columnPadding || 'none'])
-
-            const imageShapeClass = imageShapeClasses[column.imageShape || 'rounded']
-            const imageEl = column.image && typeof column.image === 'object' && (
-              <div className={cn(
-                "w-full mb-4 overflow-hidden relative",
-                column.imageShape === 'circle' ? 'rounded-full max-w-[200px] mx-auto aspect-square' : 'rounded-xl shadow-xs',
-                column.imageShape === 'original' ? 'max-h-none' : 'max-h-[300px]'
-              )}>
-                <Media resource={column.image} className="w-full h-full" imgClassName={imageShapeClass} />
-              </div>
-            )
-
-            // Check if this column has dynamic blocks configuration
-            // @ts-ignore
-            const hasDynamicBlocks = column.blocks && Array.isArray(column.blocks) && column.blocks.length > 0
-
+          {columns.map((column: any, idx: number) => {
+            const colWidth = widthClassMap[column.width || 'auto']
+            const colPadding = paddingClassMap[column.padding || '0']
+            
             return (
               <div
                 key={idx}
-                className={cn(
-                  'flex flex-col h-full justify-between transition-all duration-200',
-                  colSpan,
-                  styleClass,
-                  isLightText ? 'text-white' : 'text-slate-800 dark:text-slate-200'
-                )}
+                className={cn('flex flex-col', colWidth, colPadding)}
+                style={{ backgroundColor: column.columnBgColor || 'transparent' }}
               >
-                {hasDynamicBlocks ? (
-                  <div className={cn("flex flex-col w-full space-y-6 h-full", alignClass)}>
-                    {/* @ts-ignore */}
-                    {column.blocks.map((block: any, bIdx: number) => {
-                      switch (block.blockType) {
-                        case 'colRichText':
-                          return (
-                            <div
-                              key={bIdx}
-                              className={cn(
-                                'w-full prose prose-sm dark:prose-invert',
-                                isLightText
-                                  ? 'prose-headings:text-white prose-p:text-white/90 prose-strong:text-white prose-a:text-brand-gold'
-                                  : 'prose-headings:text-brand-navy prose-a:text-brand-red'
-                              )}
-                            >
-                              <RichText data={block.content} enableGutter={false} />
-                            </div>
-                          )
-                        case 'colCard': {
-                          const hasCardImg = block.image && typeof block.image === 'object'
-                          const cardThemeStyles = {
-                            standard: 'bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-xs text-slate-800 dark:text-slate-200',
-                            slate: 'bg-slate-50 dark:bg-slate-850 border border-slate-150 dark:border-slate-800 text-slate-800 dark:text-slate-200',
-                            border: 'bg-transparent border-2 border-brand-gold/30 dark:border-brand-gold/20',
-                          }
-                          return (
-                            <div
-                              key={bIdx}
-                              className={cn(
-                                'rounded-xl p-5 border text-left flex flex-col w-full transition-all duration-300 hover:shadow-md',
-                                cardThemeStyles[block.cardStyle as keyof typeof cardThemeStyles] || cardThemeStyles.standard
-                              )}
-                            >
-                              {hasCardImg && (
-                                <div className="relative aspect-video w-full overflow-hidden rounded-lg mb-4 bg-slate-100 dark:bg-slate-800">
-                                  <Media resource={block.image} fill className="w-full h-full object-cover" />
-                                </div>
-                              )}
-                              {block.title && (
-                                <h4 className="text-lg font-bold font-serif text-brand-navy dark:text-white mb-2 uppercase tracking-wide">
-                                  {block.title}
-                                </h4>
-                              )}
-                              {block.description && (
-                                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4 flex-grow">
-                                  {block.description}
-                                </p>
-                              )}
-                              {block.ctaLabel && block.ctaLink && (
-                                <div className="mt-auto">
-                                  <Link
-                                    href={block.ctaLink}
-                                    className="inline-flex items-center text-sm font-semibold text-brand-red dark:text-brand-gold hover:underline"
-                                  >
-                                    {block.ctaLabel}
-                                    <span className="ml-1">→</span>
-                                  </Link>
-                                </div>
-                              )}
-                            </div>
-                          )
-                        }
-                        case 'colImage': {
-                          const hasImg = block.image && typeof block.image === 'object'
-                          if (!hasImg) return null
-                          const shapeClasses = {
-                            original: 'rounded-xl object-contain w-full h-auto',
-                            square: 'rounded-none aspect-square object-cover w-full h-full',
-                            video: 'rounded-xl aspect-video object-cover w-full h-full',
-                            circle: 'rounded-full aspect-square object-cover mx-auto max-w-[200px]',
-                          }
-                          return (
-                            <div key={bIdx} className="w-full">
-                              <div className={cn(
-                                "w-full overflow-hidden relative shadow-xs",
-                                block.aspectRatio === 'circle' ? 'rounded-full max-w-[200px] mx-auto aspect-square' : 'rounded-xl',
-                                block.aspectRatio === 'original' ? 'max-h-none' : 'max-h-[300px]'
-                              )}>
-                                <Media resource={block.image} className="w-full h-full" imgClassName={shapeClasses[block.aspectRatio as keyof typeof shapeClasses]} />
-                              </div>
-                              {block.caption && (
-                                <p className="text-xs text-center text-slate-500 dark:text-slate-400 mt-2 italic">
-                                  {block.caption}
-                                </p>
-                              )}
-                            </div>
-                          )
-                        }
-                        case 'colCta': {
-                          const btnStyleClasses = {
-                            primary: 'bg-brand-navy text-white border-brand-navy hover:bg-slate-900 hover:border-slate-900',
-                            secondary: 'bg-brand-red text-white border-brand-red hover:bg-red-750',
-                            outline: 'bg-transparent text-brand-navy dark:text-white border-brand-navy dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800',
-                          }
-                          return (
-                            <div key={bIdx} className="w-full py-1">
-                              <Link
-                                href={block.link}
-                                className={cn(
-                                  'inline-block px-5 py-2.5 rounded-lg text-sm font-semibold tracking-wider transition-all duration-200 border-2 shadow-xs hover:shadow-sm',
-                                  btnStyleClasses[block.style as keyof typeof btnStyleClasses] || btnStyleClasses.primary
-                                )}
-                              >
-                                {block.label}
-                              </Link>
-                            </div>
-                          )
-                        }
-                        case 'colEmbed': {
-                          const getEmbedUrl = (url: string) => {
-                            if (!url) return ''
-                            let id = ''
-                            if (url.includes('youtube.com/watch')) {
-                              id = url.split('v=')[1]?.split('&')[0] || ''
-                            } else if (url.includes('youtu.be/')) {
-                              id = url.split('youtu.be/')[1]?.split('?')[0] || ''
-                            } else if (url.includes('youtube.com/embed/')) {
-                              id = url.split('youtube.com/embed/')[1]?.split('?')[0] || ''
-                            }
-                            if (id) return `https://www.youtube.com/embed/${id}`
-                            
-                            if (url.includes('vimeo.com/')) {
-                              id = url.split('vimeo.com/')[1]?.split('?')[0] || ''
-                              if (id) return `https://player.vimeo.com/video/${id}`
-                            }
-                            return url
-                          }
-                          const embedUrl = getEmbedUrl(block.videoUrl)
-                          if (!embedUrl) return null
-                          return (
-                            <div key={bIdx} className="w-full aspect-video rounded-xl overflow-hidden shadow-xs bg-black">
-                              <iframe
-                                src={embedUrl}
-                                className="w-full h-full border-0"
-                                allowFullScreen
-                                loading="lazy"
-                                title="Embedded video player"
+                {column.blocks && column.blocks.map((block: any, bIdx: number) => {
+                  switch (block.blockType) {
+                    case 'flexRichText':
+                      return (
+                        <div key={bIdx} className="prose prose-sm md:prose-base max-w-none" style={{ color: block.textColor }}>
+                          <RichText data={block.content} enableGutter={false} />
+                        </div>
+                      )
+                    case 'flexImage':
+                      return (
+                        <div key={bIdx} className="w-full">
+                          {block.image && typeof block.image === 'object' && (
+                            <div className={cn('relative w-full overflow-hidden mb-2', {
+                              'rounded-none': block.rounded === 'none',
+                              'rounded-sm': block.rounded === 'sm',
+                              'rounded-md': block.rounded === 'md',
+                              'rounded-lg': block.rounded === 'lg' || !block.rounded,
+                              'rounded-full aspect-square': block.rounded === 'full',
+                            })}>
+                              <Media
+                                resource={block.image}
+                                className={cn('w-full', {
+                                  'object-cover h-full': block.objectFit === 'cover',
+                                  'object-contain': block.objectFit === 'contain',
+                                  'object-none': block.objectFit === 'none',
+                                })}
                               />
                             </div>
-                          )
-                        }
-                        default:
-                          return null
-                      }
-                    })}
-                  </div>
-                ) : (
-                  // Fallback to legacy static fields
-                  <div className="flex flex-col h-full justify-between w-full">
-                    <div className="flex flex-col h-full w-full">
-                      {column.imagePosition === 'top' && imageEl}
-
-                      <div className={cn('w-full flex-grow', alignClass)}>
-                        {column.title && (
-                          <h3
-                            className={cn(
-                              'text-xl md:text-2xl font-serif font-bold mb-3 tracking-wide uppercase',
-                              isLightText ? 'text-white' : 'text-brand-navy dark:text-white'
-                            )}
-                          >
-                            {column.title}
-                          </h3>
-                        )}
-
-                        {column.content && (
-                          <div className={cn('w-full prose prose-sm dark:prose-invert', isLightText ? 'prose-headings:text-white prose-p:text-white/90 prose-strong:text-white prose-a:text-brand-gold' : 'prose-headings:text-brand-navy prose-a:text-brand-red')}>
-                            <RichText data={column.content} enableGutter={false} />
-                          </div>
-                        )}
-                      </div>
-
-                      {column.imagePosition === 'bottom' && imageEl}
-                    </div>
-
-                    {column.ctaLabel && column.ctaLink && (
-                      <div className={cn('mt-6 w-full', alignClass)}>
-                        <Link
-                          href={column.ctaLink}
-                          className={cn(
-                            'inline-block px-5 py-2.5 rounded-lg text-sm font-semibold tracking-wider transition-all duration-200 border-2 shadow-xs hover:shadow-sm',
-                            isLightText
-                              ? 'bg-white text-brand-navy border-white hover:bg-slate-100'
-                              : column.backgroundColor === 'transparent' && column.columnStyle === 'simple'
-                              ? 'bg-brand-navy text-white border-brand-navy hover:bg-slate-900 hover:border-slate-900'
-                              : 'bg-brand-red text-white border-brand-red hover:bg-red-750'
                           )}
-                        >
-                          {column.ctaLabel}
-                        </Link>
-                      </div>
-                    )}
-                  </div>
-                )}
+                          {block.caption && (
+                            <p className="text-sm mt-1 text-center" style={{ color: block.captionColor }}>
+                              {block.caption}
+                            </p>
+                          )}
+                        </div>
+                      )
+                    case 'flexButtons':
+                      return (
+                        <div key={bIdx} className={cn('flex flex-wrap gap-4 py-4', {
+                          'justify-start': block.alignment === 'left',
+                          'justify-center': block.alignment === 'center',
+                          'justify-end': block.alignment === 'right',
+                        })}>
+                          {block.buttons && block.buttons.map((btn: any, btnIdx: number) => {
+                            const btnBase = "inline-flex items-center justify-center font-medium transition-all"
+                            const sizeClasses = {
+                              sm: "px-3 py-1.5 text-sm",
+                              md: "px-5 py-2.5 text-base rounded-md",
+                              lg: "px-6 py-3 text-lg rounded-lg",
+                            }
+                            const variantClasses = {
+                              primary: "bg-blue-600 text-white hover:bg-blue-700 shadow-md",
+                              secondary: "bg-gray-800 text-white hover:bg-gray-900 shadow-md",
+                              outline: "border-2 border-gray-300 hover:border-gray-800 text-gray-800",
+                              ghost: "bg-transparent text-blue-600 hover:bg-blue-50",
+                            }
+                            
+                            return (
+                              <Link
+                                key={btnIdx}
+                                href={btn.url || '#'}
+                                target={btn.openInNewTab ? '_blank' : '_self'}
+                                className={cn(
+                                  btnBase,
+                                  sizeClasses[btn.size as keyof typeof sizeClasses] || sizeClasses.md,
+                                  variantClasses[btn.variant as keyof typeof variantClasses] || variantClasses.primary
+                                )}
+                              >
+                                {btn.label}
+                              </Link>
+                            )
+                          })}
+                        </div>
+                      )
+                    case 'flexIcon': {
+                      const IconComponent = block.icon ? (LucideIcons as any)[block.icon] : null;
+                      const sizeClasses = {
+                        sm: 'w-6 h-6',
+                        md: 'w-8 h-8',
+                        lg: 'w-12 h-12',
+                        xl: 'w-16 h-16',
+                        '2xl': 'w-20 h-20',
+                        '3xl': 'w-24 h-24',
+                        '4xl': 'w-32 h-32',
+                        '5xl': 'w-40 h-40',
+                      };
+                      return (
+                        <div key={bIdx} className={cn('flex py-4', {
+                          'justify-start': block.alignment === 'left',
+                          'justify-center': block.alignment === 'center',
+                          'justify-end': block.alignment === 'right',
+                        })}>
+                          {IconComponent ? (
+                            <IconComponent 
+                              className={cn(sizeClasses[block.size as keyof typeof sizeClasses] || 'w-8 h-8')} 
+                              style={{ color: block.color || '#1F2937' }} 
+                            />
+                          ) : (
+                            <div className="text-gray-400 text-sm italic border border-dashed border-gray-300 p-2 rounded">
+                              [Icon: {block.icon || 'None'}]
+                            </div>
+                          )}
+                        </div>
+                      )
+                    }
+                    case 'statsImpact':
+                      return <StatsImpactBlock key={bIdx} {...block} />
+                    case 'fileDownloads':
+                      return <FileDownloadsComponent key={bIdx} {...block} />
+                    case 'flexVideo':
+                      return <PlaceholderBlock key={bIdx} name="Video Embed" />
+                    case 'flexCarousel':
+                      return <PlaceholderBlock key={bIdx} name="Media Carousel" />
+                    case 'flexMapEmbed':
+                      return <PlaceholderBlock key={bIdx} name="Map/iFrame Embed" />
+                    case 'flexAnimation':
+                      return <PlaceholderBlock key={bIdx} name="Lottie/GIF Animation" />
+                    case 'flexStatsCards':
+                      return <PlaceholderBlock key={bIdx} name="Stats Cards" />
+                    case 'flexFeatureCards':
+                      return <PlaceholderBlock key={bIdx} name="Feature Cards" />
+                    case 'flexHighlightCards': {
+                      const cols = block.columns || '2';
+                      const gridClasses = {
+                        '1': 'grid-cols-1',
+                        '2': 'grid-cols-1 sm:grid-cols-2',
+                        '3': 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
+                      };
+                      const titleSizes = {
+                        sm: 'text-sm',
+                        base: 'text-base',
+                        lg: 'text-lg',
+                        xl: 'text-xl',
+                        '2xl': 'text-2xl',
+                      };
+                      const isDark = block.theme === 'dark';
+                      const alignClasses = {
+                        left: 'text-left items-start',
+                        center: 'text-center items-center',
+                        right: 'text-right items-end',
+                      };
+
+                      return (
+                        <div key={bIdx} className={cn('grid gap-6 w-full py-4', gridClasses[cols as keyof typeof gridClasses])}>
+                          {block.cards && block.cards.map((card: any, cIdx: number) => {
+                            const CardIcon = card.icon ? (LucideIcons as any)[card.icon] : null;
+                            const animClass = {
+                              none: '',
+                              hoverLift: 'transition-transform duration-300 hover:-translate-y-1 hover:shadow-lg',
+                              pulse: 'animate-pulse',
+                              float: 'animate-bounce',
+                            };
+                            return (
+                              <div
+                                key={cIdx}
+                                className={cn(
+                                  'flex flex-col p-6 rounded-2xl shadow-sm border transition-all duration-300',
+                                  isDark ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-slate-100 text-slate-800',
+                                  alignClasses[block.iconAlignment as keyof typeof alignClasses] || alignClasses.left,
+                                  animClass[card.animation as keyof typeof animClass] || ''
+                                )}
+                              >
+                                {CardIcon && (
+                                  <div
+                                    className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 shrink-0"
+                                    style={{ backgroundColor: block.iconBgColor || '#EEF2FF', color: card.iconColor || '#f59e0b' }}
+                                  >
+                                    <CardIcon className="w-6 h-6" />
+                                  </div>
+                                )}
+                                <h4 className={cn('font-bold mb-2', titleSizes[block.titleSize as keyof typeof titleSizes] || 'text-base')}>
+                                  {card.title}
+                                </h4>
+                                {card.description && (
+                                  <p className={cn('text-sm opacity-80', isDark ? 'text-slate-300' : 'text-slate-600')}>
+                                    {card.description}
+                                  </p>
+                                )}
+                              </div>
+                            )
+                          })}
+                        </div>
+                      )
+                    }
+                    case 'flexDashboardMock':
+                      return <PlaceholderBlock key={bIdx} name="Dashboard Mock Panel" />
+                    default:
+                      return <div key={bIdx}>Unknown block type: {block.blockType}</div>
+                  }
+                })}
               </div>
             )
           })}

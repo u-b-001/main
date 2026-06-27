@@ -1,213 +1,760 @@
-import type { Block } from 'payload'
+import type { Block, Field } from 'payload'
+import { sectionHeadingFields, colorField, iconField } from '../shared'
+import { StatsImpact } from '../Statistics/config'
+import { FileDownloadsBlock } from '../FileDownloads/config'
 
-// Sub-blocks configuration for items inside a column
-
-const colRichTextBlock: Block = {
-  slug: 'colRichText',
-  labels: {
-    singular: 'Rich Text',
-    plural: 'Rich Text Elements',
-  },
+/* ── Sub-block: Rich Text ── */
+const RichTextSub: Block = {
+  slug: 'flexRichText',
+  labels: { singular: 'Rich Text', plural: 'Rich Text' },
   fields: [
     {
       name: 'content',
       type: 'richText',
-      label: 'Content',
       required: true,
     },
-  ],
-}
-
-const colCardBlock: Block = {
-  slug: 'colCard',
-  labels: {
-    singular: 'Card Content',
-    plural: 'Card Contents',
-  },
-  fields: [
     {
-      name: 'image',
-      type: 'upload',
-      relationTo: 'media',
-      label: 'Card Image',
-    },
-    {
-      name: 'title',
-      type: 'text',
-      label: 'Card Title',
-    },
-    {
-      name: 'description',
-      type: 'textarea',
-      label: 'Card Description',
-    },
-    {
-      name: 'ctaLabel',
-      type: 'text',
-      label: 'Button Label',
-    },
-    {
-      name: 'ctaLink',
-      type: 'text',
-      label: 'Button Link',
-    },
-    {
-      name: 'cardStyle',
+      name: 'fontFamily',
       type: 'select',
-      label: 'Card Theme Style',
+      defaultValue: 'inherit',
+      label: 'Body Font Family',
+      admin: { description: 'Font family for body text (paragraphs, lists)' },
       options: [
-        { label: 'Standard White', value: 'standard' },
-        { label: 'Brand Slate', value: 'slate' },
-        { label: 'Accent Border', value: 'border' },
+        { label: 'Default (Inherit)', value: 'inherit' },
+        { label: 'Inter', value: 'Inter' },
+        { label: 'Roboto', value: 'Roboto' },
+        { label: 'Poppins', value: 'Poppins' },
+        { label: 'Open Sans', value: 'Open Sans' },
+        { label: 'Lato', value: 'Lato' },
+        { label: 'Montserrat', value: 'Montserrat' },
+        { label: 'Nunito', value: 'Nunito' },
+        { label: 'Raleway', value: 'Raleway' },
+        { label: 'Playfair Display', value: 'Playfair Display' },
+        { label: 'Merriweather', value: 'Merriweather' },
+        { label: 'Source Sans Pro', value: 'Source Sans Pro' },
       ],
-      defaultValue: 'standard',
     },
+    {
+      name: 'headingFontFamily',
+      type: 'select',
+      defaultValue: 'inherit',
+      label: 'Heading Font Family',
+      admin: { description: 'Font family for headings only (h1-h6). Leave as Default to use the body font.' },
+      options: [
+        { label: 'Default (Same as body)', value: 'inherit' },
+        { label: 'Inter', value: 'Inter' },
+        { label: 'Playfair Display', value: 'Playfair Display' },
+        { label: 'Merriweather', value: 'Merriweather' },
+        { label: 'Roboto', value: 'Roboto' },
+        { label: 'Poppins', value: 'Poppins' },
+        { label: 'Montserrat', value: 'Montserrat' },
+        { label: 'Raleway', value: 'Raleway' },
+      ],
+    },
+    {
+      name: 'fontSize',
+      type: 'select',
+      defaultValue: 'base',
+      options: [
+        { label: 'Small', value: 'sm' },
+        { label: 'Medium', value: 'base' },
+        { label: 'Large', value: 'lg' },
+        { label: 'XL', value: 'xl' },
+        { label: '2XL', value: '2xl' },
+      ],
+    },
+    colorField('textColor', 'Text Color', '#1F2937'),
   ],
 }
 
-const colImageBlock: Block = {
-  slug: 'colImage',
-  labels: {
-    singular: 'Image Element',
-    plural: 'Image Elements',
-  },
+/* ── Sub-block: Image ── */
+const ImageSub: Block = {
+  slug: 'flexImage',
+  labels: { singular: 'Image', plural: 'Images' },
   fields: [
     {
       name: 'image',
       type: 'upload',
       relationTo: 'media',
-      label: 'Image',
       required: true,
     },
     {
       name: 'caption',
       type: 'text',
-      label: 'Image Caption (Optional)',
+      admin: { description: 'Optional caption below the image' },
+    },
+    colorField('captionColor', 'Caption Text Color', '#6B7280'),
+    {
+      name: 'objectFit',
+      type: 'select',
+      defaultValue: 'cover',
+      options: [
+        { label: 'Cover (fill & crop)', value: 'cover' },
+        { label: 'Contain (fit inside)', value: 'contain' },
+        { label: 'None (original size)', value: 'none' },
+      ],
     },
     {
-      name: 'aspectRatio',
+      name: 'rounded',
       type: 'select',
-      label: 'Image Aspect Ratio',
+      defaultValue: 'lg',
       options: [
-        { label: 'Original', value: 'original' },
-        { label: 'Square (1:1)', value: 'square' },
-        { label: 'Video (16:9)', value: 'video' },
-        { label: 'Circle', value: 'circle' },
+        { label: 'None', value: 'none' },
+        { label: 'Small', value: 'sm' },
+        { label: 'Medium', value: 'md' },
+        { label: 'Large', value: 'lg' },
+        { label: 'Full (Circle)', value: 'full' },
       ],
-      defaultValue: 'original',
     },
   ],
 }
 
-const colCtaBlock: Block = {
-  slug: 'colCta',
-  labels: {
-    singular: 'Call to Action Button',
-    plural: 'Call to Action Buttons',
-  },
+/* ── Sub-block: Video ── */
+const VideoSub: Block = {
+  slug: 'flexVideo',
+  labels: { singular: 'Video', plural: 'Videos' },
   fields: [
     {
-      name: 'label',
-      type: 'text',
-      label: 'Button Label',
-      required: true,
-    },
-    {
-      name: 'link',
-      type: 'text',
-      label: 'Button Link',
-      required: true,
-    },
-    {
-      name: 'style',
+      name: 'videoSource',
       type: 'select',
-      label: 'Button Style',
-      options: [
-        { label: 'Navy Button', value: 'primary' },
-        { label: 'Red Button', value: 'secondary' },
-        { label: 'Outline Button', value: 'outline' },
-      ],
-      defaultValue: 'primary',
-    },
-  ],
-}
-
-const colEmbedBlock: Block = {
-  slug: 'colEmbed',
-  labels: {
-    singular: 'Video Embed',
-    plural: 'Video Embeds',
-  },
-  fields: [
-    {
-      name: 'videoUrl',
-      type: 'text',
-      label: 'Video Link (YouTube or Vimeo)',
+      defaultValue: 'upload',
       required: true,
+      options: [
+        { label: 'Upload Video File', value: 'upload' },
+        { label: 'YouTube URL', value: 'youtube' },
+        { label: 'Vimeo URL', value: 'vimeo' },
+        { label: 'External URL (mp4/webm)', value: 'externalUrl' },
+      ],
+    },
+    {
+      name: 'uploadedVideo',
+      type: 'upload',
+      relationTo: 'media',
       admin: {
-        description: 'Provide the full share link of the video (e.g. https://www.youtube.com/watch?v=...)',
+        condition: (_: unknown, siblingData: Record<string, unknown>) =>
+          siblingData?.videoSource === 'upload',
+        description: 'Upload mp4, webm, or other video file',
+      },
+    },
+    {
+      name: 'youtubeUrl',
+      type: 'text',
+      admin: {
+        condition: (_: unknown, siblingData: Record<string, unknown>) =>
+          siblingData?.videoSource === 'youtube',
+        description: 'YouTube video URL (e.g. https://youtube.com/watch?v=...)',
+      },
+    },
+    {
+      name: 'vimeoUrl',
+      type: 'text',
+      admin: {
+        condition: (_: unknown, siblingData: Record<string, unknown>) =>
+          siblingData?.videoSource === 'vimeo',
+        description: 'Vimeo video URL (e.g. https://vimeo.com/123456)',
+      },
+    },
+    {
+      name: 'externalVideoUrl',
+      type: 'text',
+      admin: {
+        condition: (_: unknown, siblingData: Record<string, unknown>) =>
+          siblingData?.videoSource === 'externalUrl',
+        description: 'Direct URL to video file (mp4, webm)',
+      },
+    },
+    {
+      name: 'poster',
+      type: 'upload',
+      relationTo: 'media',
+      admin: { description: 'Thumbnail / poster image (optional)' },
+    },
+    {
+      name: 'autoplay',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: { description: 'Auto-play on load (muted)' },
+    },
+    {
+      name: 'loop',
+      type: 'checkbox',
+      defaultValue: false,
+    },
+    {
+      name: 'controls',
+      type: 'checkbox',
+      defaultValue: true,
+      admin: { description: 'Show playback controls' },
+    },
+  ],
+}
+
+/* ── Sub-block: Carousel ── */
+const CarouselSub: Block = {
+  slug: 'flexCarousel',
+  labels: { singular: 'Carousel', plural: 'Carousels' },
+  fields: [
+    {
+      name: 'slides',
+      type: 'array',
+      required: true,
+      minRows: 2,
+      label: 'Slides',
+      fields: [
+        {
+          name: 'mediaType',
+          type: 'select',
+          defaultValue: 'image',
+          required: true,
+          options: [
+            { label: 'Image', value: 'image' },
+            { label: 'Video (Upload)', value: 'video' },
+            { label: 'YouTube', value: 'youtube' },
+          ],
+        },
+        {
+          name: 'image',
+          type: 'upload',
+          relationTo: 'media',
+          admin: {
+            condition: (_: unknown, siblingData: Record<string, unknown>) =>
+              siblingData?.mediaType === 'image',
+          },
+        },
+        {
+          name: 'video',
+          type: 'upload',
+          relationTo: 'media',
+          admin: {
+            condition: (_: unknown, siblingData: Record<string, unknown>) =>
+              siblingData?.mediaType === 'video',
+          },
+        },
+        {
+          name: 'youtubeUrl',
+          type: 'text',
+          admin: {
+            condition: (_: unknown, siblingData: Record<string, unknown>) =>
+              siblingData?.mediaType === 'youtube',
+            description: 'YouTube URL',
+          },
+        },
+        {
+          name: 'caption',
+          type: 'text',
+        },
+      ],
+    },
+    {
+      name: 'autoplay',
+      type: 'checkbox',
+      defaultValue: true,
+      admin: { description: 'Auto-advance slides' },
+    },
+    {
+      name: 'interval',
+      type: 'number',
+      defaultValue: 5000,
+      admin: {
+        description: 'Auto-play interval in milliseconds (e.g. 5000 = 5 seconds)',
+        condition: (_: unknown, siblingData: Record<string, unknown>) =>
+          siblingData?.autoplay === true,
+      },
+    },
+    {
+      name: 'showDots',
+      type: 'checkbox',
+      defaultValue: true,
+    },
+    {
+      name: 'showArrows',
+      type: 'checkbox',
+      defaultValue: true,
+    },
+  ],
+}
+
+/* ── Sub-block: Map / Embed ── */
+const MapEmbedSub: Block = {
+  slug: 'flexMapEmbed',
+  labels: { singular: 'Map / Embed', plural: 'Maps / Embeds' },
+  fields: [
+    {
+      name: 'embedType',
+      type: 'select',
+      defaultValue: 'iframe',
+      required: true,
+      options: [
+        { label: 'iFrame URL (Google Maps, etc.)', value: 'iframe' },
+        { label: 'HTML Embed Code', value: 'html' },
+      ],
+    },
+    {
+      name: 'iframeUrl',
+      type: 'text',
+      admin: {
+        condition: (_: unknown, siblingData: Record<string, unknown>) =>
+          siblingData?.embedType === 'iframe',
+        description: 'URL for iframe embed (Google Maps, etc.)',
+      },
+    },
+    {
+      name: 'html',
+      type: 'code',
+      admin: {
+        language: 'html',
+        condition: (_: unknown, siblingData: Record<string, unknown>) =>
+          siblingData?.embedType === 'html',
+        description: 'Paste HTML embed code',
+      },
+    },
+    {
+      name: 'height',
+      type: 'number',
+      defaultValue: 400,
+      admin: { description: 'Height in pixels' },
+    },
+  ],
+}
+
+/* ── Sub-block: Animation (Lottie / GIF) ── */
+const AnimationSub: Block = {
+  slug: 'flexAnimation',
+  labels: { singular: 'Animation', plural: 'Animations' },
+  fields: [
+    {
+      name: 'animationType',
+      type: 'select',
+      defaultValue: 'lottie',
+      required: true,
+      options: [
+        { label: 'Lottie JSON URL', value: 'lottie' },
+        { label: 'GIF Upload', value: 'gif' },
+      ],
+    },
+    {
+      name: 'lottieUrl',
+      type: 'text',
+      admin: {
+        condition: (_: unknown, siblingData: Record<string, unknown>) =>
+          siblingData?.animationType === 'lottie',
+        description: 'URL to Lottie JSON file',
+      },
+    },
+    {
+      name: 'gif',
+      type: 'upload',
+      relationTo: 'media',
+      admin: {
+        condition: (_: unknown, siblingData: Record<string, unknown>) =>
+          siblingData?.animationType === 'gif',
+      },
+    },
+    {
+      name: 'loop',
+      type: 'checkbox',
+      defaultValue: true,
+    },
+    {
+      name: 'autoplay',
+      type: 'checkbox',
+      defaultValue: true,
+    },
+  ],
+}
+
+const animationField = (name = 'animation', label = 'Animation'): Field => ({
+  name,
+  type: 'select',
+  label,
+  defaultValue: 'none',
+  options: [
+    { label: 'None', value: 'none' },
+    { label: 'Hover Lift', value: 'hoverLift' },
+    { label: 'Pulse', value: 'pulse' },
+    { label: 'Float', value: 'float' },
+  ],
+})
+
+/* ── Sub-block: Stats Cards ── */
+const StatsCardsSub: Block = {
+  slug: 'flexStatsCards',
+  labels: { singular: 'Stats Cards', plural: 'Stats Cards' },
+  fields: [
+    {
+      name: 'columns',
+      type: 'select',
+      defaultValue: '4',
+      options: [
+        { label: '1 Column', value: '1' },
+        { label: '2 Columns', value: '2' },
+        { label: '3 Columns', value: '3' },
+        { label: '4 Columns', value: '4' },
+      ],
+    },
+    {
+      name: 'cardStyle',
+      type: 'select',
+      defaultValue: 'outline',
+      options: [
+        { label: 'Outline', value: 'outline' },
+        { label: 'Elevated', value: 'elevated' },
+        { label: 'Soft', value: 'soft' },
+        { label: 'About (Icon box + vertical)', value: 'duccAbout' },
+      ],
+    },
+    {
+      name: 'cards',
+      type: 'array',
+      required: true,
+      minRows: 1,
+      fields: [
+        { name: 'label', type: 'text', required: true },
+        { name: 'value', type: 'text', required: true },
+        { name: 'trend', type: 'text' },
+        { name: 'trendLabel', type: 'text' },
+        iconField('icon', 'Stat Icon'),
+        colorField('iconColor', 'Icon Color', '#1d4ed8'),
+        animationField(),
+      ],
+    },
+  ],
+}
+
+/* ── Sub-block: Feature Cards ── */
+const FeatureCardsSub: Block = {
+  slug: 'flexFeatureCards',
+  labels: { singular: 'Feature Cards', plural: 'Feature Cards' },
+  fields: [
+    {
+      name: 'columns',
+      type: 'select',
+      defaultValue: '3',
+      options: [
+        { label: '1 Column', value: '1' },
+        { label: '2 Columns', value: '2' },
+        { label: '3 Columns', value: '3' },
+        { label: '4 Columns', value: '4' },
+      ],
+    },
+    {
+      name: 'cardStyle',
+      type: 'select',
+      defaultValue: 'borderTop',
+      options: [
+        { label: 'Border Top', value: 'borderTop' },
+        { label: 'Outline', value: 'outline' },
+        { label: 'Dark Glass', value: 'darkGlass' },
+      ],
+    },
+    {
+      name: 'cards',
+      type: 'array',
+      required: true,
+      minRows: 1,
+      fields: [
+        iconField('icon', 'Card Icon'),
+        colorField('iconColor', 'Icon Color', '#1d4ed8'),
+        colorField('accentColor', 'Accent Color', '#1d4ed8'),
+        { name: 'title', type: 'richText', required: true },
+        { name: 'subtitle', type: 'text' },
+        { name: 'description', type: 'richText' },
+        {
+          name: 'points',
+          type: 'array',
+          fields: [{ name: 'text', type: 'text', required: true }],
+        },
+        animationField(),
+      ],
+    },
+  ],
+}
+
+/* ── Sub-block: Highlight Cards ── */
+const HighlightCardsSub: Block = {
+  slug: 'flexHighlightCards',
+  labels: { singular: 'Highlight Cards', plural: 'Highlight Cards' },
+  fields: [
+    {
+      name: 'columns',
+      type: 'select',
+      defaultValue: '2',
+      options: [
+        { label: '1 Column', value: '1' },
+        { label: '2 Columns', value: '2' },
+        { label: '3 Columns', value: '3' },
+      ],
+    },
+    {
+      name: 'theme',
+      type: 'select',
+      defaultValue: 'light',
+      options: [
+        { label: 'Light', value: 'light' },
+        { label: 'Dark', value: 'dark' },
+      ],
+    },
+    {
+      name: 'titleSize',
+      type: 'select',
+      defaultValue: 'base',
+      options: [
+        { label: 'Small (14px)', value: 'sm' },
+        { label: 'Base (16px)', value: 'base' },
+        { label: 'Large (18px)', value: 'lg' },
+        { label: 'XL (20px)', value: 'xl' },
+        { label: '2XL (24px)', value: '2xl' },
+      ],
+    },
+    colorField('iconBgColor', 'Icon Background Color', '#EEF2FF'),
+    {
+      name: 'iconAlignment',
+      type: 'select',
+      defaultValue: 'left',
+      options: [
+        { label: 'Left', value: 'left' },
+        { label: 'Center', value: 'center' },
+        { label: 'Right', value: 'right' },
+      ],
+    },
+    {
+      name: 'cards',
+      type: 'array',
+      required: true,
+      minRows: 1,
+      fields: [
+        iconField('icon', 'Card Icon'),
+        colorField('iconColor', 'Icon Color', '#f59e0b'),
+        { name: 'title', type: 'text', required: true },
+        { name: 'description', type: 'textarea' },
+        animationField(),
+      ],
+    },
+  ],
+}
+
+/* ── Sub-block: Buttons / CTA ── */
+const ButtonsSub: Block = {
+  slug: 'flexButtons',
+  labels: { singular: 'Buttons', plural: 'Buttons' },
+  fields: [
+    {
+      name: 'alignment',
+      type: 'select',
+      defaultValue: 'left',
+      options: [
+        { label: 'Left', value: 'left' },
+        { label: 'Center', value: 'center' },
+        { label: 'Right', value: 'right' },
+      ],
+    },
+    {
+      name: 'buttons',
+      type: 'array',
+      required: true,
+      minRows: 1,
+      fields: [
+        {
+          name: 'label',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'url',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'variant',
+          type: 'select',
+          defaultValue: 'primary',
+          options: [
+            { label: 'Primary', value: 'primary' },
+            { label: 'Secondary', value: 'secondary' },
+            { label: 'Outline', value: 'outline' },
+            { label: 'Ghost', value: 'ghost' },
+          ],
+        },
+        {
+          name: 'size',
+          type: 'select',
+          defaultValue: 'md',
+          options: [
+            { label: 'Small', value: 'sm' },
+            { label: 'Medium', value: 'md' },
+            { label: 'Large', value: 'lg' },
+          ],
+        },
+        iconField('icon', 'Button Icon'),
+        {
+          name: 'openInNewTab',
+          type: 'checkbox',
+          defaultValue: false,
+        },
+      ],
+    },
+  ],
+}
+
+/* ── Sub-block: Dashboard Mock Panel ── */
+const DashboardMockSub: Block = {
+  slug: 'flexDashboardMock',
+  dbName: 'flex_dash_mock',
+  labels: { singular: 'Dashboard Mock', plural: 'Dashboard Mocks' },
+  fields: [
+    {
+      name: 'layoutVariant',
+      type: 'select',
+      defaultValue: 'floatingCards',
+      options: [
+        { label: 'Floating Cards', value: 'floatingCards' },
+        { label: 'Sync Status Panel', value: 'syncStatusPanel' },
+      ],
+    },
+    {
+      name: 'theme',
+      type: 'select',
+      defaultValue: 'light',
+      options: [
+        { label: 'Light', value: 'light' },
+        { label: 'Dark', value: 'dark' },
+      ],
+    },
+    {
+      name: 'chartCount',
+      type: 'number',
+      defaultValue: 3,
+      min: 1,
+      max: 4,
+      admin: {
+        description: 'Number of mini tiles/rows inside the mock panel',
+      },
+    },
+    {
+      name: 'topBadgeLabel',
+      type: 'text',
+      defaultValue: 'ACTIVE SCHOOLS',
+    },
+    {
+      name: 'topBadgeLabelSize',
+      type: 'select',
+      defaultValue: 'md',
+      options: [
+        { label: 'Small', value: 'sm' },
+        { label: 'Medium', value: 'md' },
+        { label: 'Large', value: 'lg' },
+      ],
+    },
+    colorField('topBadgeLabelColor', 'Top Badge Label Color', '#64748b'),
+    {
+      name: 'topBadgeValue',
+      type: 'text',
+      defaultValue: '1,500+',
+    },
+    {
+      name: 'topBadgeAnimation',
+      type: 'select',
+      defaultValue: 'float',
+      options: [
+        { label: 'None', value: 'none' },
+        { label: 'Float', value: 'float' },
+        { label: 'Pulse', value: 'pulse' },
+        { label: 'Hover Lift', value: 'hoverLift' },
+      ],
+    },
+    {
+      name: 'topBadgeValueSize',
+      type: 'select',
+      defaultValue: '2xl',
+      options: [
+        { label: 'Large', value: 'lg' },
+        { label: 'XL', value: 'xl' },
+        { label: '2XL', value: '2xl' },
+      ],
+    },
+    colorField('topBadgeValueColor', 'Top Badge Value Color', '#4338ca'),
+    {
+      name: 'bottomChipPrimary',
+      type: 'text',
+      defaultValue: 'Goa Live',
+    },
+    {
+      name: 'bottomChipSecondary',
+      type: 'text',
+      defaultValue: 'National Rollout',
+    },
+    {
+      name: 'bottomSummary',
+      type: 'text',
+      defaultValue: 'Centralized data across schools of India.',
+    },
+    {
+      name: 'bottomBadgeAnimation',
+      type: 'select',
+      defaultValue: 'none',
+      options: [
+        { label: 'None', value: 'none' },
+        { label: 'Float', value: 'float' },
+        { label: 'Pulse', value: 'pulse' },
+        { label: 'Hover Lift', value: 'hoverLift' },
+      ],
+    },
+    {
+      name: 'bottomSummarySize',
+      type: 'select',
+      defaultValue: 'lg',
+      options: [
+        { label: 'Small', value: 'sm' },
+        { label: 'Medium', value: 'md' },
+        { label: 'Large', value: 'lg' },
+        { label: 'XL', value: 'xl' },
+      ],
+    },
+    colorField('bottomSummaryColor', 'Bottom Summary Color', '#334155'),
+    {
+      name: 'syncFooterText',
+      type: 'text',
+      defaultValue: 'SYNCING WITH UDISE+ CLOUD',
+      admin: {
+        description: 'Footer status text for the Sync Status Panel layout',
       },
     },
   ],
 }
 
+/* ── Main Block: Flexible Row ── */
 export const FlexibleRowBlock: Block = {
   slug: 'flexibleRow',
-  interfaceName: 'FlexibleRowBlock',
+  labels: { singular: 'Flexible Row', plural: 'Flexible Rows' },
   fields: [
+    ...sectionHeadingFields,
+    colorField('sectionBgColor', 'Section Background Color', '#FFFFFF'),
     {
-      name: 'containerWidth',
-      type: 'select',
-      label: 'Row Container Width',
-      options: [
-        { label: 'Boxed (Constrained)', value: 'boxed' },
-        { label: 'Full Width (Viewport)', value: 'fullWidth' },
-      ],
-      defaultValue: 'boxed',
-      required: true,
+      name: 'radialGlow',
+      type: 'checkbox',
+      defaultValue: false,
+      label: 'Radial Glow Background',
+      admin: {
+        description: 'Add a subtle radial accent glow behind this section',
+      },
     },
     {
-      name: 'rowBackground',
+      name: 'gap',
       type: 'select',
-      label: 'Row Background Color',
+      defaultValue: '6',
+      label: 'Column Gap',
       options: [
-        { label: 'Transparent', value: 'transparent' },
-        { label: 'Slate Light (slate-50)', value: 'slate50' },
-        { label: 'Brand Navy (1A2B4A)', value: 'brandNavy' },
-        { label: 'Brand Red (Japanese Red)', value: 'brandRed' },
-        { label: 'Light Cream', value: 'brandCream' },
+        { label: 'None', value: '0' },
+        { label: 'Small', value: '4' },
+        { label: 'Medium', value: '6' },
+        { label: 'Large', value: '8' },
+        { label: 'XL', value: '12' },
       ],
-      defaultValue: 'transparent',
-      required: true,
     },
     {
-      name: 'rowPadding',
+      name: 'verticalAlign',
       type: 'select',
-      label: 'Row Padding',
-      options: [
-        { label: 'None', value: 'none' },
-        { label: 'Small', value: 'small' },
-        { label: 'Medium', value: 'medium' },
-        { label: 'Large', value: 'large' },
-      ],
-      defaultValue: 'none',
-      required: true,
-    },
-    {
-      name: 'gridGap',
-      type: 'select',
-      label: 'Gap between Columns',
-      options: [
-        { label: 'Small', value: 'small' },
-        { label: 'Medium', value: 'medium' },
-        { label: 'Large', value: 'large' },
-      ],
-      defaultValue: 'medium',
-      required: true,
-    },
-    {
-      name: 'alignItems',
-      type: 'select',
+      defaultValue: 'start',
       label: 'Vertical Alignment',
       options: [
         { label: 'Top', value: 'start' },
@@ -215,177 +762,64 @@ export const FlexibleRowBlock: Block = {
         { label: 'Bottom', value: 'end' },
         { label: 'Stretch', value: 'stretch' },
       ],
-      defaultValue: 'stretch',
-      required: true,
     },
     {
       name: 'columns',
       type: 'array',
-      label: 'Columns',
-      minRows: 1,
-      maxRows: 4,
       required: true,
-      labels: {
-        singular: 'Column',
-        plural: 'Columns',
+      label: 'Columns',
+      admin: {
+        description: 'Add columns – max 3 per row. More than 3 will wrap to new rows.',
       },
       fields: [
         {
           name: 'width',
           type: 'select',
-          label: 'Column Width (Desktop)',
+          defaultValue: 'auto',
+          label: 'Column Width',
           options: [
-            { label: 'Full Width (12/12)', value: 'col-span-12' },
-            { label: 'Half Width (6/12)', value: 'col-span-6' },
-            { label: 'One Third (4/12)', value: 'col-span-4' },
-            { label: 'Two Thirds (8/12)', value: 'col-span-8' },
-            { label: 'One Quarter (3/12)', value: 'col-span-3' },
-            { label: 'Three Quarters (9/12)', value: 'col-span-9' },
+            { label: 'Auto (equal)', value: 'auto' },
+            { label: '25%', value: '25' },
+            { label: '33%', value: '33' },
+            { label: '50%', value: '50' },
+            { label: '66%', value: '66' },
+            { label: '75%', value: '75' },
+            { label: '100% (full width)', value: '100' },
           ],
-          defaultValue: 'col-span-6',
-          required: true,
         },
+        colorField('columnBgColor', 'Column Background Color', 'transparent'),
         {
-          name: 'columnStyle',
+          name: 'padding',
           type: 'select',
-          label: 'Column Layout Style',
+          defaultValue: '0',
           options: [
-            { label: 'Simple Text/Image', value: 'simple' },
-            { label: 'Card Box (Shadow & Hover)', value: 'card' },
-            { label: 'Bordered/Minimal Card', value: 'bordered' },
-            { label: 'Glassmorphism Card', value: 'glassmorphism' },
+            { label: 'None', value: '0' },
+            { label: 'Small', value: '4' },
+            { label: 'Medium', value: '6' },
+            { label: 'Large', value: '8' },
           ],
-          defaultValue: 'simple',
-          required: true,
-        },
-        {
-          name: 'backgroundColor',
-          type: 'select',
-          label: 'Background Color (within Column)',
-          options: [
-            { label: 'Transparent', value: 'transparent' },
-            { label: 'Slate Light (slate-50)', value: 'slate50' },
-            { label: 'Brand Navy (1A2B4A)', value: 'brandNavy' },
-            { label: 'Brand Red (Japanese Red)', value: 'brandRed' },
-            { label: 'Light Cream', value: 'brandCream' },
-          ],
-          defaultValue: 'transparent',
-          required: true,
-        },
-        {
-          name: 'textColor',
-          type: 'select',
-          label: 'Text Color Scheme',
-          options: [
-            { label: 'Default / Dark Text', value: 'dark' },
-            { label: 'Light / White Text', value: 'light' },
-          ],
-          defaultValue: 'dark',
-          required: true,
-        },
-        {
-          name: 'columnPadding',
-          type: 'select',
-          label: 'Column Padding',
-          options: [
-            { label: 'None', value: 'none' },
-            { label: 'Small', value: 'small' },
-            { label: 'Medium', value: 'medium' },
-            { label: 'Large', value: 'large' },
-          ],
-          defaultValue: 'none',
-          required: true,
-        },
-        {
-          name: 'alignment',
-          type: 'select',
-          label: 'Content Alignment',
-          options: [
-            { label: 'Left', value: 'left' },
-            { label: 'Center', value: 'center' },
-            { label: 'Right', value: 'right' },
-          ],
-          defaultValue: 'left',
-          required: true,
-        },
-        {
-          name: 'image',
-          type: 'upload',
-          relationTo: 'media',
-          label: 'Column Image (Optional / Legacy)',
-          admin: {
-            description: 'Legacy Image for this column. Kept for backward compatibility.',
-          },
-        },
-        {
-          name: 'imagePosition',
-          type: 'select',
-          label: 'Image Position (Legacy)',
-          options: [
-            { label: 'Top of column', value: 'top' },
-            { label: 'Bottom of column', value: 'bottom' },
-          ],
-          defaultValue: 'top',
-        },
-        {
-          name: 'imageShape',
-          type: 'select',
-          label: 'Image Shape style (Legacy)',
-          options: [
-            { label: 'Rounded Rect', value: 'rounded' },
-            { label: 'Circle', value: 'circle' },
-            { label: 'Square/Cover', value: 'square' },
-            { label: 'Original Ratio', value: 'original' },
-          ],
-          defaultValue: 'rounded',
-          required: true,
-        },
-        {
-          name: 'title',
-          type: 'text',
-          label: 'Column Title (Optional / Legacy)',
-        },
-        {
-          name: 'content',
-          type: 'richText',
-          label: 'Column Content (Optional / Legacy)',
-        },
-        {
-          name: 'ctaLabel',
-          type: 'text',
-          label: 'Call to Action Label (Optional / Legacy)',
-        },
-        {
-          name: 'ctaLink',
-          type: 'text',
-          label: 'Call to Action Link (Optional / Legacy)',
         },
         {
           name: 'blocks',
           type: 'blocks',
-          label: 'Column Content Elements (New Dynamic Blocks)',
-          admin: {
-            description: 'Add multiple elements of different styles (Rich Text, Cards, Images, Buttons, Videos) inside this column. If blocks are added here, they will display instead of the legacy content fields above.',
-          },
+          label: 'Content Blocks',
           blocks: [
-            colRichTextBlock,
-            colCardBlock,
-            colImageBlock,
-            colCtaBlock,
-            colEmbedBlock,
+            RichTextSub,
+            ImageSub,
+            VideoSub,
+            CarouselSub,
+            MapEmbedSub,
+            AnimationSub,
+            StatsCardsSub,
+            FeatureCardsSub,
+            HighlightCardsSub,
+            ButtonsSub,
+            DashboardMockSub,
+            StatsImpact,
+            FileDownloadsBlock,
           ],
         },
       ],
     },
   ],
-}
-
-export const FlexibleColumnBlock: Block = {
-  slug: 'flexibleColumn',
-  interfaceName: 'FlexibleColumnBlock',
-  labels: {
-    singular: 'Flexible Column',
-    plural: 'Flexible Columns',
-  },
-  fields: FlexibleRowBlock.fields,
 }

@@ -30,7 +30,7 @@ import { ImageWithTextBlock } from './ImageWithTextBlock/config'
 import { InfoCardBlock } from './InfoCardBlock/config'
 import { TableBlock } from './TableBlock/config'
 import { EmbedBlock } from './EmbedBlock/config'
-import { FlexibleRowBlock, FlexibleColumnBlock } from './FlexibleRow/config'
+import { FlexibleRowBlock } from './FlexibleRow/config'
 import { FeaturedCardsBlock } from './FeaturedCards/config'
 import { MediaContactBlock } from './MediaContact/config'
 
@@ -64,7 +64,6 @@ export const allBlocks = [
   TableBlock,
   EmbedBlock,
   FlexibleRowBlock,
-  FlexibleColumnBlock,
   FeaturedCardsBlock,
   MediaContactBlock,
 ]
@@ -99,7 +98,6 @@ export const collectionBlocks = [
   TableBlock,
   EmbedBlock,
   FlexibleRowBlock,
-  FlexibleColumnBlock,
   FeaturedCardsBlock,
   MediaContactBlock,
 ]

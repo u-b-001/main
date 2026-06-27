@@ -23,6 +23,11 @@ import {StatusBadgeBlock } from './CardStautsBadge/Component'
 import { FlexibleRowComponent } from '@/blocks/FlexibleRow/Component'
 import { FeaturedCardsComponent } from '@/blocks/FeaturedCards/Component'
 import { MediaContactComponent } from '@/blocks/MediaContact/Component'
+import { SidebarLayoutComponent } from '@/blocks/SidebarLayout/Component'
+import { ExamIntroComponent } from '@/blocks/ExamIntro/Component'
+import { ContentLayoutComponent } from '@/blocks/ContentLayout/Component'
+import { StepsComponent } from '@/blocks/Steps/Component'
+import { FileDownloadsComponent } from '@/blocks/FileDownloads/Component'
 
 const blockComponents = {
   cta: CallToActionBlock,
@@ -44,9 +49,14 @@ const blockComponents = {
   dataSnapshotBlock : DataSnapshotBlock ,
   careerPostingBlock : CareerPostingBlock,
   flexibleRow: FlexibleRowComponent,
-  flexibleColumn: FlexibleRowComponent,
   featuredCards: FeaturedCardsComponent,
   helpSupportBlock: HelpSupportBlock,
+  sidebarLayout: SidebarLayoutComponent,
+  mediaContact: MediaContactComponent,
+  examIntro: ExamIntroComponent,
+  contentLayout: ContentLayoutComponent,
+  steps: StepsComponent,
+  fileDownloads: FileDownloadsComponent,
 }
 
 export const RenderBlocks: React.FC<{

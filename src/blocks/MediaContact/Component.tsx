@@ -4,7 +4,8 @@ import React, { useState } from 'react'
 import { Media } from '@/components/Media'
 import RichText from '@/components/RichText'
 import { cn } from '@/utilities/ui'
-import { MapPin, Phone, Mail, Clock, Info, CheckCircle2, Send } from 'lucide-react'
+import * as LucideIcons from 'lucide-react'
+const { MapPin, Phone, Mail, Clock, Info, CheckCircle2, Send } = LucideIcons
 import type { MediaContactBlock as MediaContactProps } from '@/payload-types'
 
 const bgClasses = {
@@ -245,7 +246,7 @@ export const MediaContactComponent: React.FC<MediaContactProps> = ({
             {contactDetails && contactDetails.length > 0 && (
               <div className="space-y-4">
                 {contactDetails.map((detail, idx) => {
-                  const IconComponent = iconMap[detail.type as keyof typeof iconMap] || iconMap.general
+                  const IconComponent = iconMap[detail.type as keyof typeof iconMap] || (LucideIcons as any)[detail.type] || iconMap.general
                   const isDetailLinked = !!detail.link
 
                   const detailEl = (

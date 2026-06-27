@@ -24,8 +24,7 @@ import {
   type LinkFields,
 } from '@payloadcms/richtext-lexical'
 
-export const defaultLexical = lexicalEditor({
-  features: [
+export const getDefaultLexicalFeatures = () => [
     ParagraphFeature(),
     UnderlineFeature(),
     BoldFeature(),
@@ -73,5 +72,8 @@ export const defaultLexical = lexicalEditor({
         ]
       },
     }),
-  ],
+]
+
+export const defaultLexical = lexicalEditor({
+  features: getDefaultLexicalFeatures(),
 })

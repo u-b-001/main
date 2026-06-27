@@ -25,6 +25,12 @@ import { StatusBadgeBlock } from '../../blocks/CardStautsBadge/config'
 
 import { FlexibleRowBlock } from '../../blocks/FlexibleRow/config'
 import { FeaturedCardsBlock } from '../../blocks/FeaturedCards/config'
+import { SidebarLayoutBlock } from '../../blocks/SidebarLayout/config'
+import { MediaContactBlock } from '../../blocks/MediaContact/config'
+import { ExamIntroBlock } from '../../blocks/ExamIntro/config'
+import { ContentLayout } from '../../blocks/ContentLayout/config'
+import { StepsBlock } from '../../blocks/Steps/config'
+import { FileDownloadsBlock } from '../../blocks/FileDownloads/config'
 
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -91,7 +97,7 @@ export const Pages: CollectionConfig<'pages'> = {
       ],
       required: true,
       admin: {
-        position: 'sidebar',
+        hidden: true,
       },
     },
     {
@@ -144,6 +150,12 @@ export const Pages: CollectionConfig<'pages'> = {
         FlexibleRowBlock,
         FeaturedCardsBlock,
         StatusBadgeBlock,
+        SidebarLayoutBlock,
+        MediaContactBlock,
+        ExamIntroBlock,
+        ContentLayout,
+        StepsBlock,
+        FileDownloadsBlock,
       ],
       required: true,
       admin: {

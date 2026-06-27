@@ -3,7 +3,7 @@
 import React from 'react'
 import { useField } from '@payloadcms/ui'
 
-export default function ColorPickerField(props: any) {
+export function ColorPickerField(props: any) {
   const { value, setValue } = useField<string>({ path: props.path })
   
   return (

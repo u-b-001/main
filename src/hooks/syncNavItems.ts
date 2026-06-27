@@ -1,6 +1,7 @@
 import type { CollectionAfterChangeHook, CollectionAfterDeleteHook } from 'payload'
 
 export const syncNavAfterChange: CollectionAfterChangeHook = async ({ doc, req, operation }) => {
+  if (req.context?.disableSyncNav) return doc;
   if (operation === 'create' || operation === 'update') {
     // Run asynchronously to prevent database locks
     syncNavToHeader(req.payload)
@@ -9,6 +10,7 @@ export const syncNavAfterChange: CollectionAfterChangeHook = async ({ doc, req, 
 }
 
 export const syncNavAfterDelete: CollectionAfterDeleteHook = async ({ req }) => {
+  if (req.context?.disableSyncNav) return;
   syncNavToHeader(req.payload)
 }
 
