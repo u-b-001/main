@@ -4,45 +4,108 @@ import React, { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { cn } from '@/utilities/ui'
 
-type Button = { label: string; url: string; style?: 'primary' | 'secondary' }
-type HeroProps = {
-  heading: string
-  subheading?: string
-  image?: { url: string; alt?: string } | string
-  buttons?: Button[]
-  designSettings?: {
-    overlapHeader?: boolean
-    imageOpacity?: number
-    imageScale?: number
-  }
+import { Media } from '@/components/Media'
+
+type FeatureTag = { icon?: string; text: string }
+type HeroButton = { label: string; url: string; variant?: 'primary' | 'secondary' | 'outline'; icon?: string }
+type Slide = any
+type CarouselSettings = any
+type OverlaySettings = any
+type ConstantOverlay = any
+type QuickAccessBar = any
+
+export type HeroBlockProps = {
+  mode?: 'single' | 'carousel'
+  layout?: 'fullWidth' | 'fullscreenOverlayCarousel' | 'mosiaFullscreen' | 'split' | 'contained'
+  splitDirection?: 'textLeft' | 'textRight'
+  splitTheme?: 'dark' | 'light'
+  splitTextBehavior?: 'static' | 'slide'
+  splitFeatures?: FeatureTag[]
+  height?: number
+  textAlignment?: 'left' | 'center' | 'right'
+  textVerticalPosition?: 'top' | 'center' | 'bottom'
+  contentMaxWidth?: number
+  contentPaddingX?: number
+  contentPaddingY?: number
+  constantOverlayContent?: boolean
+  constantOverlay?: ConstantOverlay
+  overlay?: OverlaySettings
+  headerGlass?: any
+  carouselSettings?: CarouselSettings
+  singleSlide?: Slide
+  slides?: Slide[]
+  mosiaFloatingCard?: any
+  mosiaShowSlideCounter?: boolean
+  mosiaShowPlayPause?: boolean
+  quickAccessBar?: QuickAccessBar
 }
 
-export const HeroBlock: React.FC<HeroProps> = ({ heading, subheading, image, buttons, designSettings }) => {
-  const imageUrl = typeof image === 'object' ? image?.url : undefined
+function hexToRgba(hex: string, opacity: number) {
+  if (!hex) return 'rgba(0,0,0,0)'
+  const r = parseInt(hex.slice(1, 3), 16) || 0
+  const g = parseInt(hex.slice(3, 5), 16) || 0
+  const b = parseInt(hex.slice(5, 7), 16) || 0
+  return `rgba(${r}, ${g}, ${b}, ${opacity / 100})`
+}
 
-  const overlap = designSettings?.overlapHeader;
-  const opacity = designSettings?.imageOpacity !== undefined ? designSettings.imageOpacity : 40;
-  const scale = designSettings?.imageScale ?? 100;
+function alignmentClasses(align?: 'left' | 'center' | 'right') {
+  if (align === 'right') return 'text-right items-end'
+  if (align === 'left') return 'text-left items-start'
+  return 'text-center items-center mx-auto'
+}
 
-  return (
-    <section className={cn(
-      "relative flex flex-col items-center justify-center text-center py-24 px-6 bg-black text-white overflow-hidden",
-      overlap ? "-mt-20 pt-44 lg:-mt-24 lg:pt-48" : ""
-    )}>
-      {imageUrl && (
-        <Image
-          src={imageUrl}
-          alt={typeof image === 'object' ? image?.alt || '' : ''}
-          fill
-          className="object-cover -z-10"
-          style={{ 
-            opacity: opacity / 100,
-            transform: scale !== 100 ? `scale(${scale / 100})` : undefined
-          }}
-        />
-      )
-    }
-    return null
+function verticalClasses(val?: 'top' | 'center' | 'bottom') {
+  if (val === 'top') return 'items-start'
+  if (val === 'bottom') return 'items-end'
+  return 'items-center'
+}
+
+function buttonClasses(variant?: string) {
+  if (variant === 'secondary') return 'bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm'
+  if (variant === 'outline') return 'border-2 border-white/80 text-white hover:bg-white hover:text-black'
+  return 'bg-brand-red text-white hover:bg-brand-red/90'
+}
+
+function SlideMedia({ slide, priority }: { slide: any; priority?: boolean }) {
+  if (!slide) return null
+  const mediaType = slide.mediaType || 'image'
+
+  if (mediaType === 'image') {
+    return (
+      <Media resource={slide.image} priority={priority} fill className="object-cover" />
+    )
+  }
+
+  if (mediaType === 'video') {
+    return (
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="h-full w-full object-cover"
+        poster={typeof slide.videoPoster === 'object' ? slide.videoPoster?.url : slide.videoPoster}
+      >
+        <source src={slide.videoUrl} type="video/mp4" />
+      </video>
+    )
+  }
+
+  if (mediaType === 'externalVideo') {
+    return (
+      <iframe
+        src={slide.externalVideoUrl}
+        className="h-full w-full object-cover pointer-events-none"
+        allow="autoplay; fullscreen; picture-in-picture"
+        allowFullScreen
+      />
+    )
+  }
+
+  if (mediaType === 'animation') {
+    return (
+      <img src={slide.animationUrl} className="h-full w-full object-contain" alt="" />
+    )
   }
 
   if (mediaType === 'dataViz') {
@@ -50,7 +113,6 @@ export const HeroBlock: React.FC<HeroProps> = ({ heading, subheading, image, but
     return (
       <div
         className="absolute inset-0 h-full w-full overflow-hidden"
-        // dataVizEmbed is authored by trusted CMS editors (admin-only field), not end users.
         dangerouslySetInnerHTML={{ __html: slide.dataVizEmbed }}
       />
     )
