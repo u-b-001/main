@@ -390,6 +390,48 @@ export interface Page {
               id?: string | null;
             }[]
           | null;
+        mosiaFloatingCard?: {
+          enabled?: boolean | null;
+          badgeLabel?: string | null;
+          footerText?: string | null;
+          footerLink?: string | null;
+          footerLinkLabel?: string | null;
+          stats?:
+            | {
+                value: string;
+                label: string;
+                id?: string | null;
+              }[]
+            | null;
+        };
+        mosiaShowSlideCounter?: boolean | null;
+        mosiaShowPlayPause?: boolean | null;
+        /**
+         * Floating card grid that overlaps the bottom of the hero into the next section
+         */
+        quickAccessBar?: {
+          enabled?: boolean | null;
+          /**
+           * How many pixels the bar hangs below the hero (default: 80)
+           */
+          overlapAmount?: number | null;
+          items?:
+            | {
+                label: string;
+                /**
+                 * Select a Lucide icon
+                 */
+                icon?: string | null;
+                /**
+                 * Internal path (e.g. /it-services) or external URL
+                 */
+                link: string;
+                external?: boolean | null;
+                colorVariant?: ('primary' | 'dark') | null;
+                id?: string | null;
+              }[]
+            | null;
+        };
         designSettings?: {
           /**
            * Pull the hero section up to render underneath a transparent header.
@@ -1265,6 +1307,7 @@ export interface Page {
     | ContentLayoutBlock
     | StepsBlock
     | FileDownloadsBlock
+    | ResourceLinksBlock
   )[];
   seo?: {
     title?: string | null;
@@ -1650,6 +1693,60 @@ export interface FeaturedCardsBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NewsAndUpdatesBlock".
+ */
+export interface NewsAndUpdatesBlock {
+  /**
+   * Section heading displayed above this block
+   */
+  heading?: string | null;
+  /**
+   * Optional description below the heading
+   */
+  description?: string | null;
+  align?: ('left' | 'center' | 'right') | null;
+  /**
+   * Choose between a card grid or a featured spotlight layout
+   */
+  layout: 'spotlight' | 'grid' | 'list';
+  /**
+   * Choose manual card entry or automatic fetch from News collection.
+   */
+  newsSource: 'fetch' | 'manual';
+  /**
+   * Maximum number of cards to fetch
+   */
+  limit?: number | null;
+  sortBy?: ('latest' | 'oldest' | 'featured') | null;
+  /**
+   * Optional category filter (exact match)
+   */
+  category?: ('' | 'ANNOUNCEMENT' | 'EVENT' | 'OPPORTUNITY' | 'RESULT' | 'NOTICE') | null;
+  fetchOnlyFeatured?: boolean | null;
+  manualNews?:
+    | {
+        title: string;
+        tag: 'ANNOUNCEMENT' | 'EVENT' | 'OPPORTUNITY' | 'RESULT' | 'NOTICE';
+        excerpt: string;
+        externalLink?: string | null;
+        publishedAt: string;
+        featured?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  viewAllEnabled?: boolean | null;
+  viewAllLabel?: string | null;
+  viewAllUrl?: string | null;
+  /**
+   * Pick a color or enter hex value
+   */
+  sectionBgColor?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'newsAndUpdates';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "SidebarLayoutBlock".
  */
 export interface SidebarLayoutBlock {
@@ -1861,6 +1958,28 @@ export interface StepsBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'steps';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ResourceLinksBlock".
+ */
+export interface ResourceLinksBlock {
+  title?: string | null;
+  description?: string | null;
+  columns?: ('1' | '2' | '3') | null;
+  links?:
+    | {
+        title: string;
+        description?: string | null;
+        url: string;
+        openInNewTab?: boolean | null;
+        icon?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'resourceLinks';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2685,6 +2804,40 @@ export interface PagesSelect<T extends boolean = true> {
                         };
                     id?: T;
                   };
+              mosiaFloatingCard?:
+                | T
+                | {
+                    enabled?: T;
+                    badgeLabel?: T;
+                    footerText?: T;
+                    footerLink?: T;
+                    footerLinkLabel?: T;
+                    stats?:
+                      | T
+                      | {
+                          value?: T;
+                          label?: T;
+                          id?: T;
+                        };
+                  };
+              mosiaShowSlideCounter?: T;
+              mosiaShowPlayPause?: T;
+              quickAccessBar?:
+                | T
+                | {
+                    enabled?: T;
+                    overlapAmount?: T;
+                    items?:
+                      | T
+                      | {
+                          label?: T;
+                          icon?: T;
+                          link?: T;
+                          external?: T;
+                          colorVariant?: T;
+                          id?: T;
+                        };
+                  };
               designSettings?:
                 | T
                 | {
@@ -3106,6 +3259,7 @@ export interface PagesSelect<T extends boolean = true> {
         contentLayout?: T | ContentLayoutBlockSelect<T>;
         steps?: T | StepsBlockSelect<T>;
         fileDownloads?: T | FileDownloadsBlockSelect<T>;
+        resourceLinks?: T | ResourceLinksBlockSelect<T>;
       };
   seo?:
     | T
@@ -3312,6 +3466,38 @@ export interface FeaturedCardsBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NewsAndUpdatesBlock_select".
+ */
+export interface NewsAndUpdatesBlockSelect<T extends boolean = true> {
+  heading?: T;
+  description?: T;
+  align?: T;
+  layout?: T;
+  newsSource?: T;
+  limit?: T;
+  sortBy?: T;
+  category?: T;
+  fetchOnlyFeatured?: T;
+  manualNews?:
+    | T
+    | {
+        title?: T;
+        tag?: T;
+        excerpt?: T;
+        externalLink?: T;
+        publishedAt?: T;
+        featured?: T;
+        id?: T;
+      };
+  viewAllEnabled?: T;
+  viewAllLabel?: T;
+  viewAllUrl?: T;
+  sectionBgColor?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "SidebarLayoutBlock_select".
  */
 export interface SidebarLayoutBlockSelect<T extends boolean = true> {
@@ -3417,6 +3603,27 @@ export interface StepsBlockSelect<T extends boolean = true> {
     | {
         title?: T;
         description?: T;
+        icon?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ResourceLinksBlock_select".
+ */
+export interface ResourceLinksBlockSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  columns?: T;
+  links?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        url?: T;
+        openInNewTab?: T;
         icon?: T;
         id?: T;
       };

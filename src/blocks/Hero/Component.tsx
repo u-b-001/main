@@ -151,7 +151,7 @@ function TextBlock({
       )}
       <h1 className="text-4xl md:text-6xl font-bold max-w-3xl relative z-10" style={headingColor ? { color: headingColor } : undefined}>{heading}</h1>
       {subtitle && <p className="mt-4 text-lg text-gray-300 max-w-2xl relative z-10" style={subtitleColor ? { color: subtitleColor } : undefined}>{subtitle}</p>}
-      {buttons?.length ? (
+      {buttons && buttons.length > 0 && (
         <div className="mt-8 flex gap-4 relative z-10">
           {buttons.map((btn, i) => (
             <Link
@@ -326,7 +326,7 @@ function CarouselControls({
       )}
       {settings?.showDots !== false && onGoTo && (
         <div className="absolute bottom-4 left-1/2 z-20 flex -translate-x-1/2 gap-2">
-          {Array.from({ length: count }).map((_, i) => (
+          {Array.from({ length: count }).map((_: unknown, i: number) => (
             <button
               key={i}
               type="button"
@@ -477,7 +477,7 @@ function MosiaFullscreenHero(props: HeroBlockProps) {
                 )}
                 {card.stats && card.stats.length > 0 && (
                   <div className="mt-4 grid grid-cols-2 gap-4">
-                    {card.stats.map((stat, i) => (
+                    {card.stats.map((stat: { label: string; value: string }, i: number) => (
                       <div key={`${stat.label}-${i}`}>
                         <div className="text-2xl font-bold text-neutral-900">{stat.value}</div>
                         <div className="text-xs text-neutral-500">{stat.label}</div>
@@ -607,7 +607,7 @@ function SplitHero(props: HeroBlockProps) {
       )}
       {textSlide.buttons && textSlide.buttons.length > 0 && (
         <div className="mt-2 flex flex-wrap gap-3">
-          {textSlide.buttons.map((btn, i) => (
+          {textSlide.buttons.map((btn: HeroButton, i: number) => (
             <Link
               key={`${btn.label}-${i}`}
               href={btn.url || '#'}
@@ -746,7 +746,7 @@ function QuickAccessBarSection({ bar }: { bar?: QuickAccessBar }) {
           gridTemplateColumns: `repeat(${Math.min(bar.items.length, 4)}, minmax(0, 1fr))`,
         }}
       >
-        {bar.items.map((item, i) => {
+        {bar.items.map((item: any, i: number) => {
           const isDark = item.colorVariant === 'dark'
           const content = (
             <div
