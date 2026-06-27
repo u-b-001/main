@@ -114,13 +114,11 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
-    homepage: Homepage;
     'site-settings': SiteSetting;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
-    homepage: HomepageSelect<false> | HomepageSelect<true>;
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
   };
   locale: null;
@@ -178,17 +176,260 @@ export interface Page {
     | EmbedBlock
     | CallToActionBlock
     | {
-        heading: string;
-        subheading?: string | null;
-        image?: (number | null) | Media;
-        buttons?:
+        mode: 'single' | 'carousel';
+        layout: 'fullWidth' | 'fullscreenOverlayCarousel' | 'mosiaFullscreen' | 'split' | 'contained';
+        splitDirection?: ('textLeft' | 'textRight') | null;
+        /**
+         * Dark: dark bg with white text. Light: muted bg with dark text.
+         */
+        splitTheme?: ('dark' | 'light') | null;
+        /**
+         * Static: text stays fixed while images change. Slide: heading, subtitle, and buttons change with each slide.
+         */
+        splitTextBehavior?: ('static' | 'slide') | null;
+        /**
+         * Small icon + text tags shown below the buttons (e.g. "PHD Programs", "Internships")
+         */
+        splitFeatures?:
           | {
-              label: string;
-              url: string;
-              style?: ('primary' | 'secondary') | null;
+              icon?: string | null;
+              text: string;
               id?: string | null;
             }[]
           | null;
+        /**
+         * Hero height in pixels (e.g. 600)
+         */
+        height?: number | null;
+        textAlignment?: ('left' | 'center' | 'right') | null;
+        textVerticalPosition?: ('top' | 'center' | 'bottom') | null;
+        /**
+         * Maximum content width in pixels for hero text container
+         */
+        contentMaxWidth?: number | null;
+        /**
+         * Horizontal content padding in pixels
+         */
+        contentPaddingX?: number | null;
+        /**
+         * Vertical content padding in pixels
+         */
+        contentPaddingY?: number | null;
+        /**
+         * Keep text/buttons constant while only the background slide changes
+         */
+        constantOverlayContent?: boolean | null;
+        constantOverlay?: {
+          showText?: boolean | null;
+          heading?: string | null;
+          /**
+           * Heading text color
+           */
+          headingColor?: string | null;
+          subtitle?: string | null;
+          /**
+           * Description text color
+           */
+          subtitleColor?: string | null;
+          buttons?:
+            | {
+                label: string;
+                url: string;
+                variant?: ('primary' | 'secondary' | 'outline') | null;
+                /**
+                 * Select button icon
+                 */
+                icon?: string | null;
+                id?: string | null;
+              }[]
+            | null;
+        };
+        overlay?: {
+          enabled?: boolean | null;
+          /**
+           * Pick overlay color
+           */
+          color?: string | null;
+          /**
+           * Overlay opacity (0-100)
+           */
+          opacity?: number | null;
+        };
+        headerGlass?: {
+          enabled?: boolean | null;
+          /**
+           * Glass overlay tint color for the fixed header
+           */
+          fillColor?: string | null;
+          /**
+           * Glass tint opacity in percent
+           */
+          fillOpacity?: number | null;
+          /**
+           * Background blur amount in pixels
+           */
+          blurAmount?: number | null;
+          /**
+           * Show thin divider under header while hero is active
+           */
+          showDivider?: boolean | null;
+        };
+        carouselSettings?: {
+          autoPlay?: boolean | null;
+          /**
+           * Interval in milliseconds (e.g. 5000 = 5 seconds)
+           */
+          autoPlayInterval?: number | null;
+          showArrows?: boolean | null;
+          showDots?: boolean | null;
+        };
+        singleSlide?: {
+          mediaType: 'textOnly' | 'image' | 'video' | 'externalVideo' | 'animation' | 'dataViz';
+          image?: (number | null) | Media;
+          /**
+           * URL to self-hosted video file (mp4, webm)
+           */
+          videoUrl?: string | null;
+          /**
+           * Poster/thumbnail image for the video
+           */
+          videoPoster?: (number | null) | Media;
+          /**
+           * YouTube or Vimeo URL (e.g. https://youtube.com/watch?v=...)
+           */
+          externalVideoUrl?: string | null;
+          /**
+           * URL to Lottie JSON file or GIF image
+           */
+          animationUrl?: string | null;
+          /**
+           * Embed code for map, chart, or data visualization
+           */
+          dataVizEmbed?: string | null;
+          /**
+           * Small badge text above the heading (e.g. "ESTABLISHED 1956", "CORE SERVICE DOMAINS")
+           */
+          eyebrowText?: string | null;
+          showText?: boolean | null;
+          heading?: string | null;
+          /**
+           * Heading text color
+           */
+          headingColor?: string | null;
+          subtitle?: string | null;
+          /**
+           * Description text color
+           */
+          subtitleColor?: string | null;
+          buttons?:
+            | {
+                label: string;
+                url: string;
+                variant?: ('primary' | 'secondary' | 'outline') | null;
+                /**
+                 * Select button icon
+                 */
+                icon?: string | null;
+                id?: string | null;
+              }[]
+            | null;
+        };
+        slides?:
+          | {
+              mediaType: 'textOnly' | 'image' | 'video' | 'externalVideo' | 'animation' | 'dataViz';
+              image?: (number | null) | Media;
+              /**
+               * URL to self-hosted video file (mp4, webm)
+               */
+              videoUrl?: string | null;
+              /**
+               * Poster/thumbnail image for the video
+               */
+              videoPoster?: (number | null) | Media;
+              /**
+               * YouTube or Vimeo URL (e.g. https://youtube.com/watch?v=...)
+               */
+              externalVideoUrl?: string | null;
+              /**
+               * URL to Lottie JSON file or GIF image
+               */
+              animationUrl?: string | null;
+              /**
+               * Embed code for map, chart, or data visualization
+               */
+              dataVizEmbed?: string | null;
+              /**
+               * Small badge text above the heading (e.g. "ESTABLISHED 1956", "CORE SERVICE DOMAINS")
+               */
+              eyebrowText?: string | null;
+              showText?: boolean | null;
+              heading?: string | null;
+              /**
+               * Heading text color
+               */
+              headingColor?: string | null;
+              subtitle?: string | null;
+              /**
+               * Description text color
+               */
+              subtitleColor?: string | null;
+              buttons?:
+                | {
+                    label: string;
+                    url: string;
+                    variant?: ('primary' | 'secondary' | 'outline') | null;
+                    /**
+                     * Select button icon
+                     */
+                    icon?: string | null;
+                    id?: string | null;
+                  }[]
+                | null;
+              id?: string | null;
+            }[]
+          | null;
+        mosiaFloatingCard?: {
+          enabled?: boolean | null;
+          badgeLabel?: string | null;
+          footerText?: string | null;
+          footerLink?: string | null;
+          footerLinkLabel?: string | null;
+          stats?:
+            | {
+                value: string;
+                label: string;
+                id?: string | null;
+              }[]
+            | null;
+        };
+        mosiaShowSlideCounter?: boolean | null;
+        mosiaShowPlayPause?: boolean | null;
+        /**
+         * Floating card grid that overlaps the bottom of the hero into the next section
+         */
+        quickAccessBar?: {
+          enabled?: boolean | null;
+          /**
+           * How many pixels the bar hangs below the hero (default: 80)
+           */
+          overlapAmount?: number | null;
+          items?:
+            | {
+                label: string;
+                /**
+                 * Select a Lucide icon
+                 */
+                icon?: string | null;
+                /**
+                 * Internal path (e.g. /it-services) or external URL
+                 */
+                link: string;
+                external?: boolean | null;
+                colorVariant?: ('primary' | 'dark') | null;
+                id?: string | null;
+              }[]
+            | null;
+        };
         id?: string | null;
         blockName?: string | null;
         blockType: 'hero';
@@ -287,22 +528,6 @@ export interface Page {
         blockType: 'imageGallery';
       }
     | HelpSupportBlock
-    | {
-        heading?: string | null;
-        subheading?: string | null;
-        features?:
-          | {
-              icon?: (number | null) | Media;
-              title: string;
-              description?: string | null;
-              id?: string | null;
-            }[]
-          | null;
-        columns?: ('2' | '3' | '4') | null;
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'featureCards';
-      }
     | {
         heading?: string | null;
         description?: string | null;
@@ -407,6 +632,7 @@ export interface Page {
       }
     | FlexibleRowBlock
     | FeaturedCardsBlock
+    | NewsAndUpdatesBlock
     | {
         text: string;
         variant?:
@@ -639,11 +865,41 @@ export interface EmbedBlock {
  * via the `definition` "CallToActionBlock".
  */
 export interface CallToActionBlock {
-  heading?: string | null;
-  body?: string | null;
-  buttonText?: string | null;
-  buttonLink?: string | null;
-  buttonStyle: 'primary' | 'secondary' | 'outline';
+  /**
+   * Section heading displayed above this block
+   */
+  sectionHeading?: string | null;
+  /**
+   * Optional description below the heading
+   */
+  sectionDescription?: string | null;
+  align?: ('left' | 'center' | 'right') | null;
+  /**
+   * Choose visual style for this CTA block
+   */
+  layout: 'gradient' | 'compact' | 'split';
+  /**
+   * CTA headline text
+   */
+  heading: string;
+  /**
+   * CTA description text
+   */
+  description?: string | null;
+  buttons?:
+    | {
+        label: string;
+        url: string;
+        variant?: ('primary' | 'secondary' | 'outline' | 'ghost') | null;
+        id?: string | null;
+      }[]
+    | null;
+  bgType?: ('color' | 'gradient' | 'image') | null;
+  /**
+   * Pick background color or enter hex value
+   */
+  backgroundColor?: string | null;
+  bgImage?: (number | null) | Media;
   id?: string | null;
   blockName?: string | null;
   blockType: 'cta';
@@ -754,13 +1010,114 @@ export interface FeaturedCardsBlock {
      */
     image?: (number | null) | Media;
     tag?: string | null;
-    linkLabel?: string | null;
-    link?: string | null;
+    /**
+     * Open link in new tab
+     */
+    externalLink?: boolean | null;
+    /**
+     * Bullet points for the Service Detail layout
+     */
+    featurePoints?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * CTA button label (e.g. "Request Access")
+     */
+    buttonLabel?: string | null;
+    /**
+     * CTA button URL
+     */
+    buttonUrl?: string | null;
+    /**
+     * Project status badge (used in Project Cards layout)
+     */
+    status?: ('ongoing' | 'completed' | 'upcoming') | null;
+    /**
+     * Progress percentage 0-100 (used in Project Cards layout)
+     */
+    progress?: string | null;
+    /**
+     * Difficulty level (used in Training Cards layout)
+     */
+    level?: ('beginner' | 'intermediate' | 'advanced') | null;
+    /**
+     * e.g. "5 Days", "1 Day" (used in Training Cards layout)
+     */
+    duration?: string | null;
+    /**
+     * e.g. "In-person", "Online", "Hybrid" (used in Training Cards layout)
+     */
+    mode?: string | null;
+    /**
+     * e.g. "Faculty", "Students & Faculty" (used in Training Cards layout)
+     */
+    audience?: string | null;
+    /**
+     * Next batch date (used in Training Cards layout)
+     */
+    date?: string | null;
     id?: string | null;
   }[];
   id?: string | null;
   blockName?: string | null;
   blockType: 'featuredCards';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NewsAndUpdatesBlock".
+ */
+export interface NewsAndUpdatesBlock {
+  /**
+   * Section heading displayed above this block
+   */
+  heading?: string | null;
+  /**
+   * Optional description below the heading
+   */
+  description?: string | null;
+  align?: ('left' | 'center' | 'right') | null;
+  /**
+   * Choose between a card grid or a featured spotlight layout
+   */
+  layout: 'spotlight' | 'grid' | 'list';
+  /**
+   * Choose manual card entry or automatic fetch from News collection.
+   */
+  newsSource: 'fetch' | 'manual';
+  /**
+   * Maximum number of cards to fetch
+   */
+  limit?: number | null;
+  sortBy?: ('latest' | 'oldest' | 'featured') | null;
+  /**
+   * Optional category filter (exact match)
+   */
+  category?: ('' | 'ANNOUNCEMENT' | 'EVENT' | 'OPPORTUNITY' | 'RESULT' | 'NOTICE') | null;
+  fetchOnlyFeatured?: boolean | null;
+  manualNews?:
+    | {
+        title: string;
+        tag: 'ANNOUNCEMENT' | 'EVENT' | 'OPPORTUNITY' | 'RESULT' | 'NOTICE';
+        excerpt: string;
+        externalLink?: string | null;
+        publishedAt: string;
+        featured?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  viewAllEnabled?: boolean | null;
+  viewAllLabel?: string | null;
+  viewAllUrl?: string | null;
+  /**
+   * Pick a color or enter hex value
+   */
+  sectionBgColor?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'newsAndUpdates';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1454,16 +1811,153 @@ export interface PagesSelect<T extends boolean = true> {
         hero?:
           | T
           | {
-              heading?: T;
-              subheading?: T;
-              image?: T;
-              buttons?:
+              mode?: T;
+              layout?: T;
+              splitDirection?: T;
+              splitTheme?: T;
+              splitTextBehavior?: T;
+              splitFeatures?:
                 | T
                 | {
-                    label?: T;
-                    url?: T;
-                    style?: T;
+                    icon?: T;
+                    text?: T;
                     id?: T;
+                  };
+              height?: T;
+              textAlignment?: T;
+              textVerticalPosition?: T;
+              contentMaxWidth?: T;
+              contentPaddingX?: T;
+              contentPaddingY?: T;
+              constantOverlayContent?: T;
+              constantOverlay?:
+                | T
+                | {
+                    showText?: T;
+                    heading?: T;
+                    headingColor?: T;
+                    subtitle?: T;
+                    subtitleColor?: T;
+                    buttons?:
+                      | T
+                      | {
+                          label?: T;
+                          url?: T;
+                          variant?: T;
+                          icon?: T;
+                          id?: T;
+                        };
+                  };
+              overlay?:
+                | T
+                | {
+                    enabled?: T;
+                    color?: T;
+                    opacity?: T;
+                  };
+              headerGlass?:
+                | T
+                | {
+                    enabled?: T;
+                    fillColor?: T;
+                    fillOpacity?: T;
+                    blurAmount?: T;
+                    showDivider?: T;
+                  };
+              carouselSettings?:
+                | T
+                | {
+                    autoPlay?: T;
+                    autoPlayInterval?: T;
+                    showArrows?: T;
+                    showDots?: T;
+                  };
+              singleSlide?:
+                | T
+                | {
+                    mediaType?: T;
+                    image?: T;
+                    videoUrl?: T;
+                    videoPoster?: T;
+                    externalVideoUrl?: T;
+                    animationUrl?: T;
+                    dataVizEmbed?: T;
+                    eyebrowText?: T;
+                    showText?: T;
+                    heading?: T;
+                    headingColor?: T;
+                    subtitle?: T;
+                    subtitleColor?: T;
+                    buttons?:
+                      | T
+                      | {
+                          label?: T;
+                          url?: T;
+                          variant?: T;
+                          icon?: T;
+                          id?: T;
+                        };
+                  };
+              slides?:
+                | T
+                | {
+                    mediaType?: T;
+                    image?: T;
+                    videoUrl?: T;
+                    videoPoster?: T;
+                    externalVideoUrl?: T;
+                    animationUrl?: T;
+                    dataVizEmbed?: T;
+                    eyebrowText?: T;
+                    showText?: T;
+                    heading?: T;
+                    headingColor?: T;
+                    subtitle?: T;
+                    subtitleColor?: T;
+                    buttons?:
+                      | T
+                      | {
+                          label?: T;
+                          url?: T;
+                          variant?: T;
+                          icon?: T;
+                          id?: T;
+                        };
+                    id?: T;
+                  };
+              mosiaFloatingCard?:
+                | T
+                | {
+                    enabled?: T;
+                    badgeLabel?: T;
+                    footerText?: T;
+                    footerLink?: T;
+                    footerLinkLabel?: T;
+                    stats?:
+                      | T
+                      | {
+                          value?: T;
+                          label?: T;
+                          id?: T;
+                        };
+                  };
+              mosiaShowSlideCounter?: T;
+              mosiaShowPlayPause?: T;
+              quickAccessBar?:
+                | T
+                | {
+                    enabled?: T;
+                    overlapAmount?: T;
+                    items?:
+                      | T
+                      | {
+                          label?: T;
+                          icon?: T;
+                          link?: T;
+                          external?: T;
+                          colorVariant?: T;
+                          id?: T;
+                        };
                   };
               id?: T;
               blockName?: T;
@@ -1565,23 +2059,6 @@ export interface PagesSelect<T extends boolean = true> {
               blockName?: T;
             };
         helpSupport?: T | HelpSupportBlockSelect<T>;
-        featureCards?:
-          | T
-          | {
-              heading?: T;
-              subheading?: T;
-              features?:
-                | T
-                | {
-                    icon?: T;
-                    title?: T;
-                    description?: T;
-                    id?: T;
-                  };
-              columns?: T;
-              id?: T;
-              blockName?: T;
-            };
         formBlock?:
           | T
           | {
@@ -1654,6 +2131,7 @@ export interface PagesSelect<T extends boolean = true> {
             };
         flexibleRow?: T | FlexibleRowBlockSelect<T>;
         featuredCards?: T | FeaturedCardsBlockSelect<T>;
+        newsAndUpdates?: T | NewsAndUpdatesBlockSelect<T>;
         statusBadge?:
           | T
           | {
@@ -1755,11 +2233,23 @@ export interface EmbedBlockSelect<T extends boolean = true> {
  * via the `definition` "CallToActionBlock_select".
  */
 export interface CallToActionBlockSelect<T extends boolean = true> {
+  sectionHeading?: T;
+  sectionDescription?: T;
+  align?: T;
+  layout?: T;
   heading?: T;
-  body?: T;
-  buttonText?: T;
-  buttonLink?: T;
-  buttonStyle?: T;
+  description?: T;
+  buttons?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        variant?: T;
+        id?: T;
+      };
+  bgType?: T;
+  backgroundColor?: T;
+  bgImage?: T;
   id?: T;
   blockName?: T;
 }
@@ -1844,10 +2334,56 @@ export interface FeaturedCardsBlockSelect<T extends boolean = true> {
         icon?: T;
         image?: T;
         tag?: T;
-        linkLabel?: T;
-        link?: T;
+        externalLink?: T;
+        featurePoints?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        buttonLabel?: T;
+        buttonUrl?: T;
+        status?: T;
+        progress?: T;
+        level?: T;
+        duration?: T;
+        mode?: T;
+        audience?: T;
+        date?: T;
         id?: T;
       };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NewsAndUpdatesBlock_select".
+ */
+export interface NewsAndUpdatesBlockSelect<T extends boolean = true> {
+  heading?: T;
+  description?: T;
+  align?: T;
+  layout?: T;
+  newsSource?: T;
+  limit?: T;
+  sortBy?: T;
+  category?: T;
+  fetchOnlyFeatured?: T;
+  manualNews?:
+    | T
+    | {
+        title?: T;
+        tag?: T;
+        excerpt?: T;
+        externalLink?: T;
+        publishedAt?: T;
+        featured?: T;
+        id?: T;
+      };
+  viewAllEnabled?: T;
+  viewAllLabel?: T;
+  viewAllUrl?: T;
+  sectionBgColor?: T;
   id?: T;
   blockName?: T;
 }
@@ -2396,128 +2932,6 @@ export interface Footer {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "homepage".
- */
-export interface Homepage {
-  id: number;
-  /**
-   * Drag to reorder sections. Use the toggle inside each block to hide/show a section without losing its settings.
-   */
-  layout?:
-    | (
-        | {
-            /**
-             * Turn off to temporarily hide this section without losing its content or position.
-             */
-            enabled?: boolean | null;
-            carouselHeight: 'short' | 'medium' | 'tall' | 'fullscreen';
-            carouselLayout: 'fullWidth' | 'boxed';
-            carouselImageOpacity: '100' | '90' | '80' | '70' | '60' | '50';
-            carouselAutoplay?: boolean | null;
-            /**
-             * Minimum 1000ms — anything faster feels jarring.
-             */
-            carouselAutoplayInterval?: number | null;
-            slides?:
-              | {
-                  /**
-                   * Slide image. To change this, click the "X" to clear the field, then pick/upload a new one. Do NOT use the pencil "Edit" icon inside the media drawer — that overwrites the shared media asset everywhere it's used.
-                   */
-                  image: number | Media;
-                  alt: string;
-                  /**
-                   * Optional: clicking the slide goes here
-                   */
-                  link?: string | null;
-                  linkNewTab?: boolean | null;
-                  imageAlignment?: ('center' | 'top' | 'bottom' | 'left' | 'right') | null;
-                  overlayOpacity?: ('none' | 'light' | 'medium' | 'dark' | 'extraDark') | null;
-                  textAlignment?: ('left' | 'center' | 'right') | null;
-                  title?: string | null;
-                  subtitle?: string | null;
-                  buttonLabel?: string | null;
-                  buttonLink?: string | null;
-                  id?: string | null;
-                }[]
-              | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'carousel';
-          }
-        | {
-            /**
-             * Turn off to temporarily hide this section without losing its content or position.
-             */
-            enabled?: boolean | null;
-            heading: string;
-            align: 'left' | 'center' | 'right';
-            size: 'small' | 'medium' | 'large';
-            /**
-             * Select up to 4 service cards to display
-             */
-            services?: (number | Service)[] | null;
-            bg: 'white' | 'slate' | 'cream';
-            showUnderline: boolean;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'services';
-          }
-        | {
-            /**
-             * Turn off to temporarily hide this section without losing its content or position.
-             */
-            enabled?: boolean | null;
-            heading: string;
-            align: 'left' | 'center' | 'right';
-            size: 'small' | 'medium' | 'large';
-            newsSubheading?: string | null;
-            limit: number;
-            newsViewAllLink: string;
-            newsViewAllLabel: string;
-            bg: 'white' | 'slate' | 'cream';
-            showUnderline: boolean;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'news';
-          }
-        | {
-            /**
-             * Turn off to temporarily hide this section without losing its content or position.
-             */
-            enabled?: boolean | null;
-            heading: string;
-            align: 'left' | 'center' | 'right';
-            size: 'small' | 'medium' | 'large';
-            limit: number;
-            galleryViewAllLabel: string;
-            bg: 'white' | 'slate' | 'cream';
-            showUnderline: boolean;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'gallery';
-          }
-        | {
-            /**
-             * Turn off to temporarily hide this section without losing its content or position.
-             */
-            enabled?: boolean | null;
-            heading: string;
-            align: 'left' | 'center' | 'right';
-            size: 'small' | 'medium' | 'large';
-            limit: number;
-            bg: 'white' | 'slate' | 'cream';
-            showUnderline: boolean;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'events';
-          }
-      )[]
-    | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site-settings".
  */
 export interface SiteSetting {
@@ -2645,103 +3059,6 @@ export interface FooterSelect<T extends boolean = true> {
   copyright?: T;
   showVisitorCounter?: T;
   showCalendar?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "homepage_select".
- */
-export interface HomepageSelect<T extends boolean = true> {
-  layout?:
-    | T
-    | {
-        carousel?:
-          | T
-          | {
-              enabled?: T;
-              carouselHeight?: T;
-              carouselLayout?: T;
-              carouselImageOpacity?: T;
-              carouselAutoplay?: T;
-              carouselAutoplayInterval?: T;
-              slides?:
-                | T
-                | {
-                    image?: T;
-                    alt?: T;
-                    link?: T;
-                    linkNewTab?: T;
-                    imageAlignment?: T;
-                    overlayOpacity?: T;
-                    textAlignment?: T;
-                    title?: T;
-                    subtitle?: T;
-                    buttonLabel?: T;
-                    buttonLink?: T;
-                    id?: T;
-                  };
-              id?: T;
-              blockName?: T;
-            };
-        services?:
-          | T
-          | {
-              enabled?: T;
-              heading?: T;
-              align?: T;
-              size?: T;
-              services?: T;
-              bg?: T;
-              showUnderline?: T;
-              id?: T;
-              blockName?: T;
-            };
-        news?:
-          | T
-          | {
-              enabled?: T;
-              heading?: T;
-              align?: T;
-              size?: T;
-              newsSubheading?: T;
-              limit?: T;
-              newsViewAllLink?: T;
-              newsViewAllLabel?: T;
-              bg?: T;
-              showUnderline?: T;
-              id?: T;
-              blockName?: T;
-            };
-        gallery?:
-          | T
-          | {
-              enabled?: T;
-              heading?: T;
-              align?: T;
-              size?: T;
-              limit?: T;
-              galleryViewAllLabel?: T;
-              bg?: T;
-              showUnderline?: T;
-              id?: T;
-              blockName?: T;
-            };
-        events?:
-          | T
-          | {
-              enabled?: T;
-              heading?: T;
-              align?: T;
-              size?: T;
-              limit?: T;
-              bg?: T;
-              showUnderline?: T;
-              id?: T;
-              blockName?: T;
-            };
-      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

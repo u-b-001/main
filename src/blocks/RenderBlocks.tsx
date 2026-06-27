@@ -12,7 +12,7 @@ import { StatsImpactBlock } from '@/blocks/Statistics/Component'
 import { ShowcaseCardsBlock} from '@/blocks/Showcase/Component' 
 import { TestimonialsBlock } from '@/blocks/Testimonials/Component'
 import { FAQBlock } from '@/blocks/Faq/Component'
-import { FeatureCardsBlock } from '@/blocks/FeaturedCard/Component'
+
 import {ImageGalleryBlock} from '@/blocks/ImageGallery/Component'
 import { FormBlockComponent } from './Form/Component'
 import {DataSnapshotBlock} from './DataSnapshot/Component'
@@ -22,6 +22,7 @@ import {StatusBadgeBlock } from './CardStautsBadge/Component'
 
 import { FlexibleRowComponent } from '@/blocks/FlexibleRow/Component'
 import { FeaturedCardsComponent } from '@/blocks/FeaturedCards/Component'
+import { NewsAndUpdatesComponent } from '@/blocks/NewsAndUpdates/Component'
 
 const blockComponents = {
   cta: CallToActionBlock,
@@ -37,13 +38,14 @@ const blockComponents = {
   showcaseCards: ShowcaseCardsBlock,
   testimonials: TestimonialsBlock,
   faq: FAQBlock,
-  featureCards: FeatureCardsBlock,
+
   imageGallery: ImageGalleryBlock,
   formBlockComponent: FormBlockComponent,
   dataSnapshotBlock : DataSnapshotBlock ,
   careerPostingBlock : CareerPostingBlock,
   flexibleRow: FlexibleRowComponent,
   featuredCards: FeaturedCardsComponent,
+  newsAndUpdates: NewsAndUpdatesComponent,
   helpSupportBlock: HelpSupportBlock,
 }
 

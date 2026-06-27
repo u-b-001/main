@@ -21,6 +21,10 @@ import { BoldFeatureClient as BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864
 import { ItalicFeatureClient as ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { UnderlineFeatureClient as UnderlineFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { ParagraphFeatureClient as ParagraphFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
+import { ColorPickerField as ColorPickerField_af73c183b1aec1e53ff448b3aa789f02 } from '@/globals/ColorPickerField.tsx'
+import { IconPickerField as IconPickerField_02d34ee8c618e932869aee54e1d0b4ef } from '@/globals/IconPickerField'
+import { ColorPickerField as ColorPickerField_e0bbaddc3f177beaf296513b848335d7 } from '@/globals/ColorPickerField'
+import { OpacitySliderField as OpacitySliderField_4ec15420c1a37cc75771fbc6c1e030fc } from '@/globals/OpacitySliderField'
 import { InlineToolbarFeatureClient as InlineToolbarFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { OverviewComponent as OverviewComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { MetaTitleComponent as MetaTitleComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
@@ -31,7 +35,6 @@ import { SlugField as SlugField_2b8867833a34864a02ddf429b0728a40 } from '@payloa
 import { LinkToDoc as LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
 import { ReindexButton as ReindexButton_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
 import { HomePageSelectorField as HomePageSelectorField_5510459d6ffccd79b7ea66c12e395188 } from '@/globals/HomePageSelectorField'
-import { ColorPickerField as ColorPickerField_af73c183b1aec1e53ff448b3aa789f02 } from '@/globals/ColorPickerField.tsx'
 import { default as default_1a7510af427896d367a49dbf838d2de6 } from '@/components/BeforeDashboard'
 import { default as default_8a7ab0eb7ab5c511aba12e68480bfe5e } from '@/components/BeforeLogin'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
@@ -61,6 +64,10 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#ItalicFeatureClient": ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#UnderlineFeatureClient": UnderlineFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#ParagraphFeatureClient": ParagraphFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
+  "@/globals/ColorPickerField.tsx#ColorPickerField": ColorPickerField_af73c183b1aec1e53ff448b3aa789f02,
+  "@/globals/IconPickerField#IconPickerField": IconPickerField_02d34ee8c618e932869aee54e1d0b4ef,
+  "@/globals/ColorPickerField#ColorPickerField": ColorPickerField_e0bbaddc3f177beaf296513b848335d7,
+  "@/globals/OpacitySliderField#OpacitySliderField": OpacitySliderField_4ec15420c1a37cc75771fbc6c1e030fc,
   "@payloadcms/richtext-lexical/client#InlineToolbarFeatureClient": InlineToolbarFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/plugin-seo/client#OverviewComponent": OverviewComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@payloadcms/plugin-seo/client#MetaTitleComponent": MetaTitleComponent_a8a977ebc872c5d5ea7ee689724c0860,
@@ -71,7 +78,6 @@ export const importMap = {
   "@payloadcms/plugin-search/client#LinkToDoc": LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634,
   "@payloadcms/plugin-search/client#ReindexButton": ReindexButton_aead06e4cbf6b2620c5c51c9ab283634,
   "@/globals/HomePageSelectorField#HomePageSelectorField": HomePageSelectorField_5510459d6ffccd79b7ea66c12e395188,
-  "@/globals/ColorPickerField.tsx#ColorPickerField": ColorPickerField_af73c183b1aec1e53ff448b3aa789f02,
   "@/components/BeforeDashboard#default": default_1a7510af427896d367a49dbf838d2de6,
   "@/components/BeforeLogin#default": default_8a7ab0eb7ab5c511aba12e68480bfe5e,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1

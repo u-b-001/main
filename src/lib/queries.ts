@@ -3,12 +3,17 @@ import configPromise from '@payload-config'
 
 export async function getHomepageData() {
   const payload = await getPayload({ config: configPromise })
-  const [homepage, header, footer, settings] = await Promise.all([
-    payload.findGlobal({ slug: 'homepage', depth: 2 }),
+  const [pagesResult, header, footer, settings] = await Promise.all([
+    payload.find({
+      collection: 'pages',
+      where: { slug: { equals: 'home' } },
+      limit: 1,
+    }),
     payload.findGlobal({ slug: 'header',   depth: 2 }),
     payload.findGlobal({ slug: 'footer',   depth: 1 }),
     payload.findGlobal({ slug: 'site-settings', depth: 1 }),
   ])
+  const homepage = pagesResult.docs?.[0] || null
   return { homepage, header, footer, settings }
 }
 

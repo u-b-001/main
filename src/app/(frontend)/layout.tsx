@@ -30,30 +30,79 @@ const notoSerifJp = Noto_Serif_JP({
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
-  const siteSettings = await getCachedGlobal('siteSettings', 1)()
-  const defaultTheme = siteSettings?.defaultTheme || 'light'
-  const colorScheme = siteSettings?.colorScheme || 'classic'
-  const headingFont = siteSettings?.headingFont || 'serif'
-  const bodyFont = siteSettings?.bodyFont || 'sans'
-  const siteTextSize = siteSettings?.siteTextSize || 'small'
-  const showBgPattern = siteSettings?.showBgPattern !== false
-  const bgPatternOpacity = showBgPattern ? (Number(siteSettings?.bgPatternOpacity || 15) / 100).toFixed(2) : '0'
+  const siteSettings = await getCachedGlobal('site-settings', 1)()
+
+  const themePreset = siteSettings?.themePreset || 'mosai'
+  const headingFontFamily = siteSettings?.headingFont || 'Playfair Display'
+  const bodyFontFamily = siteSettings?.bodyFont || 'Inter'
+  const themeColors = siteSettings?.themeColors || {}
+  const primaryColor = themeColors.primaryColor || '#4B2E83'
+  const secondaryColor = themeColors.secondaryColor || '#1A103D'
+  const accentColor = themeColors.accentColor || '#EAB308'
+  const backgroundColor = themeColors.backgroundColor || '#FFFFFF'
+  const surfaceColor = themeColors.surfaceColor || '#FFFFFF'
+  const mutedBackgroundColor = themeColors.mutedBackgroundColor || '#F8F4FF'
+  const textColor = themeColors.textColor || '#1A103D'
+
+  const siteTextSize = 'small'
+  const showBgPattern = true
+  const bgPatternOpacity = '0.15'
 
   return (
     <html
       className={cn(inter.variable, notoSerifJp.variable, GeistMono.variable)}
       lang="en"
-      data-color-scheme={colorScheme}
-      data-heading-font={headingFont}
-      data-body-font={bodyFont}
+      data-color-scheme={themePreset}
+      data-heading-font="serif"
+      data-body-font="sans"
       data-text-size={siteTextSize}
       style={{ '--bg-pattern-opacity': bgPatternOpacity } as React.CSSProperties}
       suppressHydrationWarning
     >
       <head>
-        <InitTheme defaultTheme={defaultTheme} />
+        <InitTheme defaultTheme="light" />
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
+        
+        {/* Load custom selected Google Fonts */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link
+          href={`https://fonts.googleapis.com/css2?family=${headingFontFamily.replace(/\s+/g, '+')}:wght@300;400;500;600;700;800&family=${bodyFontFamily.replace(/\s+/g, '+')}:wght@300;400;500;600;700&display=swap`}
+          rel="stylesheet"
+        />
+
+        {/* Dynamic theme style overrides */}
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+              :root {
+                --brand-red: ${primaryColor};
+                --brand-navy: ${secondaryColor};
+                --brand-gold: ${accentColor};
+                --brand-cream: ${mutedBackgroundColor};
+                --brand-lightgray: ${surfaceColor};
+                --brand-text: ${textColor};
+                --font-sans: "${bodyFontFamily}", sans-serif;
+                --font-serif: "${headingFontFamily}", serif;
+              }
+              html[data-theme='light'] {
+                --background: ${backgroundColor};
+                --foreground: ${textColor};
+                --card: ${surfaceColor};
+                --card-foreground: ${textColor};
+                --popover: ${surfaceColor};
+                --popover-foreground: ${textColor};
+                --primary: ${primaryColor};
+                --primary-foreground: ${backgroundColor};
+                --secondary: ${secondaryColor};
+                --muted: ${mutedBackgroundColor};
+                --accent: ${accentColor};
+                --border: ${mutedBackgroundColor};
+              }
+            `,
+          }}
+        />
       </head>
       <body className={cn(showBgPattern ? 'has-pattern' : '')}>
         <Providers>

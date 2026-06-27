@@ -16,7 +16,7 @@ import { ShowcaseCards } from '../../blocks/Showcase/config'
 import { Testimonials } from '../../blocks/Testimonials/config'
 import { FAQ } from '@/blocks/Faq/confg'
 import { ImageGallery } from '../../blocks/ImageGallery/config'
-import { FeatureCards } from '../../blocks/FeaturedCard/config'
+
 import { FormBlock } from '../../blocks/Form/config'
 import { DataSnapshot } from '../../blocks/DataSnapshot/config'
 import { CareerPosting } from '../../blocks/CareerPosting/config'
@@ -25,6 +25,7 @@ import { StatusBadgeBlock } from '../../blocks/CardStautsBadge/config'
 
 import { FlexibleRowBlock } from '../../blocks/FlexibleRow/config'
 import { FeaturedCardsBlock } from '../../blocks/FeaturedCards/config'
+import { NewsAndUpdatesBlock } from '../../blocks/NewsAndUpdates/config'
 
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -135,12 +136,13 @@ export const Pages: CollectionConfig<'pages'> = {
         FAQ,
         ImageGallery,
         HelpSupport,
-        FeatureCards,
+
         FormBlock,
         DataSnapshot,
         CareerPosting,
         FlexibleRowBlock,
         FeaturedCardsBlock,
+        NewsAndUpdatesBlock,
         StatusBadgeBlock,
       ],
       required: true,

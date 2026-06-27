@@ -113,6 +113,22 @@ export const FeaturedCardsComponent: React.FC<FeaturedCardsProps> = ({
                     </div>
                   )}
 
+                  {/* Status Badge */}
+                  {card.status && (
+                    <div className="mb-3">
+                      <span className={cn(
+                        "px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full",
+                        card.status === 'completed'
+                          ? "bg-emerald-50 text-emerald-650 dark:bg-emerald-950/30 dark:text-emerald-500"
+                          : card.status === 'ongoing'
+                          ? "bg-blue-50 text-blue-650 dark:bg-blue-950/30 dark:text-blue-500"
+                          : "bg-amber-50 text-amber-650 dark:bg-amber-950/30 dark:text-amber-500"
+                      )}>
+                        {card.status}
+                      </span>
+                    </div>
+                  )}
+
                   {/* Icon */}
                   {IconComponent && (
                     <div
@@ -146,13 +162,82 @@ export const FeaturedCardsComponent: React.FC<FeaturedCardsProps> = ({
                   >
                     {card.description}
                   </p>
+
+                  {/* Progress bar */}
+                  {card.progress && (
+                    <div className="mb-6">
+                      <div className="flex justify-between text-xs font-semibold mb-1">
+                        <span className={isLightCardText ? 'text-white/70' : 'text-slate-500 dark:text-slate-400'}>Progress</span>
+                        <span className={isLightCardText ? 'text-white' : 'text-slate-800 dark:text-slate-200'}>{card.progress}%</span>
+                      </div>
+                      <div className="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                        <div
+                          className="bg-indigo-500 h-full rounded-full"
+                          style={{ width: `${card.progress}%` }}
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Feature Points list */}
+                  {card.featurePoints && card.featurePoints.length > 0 && (
+                    <ul className="mb-6 space-y-2 border-t border-slate-100 dark:border-slate-800/80 pt-4">
+                      {card.featurePoints.map((pt, pIdx) => (
+                        <li key={pIdx} className="flex items-start gap-2 text-sm">
+                          <span className="text-emerald-500 font-bold mt-0.5">✓</span>
+                          <span className={isLightCardText ? 'text-white/80' : 'text-slate-600 dark:text-slate-400'}>
+                            {pt.text}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+
+                  {/* Training Info section */}
+                  {(card.level || card.duration || card.mode || card.audience || card.date) && (
+                    <div className="grid grid-cols-2 gap-3 mb-6 pt-4 border-t border-slate-100 dark:border-slate-800/80 text-xs">
+                      {card.level && (
+                        <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400">
+                          <GraduationCap size={14} className="text-brand-navy dark:text-brand-gold" />
+                          <span><strong className="text-slate-700 dark:text-slate-300">Level:</strong> {card.level}</span>
+                        </div>
+                      )}
+                      {card.duration && (
+                        <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400">
+                          <Calendar size={14} className="text-brand-navy dark:text-brand-gold" />
+                          <span><strong className="text-slate-700 dark:text-slate-300">Duration:</strong> {card.duration}</span>
+                        </div>
+                      )}
+                      {card.mode && (
+                        <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400">
+                          <Info size={14} className="text-brand-navy dark:text-brand-gold" />
+                          <span><strong className="text-slate-700 dark:text-slate-300">Mode:</strong> {card.mode}</span>
+                        </div>
+                      )}
+                      {card.audience && (
+                        <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400">
+                          <Users size={14} className="text-brand-navy dark:text-brand-gold" />
+                          <span><strong className="text-slate-700 dark:text-slate-300">Audience:</strong> {card.audience}</span>
+                        </div>
+                      )}
+                      {card.date && (
+                        <div className="flex items-center gap-1.5 col-span-2 text-slate-500 dark:text-slate-400">
+                          <Calendar size={14} className="text-brand-navy dark:text-brand-gold" />
+                          <span>
+                            <strong className="text-slate-700 dark:text-slate-300">Next Batch:</strong> {new Date(card.date).toLocaleDateString()}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
 
                 {/* Card CTA Link */}
-                {card.link && (
+                {card.buttonUrl && (
                   <div className="pt-2">
                     <Link
-                      href={card.link}
+                      href={card.buttonUrl}
+                      target={card.externalLink ? '_blank' : undefined}
                       className={cn(
                         'inline-flex items-center text-xs font-bold uppercase tracking-wider transition-colors duration-250',
                         isLightCardText
@@ -160,7 +245,7 @@ export const FeaturedCardsComponent: React.FC<FeaturedCardsProps> = ({
                           : 'text-brand-red hover:text-brand-navy dark:hover:text-white'
                       )}
                     >
-                      <span>{card.linkLabel || 'Learn More'}</span>
+                      <span>{card.buttonLabel || 'View More'}</span>
                       <ArrowRight className="w-4 h-4 ml-1.5 transition-transform duration-300 group-hover:translate-x-1" />
                     </Link>
                   </div>

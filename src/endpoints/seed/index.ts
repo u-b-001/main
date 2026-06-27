@@ -10,7 +10,7 @@ const collections: CollectionSlug[] = [
   'committee',
 ]
 
-const globals: GlobalSlug[] = ['header', 'footer', 'homepage', 'siteSettings']
+const globals: GlobalSlug[] = ['header', 'footer', 'site-settings']
 
 export const seed = async ({
   payload,
@@ -116,16 +116,25 @@ export const seed = async ({
     file: imageHeroBuffer,
   })
 
-  payload.logger.info(`— Seeding siteSettings global...`)
+  payload.logger.info(`— Seeding site-settings global...`)
   await payload.updateGlobal({
-    slug: 'siteSettings',
+    slug: 'site-settings',
     data: {
       siteName: 'MOSAI',
-      siteTagline: 'Mombusho Scholars Association of India',
-      defaultTheme: 'light',
-      colorScheme: 'classic',
       favicon: mediaDoc.id,
-      defaultOgImage: mediaDoc.id,
+      homePage: 'pages:home',
+      themePreset: 'mosai',
+      headingFont: 'Playfair Display',
+      bodyFont: 'Inter',
+      themeColors: {
+        primaryColor: '#4B2E83',
+        secondaryColor: '#1A103D',
+        accentColor: '#EAB308',
+        backgroundColor: '#FFFFFF',
+        surfaceColor: '#FFFFFF',
+        mutedBackgroundColor: '#F8F4FF',
+        textColor: '#1A103D',
+      },
     },
   })
 
@@ -415,52 +424,176 @@ export const seed = async ({
     })
   }
 
-  payload.logger.info(`— Seeding homepage global...`)
-  await payload.updateGlobal({
-    slug: 'homepage',
+  payload.logger.info(`— Seeding Home page in pages collection...`)
+  await payload.create({
+    collection: 'pages',
     data: {
-      carouselHeight: 'medium',
-      carouselLayout: 'fullWidth',
-      carouselImageOpacity: '100',
-      carouselAutoplay: true,
-      carouselAutoplayInterval: 5000,
-      carousel: [
+      title: 'Home',
+      slug: 'home',
+      hero: mediaDoc.id,
+      layoutStyle: 'fullWidth',
+      heroStyle: 'medium',
+      layout: [
         {
-          image: mediaDoc.id,
-          alt: 'Slide 1',
-          link: '/about-mosai',
-          imageAlignment: 'center',
-          overlayOpacity: 'medium',
-          textAlignment: 'left',
-          title: 'Learn Japanese with Experts',
-          subtitle: 'Join the premier language institute promoted by former MEXT scholars.',
-          buttonLabel: 'Explore Courses',
-          buttonLink: '/japanese-language/about-institute',
+          blockType: 'hero',
+          mode: 'single',
+          layout: 'split',
+          singleSlide: {
+            mediaType: 'image',
+            image: mediaDoc.id,
+            heading: 'Mombusho Scholars Association of India',
+            subtitle: 'Promoting academic and cultural exchange between India and Japan.',
+            buttons: [
+              {
+                label: 'Explore Courses',
+                url: '/japanese-language/about-institute',
+                variant: 'primary',
+              },
+              {
+                label: 'Learn More',
+                url: '/about-mosai/the-association',
+                variant: 'secondary',
+              }
+            ]
+          }
         },
         {
-          image: mediaDoc.id,
-          alt: 'Slide 2',
-          link: '/japanese-language',
-          imageAlignment: 'center',
-          overlayOpacity: 'medium',
-          textAlignment: 'center',
-          title: 'Study & Research in Japan',
-          subtitle: 'Discover counselling, guidelines, and exclusive government scholarships.',
-          buttonLabel: 'Learn More',
-          buttonLink: '/study-in-japan',
+          blockType: 'flexibleRow',
+          containerWidth: 'boxed',
+          rowBackground: 'transparent',
+          rowPadding: 'none',
+          gridGap: 'medium',
+          alignItems: 'stretch',
+          columns: [
+            {
+              width: 'col-span-6',
+              columnStyle: 'simple',
+              backgroundColor: 'transparent',
+              textColor: 'dark',
+              columnPadding: 'none',
+              alignment: 'left',
+              title: 'Who We Are',
+              imageShape: 'rounded',
+              content: {
+                root: {
+                  children: [
+                    {
+                      children: [{ detail: 0, format: 0, mode: 'normal', text: 'MOSAI (Mombusho Scholars Association of India) was established in 1989 as a society registered under the Societies Registration Act. It is an association of former recipients of the Mombusho (now MEXT) Scholarships of the Government of Japan.', type: 'text', version: 1 }],
+                      direction: 'ltr',
+                      format: '',
+                      indent: 0,
+                      type: 'paragraph',
+                      version: 1,
+                    },
+                  ],
+                  direction: 'ltr',
+                  format: '',
+                  indent: 0,
+                  type: 'root',
+                  version: 1,
+                },
+              },
+            },
+            {
+              width: 'col-span-6',
+              columnStyle: 'simple',
+              backgroundColor: 'transparent',
+              textColor: 'dark',
+              columnPadding: 'none',
+              alignment: 'left',
+              title: 'Our Purpose',
+              imageShape: 'rounded',
+              content: {
+                root: {
+                  children: [
+                    {
+                      children: [{ detail: 0, format: 0, mode: 'normal', text: 'We act as the nodal network for academic, cultural, and professional collaborations, providing university counseling and scholarship guidance for students aiming to study in Japan.', type: 'text', version: 1 }],
+                      direction: 'ltr',
+                      format: '',
+                      indent: 0,
+                      type: 'paragraph',
+                      version: 1,
+                    },
+                  ],
+                  direction: 'ltr',
+                  format: '',
+                  indent: 0,
+                  type: 'root',
+                  version: 1,
+                },
+              },
+            }
+          ]
         },
-      ],
-      offersHeading: 'WE OFFER',
-      services: serviceDocs,
-      newsHeading: 'NEWS & NOTIFICATIONS',
-      newsSubheading: 'Stay updated with the latest news, announcements, and achievements from MOSAI.',
-      newsDisplayCount: 6,
-      newsViewAllLink: '/news',
-      galleryHeading: 'MOSAI Gallery',
-      galleryDisplayCount: 8,
-      eventsHeading: 'Our Past Events',
-      eventsDisplayCount: 2,
-    },
+        {
+          blockType: 'featuredCards',
+          heading: 'Key Offerings',
+          subheading: 'Explore our services and resources.',
+          columns: '3',
+          cardStyle: 'standard',
+          cards: [
+            {
+              title: 'Language Institute',
+              description: 'Learn Japanese from beginner to advanced levels.',
+              icon: 'academic',
+              buttonLabel: 'Learn More',
+              buttonUrl: '/japanese-language'
+            },
+            {
+              title: 'Study in Japan',
+              description: 'Complete counselling and application support for MEXT.',
+              icon: 'globe',
+              buttonLabel: 'Learn More',
+              buttonUrl: '/study-in-japan'
+            },
+            {
+              title: 'Events & Speech Contests',
+              description: 'Participate in Japanese language speech contests and events.',
+              icon: 'calendar',
+              buttonLabel: 'Learn More',
+              buttonUrl: '/news'
+            }
+          ]
+        },
+        {
+          blockType: 'newsAndUpdates',
+          heading: 'News & Notifications',
+          description: 'Stay updated with the latest notices from MOSAI.',
+          layout: 'spotlight',
+          newsSource: 'fetch',
+          limit: 5,
+          viewAllEnabled: true,
+          viewAllLabel: 'All News',
+          viewAllUrl: '/news'
+        },
+        {
+          blockType: 'hero',
+          mode: 'single',
+          layout: 'split',
+          singleSlide: {
+            mediaType: 'image',
+            image: mediaDoc.id,
+            heading: 'Japanese Speech Contests',
+            subtitle: 'Join the annual All India speech contest and showcase your skills.',
+          }
+        },
+        {
+          blockType: 'cta',
+          heading: 'Ready to study in Japan or learn Japanese?',
+          description: 'Contact our central IT desk or admissions team to get started.',
+          layout: 'gradient',
+          buttons: [
+            {
+              label: 'Contact Us',
+              url: '/help-and-support',
+              variant: 'primary'
+            }
+          ],
+          bgType: 'color',
+          backgroundColor: '#1E40AF'
+        }
+      ]
+    }
   })
 
   payload.logger.info(`— Seeding Header global (Section 4.1 tree structure)...`)
