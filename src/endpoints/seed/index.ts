@@ -10,7 +10,7 @@ const collections: CollectionSlug[] = [
   'committee',
 ]
 
-const globals: GlobalSlug[] = ['header', 'footer', 'site-settings']
+const globals: GlobalSlug[] = ['header', 'footer', 'homepage', 'site-settings']
 
 export const seed = async ({
   payload,

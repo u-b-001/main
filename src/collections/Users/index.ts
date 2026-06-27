@@ -24,10 +24,15 @@ export const Users: CollectionConfig = {
       type: 'select',
       options: [
         { label: 'Super Admin', value: 'superAdmin' },
-        { label: 'Editor',      value: 'editor' },
+        { label: 'School Admin', value: 'schoolAdmin' },
+        { label: 'Content Editor', value: 'editor' },
+        { label: 'Viewer', value: 'viewer' },
       ],
-      defaultValue: 'editor',
+      defaultValue: 'viewer',
       required: true,
+      access: {
+        update: isSuperAdmin,
+      },
       admin: { position: 'sidebar' },
     },
   ],

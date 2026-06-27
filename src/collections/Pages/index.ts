@@ -1,7 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { anyone } from '../../access/anyone'
-import { isEditor } from '../../access/roles'
+import { isEditor, isSchoolAdmin } from '../../access/roles'
 import { RichTextBlock } from '../../blocks/RichTextBlock/config'
 import { ImageWithTextBlock } from '../../blocks/ImageWithTextBlock/config'
 import { InfoCardBlock } from '../../blocks/InfoCardBlock/config'
@@ -25,12 +25,18 @@ import { StatusBadgeBlock } from '../../blocks/CardStautsBadge/config'
 
 import { FlexibleRowBlock } from '../../blocks/FlexibleRow/config'
 import { FeaturedCardsBlock } from '../../blocks/FeaturedCards/config'
-import { NewsAndUpdatesBlock } from '../../blocks/NewsAndUpdates/config'
+import { SidebarLayoutBlock } from '../../blocks/SidebarLayout/config'
+import { MediaContactBlock } from '../../blocks/MediaContact/config'
+import { ExamIntroBlock } from '../../blocks/ExamIntro/config'
+import { ContentLayout } from '../../blocks/ContentLayout/config'
+import { StepsBlock } from '../../blocks/Steps/config'
+import { FileDownloadsBlock } from '../../blocks/FileDownloads/config'
 
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
+import { syncNavAfterChange, syncNavAfterDelete } from '../../hooks/syncNavItems'
 
 import {
   MetaDescriptionField,
@@ -39,13 +45,14 @@ import {
   OverviewField,
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
+import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
   access: {
     create: isEditor,
-    delete: isEditor,
-    read: anyone,
+    delete: isSchoolAdmin,
+    read: authenticatedOrPublished,
     update: isEditor,
   },
   defaultPopulate: {
@@ -90,7 +97,7 @@ export const Pages: CollectionConfig<'pages'> = {
       ],
       required: true,
       admin: {
-        position: 'sidebar',
+        hidden: true,
       },
     },
     {
@@ -144,6 +151,12 @@ export const Pages: CollectionConfig<'pages'> = {
         FeaturedCardsBlock,
         NewsAndUpdatesBlock,
         StatusBadgeBlock,
+        SidebarLayoutBlock,
+        MediaContactBlock,
+        ExamIntroBlock,
+        ContentLayout,
+        StepsBlock,
+        FileDownloadsBlock,
       ],
       required: true,
       admin: {
@@ -183,12 +196,29 @@ export const Pages: CollectionConfig<'pages'> = {
         position: 'sidebar',
       },
     },
+    {
+      name: 'showInNav',
+      type: 'checkbox',
+      label: 'Show in Navigation',
+      defaultValue: false,
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'navOrder',
+      type: 'number',
+      label: 'Navigation Order',
+      admin: {
+        position: 'sidebar',
+      },
+    },
     slugField(),
   ],
   hooks: {
-    afterChange: [revalidatePage],
+    afterChange: [revalidatePage, syncNavAfterChange],
     beforeChange: [populatePublishedAt],
-    afterDelete: [revalidateDelete],
+    afterDelete: [revalidateDelete, syncNavAfterDelete],
   },
   versions: {
     drafts: {

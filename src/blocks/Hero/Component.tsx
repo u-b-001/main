@@ -2,321 +2,43 @@
 
 import React, { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
+import { cn } from '@/utilities/ui'
 
-
-
-type MediaDoc = {
-  url?: string
-  alt?: string
-  width?: number
-  height?: number
-}
-
-// Payload returns either the populated doc, just the ID string, or nothing.
-type MediaRelation = MediaDoc | string | null | undefined
-
-type MediaType = 'textOnly' | 'image' | 'video' | 'externalVideo' | 'animation' | 'dataViz'
-
-type ButtonVariant = 'primary' | 'secondary' | 'outline'
-
-type HeroButton = {
-  label: string
-  url: string
-  variant?: ButtonVariant
-  icon?: string
-}
-
-type FeatureTag = {
-  icon?: string
-  text: string
-}
-
-type Slide = {
-  mediaType?: MediaType
-  image?: MediaRelation
-  videoUrl?: string
-  videoPoster?: MediaRelation
-  externalVideoUrl?: string
-  animationUrl?: string
-  dataVizEmbed?: string
-  eyebrowText?: string
-  showText?: boolean
-  heading?: string
-  headingColor?: string
-  subtitle?: string
-  subtitleColor?: string
-  buttons?: HeroButton[]
-}
-
-type ConstantOverlay = {
-  showText?: boolean
-  heading?: string
-  headingColor?: string
-  subtitle?: string
-  subtitleColor?: string
-  buttons?: HeroButton[]
-}
-
-type OverlaySettings = {
-  enabled?: boolean
-  color?: string
-  opacity?: number
-}
-
-type HeaderGlass = {
-  enabled?: boolean
-  fillColor?: string
-  fillOpacity?: number
-  blurAmount?: number
-  showDivider?: boolean
-}
-
-type CarouselSettings = {
-  autoPlay?: boolean
-  autoPlayInterval?: number
-  showArrows?: boolean
-  showDots?: boolean
-}
-
-type FloatingCardStat = {
-  value: string
-  label: string
-}
-
-type mosiaFloatingCard = {
-  enabled?: boolean
-  badgeLabel?: string
-  footerText?: string
-  footerLink?: string
-  footerLinkLabel?: string
-  stats?: FloatingCardStat[]
-}
-
-type QuickAccessItem = {
-  label: string
-  icon?: string
-  link: string
-  external?: boolean
-  colorVariant?: 'primary' | 'dark'
-}
-
-type QuickAccessBar = {
-  enabled?: boolean
-  overlapAmount?: number
-  items?: QuickAccessItem[]
-}
-
-export type HeroBlockProps = {
-  mode?: 'single' | 'carousel'
-  layout?: 'fullWidth' | 'fullscreenOverlayCarousel' | 'mosiaFullscreen' | 'split' | 'contained'
-  splitDirection?: 'textLeft' | 'textRight'
-  splitTheme?: 'dark' | 'light'
-  splitTextBehavior?: 'static' | 'slide'
-  splitFeatures?: FeatureTag[]
-  height?: number
-  textAlignment?: 'left' | 'center' | 'right'
-  textVerticalPosition?: 'top' | 'center' | 'bottom'
-  contentMaxWidth?: number
-  contentPaddingX?: number
-  contentPaddingY?: number
-  constantOverlayContent?: boolean
-  constantOverlay?: ConstantOverlay
-  overlay?: OverlaySettings
-  headerGlass?: HeaderGlass
-  carouselSettings?: CarouselSettings
-  singleSlide?: Slide
-  slides?: Slide[]
-  mosiaFloatingCard?: mosiaFloatingCard
-  mosiaShowSlideCounter?: boolean
-  mosiaShowPlayPause?: boolean
-  quickAccessBar?: QuickAccessBar
-}
-
-/* ────────────────────────────────────────────────────────────────────────
-   Small helpers
-   ──────────────────────────────────────────────────────────────────────── */
-
-function getMediaUrl(media: MediaRelation): string | undefined {
-  if (!media) return undefined
-  if (typeof media === 'string') return undefined // unpopulated relation ID — nothing renderable
-  return media.url
-}
-
-function getMediaAlt(media: MediaRelation, fallback = ''): string {
-  if (!media || typeof media === 'string') return fallback
-  return media.alt || fallback
-}
-
-function getYouTubeEmbedUrl(url: string): string | null {
-  try {
-    const u = new URL(url)
-    if (u.hostname.includes('youtu.be')) {
-      const id = u.pathname.replace('/', '')
-      return id ? `https://www.youtube.com/embed/${id}` : null
-    }
-    if (u.hostname.includes('youtube.com')) {
-      const id = u.searchParams.get('v')
-      if (id) return `https://www.youtube.com/embed/${id}`
-      // handles /embed/ links already
-      if (u.pathname.startsWith('/embed/')) return url
-    }
-    return null
-  } catch {
-    return null
+type Button = { label: string; url: string; style?: 'primary' | 'secondary' }
+type HeroProps = {
+  heading: string
+  subheading?: string
+  image?: { url: string; alt?: string } | string
+  buttons?: Button[]
+  designSettings?: {
+    overlapHeader?: boolean
+    imageOpacity?: number
+    imageScale?: number
   }
 }
 
-function getVimeoEmbedUrl(url: string): string | null {
-  try {
-    const u = new URL(url)
-    if (u.hostname.includes('vimeo.com')) {
-      const id = u.pathname.split('/').filter(Boolean).pop()
-      return id ? `https://player.vimeo.com/video/${id}` : null
-    }
-    return null
-  } catch {
-    return null
-  }
-}
+export const HeroBlock: React.FC<HeroProps> = ({ heading, subheading, image, buttons, designSettings }) => {
+  const imageUrl = typeof image === 'object' ? image?.url : undefined
 
-function getExternalEmbedUrl(url?: string): string | null {
-  if (!url) return null
-  return getYouTubeEmbedUrl(url) || getVimeoEmbedUrl(url) || null
-}
+  const overlap = designSettings?.overlapHeader;
+  const opacity = designSettings?.imageOpacity !== undefined ? designSettings.imageOpacity : 40;
+  const scale = designSettings?.imageScale ?? 100;
 
-function hexToRgba(hex: string | undefined, opacityPercent: number | undefined): string {
-  const safeHex = hex || '#000000'
-  const safeOpacity = typeof opacityPercent === 'number' ? opacityPercent : 50
-  const clean = safeHex.replace('#', '')
-  const bigint = parseInt(
-    clean.length === 3
-      ? clean
-          .split('')
-          .map((c) => c + c)
-          .join('')
-      : clean,
-    16,
-  )
-  if (Number.isNaN(bigint)) return `rgba(0,0,0,${safeOpacity / 100})`
-  const r = (bigint >> 16) & 255
-  const g = (bigint >> 8) & 255
-  const b = bigint & 255
-  return `rgba(${r}, ${g}, ${b}, ${safeOpacity / 100})`
-}
-
-function buttonClasses(variant?: ButtonVariant): string {
-  switch (variant) {
-    case 'secondary':
-      return 'bg-neutral-700 text-white hover:bg-neutral-600'
-    case 'outline':
-      return 'bg-transparent text-white border border-white hover:bg-white/10'
-    default:
-      return 'bg-white text-black hover:bg-neutral-200'
-  }
-}
-
-function alignmentClasses(align?: 'left' | 'center' | 'right'): string {
-  switch (align) {
-    case 'left':
-      return 'items-start text-left'
-    case 'right':
-      return 'items-end text-right'
-    default:
-      return 'items-center text-center'
-  }
-}
-
-function verticalClasses(pos?: 'top' | 'center' | 'bottom'): string {
-  switch (pos) {
-    case 'top':
-      return 'justify-start'
-    case 'bottom':
-      return 'justify-end'
-    default:
-      return 'justify-center'
-  }
-}
-
-/* ────────────────────────────────────────────────────────────────────────
-   Media renderer — handles all 6 mediaType variants for a given slide
-   ──────────────────────────────────────────────────────────────────────── */
-
-function SlideMedia({
-  slide,
-  priority,
-  fill = true,
-}: {
-  slide: Slide
-  priority?: boolean
-  fill?: boolean
-}) {
-  const mediaType = slide.mediaType || 'image'
-
-  if (mediaType === 'textOnly') {
-    return null
-  }
-
-  if (mediaType === 'image') {
-    const url = getMediaUrl(slide.image)
-    if (!url) return null
-    return (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img
-        src={url}
-        alt={getMediaAlt(slide.image, slide.heading || '')}
-        loading={priority ? 'eager' : 'lazy'}
-        className={fill ? 'absolute inset-0 h-full w-full object-cover' : 'h-full w-full object-cover'}
-      />
-    )
-  }
-
-  if (mediaType === 'video') {
-    if (!slide.videoUrl) return null
-    const posterUrl = getMediaUrl(slide.videoPoster)
-    return (
-      <video
-        className="absolute inset-0 h-full w-full object-cover"
-        autoPlay
-        muted
-        loop
-        playsInline
-        poster={posterUrl}
-      >
-        <source src={slide.videoUrl} />
-      </video>
-    )
-  }
-
-  if (mediaType === 'externalVideo') {
-    const embedUrl = getExternalEmbedUrl(slide.externalVideoUrl)
-    if (!embedUrl) return null
-    return (
-      <iframe
-        className="absolute inset-0 h-full w-full"
-        src={embedUrl}
-        title={slide.heading || 'video'}
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowFullScreen
-      />
-    )
-  }
-
-  if (mediaType === 'animation') {
-    if (!slide.animationUrl) return null
-    // GIFs render directly as images. Lottie JSON files are intentionally
-    // not rendered here — doing so would require installing a Lottie player
-    // package (e.g. lottie-web or @lottiefiles/dotlottie-wc), which isn't
-    // part of this project yet. Add one of those and swap in a small player
-    // component if you need Lottie playback; for now this avoids depending
-    // on a package that may not be installed.
-    const isGif = /\.gif($|\?)/i.test(slide.animationUrl)
-    if (isGif) {
-      // eslint-disable-next-line @next/next/no-img-element
-      return (
-        <img
-          src={slide.animationUrl}
-          alt={slide.heading || ''}
-          className="absolute inset-0 h-full w-full object-cover"
+  return (
+    <section className={cn(
+      "relative flex flex-col items-center justify-center text-center py-24 px-6 bg-black text-white overflow-hidden",
+      overlap ? "-mt-20 pt-44 lg:-mt-24 lg:pt-48" : ""
+    )}>
+      {imageUrl && (
+        <Image
+          src={imageUrl}
+          alt={typeof image === 'object' ? image?.alt || '' : ''}
+          fill
+          className="object-cover -z-10"
+          style={{ 
+            opacity: opacity / 100,
+            transform: scale !== 100 ? `scale(${scale / 100})` : undefined
+          }}
         />
       )
     }
@@ -365,28 +87,10 @@ function TextBlock({
           {eyebrowText}
         </span>
       )}
-      {heading && (
-        <h1
-          className="text-3xl font-bold leading-tight sm:text-4xl md:text-5xl"
-          style={{ color: headingColor || '#FFFFFF' }}
-        >
-          {heading}
-        </h1>
-      )}
-      {subtitle && (
-        <p
-          className="max-w-2xl text-base sm:text-lg"
-          style={{ color: subtitleColor || '#E5E7EB' }}
-        >
-          {subtitle}
-        </p>
-      )}
-      {buttons && buttons.length > 0 && (
-        <div
-          className={`mt-2 flex flex-wrap gap-3 ${
-            align === 'center' ? 'justify-center' : align === 'right' ? 'justify-end' : 'justify-start'
-          }`}
-        >
+      <h1 className="text-4xl md:text-6xl font-bold max-w-3xl relative z-10">{heading}</h1>
+      {subheading && <p className="mt-4 text-lg text-gray-300 max-w-2xl relative z-10">{subheading}</p>}
+      {buttons?.length ? (
+        <div className="mt-8 flex gap-4 relative z-10">
           {buttons.map((btn, i) => (
             <Link
               key={`${btn.label}-${i}`}

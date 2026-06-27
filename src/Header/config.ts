@@ -152,6 +152,21 @@ export const Header: GlobalConfig = {
         },
       ],
     },
+    {
+      name: 'navSyncHiddenPageUrls',
+      type: 'array',
+      label: 'Hidden Pages from Auto-Sync',
+      admin: {
+        description: 'Add page slugs/URLs here (e.g., /about) to prevent them from automatically appearing in the header navigation.',
+      },
+      fields: [
+        {
+          name: 'url',
+          type: 'text',
+          required: true,
+        },
+      ],
+    },
   ],
   hooks: {
     afterChange: [revalidateHeader],

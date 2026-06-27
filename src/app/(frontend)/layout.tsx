@@ -30,23 +30,14 @@ const notoSerifJp = Noto_Serif_JP({
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
-  const siteSettings = await getCachedGlobal('site-settings', 1)()
-
-  const themePreset = siteSettings?.themePreset || 'mosai'
-  const headingFontFamily = siteSettings?.headingFont || 'Playfair Display'
-  const bodyFontFamily = siteSettings?.bodyFont || 'Inter'
-  const themeColors = siteSettings?.themeColors || {}
-  const primaryColor = themeColors.primaryColor || '#4B2E83'
-  const secondaryColor = themeColors.secondaryColor || '#1A103D'
-  const accentColor = themeColors.accentColor || '#EAB308'
-  const backgroundColor = themeColors.backgroundColor || '#FFFFFF'
-  const surfaceColor = themeColors.surfaceColor || '#FFFFFF'
-  const mutedBackgroundColor = themeColors.mutedBackgroundColor || '#F8F4FF'
-  const textColor = themeColors.textColor || '#1A103D'
-
-  const siteTextSize = 'small'
-  const showBgPattern = true
-  const bgPatternOpacity = '0.15'
+  const siteSettings = (await getCachedGlobal('site-settings', 1)()) as any
+  const defaultTheme = siteSettings?.defaultTheme || 'light'
+  const colorScheme = siteSettings?.colorScheme || 'classic'
+  const headingFont = siteSettings?.headingFont || 'serif'
+  const bodyFont = siteSettings?.bodyFont || 'sans'
+  const siteTextSize = siteSettings?.siteTextSize || 'small'
+  const showBgPattern = siteSettings?.showBgPattern !== false
+  const bgPatternOpacity = showBgPattern ? (Number(siteSettings?.bgPatternOpacity || 15) / 100).toFixed(2) : '0'
 
   return (
     <html

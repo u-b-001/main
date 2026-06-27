@@ -47,6 +47,6 @@ export const Media: CollectionConfig = {
       options: { quality: 80 },
     },
     adminThumbnail: 'thumbnail',
-    mimeTypes: ['image/*', 'application/pdf'],
+    mimeTypes: ['image/*', 'application/pdf', 'video/*'],
   },
 }

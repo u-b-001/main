@@ -1,7 +1,9 @@
 import type { TextFieldSingleValidation } from 'payload'
+import { ImageBlock } from '@/blocks/ImageBlock/config'
 import {
   AlignFeature,
   BlockquoteFeature,
+  BlocksFeature,
   BoldFeature,
   ChecklistFeature,
   FixedToolbarFeature,
@@ -24,8 +26,7 @@ import {
   type LinkFields,
 } from '@payloadcms/richtext-lexical'
 
-export const defaultLexical = lexicalEditor({
-  features: [
+export const getDefaultLexicalFeatures = () => [
     ParagraphFeature(),
     UnderlineFeature(),
     BoldFeature(),
@@ -45,6 +46,9 @@ export const defaultLexical = lexicalEditor({
     ChecklistFeature(),
     RelationshipFeature({ enabledCollections: ['pages', 'news'] }),
     UploadFeature({ enabledCollections: ['media'] }),
+    BlocksFeature({
+      blocks: [ImageBlock],
+    }),
     LinkFeature({
       enabledCollections: ['pages', 'news'],
       fields: ({ defaultFields }) => {
@@ -73,5 +77,8 @@ export const defaultLexical = lexicalEditor({
         ]
       },
     }),
-  ],
+]
+
+export const defaultLexical = lexicalEditor({
+  features: getDefaultLexicalFeatures(),
 })

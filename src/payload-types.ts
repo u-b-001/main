@@ -75,6 +75,7 @@ export interface Config {
     events: Event;
     services: Service;
     committee: Committee;
+    jobApplications: JobApplication;
     members: Member;
     redirects: Redirect;
     forms: Form;
@@ -96,6 +97,7 @@ export interface Config {
     events: EventsSelect<false> | EventsSelect<true>;
     services: ServicesSelect<false> | ServicesSelect<true>;
     committee: CommitteeSelect<false> | CommitteeSelect<true>;
+    jobApplications: JobApplicationsSelect<false> | JobApplicationsSelect<true>;
     members: MembersSelect<false> | MembersSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
@@ -388,47 +390,19 @@ export interface Page {
               id?: string | null;
             }[]
           | null;
-        mosiaFloatingCard?: {
-          enabled?: boolean | null;
-          badgeLabel?: string | null;
-          footerText?: string | null;
-          footerLink?: string | null;
-          footerLinkLabel?: string | null;
-          stats?:
-            | {
-                value: string;
-                label: string;
-                id?: string | null;
-              }[]
-            | null;
-        };
-        mosiaShowSlideCounter?: boolean | null;
-        mosiaShowPlayPause?: boolean | null;
-        /**
-         * Floating card grid that overlaps the bottom of the hero into the next section
-         */
-        quickAccessBar?: {
-          enabled?: boolean | null;
+        designSettings?: {
           /**
-           * How many pixels the bar hangs below the hero (default: 80)
+           * Pull the hero section up to render underneath a transparent header.
            */
-          overlapAmount?: number | null;
-          items?:
-            | {
-                label: string;
-                /**
-                 * Select a Lucide icon
-                 */
-                icon?: string | null;
-                /**
-                 * Internal path (e.g. /it-services) or external URL
-                 */
-                link: string;
-                external?: boolean | null;
-                colorVariant?: ('primary' | 'dark') | null;
-                id?: string | null;
-              }[]
-            | null;
+          overlapHeader?: boolean | null;
+          /**
+           * Set the opacity of the background image (0-100). Default is 100.
+           */
+          imageOpacity?: number | null;
+          /**
+           * Scale the background image up or down (e.g., 110 for slight zoom). Default is 100.
+           */
+          imageScale?: number | null;
         };
         id?: string | null;
         blockName?: string | null;
@@ -630,7 +604,637 @@ export interface Page {
         blockName?: string | null;
         blockType: 'careerPosting';
       }
-    | FlexibleRowBlock
+    | {
+        /**
+         * Section heading displayed above this block
+         */
+        sectionHeading?: string | null;
+        /**
+         * Optional description below the heading
+         */
+        sectionDescription?: string | null;
+        headingAlignment?: ('left' | 'center' | 'right') | null;
+        /**
+         * Pick a color or enter hex value
+         */
+        sectionBgColor?: string | null;
+        /**
+         * Add a subtle radial accent glow behind this section
+         */
+        radialGlow?: boolean | null;
+        gap?: ('0' | '4' | '6' | '8' | '12') | null;
+        verticalAlign?: ('start' | 'center' | 'end' | 'stretch') | null;
+        /**
+         * Add columns – max 3 per row. More than 3 will wrap to new rows.
+         */
+        columns: {
+          width?: ('auto' | '25' | '33' | '50' | '66' | '75' | '100') | null;
+          /**
+           * Pick a color or enter hex value
+           */
+          columnBgColor?: string | null;
+          padding?: ('0' | '4' | '6' | '8') | null;
+          blocks?:
+            | (
+                | {
+                    content: {
+                      root: {
+                        type: string;
+                        children: {
+                          type: any;
+                          version: number;
+                          [k: string]: unknown;
+                        }[];
+                        direction: ('ltr' | 'rtl') | null;
+                        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                        indent: number;
+                        version: number;
+                      };
+                      [k: string]: unknown;
+                    };
+                    /**
+                     * Font family for body text (paragraphs, lists)
+                     */
+                    fontFamily?:
+                      | (
+                          | 'inherit'
+                          | 'Inter'
+                          | 'Roboto'
+                          | 'Poppins'
+                          | 'Open Sans'
+                          | 'Lato'
+                          | 'Montserrat'
+                          | 'Nunito'
+                          | 'Raleway'
+                          | 'Playfair Display'
+                          | 'Merriweather'
+                          | 'Source Sans Pro'
+                        )
+                      | null;
+                    /**
+                     * Font family for headings only (h1-h6). Leave as Default to use the body font.
+                     */
+                    headingFontFamily?:
+                      | (
+                          | 'inherit'
+                          | 'Inter'
+                          | 'Playfair Display'
+                          | 'Merriweather'
+                          | 'Roboto'
+                          | 'Poppins'
+                          | 'Montserrat'
+                          | 'Raleway'
+                        )
+                      | null;
+                    fontSize?: ('sm' | 'base' | 'lg' | 'xl' | '2xl') | null;
+                    /**
+                     * Pick a color or enter hex value
+                     */
+                    textColor?: string | null;
+                    id?: string | null;
+                    blockName?: string | null;
+                    blockType: 'flexRichText';
+                  }
+                | {
+                    image: number | Media;
+                    /**
+                     * Optional caption below the image
+                     */
+                    caption?: string | null;
+                    /**
+                     * Pick a color or enter hex value
+                     */
+                    captionColor?: string | null;
+                    objectFit?: ('cover' | 'contain' | 'none') | null;
+                    rounded?: ('none' | 'sm' | 'md' | 'lg' | 'full') | null;
+                    id?: string | null;
+                    blockName?: string | null;
+                    blockType: 'flexImage';
+                  }
+                | {
+                    videoSource: 'upload' | 'youtube' | 'vimeo' | 'externalUrl';
+                    /**
+                     * Upload mp4, webm, or other video file
+                     */
+                    uploadedVideo?: (number | null) | Media;
+                    /**
+                     * YouTube video URL (e.g. https://youtube.com/watch?v=...)
+                     */
+                    youtubeUrl?: string | null;
+                    /**
+                     * Vimeo video URL (e.g. https://vimeo.com/123456)
+                     */
+                    vimeoUrl?: string | null;
+                    /**
+                     * Direct URL to video file (mp4, webm)
+                     */
+                    externalVideoUrl?: string | null;
+                    /**
+                     * Thumbnail / poster image (optional)
+                     */
+                    poster?: (number | null) | Media;
+                    /**
+                     * Auto-play on load (muted)
+                     */
+                    autoplay?: boolean | null;
+                    loop?: boolean | null;
+                    /**
+                     * Show playback controls
+                     */
+                    controls?: boolean | null;
+                    id?: string | null;
+                    blockName?: string | null;
+                    blockType: 'flexVideo';
+                  }
+                | {
+                    slides: {
+                      mediaType: 'image' | 'video' | 'youtube';
+                      image?: (number | null) | Media;
+                      video?: (number | null) | Media;
+                      /**
+                       * YouTube URL
+                       */
+                      youtubeUrl?: string | null;
+                      caption?: string | null;
+                      id?: string | null;
+                    }[];
+                    /**
+                     * Auto-advance slides
+                     */
+                    autoplay?: boolean | null;
+                    /**
+                     * Auto-play interval in milliseconds (e.g. 5000 = 5 seconds)
+                     */
+                    interval?: number | null;
+                    showDots?: boolean | null;
+                    showArrows?: boolean | null;
+                    id?: string | null;
+                    blockName?: string | null;
+                    blockType: 'flexCarousel';
+                  }
+                | {
+                    embedType: 'iframe' | 'html';
+                    /**
+                     * URL for iframe embed (Google Maps, etc.)
+                     */
+                    iframeUrl?: string | null;
+                    /**
+                     * Paste HTML embed code
+                     */
+                    html?: string | null;
+                    /**
+                     * Height in pixels
+                     */
+                    height?: number | null;
+                    id?: string | null;
+                    blockName?: string | null;
+                    blockType: 'flexMapEmbed';
+                  }
+                | {
+                    animationType: 'lottie' | 'gif';
+                    /**
+                     * URL to Lottie JSON file
+                     */
+                    lottieUrl?: string | null;
+                    gif?: (number | null) | Media;
+                    loop?: boolean | null;
+                    autoplay?: boolean | null;
+                    id?: string | null;
+                    blockName?: string | null;
+                    blockType: 'flexAnimation';
+                  }
+                | {
+                    columns?: ('1' | '2' | '3' | '4') | null;
+                    cardStyle?: ('outline' | 'elevated' | 'soft' | 'duccAbout') | null;
+                    cards: {
+                      label: string;
+                      value: string;
+                      trend?: string | null;
+                      trendLabel?: string | null;
+                      /**
+                       * Select a Lucide icon
+                       */
+                      icon?:
+                        | (
+                            | 'ArrowRight'
+                            | 'ArrowLeft'
+                            | 'ArrowUp'
+                            | 'ArrowDown'
+                            | 'ChevronRight'
+                            | 'ChevronLeft'
+                            | 'ChevronUp'
+                            | 'ChevronDown'
+                            | 'Check'
+                            | 'CheckCircle2'
+                            | 'X'
+                            | 'XCircle'
+                            | 'Info'
+                            | 'AlertCircle'
+                            | 'AlertTriangle'
+                            | 'HelpCircle'
+                            | 'Settings'
+                            | 'Search'
+                            | 'User'
+                            | 'Users'
+                            | 'Home'
+                            | 'Menu'
+                            | 'MoreHorizontal'
+                            | 'MoreVertical'
+                            | 'Star'
+                            | 'Heart'
+                            | 'ThumbsUp'
+                            | 'ThumbsDown'
+                            | 'MapPin'
+                            | 'Phone'
+                            | 'Mail'
+                            | 'Clock'
+                            | 'Calendar'
+                            | 'Globe'
+                            | 'Award'
+                            | 'BookOpen'
+                            | 'GraduationCap'
+                            | 'Briefcase'
+                            | 'Play'
+                            | 'Shield'
+                            | 'Zap'
+                            | 'Download'
+                            | 'Camera'
+                            | 'Bell'
+                            | 'Send'
+                            | 'academic'
+                            | 'globe'
+                            | 'calendar'
+                            | 'award'
+                            | 'book'
+                            | 'group'
+                            | 'info'
+                            | 'star'
+                            | 'address'
+                            | 'phone'
+                            | 'email'
+                            | 'hours'
+                            | 'general'
+                          )
+                        | null;
+                      /**
+                       * Pick a color or enter hex value
+                       */
+                      iconColor?: string | null;
+                      animation?: ('none' | 'hoverLift' | 'pulse' | 'float') | null;
+                      id?: string | null;
+                    }[];
+                    id?: string | null;
+                    blockName?: string | null;
+                    blockType: 'flexStatsCards';
+                  }
+                | {
+                    columns?: ('1' | '2' | '3' | '4') | null;
+                    cardStyle?: ('borderTop' | 'outline' | 'darkGlass') | null;
+                    cards: {
+                      /**
+                       * Select a Lucide icon
+                       */
+                      icon?:
+                        | (
+                            | 'ArrowRight'
+                            | 'ArrowLeft'
+                            | 'ArrowUp'
+                            | 'ArrowDown'
+                            | 'ChevronRight'
+                            | 'ChevronLeft'
+                            | 'ChevronUp'
+                            | 'ChevronDown'
+                            | 'Check'
+                            | 'CheckCircle2'
+                            | 'X'
+                            | 'XCircle'
+                            | 'Info'
+                            | 'AlertCircle'
+                            | 'AlertTriangle'
+                            | 'HelpCircle'
+                            | 'Settings'
+                            | 'Search'
+                            | 'User'
+                            | 'Users'
+                            | 'Home'
+                            | 'Menu'
+                            | 'MoreHorizontal'
+                            | 'MoreVertical'
+                            | 'Star'
+                            | 'Heart'
+                            | 'ThumbsUp'
+                            | 'ThumbsDown'
+                            | 'MapPin'
+                            | 'Phone'
+                            | 'Mail'
+                            | 'Clock'
+                            | 'Calendar'
+                            | 'Globe'
+                            | 'Award'
+                            | 'BookOpen'
+                            | 'GraduationCap'
+                            | 'Briefcase'
+                            | 'Play'
+                            | 'Shield'
+                            | 'Zap'
+                            | 'Download'
+                            | 'Camera'
+                            | 'Bell'
+                            | 'Send'
+                            | 'academic'
+                            | 'globe'
+                            | 'calendar'
+                            | 'award'
+                            | 'book'
+                            | 'group'
+                            | 'info'
+                            | 'star'
+                            | 'address'
+                            | 'phone'
+                            | 'email'
+                            | 'hours'
+                            | 'general'
+                          )
+                        | null;
+                      /**
+                       * Pick a color or enter hex value
+                       */
+                      iconColor?: string | null;
+                      /**
+                       * Pick a color or enter hex value
+                       */
+                      accentColor?: string | null;
+                      title: {
+                        root: {
+                          type: string;
+                          children: {
+                            type: any;
+                            version: number;
+                            [k: string]: unknown;
+                          }[];
+                          direction: ('ltr' | 'rtl') | null;
+                          format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                          indent: number;
+                          version: number;
+                        };
+                        [k: string]: unknown;
+                      };
+                      subtitle?: string | null;
+                      description?: {
+                        root: {
+                          type: string;
+                          children: {
+                            type: any;
+                            version: number;
+                            [k: string]: unknown;
+                          }[];
+                          direction: ('ltr' | 'rtl') | null;
+                          format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                          indent: number;
+                          version: number;
+                        };
+                        [k: string]: unknown;
+                      } | null;
+                      points?:
+                        | {
+                            text: string;
+                            id?: string | null;
+                          }[]
+                        | null;
+                      animation?: ('none' | 'hoverLift' | 'pulse' | 'float') | null;
+                      id?: string | null;
+                    }[];
+                    id?: string | null;
+                    blockName?: string | null;
+                    blockType: 'flexFeatureCards';
+                  }
+                | {
+                    columns?: ('1' | '2' | '3') | null;
+                    theme?: ('light' | 'dark') | null;
+                    titleSize?: ('sm' | 'base' | 'lg' | 'xl' | '2xl') | null;
+                    /**
+                     * Pick a color or enter hex value
+                     */
+                    iconBgColor?: string | null;
+                    iconAlignment?: ('left' | 'center' | 'right') | null;
+                    cards: {
+                      /**
+                       * Select a Lucide icon
+                       */
+                      icon?:
+                        | (
+                            | 'ArrowRight'
+                            | 'ArrowLeft'
+                            | 'ArrowUp'
+                            | 'ArrowDown'
+                            | 'ChevronRight'
+                            | 'ChevronLeft'
+                            | 'ChevronUp'
+                            | 'ChevronDown'
+                            | 'Check'
+                            | 'CheckCircle2'
+                            | 'X'
+                            | 'XCircle'
+                            | 'Info'
+                            | 'AlertCircle'
+                            | 'AlertTriangle'
+                            | 'HelpCircle'
+                            | 'Settings'
+                            | 'Search'
+                            | 'User'
+                            | 'Users'
+                            | 'Home'
+                            | 'Menu'
+                            | 'MoreHorizontal'
+                            | 'MoreVertical'
+                            | 'Star'
+                            | 'Heart'
+                            | 'ThumbsUp'
+                            | 'ThumbsDown'
+                            | 'MapPin'
+                            | 'Phone'
+                            | 'Mail'
+                            | 'Clock'
+                            | 'Calendar'
+                            | 'Globe'
+                            | 'Award'
+                            | 'BookOpen'
+                            | 'GraduationCap'
+                            | 'Briefcase'
+                            | 'Play'
+                            | 'Shield'
+                            | 'Zap'
+                            | 'Download'
+                            | 'Camera'
+                            | 'Bell'
+                            | 'Send'
+                            | 'academic'
+                            | 'globe'
+                            | 'calendar'
+                            | 'award'
+                            | 'book'
+                            | 'group'
+                            | 'info'
+                            | 'star'
+                            | 'address'
+                            | 'phone'
+                            | 'email'
+                            | 'hours'
+                            | 'general'
+                          )
+                        | null;
+                      /**
+                       * Pick a color or enter hex value
+                       */
+                      iconColor?: string | null;
+                      title: string;
+                      description?: string | null;
+                      animation?: ('none' | 'hoverLift' | 'pulse' | 'float') | null;
+                      id?: string | null;
+                    }[];
+                    id?: string | null;
+                    blockName?: string | null;
+                    blockType: 'flexHighlightCards';
+                  }
+                | {
+                    alignment?: ('left' | 'center' | 'right') | null;
+                    buttons: {
+                      label: string;
+                      url: string;
+                      variant?: ('primary' | 'secondary' | 'outline' | 'ghost') | null;
+                      size?: ('sm' | 'md' | 'lg') | null;
+                      /**
+                       * Select a Lucide icon
+                       */
+                      icon?:
+                        | (
+                            | 'ArrowRight'
+                            | 'ArrowLeft'
+                            | 'ArrowUp'
+                            | 'ArrowDown'
+                            | 'ChevronRight'
+                            | 'ChevronLeft'
+                            | 'ChevronUp'
+                            | 'ChevronDown'
+                            | 'Check'
+                            | 'CheckCircle2'
+                            | 'X'
+                            | 'XCircle'
+                            | 'Info'
+                            | 'AlertCircle'
+                            | 'AlertTriangle'
+                            | 'HelpCircle'
+                            | 'Settings'
+                            | 'Search'
+                            | 'User'
+                            | 'Users'
+                            | 'Home'
+                            | 'Menu'
+                            | 'MoreHorizontal'
+                            | 'MoreVertical'
+                            | 'Star'
+                            | 'Heart'
+                            | 'ThumbsUp'
+                            | 'ThumbsDown'
+                            | 'MapPin'
+                            | 'Phone'
+                            | 'Mail'
+                            | 'Clock'
+                            | 'Calendar'
+                            | 'Globe'
+                            | 'Award'
+                            | 'BookOpen'
+                            | 'GraduationCap'
+                            | 'Briefcase'
+                            | 'Play'
+                            | 'Shield'
+                            | 'Zap'
+                            | 'Download'
+                            | 'Camera'
+                            | 'Bell'
+                            | 'Send'
+                            | 'academic'
+                            | 'globe'
+                            | 'calendar'
+                            | 'award'
+                            | 'book'
+                            | 'group'
+                            | 'info'
+                            | 'star'
+                            | 'address'
+                            | 'phone'
+                            | 'email'
+                            | 'hours'
+                            | 'general'
+                          )
+                        | null;
+                      openInNewTab?: boolean | null;
+                      id?: string | null;
+                    }[];
+                    id?: string | null;
+                    blockName?: string | null;
+                    blockType: 'flexButtons';
+                  }
+                | {
+                    layoutVariant?: ('floatingCards' | 'syncStatusPanel') | null;
+                    theme?: ('light' | 'dark') | null;
+                    /**
+                     * Number of mini tiles/rows inside the mock panel
+                     */
+                    chartCount?: number | null;
+                    topBadgeLabel?: string | null;
+                    topBadgeLabelSize?: ('sm' | 'md' | 'lg') | null;
+                    /**
+                     * Pick a color or enter hex value
+                     */
+                    topBadgeLabelColor?: string | null;
+                    topBadgeValue?: string | null;
+                    topBadgeAnimation?: ('none' | 'float' | 'pulse' | 'hoverLift') | null;
+                    topBadgeValueSize?: ('lg' | 'xl' | '2xl') | null;
+                    /**
+                     * Pick a color or enter hex value
+                     */
+                    topBadgeValueColor?: string | null;
+                    bottomChipPrimary?: string | null;
+                    bottomChipSecondary?: string | null;
+                    bottomSummary?: string | null;
+                    bottomBadgeAnimation?: ('none' | 'float' | 'pulse' | 'hoverLift') | null;
+                    bottomSummarySize?: ('sm' | 'md' | 'lg' | 'xl') | null;
+                    /**
+                     * Pick a color or enter hex value
+                     */
+                    bottomSummaryColor?: string | null;
+                    /**
+                     * Footer status text for the Sync Status Panel layout
+                     */
+                    syncFooterText?: string | null;
+                    id?: string | null;
+                    blockName?: string | null;
+                    blockType: 'flexDashboardMock';
+                  }
+                | {
+                    heading?: string | null;
+                    stats?:
+                      | {
+                          value: string;
+                          label: string;
+                          suffix?: string | null;
+                          id?: string | null;
+                        }[]
+                      | null;
+                    id?: string | null;
+                    blockName?: string | null;
+                    blockType: 'statsImpact';
+                  }
+                | FileDownloadsBlock
+              )[]
+            | null;
+          id?: string | null;
+        }[];
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'flexibleRow';
+      }
     | FeaturedCardsBlock
     | NewsAndUpdatesBlock
     | {
@@ -655,6 +1259,12 @@ export interface Page {
         blockName?: string | null;
         blockType: 'statusBadge';
       }
+    | SidebarLayoutBlock
+    | MediaContactBlock
+    | ExamIntroBlock
+    | ContentLayoutBlock
+    | StepsBlock
+    | FileDownloadsBlock
   )[];
   seo?: {
     title?: string | null;
@@ -665,6 +1275,8 @@ export interface Page {
     description?: string | null;
   };
   publishedAt?: string | null;
+  showInNav?: boolean | null;
+  navOrder?: number | null;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
    */
@@ -947,50 +1559,21 @@ export interface HelpSupportBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FlexibleRowBlock".
+ * via the `definition` "FileDownloadsBlock".
  */
-export interface FlexibleRowBlock {
-  containerWidth: 'boxed' | 'fullWidth';
-  rowBackground: 'transparent' | 'slate50' | 'brandNavy' | 'brandRed' | 'brandCream';
-  rowPadding: 'none' | 'small' | 'medium' | 'large';
-  gridGap: 'small' | 'medium' | 'large';
-  alignItems: 'start' | 'center' | 'end' | 'stretch';
-  columns: {
-    width: 'col-span-12' | 'col-span-6' | 'col-span-4' | 'col-span-8' | 'col-span-3' | 'col-span-9';
-    columnStyle: 'simple' | 'card' | 'bordered' | 'glassmorphism';
-    backgroundColor: 'transparent' | 'slate50' | 'brandNavy' | 'brandRed' | 'brandCream';
-    textColor: 'dark' | 'light';
-    columnPadding: 'none' | 'small' | 'medium' | 'large';
-    alignment: 'left' | 'center' | 'right';
-    /**
-     * Image for this column. WARNING: To change this image, click the "X" button to clear the field, then select or upload a new one. DO NOT click the pencil "Edit" icon to replace the file inside the media drawer, as that will overwrite the shared media asset globally across all pages!
-     */
-    image?: (number | null) | Media;
-    imagePosition?: ('top' | 'bottom') | null;
-    imageShape: 'rounded' | 'circle' | 'square' | 'original';
-    title?: string | null;
-    content?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    ctaLabel?: string | null;
-    ctaLink?: string | null;
+export interface FileDownloadsBlock {
+  title?: string | null;
+  blockStyle?: ('list' | 'grid' | 'minimal') | null;
+  description?: string | null;
+  files: {
+    title: string;
+    description?: string | null;
+    file: number | Media;
     id?: string | null;
   }[];
   id?: string | null;
   blockName?: string | null;
-  blockType: 'flexibleRow';
+  blockType: 'fileDownloads';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1067,57 +1650,217 @@ export interface FeaturedCardsBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "NewsAndUpdatesBlock".
+ * via the `definition` "SidebarLayoutBlock".
  */
-export interface NewsAndUpdatesBlock {
+export interface SidebarLayoutBlock {
+  sidebarPosition: 'left' | 'right';
+  sidebarWidth: '1/4' | '1/3';
+  mainContent: (RichTextBlock | ImageWithTextBlock | InfoCardBlock | TableBlock | EmbedBlock | CallToActionBlock)[];
+  sidebarContent: (RichTextBlock | ImageWithTextBlock | InfoCardBlock | EmbedBlock | CallToActionBlock)[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'sidebarLayout';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaContactBlock".
+ */
+export interface MediaContactBlock {
+  layoutDirection: 'mediaLeft' | 'mediaRight';
+  mediaWidth: 'col-span-4' | 'col-span-5' | 'col-span-6' | 'col-span-7' | 'col-span-8';
+  verticalAlignment: 'items-start' | 'items-center' | 'items-end';
+  backgroundColor: 'transparent' | 'slate50' | 'brandNavy' | 'brandRed' | 'brandCream';
+  padding: 'none' | 'small' | 'medium' | 'large';
+  mediaType: 'upload' | 'videoUrl';
   /**
-   * Section heading displayed above this block
+   * Upload or select an image file or a video file (e.g. mp4, png, jpg) from the media gallery. WARNING: To change this, clear the field first using the "X" button.
    */
-  heading?: string | null;
+  mediaFile?: (number | null) | Media;
   /**
-   * Optional description below the heading
+   * Paste the share link of the video (e.g. https://www.youtube.com/watch?v=...)
    */
-  description?: string | null;
-  align?: ('left' | 'center' | 'right') | null;
-  /**
-   * Choose between a card grid or a featured spotlight layout
-   */
-  layout: 'spotlight' | 'grid' | 'list';
-  /**
-   * Choose manual card entry or automatic fetch from News collection.
-   */
-  newsSource: 'fetch' | 'manual';
-  /**
-   * Maximum number of cards to fetch
-   */
-  limit?: number | null;
-  sortBy?: ('latest' | 'oldest' | 'featured') | null;
-  /**
-   * Optional category filter (exact match)
-   */
-  category?: ('' | 'ANNOUNCEMENT' | 'EVENT' | 'OPPORTUNITY' | 'RESULT' | 'NOTICE') | null;
-  fetchOnlyFeatured?: boolean | null;
-  manualNews?:
+  videoUrl?: string | null;
+  aspectRatio: 'original' | 'video' | 'square' | 'portrait' | 'tall';
+  contactHeading: string;
+  contactSubheading?: string | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  contactDetails?:
     | {
-        title: string;
-        tag: 'ANNOUNCEMENT' | 'EVENT' | 'OPPORTUNITY' | 'RESULT' | 'NOTICE';
-        excerpt: string;
-        externalLink?: string | null;
-        publishedAt: string;
-        featured?: boolean | null;
+        type: 'address' | 'phone' | 'email' | 'hours' | 'general';
+        label: string;
+        value: string;
+        /**
+         * Adds a link to the detail (e.g. tel:+91... for phone, mailto:foo@bar.com for email)
+         */
+        link?: string | null;
         id?: string | null;
       }[]
     | null;
-  viewAllEnabled?: boolean | null;
-  viewAllLabel?: string | null;
-  viewAllUrl?: string | null;
-  /**
-   * Pick a color or enter hex value
-   */
-  sectionBgColor?: string | null;
+  showForm: boolean;
+  formHeading?: string | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: 'newsAndUpdates';
+  blockType: 'mediaContact';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ExamIntroBlock".
+ */
+export interface ExamIntroBlock {
+  title: string;
+  subtitle?: string | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  examDate?: string | null;
+  applicationDeadline?: string | null;
+  venue?: string | null;
+  fee?: string | null;
+  ctaLabel?: string | null;
+  ctaLink?: string | null;
+  image?: (number | null) | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'examIntro';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContentLayoutBlock".
+ */
+export interface ContentLayoutBlock {
+  columns?:
+    | {
+        size?: ('oneThird' | 'half' | 'twoThirds' | 'full') | null;
+        richText?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'contentLayout';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StepsBlock".
+ */
+export interface StepsBlock {
+  title?: string | null;
+  description?: string | null;
+  hoverLuminous?: boolean | null;
+  hoverBulge?: boolean | null;
+  steps: {
+    title: string;
+    description?: string | null;
+    /**
+     * Select a Lucide icon
+     */
+    icon?:
+      | (
+          | 'ArrowRight'
+          | 'ArrowLeft'
+          | 'ArrowUp'
+          | 'ArrowDown'
+          | 'ChevronRight'
+          | 'ChevronLeft'
+          | 'ChevronUp'
+          | 'ChevronDown'
+          | 'Check'
+          | 'CheckCircle2'
+          | 'X'
+          | 'XCircle'
+          | 'Info'
+          | 'AlertCircle'
+          | 'AlertTriangle'
+          | 'HelpCircle'
+          | 'Settings'
+          | 'Search'
+          | 'User'
+          | 'Users'
+          | 'Home'
+          | 'Menu'
+          | 'MoreHorizontal'
+          | 'MoreVertical'
+          | 'Star'
+          | 'Heart'
+          | 'ThumbsUp'
+          | 'ThumbsDown'
+          | 'MapPin'
+          | 'Phone'
+          | 'Mail'
+          | 'Clock'
+          | 'Calendar'
+          | 'Globe'
+          | 'Award'
+          | 'BookOpen'
+          | 'GraduationCap'
+          | 'Briefcase'
+          | 'Play'
+          | 'Shield'
+          | 'Zap'
+          | 'Download'
+          | 'Camera'
+          | 'Bell'
+          | 'Send'
+          | 'academic'
+          | 'globe'
+          | 'calendar'
+          | 'award'
+          | 'book'
+          | 'group'
+          | 'info'
+          | 'star'
+          | 'address'
+          | 'phone'
+          | 'email'
+          | 'hours'
+          | 'general'
+        )
+      | null;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'steps';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1126,7 +1869,7 @@ export interface NewsAndUpdatesBlock {
 export interface User {
   id: number;
   name: string;
-  role: 'superAdmin' | 'editor';
+  role: 'superAdmin' | 'schoolAdmin' | 'editor' | 'viewer';
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -1294,6 +2037,19 @@ export interface Committee {
   } | null;
   type: 'committee' | 'advisory' | 'faculty';
   order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "jobApplications".
+ */
+export interface JobApplication {
+  id: number;
+  name: string;
+  email: string;
+  resume: number | Media;
+  status: 'pending' | 'reviewed' | 'accepted' | 'rejected' | 'deleted';
   updatedAt: string;
   createdAt: string;
 }
@@ -1729,6 +2485,10 @@ export interface PayloadLockedDocument {
         value: number | Committee;
       } | null)
     | ({
+        relationTo: 'jobApplications';
+        value: number | JobApplication;
+      } | null)
+    | ({
         relationTo: 'members';
         value: number | Member;
       } | null)
@@ -1925,39 +2685,12 @@ export interface PagesSelect<T extends boolean = true> {
                         };
                     id?: T;
                   };
-              mosiaFloatingCard?:
+              designSettings?:
                 | T
                 | {
-                    enabled?: T;
-                    badgeLabel?: T;
-                    footerText?: T;
-                    footerLink?: T;
-                    footerLinkLabel?: T;
-                    stats?:
-                      | T
-                      | {
-                          value?: T;
-                          label?: T;
-                          id?: T;
-                        };
-                  };
-              mosiaShowSlideCounter?: T;
-              mosiaShowPlayPause?: T;
-              quickAccessBar?:
-                | T
-                | {
-                    enabled?: T;
-                    overlapAmount?: T;
-                    items?:
-                      | T
-                      | {
-                          label?: T;
-                          icon?: T;
-                          link?: T;
-                          external?: T;
-                          colorVariant?: T;
-                          id?: T;
-                        };
+                    overlapHeader?: T;
+                    imageOpacity?: T;
+                    imageScale?: T;
                   };
               id?: T;
               blockName?: T;
@@ -2129,7 +2862,233 @@ export interface PagesSelect<T extends boolean = true> {
               id?: T;
               blockName?: T;
             };
-        flexibleRow?: T | FlexibleRowBlockSelect<T>;
+        flexibleRow?:
+          | T
+          | {
+              sectionHeading?: T;
+              sectionDescription?: T;
+              headingAlignment?: T;
+              sectionBgColor?: T;
+              radialGlow?: T;
+              gap?: T;
+              verticalAlign?: T;
+              columns?:
+                | T
+                | {
+                    width?: T;
+                    columnBgColor?: T;
+                    padding?: T;
+                    blocks?:
+                      | T
+                      | {
+                          flexRichText?:
+                            | T
+                            | {
+                                content?: T;
+                                fontFamily?: T;
+                                headingFontFamily?: T;
+                                fontSize?: T;
+                                textColor?: T;
+                                id?: T;
+                                blockName?: T;
+                              };
+                          flexImage?:
+                            | T
+                            | {
+                                image?: T;
+                                caption?: T;
+                                captionColor?: T;
+                                objectFit?: T;
+                                rounded?: T;
+                                id?: T;
+                                blockName?: T;
+                              };
+                          flexVideo?:
+                            | T
+                            | {
+                                videoSource?: T;
+                                uploadedVideo?: T;
+                                youtubeUrl?: T;
+                                vimeoUrl?: T;
+                                externalVideoUrl?: T;
+                                poster?: T;
+                                autoplay?: T;
+                                loop?: T;
+                                controls?: T;
+                                id?: T;
+                                blockName?: T;
+                              };
+                          flexCarousel?:
+                            | T
+                            | {
+                                slides?:
+                                  | T
+                                  | {
+                                      mediaType?: T;
+                                      image?: T;
+                                      video?: T;
+                                      youtubeUrl?: T;
+                                      caption?: T;
+                                      id?: T;
+                                    };
+                                autoplay?: T;
+                                interval?: T;
+                                showDots?: T;
+                                showArrows?: T;
+                                id?: T;
+                                blockName?: T;
+                              };
+                          flexMapEmbed?:
+                            | T
+                            | {
+                                embedType?: T;
+                                iframeUrl?: T;
+                                html?: T;
+                                height?: T;
+                                id?: T;
+                                blockName?: T;
+                              };
+                          flexAnimation?:
+                            | T
+                            | {
+                                animationType?: T;
+                                lottieUrl?: T;
+                                gif?: T;
+                                loop?: T;
+                                autoplay?: T;
+                                id?: T;
+                                blockName?: T;
+                              };
+                          flexStatsCards?:
+                            | T
+                            | {
+                                columns?: T;
+                                cardStyle?: T;
+                                cards?:
+                                  | T
+                                  | {
+                                      label?: T;
+                                      value?: T;
+                                      trend?: T;
+                                      trendLabel?: T;
+                                      icon?: T;
+                                      iconColor?: T;
+                                      animation?: T;
+                                      id?: T;
+                                    };
+                                id?: T;
+                                blockName?: T;
+                              };
+                          flexFeatureCards?:
+                            | T
+                            | {
+                                columns?: T;
+                                cardStyle?: T;
+                                cards?:
+                                  | T
+                                  | {
+                                      icon?: T;
+                                      iconColor?: T;
+                                      accentColor?: T;
+                                      title?: T;
+                                      subtitle?: T;
+                                      description?: T;
+                                      points?:
+                                        | T
+                                        | {
+                                            text?: T;
+                                            id?: T;
+                                          };
+                                      animation?: T;
+                                      id?: T;
+                                    };
+                                id?: T;
+                                blockName?: T;
+                              };
+                          flexHighlightCards?:
+                            | T
+                            | {
+                                columns?: T;
+                                theme?: T;
+                                titleSize?: T;
+                                iconBgColor?: T;
+                                iconAlignment?: T;
+                                cards?:
+                                  | T
+                                  | {
+                                      icon?: T;
+                                      iconColor?: T;
+                                      title?: T;
+                                      description?: T;
+                                      animation?: T;
+                                      id?: T;
+                                    };
+                                id?: T;
+                                blockName?: T;
+                              };
+                          flexButtons?:
+                            | T
+                            | {
+                                alignment?: T;
+                                buttons?:
+                                  | T
+                                  | {
+                                      label?: T;
+                                      url?: T;
+                                      variant?: T;
+                                      size?: T;
+                                      icon?: T;
+                                      openInNewTab?: T;
+                                      id?: T;
+                                    };
+                                id?: T;
+                                blockName?: T;
+                              };
+                          flexDashboardMock?:
+                            | T
+                            | {
+                                layoutVariant?: T;
+                                theme?: T;
+                                chartCount?: T;
+                                topBadgeLabel?: T;
+                                topBadgeLabelSize?: T;
+                                topBadgeLabelColor?: T;
+                                topBadgeValue?: T;
+                                topBadgeAnimation?: T;
+                                topBadgeValueSize?: T;
+                                topBadgeValueColor?: T;
+                                bottomChipPrimary?: T;
+                                bottomChipSecondary?: T;
+                                bottomSummary?: T;
+                                bottomBadgeAnimation?: T;
+                                bottomSummarySize?: T;
+                                bottomSummaryColor?: T;
+                                syncFooterText?: T;
+                                id?: T;
+                                blockName?: T;
+                              };
+                          statsImpact?:
+                            | T
+                            | {
+                                heading?: T;
+                                stats?:
+                                  | T
+                                  | {
+                                      value?: T;
+                                      label?: T;
+                                      suffix?: T;
+                                      id?: T;
+                                    };
+                                id?: T;
+                                blockName?: T;
+                              };
+                          fileDownloads?: T | FileDownloadsBlockSelect<T>;
+                        };
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
         featuredCards?: T | FeaturedCardsBlockSelect<T>;
         newsAndUpdates?: T | NewsAndUpdatesBlockSelect<T>;
         statusBadge?:
@@ -2141,6 +3100,12 @@ export interface PagesSelect<T extends boolean = true> {
               id?: T;
               blockName?: T;
             };
+        sidebarLayout?: T | SidebarLayoutBlockSelect<T>;
+        mediaContact?: T | MediaContactBlockSelect<T>;
+        examIntro?: T | ExamIntroBlockSelect<T>;
+        contentLayout?: T | ContentLayoutBlockSelect<T>;
+        steps?: T | StepsBlockSelect<T>;
+        fileDownloads?: T | FileDownloadsBlockSelect<T>;
       };
   seo?:
     | T
@@ -2150,6 +3115,8 @@ export interface PagesSelect<T extends boolean = true> {
         description?: T;
       };
   publishedAt?: T;
+  showInNav?: T;
+  navOrder?: T;
   generateSlug?: T;
   slug?: T;
   parent?: T;
@@ -2288,30 +3255,18 @@ export interface HelpSupportBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FlexibleRowBlock_select".
+ * via the `definition` "FileDownloadsBlock_select".
  */
-export interface FlexibleRowBlockSelect<T extends boolean = true> {
-  containerWidth?: T;
-  rowBackground?: T;
-  rowPadding?: T;
-  gridGap?: T;
-  alignItems?: T;
-  columns?:
+export interface FileDownloadsBlockSelect<T extends boolean = true> {
+  title?: T;
+  blockStyle?: T;
+  description?: T;
+  files?:
     | T
     | {
-        width?: T;
-        columnStyle?: T;
-        backgroundColor?: T;
-        textColor?: T;
-        columnPadding?: T;
-        alignment?: T;
-        image?: T;
-        imagePosition?: T;
-        imageShape?: T;
         title?: T;
-        content?: T;
-        ctaLabel?: T;
-        ctaLink?: T;
+        description?: T;
+        file?: T;
         id?: T;
       };
   id?: T;
@@ -2357,33 +3312,114 @@ export interface FeaturedCardsBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "NewsAndUpdatesBlock_select".
+ * via the `definition` "SidebarLayoutBlock_select".
  */
-export interface NewsAndUpdatesBlockSelect<T extends boolean = true> {
-  heading?: T;
+export interface SidebarLayoutBlockSelect<T extends boolean = true> {
+  sidebarPosition?: T;
+  sidebarWidth?: T;
+  mainContent?:
+    | T
+    | {
+        richText?: T | RichTextBlockSelect<T>;
+        imageWithText?: T | ImageWithTextBlockSelect<T>;
+        infoCard?: T | InfoCardBlockSelect<T>;
+        table?: T | TableBlockSelect<T>;
+        embed?: T | EmbedBlockSelect<T>;
+        cta?: T | CallToActionBlockSelect<T>;
+      };
+  sidebarContent?:
+    | T
+    | {
+        richText?: T | RichTextBlockSelect<T>;
+        imageWithText?: T | ImageWithTextBlockSelect<T>;
+        infoCard?: T | InfoCardBlockSelect<T>;
+        embed?: T | EmbedBlockSelect<T>;
+        cta?: T | CallToActionBlockSelect<T>;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaContactBlock_select".
+ */
+export interface MediaContactBlockSelect<T extends boolean = true> {
+  layoutDirection?: T;
+  mediaWidth?: T;
+  verticalAlignment?: T;
+  backgroundColor?: T;
+  padding?: T;
+  mediaType?: T;
+  mediaFile?: T;
+  videoUrl?: T;
+  aspectRatio?: T;
+  contactHeading?: T;
+  contactSubheading?: T;
   description?: T;
-  align?: T;
-  layout?: T;
-  newsSource?: T;
-  limit?: T;
-  sortBy?: T;
-  category?: T;
-  fetchOnlyFeatured?: T;
-  manualNews?:
+  contactDetails?:
+    | T
+    | {
+        type?: T;
+        label?: T;
+        value?: T;
+        link?: T;
+        id?: T;
+      };
+  showForm?: T;
+  formHeading?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ExamIntroBlock_select".
+ */
+export interface ExamIntroBlockSelect<T extends boolean = true> {
+  title?: T;
+  subtitle?: T;
+  description?: T;
+  examDate?: T;
+  applicationDeadline?: T;
+  venue?: T;
+  fee?: T;
+  ctaLabel?: T;
+  ctaLink?: T;
+  image?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContentLayoutBlock_select".
+ */
+export interface ContentLayoutBlockSelect<T extends boolean = true> {
+  columns?:
+    | T
+    | {
+        size?: T;
+        richText?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StepsBlock_select".
+ */
+export interface StepsBlockSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  hoverLuminous?: T;
+  hoverBulge?: T;
+  steps?:
     | T
     | {
         title?: T;
-        tag?: T;
-        excerpt?: T;
-        externalLink?: T;
-        publishedAt?: T;
-        featured?: T;
+        description?: T;
+        icon?: T;
         id?: T;
       };
-  viewAllEnabled?: T;
-  viewAllLabel?: T;
-  viewAllUrl?: T;
-  sectionBgColor?: T;
   id?: T;
   blockName?: T;
 }
@@ -2548,6 +3584,18 @@ export interface CommitteeSelect<T extends boolean = true> {
   bio?: T;
   type?: T;
   order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "jobApplications_select".
+ */
+export interface JobApplicationsSelect<T extends boolean = true> {
+  name?: T;
+  email?: T;
+  resume?: T;
+  status?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2900,6 +3948,15 @@ export interface Header {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Add page slugs/URLs here (e.g., /about) to prevent them from automatically appearing in the header navigation.
+   */
+  navSyncHiddenPageUrls?:
+    | {
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -3031,6 +4088,12 @@ export interface HeaderSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  navSyncHiddenPageUrls?:
+    | T
+    | {
+        url?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -3122,6 +4185,22 @@ export interface TaskSchedulePublish {
     user?: (number | null) | User;
   };
   output?: unknown;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageBlockType".
+ */
+export interface ImageBlockType {
+  image: number | Media;
+  /**
+   * Optional caption below the image
+   */
+  caption?: string | null;
+  objectFit?: ('cover' | 'contain' | 'none') | null;
+  rounded?: ('none' | 'sm' | 'md' | 'lg' | 'full') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'imageBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

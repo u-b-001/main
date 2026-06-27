@@ -7,8 +7,16 @@ export const isSuperAdmin: Access = ({ req: { user } }) => {
   return Boolean(user && user.role === 'superAdmin')
 }
 
+export const isSchoolAdmin: Access = ({ req: { user } }) => {
+  return Boolean(user && ['superAdmin', 'schoolAdmin'].includes(user.role || ''))
+}
+
 export const isEditor: Access = ({ req: { user } }) => {
-  return Boolean(user && ['superAdmin', 'editor'].includes(user.role || ''))
+  return Boolean(user && ['superAdmin', 'schoolAdmin', 'editor'].includes(user.role || ''))
+}
+
+export const isViewer: Access = ({ req: { user } }) => {
+  return Boolean(user && ['superAdmin', 'schoolAdmin', 'editor', 'viewer'].includes(user.role || ''))
 }
 
 export const isSuperAdminOrSelf: Access = ({ req: { user } }) => {

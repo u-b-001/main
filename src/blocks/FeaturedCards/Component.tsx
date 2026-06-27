@@ -1,6 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
-import {
+import * as LucideIcons from 'lucide-react'
+const {
   GraduationCap,
   Globe,
   Calendar,
@@ -10,7 +11,7 @@ import {
   Info,
   Star,
   ArrowRight,
-} from 'lucide-react'
+} = LucideIcons
 import { Media } from '@/components/Media'
 import { cn } from '@/utilities/ui'
 import type { FeaturedCardsBlock as FeaturedCardsProps } from '@/payload-types'
@@ -73,7 +74,9 @@ export const FeaturedCardsComponent: React.FC<FeaturedCardsProps> = ({
       {/* Grid of Cards */}
       <div className={cn('grid', columnClasses[columns || '3'])}>
         {cards.map((card, idx) => {
-          const IconComponent = card.icon && card.icon !== 'none' ? iconMap[card.icon as keyof typeof iconMap] : null
+          const IconComponent = card.icon && card.icon !== 'none' 
+            ? (iconMap[card.icon as keyof typeof iconMap] || (LucideIcons as any)[card.icon]) 
+            : null
           const hasImage = card.image && typeof card.image === 'object'
 
           return (

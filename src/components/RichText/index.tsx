@@ -8,6 +8,8 @@ import {
   RichText as ConvertRichText,
 } from '@payloadcms/richtext-lexical/react'
 import { cn } from '@/utilities/ui'
+import { ContentLayoutComponent } from '@/blocks/ContentLayout/Component'
+import { ImageBlockComponent } from '@/blocks/ImageBlock/Component'
 
 type NodeTypes = DefaultNodeTypes
 
@@ -23,6 +25,10 @@ const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
 const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) => ({
   ...defaultConverters,
   ...LinkJSXConverter({ internalDocToHref }),
+  blocks: {
+    contentLayout: ({ node }) => <ContentLayoutComponent {...(node.fields as any)} />,
+    imageBlock: ({ node }) => <ImageBlockComponent {...(node.fields as any)} />,
+  },
 })
 
 type Props = {
