@@ -17,6 +17,18 @@ export const StepsBlock: Block = {
       label: 'Section Description',
     },
     {
+      name: 'hoverLuminous',
+      type: 'checkbox',
+      label: 'Luminous Glow on Hover',
+      defaultValue: false,
+    },
+    {
+      name: 'hoverBulge',
+      type: 'checkbox',
+      label: 'Bulge Cards on Hover',
+      defaultValue: false,
+    },
+    {
       name: 'steps',
       type: 'array',
       required: true,

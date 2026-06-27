@@ -97,11 +97,20 @@ export const FlexibleRowComponent: React.FC<any> = ({
             const colWidth = widthClassMap[column.width || 'auto']
             const colPadding = paddingClassMap[column.padding || '0']
             
+            const colTheme = column.colorTheme || 'default'
+            const themeClasses: Record<string, string> = {
+              default: '',
+              light: 'bg-white text-slate-900 border border-slate-100 rounded-2xl shadow-sm',
+              dark: 'bg-slate-900 text-white rounded-2xl shadow-md',
+              primary: 'bg-primary text-primary-foreground rounded-2xl shadow-md',
+            }
+
             return (
               <div
                 key={idx}
-                className={cn('flex flex-col', colWidth, colPadding)}
-                style={{ backgroundColor: column.columnBgColor || 'transparent' }}
+                className={cn('flex flex-col relative overflow-hidden', colWidth, colPadding, themeClasses[colTheme])}
+                style={column.columnBgColor && column.columnBgColor !== 'transparent' ? { backgroundColor: column.columnBgColor } : {}}
+                data-theme={colTheme === 'dark' ? 'dark' : undefined}
               >
                 {column.blocks && column.blocks.map((block: any, bIdx: number) => {
                   switch (block.blockType) {
@@ -220,8 +229,99 @@ export const FlexibleRowComponent: React.FC<any> = ({
                       return <PlaceholderBlock key={bIdx} name="Map/iFrame Embed" />
                     case 'flexAnimation':
                       return <PlaceholderBlock key={bIdx} name="Lottie/GIF Animation" />
-                    case 'flexStatsCards':
-                      return <PlaceholderBlock key={bIdx} name="Stats Cards" />
+                    case 'flexStatsCards': {
+                      const cols = block.columns || '4';
+                      const gridClasses = {
+                        '1': 'grid-cols-1',
+                        '2': 'grid-cols-1 sm:grid-cols-2',
+                        '3': 'grid-cols-1 sm:grid-cols-3',
+                        '4': 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4',
+                      };
+                      const cardStyle = block.cardStyle || 'outline';
+
+                      return (
+                        <div key={bIdx} className={cn('grid gap-6 w-full py-4', gridClasses[cols as keyof typeof gridClasses])}>
+                          {block.cards && block.cards.map((card: any, cIdx: number) => {
+                            const StatIcon = card.icon ? (LucideIcons as any)[card.icon] : null;
+                            const animClass = {
+                              none: '',
+                              hoverLift: 'transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl',
+                              pulse: 'animate-pulse',
+                              float: 'animate-bounce',
+                            };
+                            
+                            const styleClasses = {
+                              outline: 'border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900',
+                              elevated: 'bg-white shadow-lg shadow-gray-200/50 border border-gray-100 dark:shadow-none dark:border-gray-800 dark:bg-gray-800',
+                              soft: 'bg-gray-50 border border-transparent dark:bg-gray-800/50 dark:border-gray-800',
+                              duccAbout: 'border-t-4 bg-white shadow-sm dark:bg-gray-800',
+                            };
+
+                            const isDucc = cardStyle === 'duccAbout';
+
+                            return (
+                              <div
+                                key={cIdx}
+                                className={cn(
+                                  'flex flex-col p-6 rounded-2xl transition-all duration-300 relative overflow-hidden',
+                                  styleClasses[cardStyle as keyof typeof styleClasses] || styleClasses.outline,
+                                  animClass[card.animation as keyof typeof animClass] || '',
+                                  isDucc && 'items-center text-center'
+                                )}
+                                style={isDucc ? { borderTopColor: card.iconColor || 'var(--color-primary)' } : {}}
+                              >
+                                {/* Decorative background element for elevated style */}
+                                {cardStyle === 'elevated' && (
+                                  <div 
+                                    className="absolute -right-4 -top-4 w-24 h-24 rounded-full opacity-10 pointer-events-none"
+                                    style={{ backgroundColor: card.iconColor || 'var(--color-primary)' }}
+                                  />
+                                )}
+
+                                <div className={cn("flex w-full mb-4", isDucc ? "justify-center" : "items-start justify-between")}>
+                                  {StatIcon && (
+                                    <div 
+                                      className="w-14 h-14 rounded-2xl flex items-center justify-center bg-gray-50 dark:bg-gray-800/80 shadow-inner"
+                                      style={isDucc ? { backgroundColor: card.iconColor ? `${card.iconColor}15` : '' } : {}}
+                                    >
+                                      <StatIcon className="w-7 h-7" style={{ color: card.iconColor || 'var(--color-primary)' }} />
+                                    </div>
+                                  )}
+                                  {!isDucc && (card.trend || card.trendLabel) && (
+                                    <div className={cn(
+                                      "flex items-center space-x-1 text-xs font-bold px-3 py-1 rounded-full",
+                                      (card.trend?.includes('+') || card.trend?.includes('Up') || card.trend?.includes('increase')) 
+                                        ? "text-emerald-700 bg-emerald-100/80 dark:bg-emerald-900/40 dark:text-emerald-400" 
+                                        : "text-gray-600 bg-gray-100 dark:bg-gray-800 dark:text-gray-400"
+                                    )}>
+                                      {card.trend && <span>{card.trend}</span>}
+                                    </div>
+                                  )}
+                                </div>
+                                <div className={cn("w-full", isDucc && "flex flex-col items-center")}>
+                                  <h3 className="text-4xl font-black tracking-tight text-gray-900 dark:text-white mb-2">
+                                    {card.value}
+                                  </h3>
+                                  <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider dark:text-gray-400">
+                                    {card.label}
+                                  </p>
+                                  {isDucc && (card.trend || card.trendLabel) && (
+                                    <p className="text-xs font-medium text-emerald-600 dark:text-emerald-400 mt-3 bg-emerald-50 dark:bg-emerald-900/20 px-3 py-1 rounded-full">
+                                      {card.trend} {card.trendLabel}
+                                    </p>
+                                  )}
+                                  {!isDucc && card.trendLabel && (
+                                    <p className="text-xs font-medium text-gray-400 dark:text-gray-500 mt-3">
+                                      {card.trendLabel}
+                                    </p>
+                                  )}
+                                </div>
+                              </div>
+                            )
+                          })}
+                        </div>
+                      )
+                    }
                     case 'flexFeatureCards':
                       return <PlaceholderBlock key={bIdx} name="Feature Cards" />
                     case 'flexHighlightCards': {

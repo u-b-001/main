@@ -12,6 +12,17 @@ export const FileDownloadsBlock: Block = {
       defaultValue: 'Downloads',
     },
     {
+      name: 'blockStyle',
+      type: 'select',
+      label: 'Block Style',
+      defaultValue: 'list',
+      options: [
+        { label: 'List View (Default)', value: 'list' },
+        { label: 'Grid View (Cards)', value: 'grid' },
+        { label: 'Minimal (Clean text)', value: 'minimal' },
+      ],
+    },
+    {
       name: 'description',
       type: 'textarea',
       label: 'Section Description',

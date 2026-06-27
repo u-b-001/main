@@ -820,7 +820,19 @@ export const FlexibleRow: Block = {
             { label: '100% (full width)', value: '100' },
           ],
         },
-        colorField('columnBgColor', 'Column Background Color', 'transparent'),
+        {
+          name: 'colorTheme',
+          type: 'select',
+          defaultValue: 'default',
+          label: 'Color Theme',
+          options: [
+            { label: 'Default (Transparent)', value: 'default' },
+            { label: 'Light (White)', value: 'light' },
+            { label: 'Dark (Slate)', value: 'dark' },
+            { label: 'Primary Accent', value: 'primary' },
+          ],
+        },
+        colorField('columnBgColor', 'Custom Background Color', 'transparent'),
         {
           name: 'padding',
           type: 'select',

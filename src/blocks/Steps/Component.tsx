@@ -3,7 +3,7 @@ import { cn } from '@/utilities/ui'
 import type { StepsBlock as StepsProps } from '@/payload-types'
 import * as LucideIcons from 'lucide-react'
 
-export const StepsComponent: React.FC<StepsProps> = ({ title, description, steps }) => {
+export const StepsComponent: React.FC<StepsProps> = ({ title, description, steps, hoverBulge, hoverLuminous }) => {
   return (
     <section className="py-16 bg-white dark:bg-gray-900">
       <div className="container mx-auto px-4 max-w-5xl">
@@ -29,7 +29,9 @@ export const StepsComponent: React.FC<StepsProps> = ({ title, description, steps
                   {/* Left / Right spacing logic for Desktop */}
                   <div className={cn("w-full md:w-[45%] ml-16 md:ml-0 flex", isEven ? "md:justify-end" : "md:justify-start", !isEven && "md:order-3")}>
                     <div className={cn(
-                      "bg-gray-50 dark:bg-gray-800 w-full p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 text-left",
+                      "bg-gray-50 dark:bg-gray-800 w-full p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 text-left transition-all duration-300",
+                      hoverBulge && "hover:scale-105 hover:shadow-md",
+                      hoverLuminous && "hover:shadow-[0_0_30px_rgba(250,204,21,0.6)] hover:border-yellow-400/50 z-10"
                     )}>
                       <h3 className="text-xl font-bold mb-2 flex items-center gap-2 text-gray-900 dark:text-white">
                          <span className="text-primary font-black opacity-30 text-2xl mr-1">{idx + 1}.</span>

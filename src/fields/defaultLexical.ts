@@ -1,7 +1,9 @@
 import type { TextFieldSingleValidation } from 'payload'
+import { ImageBlock } from '@/blocks/ImageBlock/config'
 import {
   AlignFeature,
   BlockquoteFeature,
+  BlocksFeature,
   BoldFeature,
   ChecklistFeature,
   FixedToolbarFeature,
@@ -44,6 +46,9 @@ export const getDefaultLexicalFeatures = () => [
     ChecklistFeature(),
     RelationshipFeature({ enabledCollections: ['pages', 'news'] }),
     UploadFeature({ enabledCollections: ['media'] }),
+    BlocksFeature({
+      blocks: [ImageBlock],
+    }),
     LinkFeature({
       enabledCollections: ['pages', 'news'],
       fields: ({ defaultFields }) => {

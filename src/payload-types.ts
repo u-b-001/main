@@ -1349,6 +1349,7 @@ export interface HelpSupportBlock {
  */
 export interface FileDownloadsBlock {
   title?: string | null;
+  blockStyle?: ('list' | 'grid' | 'minimal') | null;
   description?: string | null;
   files: {
     title: string;
@@ -1524,6 +1525,8 @@ export interface ContentLayoutBlock {
 export interface StepsBlock {
   title?: string | null;
   description?: string | null;
+  hoverLuminous?: boolean | null;
+  hoverBulge?: boolean | null;
   steps: {
     title: string;
     description?: string | null;
@@ -2896,6 +2899,7 @@ export interface HelpSupportBlockSelect<T extends boolean = true> {
  */
 export interface FileDownloadsBlockSelect<T extends boolean = true> {
   title?: T;
+  blockStyle?: T;
   description?: T;
   files?:
     | T
@@ -3032,6 +3036,8 @@ export interface ContentLayoutBlockSelect<T extends boolean = true> {
 export interface StepsBlockSelect<T extends boolean = true> {
   title?: T;
   description?: T;
+  hoverLuminous?: T;
+  hoverBulge?: T;
   steps?:
     | T
     | {
@@ -4082,6 +4088,22 @@ export interface TaskSchedulePublish {
     user?: (number | null) | User;
   };
   output?: unknown;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageBlockType".
+ */
+export interface ImageBlockType {
+  image: number | Media;
+  /**
+   * Optional caption below the image
+   */
+  caption?: string | null;
+  objectFit?: ('cover' | 'contain' | 'none') | null;
+  rounded?: ('none' | 'sm' | 'md' | 'lg' | 'full') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'imageBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
