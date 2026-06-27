@@ -31,6 +31,7 @@ import { ExamIntroBlock } from '../../blocks/ExamIntro/config'
 import { ContentLayout } from '../../blocks/ContentLayout/config'
 import { StepsBlock } from '../../blocks/Steps/config'
 import { FileDownloadsBlock } from '../../blocks/FileDownloads/config'
+import { ResourceLinksBlock } from '../../blocks/ResourceLinks/config'
 
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -156,6 +157,7 @@ export const Pages: CollectionConfig<'pages'> = {
         ContentLayout,
         StepsBlock,
         FileDownloadsBlock,
+        ResourceLinksBlock,
       ],
       required: true,
       admin: {

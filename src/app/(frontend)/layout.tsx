@@ -39,15 +39,26 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const showBgPattern = siteSettings?.showBgPattern !== false
   const bgPatternOpacity = showBgPattern ? (Number(siteSettings?.bgPatternOpacity || 15) / 100).toFixed(2) : '0'
 
+  const themeColors = siteSettings?.themeColors || {}
+  const customStyles: React.CSSProperties = {
+    '--bg-pattern-opacity': bgPatternOpacity,
+    ...(themeColors.secondaryColor && { '--brand-navy': themeColors.secondaryColor, '--secondary': themeColors.secondaryColor }),
+    ...(themeColors.primaryColor && { '--brand-red': themeColors.primaryColor, '--primary': themeColors.primaryColor }),
+    ...(themeColors.accentColor && { '--brand-gold': themeColors.accentColor, '--accent': themeColors.accentColor }),
+    ...(themeColors.mutedBackgroundColor && { '--brand-cream': themeColors.mutedBackgroundColor, '--muted': themeColors.mutedBackgroundColor }),
+    ...(themeColors.textColor && { '--brand-text': themeColors.textColor, '--foreground': themeColors.textColor }),
+    ...(themeColors.surfaceColor && { '--brand-lightgray': themeColors.surfaceColor, '--card': themeColors.surfaceColor }),
+    ...(themeColors.backgroundColor && { '--background': themeColors.backgroundColor }),
+  } as React.CSSProperties
+
   return (
     <html
       className={cn(inter.variable, notoSerifJp.variable, GeistMono.variable)}
       lang="en"
-      data-color-scheme={colorScheme}
       data-heading-font={headingFont}
       data-body-font={bodyFont}
       data-text-size={siteTextSize}
-      style={{ '--bg-pattern-opacity': bgPatternOpacity } as React.CSSProperties}
+      style={customStyles}
       suppressHydrationWarning
     >
       <head>

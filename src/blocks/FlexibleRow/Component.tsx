@@ -322,8 +322,102 @@ export const FlexibleRowComponent: React.FC<any> = ({
                         </div>
                       )
                     }
-                    case 'flexFeatureCards':
-                      return <PlaceholderBlock key={bIdx} name="Feature Cards" />
+                    case 'flexFeatureCards': {
+                      const cols = block.columns || '3';
+                      const gridClasses = {
+                        '1': 'grid-cols-1',
+                        '2': 'grid-cols-1 sm:grid-cols-2',
+                        '3': 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
+                        '4': 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4',
+                      };
+                      const cardStyle = block.cardStyle || 'borderTop';
+
+                      return (
+                        <div key={bIdx} className={cn('grid gap-6 w-full py-4', gridClasses[cols as keyof typeof gridClasses])}>
+                          {block.cards && block.cards.map((card: any, cIdx: number) => {
+                            const CardIcon = card.icon ? (LucideIcons as any)[card.icon] : null;
+                            const animClass = {
+                              none: '',
+                              hoverLift: 'transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl',
+                              pulse: 'animate-pulse',
+                              float: 'animate-bounce',
+                            };
+                            
+                            const styleClasses = {
+                              borderTop: 'bg-white shadow-sm border border-gray-100 border-t-4 dark:bg-gray-800 dark:border-gray-700',
+                              outline: 'border border-gray-200 bg-transparent hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800/50',
+                              darkGlass: 'bg-gray-900/40 backdrop-blur-md border border-gray-700/50 text-white shadow-lg shadow-black/20',
+                            };
+
+                            const isDarkGlass = cardStyle === 'darkGlass';
+
+                            return (
+                              <div
+                                key={cIdx}
+                                className={cn(
+                                  'flex flex-col p-6 rounded-2xl relative overflow-hidden transition-all duration-300',
+                                  styleClasses[cardStyle as keyof typeof styleClasses] || styleClasses.borderTop,
+                                  animClass[card.animation as keyof typeof animClass] || ''
+                                )}
+                                style={cardStyle === 'borderTop' ? { borderTopColor: card.accentColor || 'var(--color-primary)' } : {}}
+                              >
+                                {cardStyle === 'darkGlass' && card.accentColor && (
+                                  <div 
+                                    className="absolute -top-10 -right-10 w-32 h-32 rounded-full blur-[50px] opacity-20 pointer-events-none"
+                                    style={{ backgroundColor: card.accentColor }}
+                                  />
+                                )}
+                                
+                                {CardIcon && (
+                                  <div 
+                                    className={cn(
+                                      "w-12 h-12 rounded-xl flex items-center justify-center mb-5 shrink-0 shadow-inner",
+                                      isDarkGlass ? "bg-white/10" : "bg-gray-50 dark:bg-gray-800"
+                                    )}
+                                    style={!isDarkGlass ? { backgroundColor: card.iconColor ? `${card.iconColor}15` : '' } : {}}
+                                  >
+                                    <CardIcon className="w-6 h-6" style={{ color: card.iconColor || (isDarkGlass ? '#fff' : 'var(--color-primary)') }} />
+                                  </div>
+                                )}
+                                
+                                {card.title && (
+                                  <div className={cn("prose prose-sm md:prose-base max-w-none font-bold mb-2", isDarkGlass ? "dark prose-invert" : "")}>
+                                    <RichText data={card.title} enableGutter={false} />
+                                  </div>
+                                )}
+                                
+                                {card.subtitle && (
+                                  <h5 className={cn("text-sm font-semibold tracking-wider uppercase mb-3", isDarkGlass ? "text-gray-300" : "text-gray-500")}>
+                                    {card.subtitle}
+                                  </h5>
+                                )}
+                                
+                                {card.description && (
+                                  <div className={cn("prose prose-sm max-w-none mb-4 opacity-80", isDarkGlass ? "dark prose-invert" : "")}>
+                                    <RichText data={card.description} enableGutter={false} />
+                                  </div>
+                                )}
+                                
+                                {card.points && card.points.length > 0 && (
+                                  <ul className="mt-auto space-y-2 pt-4 border-t border-gray-100/10 dark:border-gray-700/50">
+                                    {card.points.map((point: any, pIdx: number) => (
+                                      <li key={pIdx} className="flex items-start gap-2 text-sm">
+                                        <div className="mt-1 shrink-0">
+                                          <LucideIcons.CheckCircle2 className="w-4 h-4" style={{ color: card.accentColor || 'var(--color-primary)' }} />
+                                        </div>
+                                        <span className={cn(isDarkGlass ? "text-gray-300" : "text-gray-600 dark:text-gray-300")}>
+                                          {point.text}
+                                        </span>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                )}
+                              </div>
+                            )
+                          })}
+                        </div>
+                      )
+                    }
                     case 'flexHighlightCards': {
                       const cols = block.columns || '2';
                       const gridClasses = {

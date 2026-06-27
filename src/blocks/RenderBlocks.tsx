@@ -28,6 +28,7 @@ import { ExamIntroComponent } from '@/blocks/ExamIntro/Component'
 import { ContentLayoutComponent } from '@/blocks/ContentLayout/Component'
 import { StepsComponent } from '@/blocks/Steps/Component'
 import { FileDownloadsComponent } from '@/blocks/FileDownloads/Component'
+import { ResourceLinksComponent } from '@/blocks/ResourceLinks/Component'
 
 const blockComponents = {
   cta: CallToActionBlock,
@@ -57,6 +58,7 @@ const blockComponents = {
   contentLayout: ContentLayoutComponent,
   steps: StepsComponent,
   fileDownloads: FileDownloadsComponent,
+  resourceLinks: ResourceLinksComponent,
 }
 
 export const RenderBlocks: React.FC<{

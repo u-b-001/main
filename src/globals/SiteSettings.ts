@@ -2,6 +2,7 @@ import type { GlobalConfig } from 'payload'
 import { publicAccess, isSuperAdmin } from '../access/roles'
 import { themePresets } from '../globals/themePresets'
 import { applyThemeToBlocks } from '../lib/applyThemeToBlocks'
+import { revalidateTag } from 'next/cache'
 
 export const SiteSettings: GlobalConfig = {
   slug: 'site-settings',
@@ -40,9 +41,10 @@ export const SiteSettings: GlobalConfig = {
     ],
     afterChange: [
       async ({ doc, previousDoc, req }) => {
-        // When themePreset changes, update all block layouts in the database
         const newPreset = doc?.themePreset
         const oldPreset = previousDoc?.themePreset
+
+        revalidateTag('global_site-settings')
 
         if (newPreset && newPreset !== oldPreset) {
           // Run non-blocking so the admin save doesn't hang

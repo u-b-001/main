@@ -1081,6 +1081,7 @@ export interface Page {
     | ContentLayoutBlock
     | StepsBlock
     | FileDownloadsBlock
+    | ResourceLinksBlock
   )[];
   seo?: {
     title?: string | null;
@@ -1600,6 +1601,90 @@ export interface StepsBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'steps';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ResourceLinksBlock".
+ */
+export interface ResourceLinksBlock {
+  title?: string | null;
+  description?: string | null;
+  columns?: ('1' | '2' | '3') | null;
+  links: {
+    title: string;
+    description?: string | null;
+    url: string;
+    /**
+     * Select a Lucide icon
+     */
+    icon?:
+      | (
+          | 'ArrowRight'
+          | 'ArrowLeft'
+          | 'ArrowUp'
+          | 'ArrowDown'
+          | 'ChevronRight'
+          | 'ChevronLeft'
+          | 'ChevronUp'
+          | 'ChevronDown'
+          | 'Check'
+          | 'CheckCircle2'
+          | 'X'
+          | 'XCircle'
+          | 'Info'
+          | 'AlertCircle'
+          | 'AlertTriangle'
+          | 'HelpCircle'
+          | 'Settings'
+          | 'Search'
+          | 'User'
+          | 'Users'
+          | 'Home'
+          | 'Menu'
+          | 'MoreHorizontal'
+          | 'MoreVertical'
+          | 'Star'
+          | 'Heart'
+          | 'ThumbsUp'
+          | 'ThumbsDown'
+          | 'MapPin'
+          | 'Phone'
+          | 'Mail'
+          | 'Clock'
+          | 'Calendar'
+          | 'Globe'
+          | 'Award'
+          | 'BookOpen'
+          | 'GraduationCap'
+          | 'Briefcase'
+          | 'Play'
+          | 'Shield'
+          | 'Zap'
+          | 'Download'
+          | 'Camera'
+          | 'Bell'
+          | 'Send'
+          | 'academic'
+          | 'globe'
+          | 'calendar'
+          | 'award'
+          | 'book'
+          | 'group'
+          | 'info'
+          | 'star'
+          | 'address'
+          | 'phone'
+          | 'email'
+          | 'hours'
+          | 'general'
+        )
+      | null;
+    openInNewTab?: boolean | null;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'resourceLinks';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2758,6 +2843,7 @@ export interface PagesSelect<T extends boolean = true> {
         contentLayout?: T | ContentLayoutBlockSelect<T>;
         steps?: T | StepsBlockSelect<T>;
         fileDownloads?: T | FileDownloadsBlockSelect<T>;
+        resourceLinks?: T | ResourceLinksBlockSelect<T>;
       };
   seo?:
     | T
@@ -3044,6 +3130,27 @@ export interface StepsBlockSelect<T extends boolean = true> {
         title?: T;
         description?: T;
         icon?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ResourceLinksBlock_select".
+ */
+export interface ResourceLinksBlockSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  columns?: T;
+  links?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        url?: T;
+        icon?: T;
+        openInNewTab?: T;
         id?: T;
       };
   id?: T;
