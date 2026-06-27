@@ -2401,27 +2401,35 @@ export interface Footer {
 export interface Homepage {
   id: number;
   /**
-   * Configure and reorder sections on the homepage. If left empty, all default sections will render in the standard sequence.
+   * Drag to reorder sections. Use the toggle inside each block to hide/show a section without losing its settings.
    */
   layout?:
     | (
         | {
+            /**
+             * Turn off to temporarily hide this section without losing its content or position.
+             */
+            enabled?: boolean | null;
             carouselHeight: 'short' | 'medium' | 'tall' | 'fullscreen';
             carouselLayout: 'fullWidth' | 'boxed';
             carouselImageOpacity: '100' | '90' | '80' | '70' | '60' | '50';
             carouselAutoplay?: boolean | null;
+            /**
+             * Minimum 1000ms — anything faster feels jarring.
+             */
             carouselAutoplayInterval?: number | null;
             slides?:
               | {
                   /**
-                   * Slide image. WARNING: To change this image, click the "X" button to clear the field, then select or upload a new one. DO NOT click the pencil "Edit" icon to replace the file inside the media drawer, as that will overwrite the shared media asset globally across all pages!
+                   * Slide image. To change this, click the "X" to clear the field, then pick/upload a new one. Do NOT use the pencil "Edit" icon inside the media drawer — that overwrites the shared media asset everywhere it's used.
                    */
                   image: number | Media;
-                  alt?: string | null;
+                  alt: string;
                   /**
                    * Optional: clicking the slide goes here
                    */
                   link?: string | null;
+                  linkNewTab?: boolean | null;
                   imageAlignment?: ('center' | 'top' | 'bottom' | 'left' | 'right') | null;
                   overlayOpacity?: ('none' | 'light' | 'medium' | 'dark' | 'extraDark') | null;
                   textAlignment?: ('left' | 'center' | 'right') | null;
@@ -2437,6 +2445,10 @@ export interface Homepage {
             blockType: 'carousel';
           }
         | {
+            /**
+             * Turn off to temporarily hide this section without losing its content or position.
+             */
+            enabled?: boolean | null;
             heading: string;
             align: 'left' | 'center' | 'right';
             size: 'small' | 'medium' | 'large';
@@ -2451,6 +2463,10 @@ export interface Homepage {
             blockType: 'services';
           }
         | {
+            /**
+             * Turn off to temporarily hide this section without losing its content or position.
+             */
+            enabled?: boolean | null;
             heading: string;
             align: 'left' | 'center' | 'right';
             size: 'small' | 'medium' | 'large';
@@ -2465,6 +2481,10 @@ export interface Homepage {
             blockType: 'news';
           }
         | {
+            /**
+             * Turn off to temporarily hide this section without losing its content or position.
+             */
+            enabled?: boolean | null;
             heading: string;
             align: 'left' | 'center' | 'right';
             size: 'small' | 'medium' | 'large';
@@ -2477,6 +2497,10 @@ export interface Homepage {
             blockType: 'gallery';
           }
         | {
+            /**
+             * Turn off to temporarily hide this section without losing its content or position.
+             */
+            enabled?: boolean | null;
             heading: string;
             align: 'left' | 'center' | 'right';
             size: 'small' | 'medium' | 'large';
@@ -2489,56 +2513,6 @@ export interface Homepage {
           }
       )[]
     | null;
-  carouselHeight: 'short' | 'medium' | 'tall' | 'fullscreen';
-  carouselLayout: 'fullWidth' | 'boxed';
-  carouselImageOpacity: '100' | '90' | '80' | '70' | '60' | '50';
-  carouselAutoplay?: boolean | null;
-  carouselAutoplayInterval?: number | null;
-  carousel?:
-    | {
-        /**
-         * Slide image. WARNING: To change this image, click the "X" button to clear the field, then select or upload a new one. DO NOT click the pencil "Edit" icon to replace the file inside the media drawer, as that will overwrite the shared media asset globally across all pages!
-         */
-        image: number | Media;
-        alt?: string | null;
-        /**
-         * Optional: clicking the slide goes here
-         */
-        link?: string | null;
-        imageAlignment?: ('center' | 'top' | 'bottom' | 'left' | 'right') | null;
-        overlayOpacity?: ('none' | 'light' | 'medium' | 'dark' | 'extraDark') | null;
-        textAlignment?: ('left' | 'center' | 'right') | null;
-        title?: string | null;
-        subtitle?: string | null;
-        buttonLabel?: string | null;
-        buttonLink?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  offersHeading: string;
-  offersHeadingAlignment: 'left' | 'center' | 'right';
-  offersHeadingSize: 'small' | 'medium' | 'large';
-  /**
-   * Select up to 4 service cards to display
-   */
-  services?: (number | Service)[] | null;
-  newsHeading: string;
-  newsHeadingAlignment: 'left' | 'center' | 'right';
-  newsHeadingSize: 'small' | 'medium' | 'large';
-  newsSubheading?: string | null;
-  /**
-   * How many notification items to show on the homepage
-   */
-  newsDisplayCount: number;
-  newsViewAllLink: string;
-  galleryHeading: string;
-  galleryHeadingAlignment: 'left' | 'center' | 'right';
-  galleryHeadingSize: 'small' | 'medium' | 'large';
-  galleryDisplayCount: number;
-  eventsHeading: string;
-  eventsHeadingAlignment: 'left' | 'center' | 'right';
-  eventsHeadingSize: 'small' | 'medium' | 'large';
-  eventsDisplayCount: number;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -2686,6 +2660,7 @@ export interface HomepageSelect<T extends boolean = true> {
         carousel?:
           | T
           | {
+              enabled?: T;
               carouselHeight?: T;
               carouselLayout?: T;
               carouselImageOpacity?: T;
@@ -2697,6 +2672,7 @@ export interface HomepageSelect<T extends boolean = true> {
                     image?: T;
                     alt?: T;
                     link?: T;
+                    linkNewTab?: T;
                     imageAlignment?: T;
                     overlayOpacity?: T;
                     textAlignment?: T;
@@ -2712,6 +2688,7 @@ export interface HomepageSelect<T extends boolean = true> {
         services?:
           | T
           | {
+              enabled?: T;
               heading?: T;
               align?: T;
               size?: T;
@@ -2724,6 +2701,7 @@ export interface HomepageSelect<T extends boolean = true> {
         news?:
           | T
           | {
+              enabled?: T;
               heading?: T;
               align?: T;
               size?: T;
@@ -2739,6 +2717,7 @@ export interface HomepageSelect<T extends boolean = true> {
         gallery?:
           | T
           | {
+              enabled?: T;
               heading?: T;
               align?: T;
               size?: T;
@@ -2752,6 +2731,7 @@ export interface HomepageSelect<T extends boolean = true> {
         events?:
           | T
           | {
+              enabled?: T;
               heading?: T;
               align?: T;
               size?: T;
@@ -2762,44 +2742,6 @@ export interface HomepageSelect<T extends boolean = true> {
               blockName?: T;
             };
       };
-  carouselHeight?: T;
-  carouselLayout?: T;
-  carouselImageOpacity?: T;
-  carouselAutoplay?: T;
-  carouselAutoplayInterval?: T;
-  carousel?:
-    | T
-    | {
-        image?: T;
-        alt?: T;
-        link?: T;
-        imageAlignment?: T;
-        overlayOpacity?: T;
-        textAlignment?: T;
-        title?: T;
-        subtitle?: T;
-        buttonLabel?: T;
-        buttonLink?: T;
-        id?: T;
-      };
-  offersHeading?: T;
-  offersHeadingAlignment?: T;
-  offersHeadingSize?: T;
-  services?: T;
-  newsHeading?: T;
-  newsHeadingAlignment?: T;
-  newsHeadingSize?: T;
-  newsSubheading?: T;
-  newsDisplayCount?: T;
-  newsViewAllLink?: T;
-  galleryHeading?: T;
-  galleryHeadingAlignment?: T;
-  galleryHeadingSize?: T;
-  galleryDisplayCount?: T;
-  eventsHeading?: T;
-  eventsHeadingAlignment?: T;
-  eventsHeadingSize?: T;
-  eventsDisplayCount?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
