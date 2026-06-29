@@ -4122,10 +4122,6 @@ export interface Header {
    */
   overlapHomepageHero?: boolean | null;
   /**
-   * Show/hide the light-dark mode toggle in the header.
-   */
-  showThemeSelector?: boolean | null;
-  /**
    * Optional thin bar above the header, e.g. for urgent notices (admit cards, deadlines).
    */
   announcementBar?: {
@@ -4277,7 +4273,6 @@ export interface HeaderSelect<T extends boolean = true> {
   logoMobile?: T;
   sticky?: T;
   overlapHomepageHero?: T;
-  showThemeSelector?: T;
   announcementBar?:
     | T
     | {
