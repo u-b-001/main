@@ -14,16 +14,8 @@ export const SiteSettings: GlobalConfig = {
   hooks: {
     beforeChange: [
       ({ data, originalDoc }) => {
-        console.log('========================')
-        console.log('beforeChange fired')
-        console.log('New preset:', data?.themePreset)
-        console.log('Old preset:', originalDoc?.themePreset)
-
         const newPreset = data?.themePreset
         const oldPreset = originalDoc?.themePreset
-
-        console.log('Preset exists:', !!themePresets[newPreset])
-        console.log('Preset:', themePresets[newPreset])
 
         if (newPreset && newPreset !== oldPreset && themePresets[newPreset]) {
           const preset = themePresets[newPreset]
@@ -40,30 +32,33 @@ export const SiteSettings: GlobalConfig = {
 
           data.headingFont = preset.fonts.heading
           data.bodyFont = preset.fonts.body
-
-          console.log('Updated themeColors:', data.themeColors)
-          console.log('Updated fonts:', data.headingFont, data.bodyFont)
-        } else {
-          console.log('Condition failed')
         }
 
         return data
       },
     ],
     afterChange: [
-      revalidateSiteSettings,
+      // IMPORTANT: this hook must run and FINISH before revalidateSiteSettings.
+      // Previously this was fired without `await`, so the Next.js cache was
+      // revalidated against the OLD block data (race condition) — that is why
+      // colors/layouts appeared "stuck" on save even though themeColors updated.
       async ({ doc, previousDoc, req }) => {
-        // When themePreset changes, update all block layouts in the database
         const newPreset = doc?.themePreset
         const oldPreset = previousDoc?.themePreset
 
         if (newPreset && newPreset !== oldPreset) {
-          // Run non-blocking so the admin save doesn't hang
-          applyThemeToBlocks(req.payload, newPreset).catch((err) => {
-            req.payload.logger.error(`[Theme] Failed to apply theme to blocks: ${err.message}`)
-          })
+          try {
+            await applyThemeToBlocks(req.payload, newPreset)
+          } catch (err) {
+            req.payload.logger.error(
+              `[Theme] Failed to apply theme to blocks: ${(err as Error).message}`,
+            )
+          }
         }
       },
+      // Runs AFTER blocks have actually been updated in the DB, so the
+      // revalidated page reflects the new theme instead of stale data.
+      revalidateSiteSettings,
     ],
   },
   admin: {

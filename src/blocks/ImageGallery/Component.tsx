@@ -1,7 +1,9 @@
 'use client'
 
 import React, { useState } from 'react'
+import { ChevronDown } from 'lucide-react'
 import Image from 'next/image'
+import { cn } from '@/utilities/ui'
 
 type MediaDoc = { url: string; alt?: string } | string
 
@@ -120,9 +122,16 @@ export const ImageGalleryBlock: React.FC<ImageGalleryProps> = ({
           <button
             type="button"
             onClick={() => setExpanded((prev) => !prev)}
-            className="px-6 py-2 rounded-full border border-gray-300 text-sm font-medium hover:bg-gray-100 transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-3 border-2 border-brand-navy dark:border-slate-700 hover:border-brand-red dark:hover:border-brand-gold rounded-xl font-semibold text-sm text-brand-navy dark:text-white hover:text-brand-red dark:hover:text-brand-gold shadow-2xs hover:shadow-xs transition-all duration-200 group"
           >
-            {expanded ? 'View Less' : 'View More'}
+            <span>{expanded ? 'View Less' : 'View More'}</span>
+            <ChevronDown
+              size={16}
+              className={cn(
+                'transition-transform duration-300',
+                expanded ? 'rotate-180' : 'group-hover:translate-y-0.5',
+              )}
+            />
           </button>
         </div>
       )}
