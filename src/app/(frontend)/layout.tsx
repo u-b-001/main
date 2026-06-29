@@ -33,8 +33,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const siteSettings = (await getCachedGlobal('site-settings', 1)()) as any
   const defaultTheme = siteSettings?.defaultTheme || 'light'
   const colorScheme = siteSettings?.colorScheme || 'classic'
-  const headingFont = siteSettings?.headingFont || 'serif'
-  const bodyFont = siteSettings?.bodyFont || 'sans'
   const siteTextSize = siteSettings?.siteTextSize || 'small'
   const showBgPattern = siteSettings?.showBgPattern !== false
   const bgPatternOpacity = showBgPattern ? (Number(siteSettings?.bgPatternOpacity || 15) / 100).toFixed(2) : '0'
@@ -48,16 +46,22 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const surfaceColor = themeColors.surfaceColor || '#ffffff'
   const textColor = themeColors.textColor || '#000000'
   const backgroundColor = themeColors.backgroundColor || '#ffffff'
-  
-  const headingFontFamily = siteSettings?.headingFontFamily || 'Inter'
-  const bodyFontFamily = siteSettings?.bodyFontFamily || 'Inter'
+
+  // FIX: must match the Payload SiteSettings schema field names exactly
+  // (`headingFont` / `bodyFont`). The previous `headingFontFamily` /
+  // `bodyFontFamily` names don't exist on the schema, so they were always
+  // undefined and silently fell back to 'Inter' no matter what was
+  // selected in the admin panel — that was the whole bug.
+  const headingFontFamily = siteSettings?.headingFont || 'Playfair Display'
+  const bodyFontFamily = siteSettings?.bodyFont || 'Inter'
+
   return (
     <html
       className={cn(inter.variable, notoSerifJp.variable, GeistMono.variable)}
       lang="en"
       data-color-scheme={themePreset}
-      data-heading-font="serif"
-      data-body-font="sans"
+      data-heading-font={headingFontFamily}
+      data-body-font={bodyFontFamily}
       data-text-size={siteTextSize}
       style={customStyles}
       suppressHydrationWarning
@@ -66,7 +70,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <InitTheme defaultTheme="light" />
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
-        
+
         {/* Load custom selected Google Fonts */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />

@@ -6,6 +6,7 @@ import Link from 'next/link'
 import * as LucideIcons from 'lucide-react'
 import { StatsImpactBlock } from '@/blocks/Statistics/Component'
 import { FileDownloadsComponent } from '@/blocks/FileDownloads/Component'
+import { blockComponents } from '@/blocks/RenderBlocks'
 
 // Simple placeholder renderer for missing complex blocks
 const PlaceholderBlock = ({ name }: { name: string }) => (
@@ -99,10 +100,12 @@ export const FlexibleRowComponent: React.FC<any> = ({
             
             const colTheme = column.colorTheme || 'default'
             const themeClasses: Record<string, string> = {
+              none: '',
               default: '',
               light: 'bg-white text-slate-900 border border-slate-100 rounded-2xl shadow-sm',
               dark: 'bg-slate-900 text-white rounded-2xl shadow-md',
               primary: 'bg-primary text-primary-foreground rounded-2xl shadow-md',
+              secondary: 'bg-secondary text-secondary-foreground rounded-2xl shadow-md',
             }
 
             return (
@@ -221,14 +224,138 @@ export const FlexibleRowComponent: React.FC<any> = ({
                       return <StatsImpactBlock key={bIdx} {...block} />
                     case 'fileDownloads':
                       return <FileDownloadsComponent key={bIdx} {...block} />
-                    case 'flexVideo':
-                      return <PlaceholderBlock key={bIdx} name="Video Embed" />
-                    case 'flexCarousel':
-                      return <PlaceholderBlock key={bIdx} name="Media Carousel" />
-                    case 'flexMapEmbed':
+                    case 'flexVideo': {
+                      const getUrl = () => {
+                        if (block.videoSource === 'youtube') return block.youtubeUrl;
+                        if (block.videoSource === 'vimeo') return block.vimeoUrl;
+                        if (block.videoSource === 'externalUrl') return block.externalVideoUrl;
+                        if (block.videoSource === 'upload' && block.uploadedVideo) {
+                           return typeof block.uploadedVideo === 'object' ? block.uploadedVideo.url : block.uploadedVideo;
+                        }
+                        return null;
+                      };
+                      const url = getUrl();
+                      if (!url) return <div key={bIdx} className="text-gray-400 text-sm">No video source provided</div>;
+
+                      const containerClasses = cn(
+                        "w-full rounded-xl overflow-hidden shadow-lg bg-card border border-border flex flex-col",
+                        block.hoverLift && "transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
+                      );
+
+                      const renderVideo = () => {
+                        if (block.videoSource === 'youtube' || block.videoSource === 'vimeo') {
+                          let embedUrl = url;
+                          if (block.videoSource === 'youtube' && url.includes('watch?v=')) {
+                            embedUrl = url.replace('watch?v=', 'embed/');
+                          }
+                          return (
+                            <div className="relative w-full aspect-video bg-black">
+                              <iframe 
+                                src={`${embedUrl}${block.autoplay ? '?autoplay=1&mute=1' : ''}`}
+                                className="absolute inset-0 w-full h-full border-0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowFullScreen 
+                              />
+                            </div>
+                          )
+                        }
+                        
+                        const poster = block.poster && typeof block.poster === 'object' ? block.poster.url : undefined;
+                        return (
+                          <div className="w-full bg-black flex justify-center">
+                            <video 
+                              src={url}
+                              poster={poster}
+                              className="w-full h-auto max-h-[600px] object-contain"
+                              autoPlay={block.autoplay}
+                              loop={block.loop}
+                              controls={block.controls !== false}
+                              muted={block.autoplay}
+                              playsInline
+                            />
+                          </div>
+                        )
+                      };
+
+                      return (
+                        <div key={bIdx} className={containerClasses}>
+                          {renderVideo()}
+                          {(block.videoTitle || block.videoDescription) && (
+                            <div className="p-6 flex flex-col gap-2">
+                              {block.videoTitle && (
+                                <h3 className="text-xl font-bold text-card-foreground">
+                                  {block.videoTitle}
+                                </h3>
+                              )}
+                              {block.videoDescription && (
+                                <p className="text-muted-foreground whitespace-pre-wrap">
+                                  {block.videoDescription}
+                                </p>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      )
+                    }
+                    case 'flexCarousel': {
+                      if (!block.slides || block.slides.length === 0) return null;
+                      return (
+                        <div key={bIdx} className="w-full overflow-hidden rounded-xl shadow-lg relative group">
+                          <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4">
+                            {block.slides.map((slide: any, sIdx: number) => {
+                              return (
+                                <div key={sIdx} className="min-w-[85%] md:min-w-[65%] snap-center shrink-0 flex flex-col rounded-xl overflow-hidden bg-gray-50 dark:bg-gray-800">
+                                  {slide.mediaType === 'image' && slide.image && typeof slide.image === 'object' && (
+                                    <div className="relative w-full h-64 md:h-80">
+                                      <Media resource={slide.image} fill imgClassName="object-cover" />
+                                    </div>
+                                  )}
+                                  {slide.mediaType === 'video' && slide.video && typeof slide.video === 'object' && (
+                                    <video src={slide.video.url} className="w-full h-64 md:h-80 object-cover" autoPlay muted loop playsInline />
+                                  )}
+                                  {slide.mediaType === 'youtube' && slide.youtubeUrl && (
+                                    <iframe src={slide.youtubeUrl.replace('watch?v=', 'embed/')} className="w-full h-64 md:h-80 border-0" allowFullScreen />
+                                  )}
+                                  {slide.caption && (
+                                    <div className="p-4 text-sm text-center text-gray-600 dark:text-gray-300 border-t border-gray-100 dark:border-gray-700">
+                                      {slide.caption}
+                                    </div>
+                                  )}
+                                </div>
+                              )
+                            })}
+                          </div>
+                        </div>
+                      )
+                    }
+                    case 'flexMapEmbed': {
+                      const height = block.height || 400;
+                      if (block.embedType === 'html' && block.html) {
+                        return <div key={bIdx} className="w-full overflow-hidden rounded-xl shadow-md" style={{ minHeight: height }} dangerouslySetInnerHTML={{ __html: block.html }} />
+                      }
+                      if (block.embedType === 'iframe' && block.iframeUrl) {
+                        return (
+                          <div key={bIdx} className="w-full overflow-hidden rounded-xl shadow-md" style={{ height }}>
+                            <iframe src={block.iframeUrl} width="100%" height="100%" style={{ border: 0 }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
+                          </div>
+                        )
+                      }
                       return <PlaceholderBlock key={bIdx} name="Map/iFrame Embed" />
-                    case 'flexAnimation':
-                      return <PlaceholderBlock key={bIdx} name="Lottie/GIF Animation" />
+                    }
+                    case 'flexAnimation': {
+                      return (
+                        <div key={bIdx} className="w-full flex justify-center py-4">
+                          {block.animationType === 'gif' && block.gif && typeof block.gif === 'object' ? (
+                            <img src={block.gif.url} alt={block.gif.alt || 'Animation'} className="max-w-full rounded-xl" />
+                          ) : (
+                            <div className="p-8 border border-dashed border-gray-300 rounded-xl text-gray-500 text-center w-full bg-gray-50">
+                              [ Lottie Animation Placeholder: {block.lottieUrl || 'No URL'} ]<br/>
+                              <span className="text-xs">Requires lottie-react package to render JSON</span>
+                            </div>
+                          )}
+                        </div>
+                      )
+                    }
                     case 'flexStatsCards': {
                       const cols = block.columns || '4';
                       const gridClasses = {
@@ -331,6 +458,11 @@ export const FlexibleRowComponent: React.FC<any> = ({
                         '4': 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4',
                       };
                       const cardStyle = block.cardStyle || 'borderTop';
+                      const styleClasses = {
+                        borderTop: 'bg-white border-t-4 border-gray-100 shadow-md dark:bg-gray-800 dark:border-gray-700',
+                        outline: 'bg-white border border-gray-200 dark:bg-gray-800 dark:border-gray-700',
+                        darkGlass: 'bg-slate-900/80 backdrop-blur-md border border-slate-700/50 text-white shadow-xl',
+                      };
 
                       return (
                         <div key={bIdx} className={cn('grid gap-6 w-full py-4', gridClasses[cols as keyof typeof gridClasses])}>
@@ -343,12 +475,6 @@ export const FlexibleRowComponent: React.FC<any> = ({
                               float: 'animate-bounce',
                             };
                             
-                            const styleClasses = {
-                              borderTop: 'bg-white shadow-sm border border-gray-100 border-t-4 dark:bg-gray-800 dark:border-gray-700',
-                              outline: 'border border-gray-200 bg-transparent hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800/50',
-                              darkGlass: 'bg-gray-900/40 backdrop-blur-md border border-gray-700/50 text-white shadow-lg shadow-black/20',
-                            };
-
                             const isDarkGlass = cardStyle === 'darkGlass';
 
                             return (
@@ -361,53 +487,38 @@ export const FlexibleRowComponent: React.FC<any> = ({
                                 )}
                                 style={cardStyle === 'borderTop' ? { borderTopColor: card.accentColor || 'var(--color-primary)' } : {}}
                               >
-                                {cardStyle === 'darkGlass' && card.accentColor && (
-                                  <div 
-                                    className="absolute -top-10 -right-10 w-32 h-32 rounded-full blur-[50px] opacity-20 pointer-events-none"
-                                    style={{ backgroundColor: card.accentColor }}
-                                  />
-                                )}
-                                
                                 {CardIcon && (
                                   <div 
-                                    className={cn(
-                                      "w-12 h-12 rounded-xl flex items-center justify-center mb-5 shrink-0 shadow-inner",
-                                      isDarkGlass ? "bg-white/10" : "bg-gray-50 dark:bg-gray-800"
-                                    )}
-                                    style={!isDarkGlass ? { backgroundColor: card.iconColor ? `${card.iconColor}15` : '' } : {}}
+                                    className={cn("w-14 h-14 rounded-xl flex items-center justify-center mb-5 shrink-0", isDarkGlass ? 'bg-white/10' : 'bg-gray-50 dark:bg-gray-700')}
                                   >
-                                    <CardIcon className="w-6 h-6" style={{ color: card.iconColor || (isDarkGlass ? '#fff' : 'var(--color-primary)') }} />
+                                    <CardIcon className="w-7 h-7" style={{ color: card.iconColor || (isDarkGlass ? '#fff' : 'var(--color-primary)') }} />
                                   </div>
                                 )}
                                 
                                 {card.title && (
-                                  <div className={cn("prose prose-sm md:prose-base max-w-none font-bold mb-2", isDarkGlass ? "dark prose-invert" : "")}>
+                                  <div className={cn("prose prose-sm md:prose-base max-w-none mb-2", isDarkGlass ? "prose-invert" : "dark:prose-invert")}>
                                     <RichText data={card.title} enableGutter={false} />
                                   </div>
                                 )}
-                                
+
                                 {card.subtitle && (
-                                  <h5 className={cn("text-sm font-semibold tracking-wider uppercase mb-3", isDarkGlass ? "text-gray-300" : "text-gray-500")}>
+                                  <p className={cn("text-sm font-semibold tracking-wider uppercase mb-3", isDarkGlass ? 'text-gray-300' : 'text-gray-500 dark:text-gray-400')}>
                                     {card.subtitle}
-                                  </h5>
+                                  </p>
                                 )}
-                                
+
                                 {card.description && (
-                                  <div className={cn("prose prose-sm max-w-none mb-4 opacity-80", isDarkGlass ? "dark prose-invert" : "")}>
+                                  <div className={cn("prose prose-sm md:prose-base max-w-none mb-4", isDarkGlass ? "prose-invert text-gray-300" : "text-gray-600 dark:text-gray-300 dark:prose-invert")}>
                                     <RichText data={card.description} enableGutter={false} />
                                   </div>
                                 )}
                                 
                                 {card.points && card.points.length > 0 && (
-                                  <ul className="mt-auto space-y-2 pt-4 border-t border-gray-100/10 dark:border-gray-700/50">
-                                    {card.points.map((point: any, pIdx: number) => (
-                                      <li key={pIdx} className="flex items-start gap-2 text-sm">
-                                        <div className="mt-1 shrink-0">
-                                          <LucideIcons.CheckCircle2 className="w-4 h-4" style={{ color: card.accentColor || 'var(--color-primary)' }} />
-                                        </div>
-                                        <span className={cn(isDarkGlass ? "text-gray-300" : "text-gray-600 dark:text-gray-300")}>
-                                          {point.text}
-                                        </span>
+                                  <ul className="mt-auto space-y-2 pt-4">
+                                    {card.points.map((pt: any, pIdx: number) => (
+                                      <li key={pIdx} className={cn("flex items-start text-sm", isDarkGlass ? "text-gray-200" : "text-gray-700 dark:text-gray-300")}>
+                                        <LucideIcons.CheckCircle2 className="w-5 h-5 mr-2 shrink-0 mt-0.5" style={{ color: card.accentColor || '#10b981' }} />
+                                        <span>{pt.text}</span>
                                       </li>
                                     ))}
                                   </ul>
@@ -481,10 +592,74 @@ export const FlexibleRowComponent: React.FC<any> = ({
                         </div>
                       )
                     }
-                    case 'flexDashboardMock':
-                      return <PlaceholderBlock key={bIdx} name="Dashboard Mock Panel" />
-                    default:
-                      return <div key={bIdx}>Unknown block type: {block.blockType}</div>
+                    case 'flexDashboardMock': {
+                      const isDark = block.theme === 'dark';
+                      return (
+                        <div key={bIdx} className={cn(
+                          "w-full rounded-2xl border shadow-2xl overflow-hidden flex flex-col",
+                          isDark ? "bg-slate-900 border-slate-700" : "bg-white border-gray-200"
+                        )}>
+                          {/* Top bar */}
+                          <div className={cn(
+                            "px-6 py-4 flex items-center justify-between border-b",
+                            isDark ? "border-slate-800 bg-slate-900/50" : "border-gray-100 bg-gray-50/50"
+                          )}>
+                            <div className="flex space-x-2">
+                              <div className="w-3 h-3 rounded-full bg-red-400" />
+                              <div className="w-3 h-3 rounded-full bg-amber-400" />
+                              <div className="w-3 h-3 rounded-full bg-emerald-400" />
+                            </div>
+                            <div className={cn("text-xs font-medium px-3 py-1 rounded-full", isDark ? "bg-slate-800 text-slate-300" : "bg-gray-100 text-gray-500")}>
+                              {block.topBadgeLabel || 'DASHBOARD PREVIEW'}
+                            </div>
+                          </div>
+                          
+                          {/* Body */}
+                          <div className="p-8 flex flex-col items-center justify-center text-center space-y-6">
+                            <h3 className={cn("text-4xl md:text-5xl font-black tracking-tight", isDark ? "text-white" : "text-slate-900")} style={{ color: block.topBadgeValueColor || undefined }}>
+                              {block.topBadgeValue || '1,000+'}
+                            </h3>
+                            <div className="flex flex-wrap justify-center gap-3">
+                              {block.bottomChipPrimary && (
+                                <span className="px-4 py-2 rounded-full text-sm font-semibold bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300">
+                                  {block.bottomChipPrimary}
+                                </span>
+                              )}
+                              {block.bottomChipSecondary && (
+                                <span className="px-4 py-2 rounded-full text-sm font-semibold bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">
+                                  {block.bottomChipSecondary}
+                                </span>
+                              )}
+                            </div>
+                            {block.bottomSummary && (
+                              <p className={cn("max-w-md mx-auto", isDark ? "text-slate-400" : "text-slate-600")} style={{ color: block.bottomSummaryColor || undefined }}>
+                                {block.bottomSummary}
+                              </p>
+                            )}
+                          </div>
+                          
+                          {/* Mock Charts */}
+                          <div className={cn("p-6 grid gap-4 bg-opacity-50", isDark ? "bg-slate-800/50" : "bg-gray-50")}>
+                            {Array.from({ length: block.chartCount || 2 }).map((_, i) => (
+                              <div key={i} className={cn("h-16 rounded-xl w-full opacity-50 animate-pulse", isDark ? "bg-slate-700" : "bg-gray-200")} style={{ animationDelay: `${i * 150}ms` }} />
+                            ))}
+                          </div>
+                          
+                          {block.layoutVariant === 'syncStatusPanel' && block.syncFooterText && (
+                            <div className={cn("px-6 py-4 text-xs font-bold tracking-widest text-center border-t", isDark ? "border-slate-800 text-slate-500" : "border-gray-200 text-gray-400")}>
+                              {block.syncFooterText}
+                            </div>
+                          )}
+                        </div>
+                      )
+                    }
+                    default: {
+                      const Block = blockComponents[block.blockType as keyof typeof blockComponents]
+                      if (Block) {
+                        return <Block key={bIdx} {...block} />
+                      }
+                      return <div key={bIdx} className="p-4 bg-red-50 text-red-600 border border-red-200 rounded text-center text-sm">Unknown block type: {block.blockType}</div>
+                    }
                   }
                 })}
               </div>

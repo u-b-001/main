@@ -2,15 +2,20 @@ import React from 'react'
 import { cn } from '@/utilities/ui'
 import type { StepsBlock as StepsProps } from '@/payload-types'
 import * as LucideIcons from 'lucide-react'
+import RichText from '@/components/RichText'
 
 export const StepsComponent: React.FC<StepsProps> = ({ title, description, steps, hoverBulge, hoverLuminous }) => {
   return (
     <section className="py-16 bg-white dark:bg-gray-900">
       <div className="container mx-auto px-4 max-w-5xl">
         {(title || description) && (
-          <div className="text-center mb-12">
+          <div className="text-center mb-12 flex flex-col items-center">
             {title && <h2 className="text-3xl font-bold tracking-tight mb-4 text-gray-900 dark:text-white">{title}</h2>}
-            {description && <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">{description}</p>}
+            {description && (
+              <div className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto prose prose-lg dark:prose-invert text-center">
+                <RichText data={description} enableGutter={false} />
+              </div>
+            )}
           </div>
         )}
 
@@ -21,7 +26,7 @@ export const StepsComponent: React.FC<StepsProps> = ({ title, description, steps
           <div className="space-y-8">
             {steps?.map((step, idx) => {
               const isEven = idx % 2 === 0
-              const IconComponent = step.icon && step.icon !== 'none' ? (LucideIcons as any)[step.icon] : null
+              const IconComponent = step.icon ? (LucideIcons as any)[step.icon] : null
 
               return (
                 <div key={idx} className={cn("relative flex items-center md:justify-between w-full")}>
@@ -37,7 +42,11 @@ export const StepsComponent: React.FC<StepsProps> = ({ title, description, steps
                          <span className="text-primary font-black opacity-30 text-2xl mr-1">{idx + 1}.</span>
                          {step.title}
                       </h3>
-                      {step.description && <p className="text-gray-600 dark:text-gray-400">{step.description}</p>}
+                      {step.description && (
+                        <div className="text-gray-600 dark:text-gray-400 prose prose-sm dark:prose-invert max-w-none">
+                          <RichText data={step.description} enableGutter={false} />
+                        </div>
+                      )}
                     </div>
                   </div>
 

@@ -3,19 +3,19 @@ import type { User } from '@/payload-types'
 
 export const publicAccess: Access = () => true
 
-export const isSuperAdmin: Access = ({ req: { user } }) => {
+export const isSuperAdmin = ({ req: { user } }: any) => {
   return Boolean(user && user.role === 'superAdmin')
 }
 
-export const isSchoolAdmin: Access = ({ req: { user } }) => {
+export const isSchoolAdmin = ({ req: { user } }: any) => {
   return Boolean(user && ['superAdmin', 'schoolAdmin'].includes(user.role || ''))
 }
 
-export const isEditor: Access = ({ req: { user } }) => {
+export const isEditor = ({ req: { user } }: any) => {
   return Boolean(user && ['superAdmin', 'schoolAdmin', 'editor'].includes(user.role || ''))
 }
 
-export const isViewer: Access = ({ req: { user } }) => {
+export const isViewer = ({ req: { user } }: any) => {
   return Boolean(user && ['superAdmin', 'schoolAdmin', 'editor', 'viewer'].includes(user.role || ''))
 }
 

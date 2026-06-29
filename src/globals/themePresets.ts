@@ -8,12 +8,10 @@ export interface ThemePreset {
     muted: string
     text: string
   }
-
   fonts: {
     heading: string
     body: string
   }
-
   /** Header style overrides */
   header: {
     /**
@@ -22,55 +20,30 @@ export interface ThemePreset {
      * learner = Learning theme
      */
     layout: 'mosai' | 'mosaiClassic' | 'learner'
-
     showTopBar: boolean
     height: number
     showBottomBorder: boolean
     ctaStyle: 'square' | 'pill'
   }
-
   /** Layout overrides */
   layouts: {
-    hero:
-      | 'mosaiFullscreen'
-      | 'mosaiClassicHero'
-      | 'split'
-
-    featureCards:
-      | 'mosaiService'
-      | 'mosaiClassicCards'
-      | 'classic'
-
+    hero: 'mosaiFullscreen' | 'mosaiClassicHero' | 'split'
+    featureCards: 'mosaiService' | 'mosaiClassicCards' | 'classic'
     featureCardsTheme: 'dark' | 'light'
-
     featureCardsShowButton: boolean
-
-    news:
-      | 'mosaiCards'
-      | 'mosaiClassicNews'
-      | 'spotlight'
-
-    statistics:
-      | 'mosaiStrip'
-      | 'cardGrid'
-
-    testimonials:
-      | 'mosaiQuote'
-      | 'default'
-
-    callToAction:
-      | 'mosaiBanner'
-      | 'default'
-
-    faq:
-      | 'mosaiAccordion'
-      | 'default'
+    news: 'mosaiCards' | 'mosaiClassicNews' | 'spotlight'
+    statistics: 'mosaiStrip' | 'cardGrid'
+    testimonials: 'mosaiQuote' | 'default'
+    callToAction: 'mosaiBanner' | 'default'
+    faq: 'mosaiAccordion' | 'default'
   }
 }
 
 export const themePresets: Record<string, ThemePreset> = {
   /**
-   * Modern MOSAI
+   * MOSAI Modern — Purple & Gold
+   * Premium, academic, scholarship-prestige feel. Best default for mosai.org's
+   * homepage hero + dark feature cards.
    */
   mosai: {
     colors: {
@@ -82,12 +55,10 @@ export const themePresets: Record<string, ThemePreset> = {
       muted: '#F8F4FF',
       text: '#1A103D',
     },
-
     fonts: {
       heading: 'Playfair Display',
       body: 'Inter',
     },
-
     header: {
       layout: 'mosai',
       showTopBar: true,
@@ -95,7 +66,6 @@ export const themePresets: Record<string, ThemePreset> = {
       showBottomBorder: false,
       ctaStyle: 'square',
     },
-
     layouts: {
       hero: 'mosaiFullscreen',
       featureCards: 'mosaiService',
@@ -110,24 +80,24 @@ export const themePresets: Record<string, ThemePreset> = {
   },
 
   /**
-   * Learner Theme
+   * Learner — Indigo & Teal
+   * Calm, official, "institutional trust" feel. Good for the
+   * scholars-association / govt-affiliated tone, light feature cards.
    */
   learner: {
     colors: {
-      primary: '#04415f',
-      secondary: '#011e2c',
-      accent: '#2086b8',
-      background: '#f1f5f7',
-      surface: '#ffffff',
-      muted: '#e6edf0',
-      text: '#010608',
+      primary: '#1E3A8A',
+      secondary: '#0F172A',
+      accent: '#14B8A6',
+      background: '#F1F5F9',
+      surface: '#FFFFFF',
+      muted: '#E6EDF5',
+      text: '#0F172A',
     },
-
     fonts: {
-      heading: 'Raleway',
+      heading: 'Montserrat',
       body: 'Roboto',
     },
-
     header: {
       layout: 'learner',
       showTopBar: false,
@@ -135,7 +105,6 @@ export const themePresets: Record<string, ThemePreset> = {
       showBottomBorder: true,
       ctaStyle: 'pill',
     },
-
     layouts: {
       hero: 'split',
       featureCards: 'classic',
@@ -149,22 +118,25 @@ export const themePresets: Record<string, ThemePreset> = {
     },
   },
 
+  /**
+   * MOSAI Classic — Sakura Pink & Slate
+   * Lighter, youthful, Japan-connection feel (sakura pink + warm gold accent).
+   * Good alternative skin for alumni/community-facing pages.
+   */
   mosaiClassic: {
     colors: {
-      primary: '#C62828',
-      secondary: '#0F4C81',
-      accent: '#18A0AE',
-      background: '#EEF3F7',
+      primary: '#D94F70',
+      secondary: '#2B2B3D',
+      accent: '#F4C542',
+      background: '#FFFFFF',
       surface: '#FFFFFF',
-      muted: '#F8FAFC',
-      text: '#1F2937',
+      muted: '#FFF5F7',
+      text: '#2B2B3D',
     },
-
     fonts: {
-      heading: 'Playfair Display',
+      heading: 'Poppins',
       body: 'Inter',
     },
-
     header: {
       layout: 'mosaiClassic',
       showTopBar: false,
@@ -172,7 +144,6 @@ export const themePresets: Record<string, ThemePreset> = {
       showBottomBorder: true,
       ctaStyle: 'square',
     },
-
     layouts: {
       hero: 'mosaiClassicHero',
       featureCards: 'mosaiClassicCards',

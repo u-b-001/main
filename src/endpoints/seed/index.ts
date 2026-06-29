@@ -10,7 +10,7 @@ const collections: CollectionSlug[] = [
   'committee',
 ]
 
-const globals: GlobalSlug[] = ['header', 'footer', 'homepage', 'site-settings']
+const globals: any[] = ['header', 'footer', 'homepage', 'site-settings']
 
 export const seed = async ({
   payload,
@@ -466,7 +466,7 @@ export const seed = async ({
           alignItems: 'stretch',
           columns: [
             {
-              width: 'col-span-6',
+              width: '50',
               columnStyle: 'simple',
               backgroundColor: 'transparent',
               textColor: 'dark',
@@ -493,9 +493,9 @@ export const seed = async ({
                   version: 1,
                 },
               },
-            },
+            } as any,
             {
-              width: 'col-span-6',
+              width: '50',
               columnStyle: 'simple',
               backgroundColor: 'transparent',
               textColor: 'dark',
@@ -522,9 +522,9 @@ export const seed = async ({
                   version: 1,
                 },
               },
-            }
+            } as any
           ]
-        },
+        } as any,
         {
           blockType: 'featuredCards',
           heading: 'Key Offerings',

@@ -40,6 +40,15 @@ export const Members: CollectionConfig = {
     { name: 'email', type: 'email' },
     { name: 'phone', type: 'text' },
     {
+      name: 'city',
+      type: 'text',
+      admin: { description: 'City in Japan' },
+    },
+    { name: 'year', type: 'text' },
+    { name: 'specialisation', type: 'text' },
+    { name: 'fellowship', type: 'text' },
+    { name: 'presentAddress', type: 'textarea' },
+    {
       name: 'isPublic',
       type: 'checkbox',
       defaultValue: false,

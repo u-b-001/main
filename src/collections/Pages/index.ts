@@ -33,6 +33,7 @@ import { StepsBlock } from '../../blocks/Steps/config'
 import { FileDownloadsBlock } from '../../blocks/FileDownloads/config'
 import { NewsAndUpdatesBlock } from '../../blocks/NewsAndUpdates/config'
 import { ResourceLinksBlock } from '../../blocks/ResourceLinks/config'
+import { MembersDirectoryBlock } from '../../blocks/MembersDirectory/config'
 
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -160,6 +161,7 @@ export const Pages: CollectionConfig<'pages'> = {
         StepsBlock,
         FileDownloadsBlock,
         ResourceLinksBlock,
+        MembersDirectoryBlock,
       ],
       required: true,
       admin: {

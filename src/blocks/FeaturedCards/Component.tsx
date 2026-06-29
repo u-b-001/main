@@ -1,17 +1,8 @@
 import React from 'react'
 import Link from 'next/link'
 import * as LucideIcons from 'lucide-react'
-const {
-  GraduationCap,
-  Globe,
-  Calendar,
-  Award,
-  BookOpen,
-  Users,
-  Info,
-  Star,
-  ArrowRight,
-} = LucideIcons
+const { GraduationCap, Globe, Calendar, Award, BookOpen, Users, Info, Star, ArrowRight } =
+  LucideIcons
 import { Media } from '@/components/Media'
 import { cn } from '@/utilities/ui'
 import type { FeaturedCardsBlock as FeaturedCardsProps } from '@/payload-types'
@@ -34,11 +25,14 @@ const columnClasses = {
 }
 
 const cardThemeClasses = {
-  standard: 'bg-white dark:bg-slate-900 border border-slate-150 dark:border-slate-800 shadow-xs hover:shadow-md text-slate-800 dark:text-slate-200',
-  glassmorphism: 'bg-white/50 dark:bg-slate-900/50 backdrop-blur-md border border-white/20 dark:border-slate-800/50 shadow-xs hover:shadow-md text-slate-800 dark:text-slate-200',
+  standard:
+    'bg-white dark:bg-slate-900 border border-slate-150 dark:border-slate-800 shadow-xs hover:shadow-md text-slate-800 dark:text-slate-200',
+  glassmorphism:
+    'bg-white/50 dark:bg-slate-900/50 backdrop-blur-md border border-white/20 dark:border-slate-800/50 shadow-xs hover:shadow-md text-slate-800 dark:text-slate-200',
   navy: 'bg-brand-navy text-white border border-slate-800/20 shadow-md hover:shadow-lg',
   red: 'bg-brand-red text-white border border-red-700/20 shadow-md hover:shadow-lg',
-  bordered: 'bg-transparent border-2 border-slate-200 dark:border-slate-800 hover:border-brand-gold/60 text-slate-800 dark:text-slate-200',
+  bordered:
+    'bg-transparent border-2 border-slate-200 dark:border-slate-800 hover:border-brand-gold/60 text-slate-800 dark:text-slate-200',
 }
 
 export const FeaturedCardsComponent: React.FC<FeaturedCardsProps> = ({
@@ -74,9 +68,10 @@ export const FeaturedCardsComponent: React.FC<FeaturedCardsProps> = ({
       {/* Grid of Cards */}
       <div className={cn('grid', columnClasses[columns || '3'])}>
         {cards.map((card, idx) => {
-          const IconComponent = card.icon && card.icon !== 'none' 
-            ? (iconMap[card.icon as keyof typeof iconMap] || (LucideIcons as any)[card.icon]) 
-            : null
+          const IconComponent =
+            card.icon && card.icon !== 'none'
+              ? iconMap[card.icon as keyof typeof iconMap] || (LucideIcons as any)[card.icon]
+              : null
           const hasImage = card.image && typeof card.image === 'object'
 
           return (
@@ -84,7 +79,7 @@ export const FeaturedCardsComponent: React.FC<FeaturedCardsProps> = ({
               key={idx}
               className={cn(
                 'group flex flex-col h-full rounded-2xl overflow-hidden transition-all duration-300 transform hover:-translate-y-1',
-                cardThemeClasses[cardStyle || 'standard']
+                cardThemeClasses[cardStyle || 'standard'],
               )}
             >
               {/* Optional Top Image */}
@@ -119,14 +114,16 @@ export const FeaturedCardsComponent: React.FC<FeaturedCardsProps> = ({
                   {/* Status Badge */}
                   {card.status && (
                     <div className="mb-3">
-                      <span className={cn(
-                        "px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full",
-                        card.status === 'completed'
-                          ? "bg-emerald-50 text-emerald-650 dark:bg-emerald-950/30 dark:text-emerald-500"
-                          : card.status === 'ongoing'
-                          ? "bg-blue-50 text-blue-650 dark:bg-blue-950/30 dark:text-blue-500"
-                          : "bg-amber-50 text-amber-650 dark:bg-amber-950/30 dark:text-amber-500"
-                      )}>
+                      <span
+                        className={cn(
+                          'px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full',
+                          card.status === 'completed'
+                            ? 'bg-emerald-50 text-emerald-650 dark:bg-emerald-950/30 dark:text-emerald-500'
+                            : card.status === 'ongoing'
+                              ? 'bg-blue-50 text-blue-650 dark:bg-blue-950/30 dark:text-blue-500'
+                              : 'bg-amber-50 text-amber-650 dark:bg-amber-950/30 dark:text-amber-500',
+                        )}
+                      >
                         {card.status}
                       </span>
                     </div>
@@ -139,7 +136,7 @@ export const FeaturedCardsComponent: React.FC<FeaturedCardsProps> = ({
                         'w-12 h-12 rounded-xl flex items-center justify-center mb-5 transition-transform duration-300 group-hover:scale-110 shadow-xs',
                         isLightCardText
                           ? 'bg-white/10 text-brand-gold'
-                          : 'bg-brand-navy/5 text-brand-navy dark:bg-white/5 dark:text-brand-gold'
+                          : 'bg-brand-navy/5 text-brand-navy dark:bg-white/5 dark:text-brand-gold',
                       )}
                     >
                       <IconComponent className="w-6 h-6" />
@@ -150,7 +147,7 @@ export const FeaturedCardsComponent: React.FC<FeaturedCardsProps> = ({
                   <h3
                     className={cn(
                       'text-lg md:text-xl font-bold font-serif mb-3 tracking-wide uppercase',
-                      isLightCardText ? 'text-white' : 'text-brand-navy dark:text-white'
+                      isLightCardText ? 'text-white' : 'text-brand-navy dark:text-white',
                     )}
                   >
                     {card.title}
@@ -160,7 +157,7 @@ export const FeaturedCardsComponent: React.FC<FeaturedCardsProps> = ({
                   <p
                     className={cn(
                       'text-sm leading-relaxed mb-6 flex-grow',
-                      isLightCardText ? 'text-white/80' : 'text-slate-600 dark:text-slate-400'
+                      isLightCardText ? 'text-white/80' : 'text-slate-600 dark:text-slate-400',
                     )}
                   >
                     {card.description}
@@ -170,8 +167,20 @@ export const FeaturedCardsComponent: React.FC<FeaturedCardsProps> = ({
                   {card.progress && (
                     <div className="mb-6">
                       <div className="flex justify-between text-xs font-semibold mb-1">
-                        <span className={isLightCardText ? 'text-white/70' : 'text-slate-500 dark:text-slate-400'}>Progress</span>
-                        <span className={isLightCardText ? 'text-white' : 'text-slate-800 dark:text-slate-200'}>{card.progress}%</span>
+                        <span
+                          className={
+                            isLightCardText ? 'text-white/70' : 'text-slate-500 dark:text-slate-400'
+                          }
+                        >
+                          Progress
+                        </span>
+                        <span
+                          className={
+                            isLightCardText ? 'text-white' : 'text-slate-800 dark:text-slate-200'
+                          }
+                        >
+                          {card.progress}%
+                        </span>
                       </div>
                       <div className="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
                         <div
@@ -188,7 +197,13 @@ export const FeaturedCardsComponent: React.FC<FeaturedCardsProps> = ({
                       {card.featurePoints.map((pt, pIdx) => (
                         <li key={pIdx} className="flex items-start gap-2 text-sm">
                           <span className="text-emerald-500 font-bold mt-0.5">✓</span>
-                          <span className={isLightCardText ? 'text-white/80' : 'text-slate-600 dark:text-slate-400'}>
+                          <span
+                            className={
+                              isLightCardText
+                                ? 'text-white/80'
+                                : 'text-slate-600 dark:text-slate-400'
+                            }
+                          >
                             {pt.text}
                           </span>
                         </li>
@@ -201,33 +216,55 @@ export const FeaturedCardsComponent: React.FC<FeaturedCardsProps> = ({
                     <div className="grid grid-cols-2 gap-3 mb-6 pt-4 border-t border-slate-100 dark:border-slate-800/80 text-xs">
                       {card.level && (
                         <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400">
-                          <GraduationCap size={14} className="text-brand-navy dark:text-brand-gold" />
-                          <span><strong className="text-slate-700 dark:text-slate-300">Level:</strong> {card.level}</span>
+                          <GraduationCap
+                            size={14}
+                            className="text-brand-navy dark:text-brand-gold"
+                          />
+                          <span>
+                            <strong className="text-slate-700 dark:text-slate-300">Level:</strong>{' '}
+                            {card.level}
+                          </span>
                         </div>
                       )}
                       {card.duration && (
                         <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400">
                           <Calendar size={14} className="text-brand-navy dark:text-brand-gold" />
-                          <span><strong className="text-slate-700 dark:text-slate-300">Duration:</strong> {card.duration}</span>
+                          <span>
+                            <strong className="text-slate-700 dark:text-slate-300">
+                              Duration:
+                            </strong>{' '}
+                            {card.duration}
+                          </span>
                         </div>
                       )}
                       {card.mode && (
                         <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400">
                           <Info size={14} className="text-brand-navy dark:text-brand-gold" />
-                          <span><strong className="text-slate-700 dark:text-slate-300">Mode:</strong> {card.mode}</span>
+                          <span>
+                            <strong className="text-slate-700 dark:text-slate-300">Mode:</strong>{' '}
+                            {card.mode}
+                          </span>
                         </div>
                       )}
                       {card.audience && (
                         <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400">
                           <Users size={14} className="text-brand-navy dark:text-brand-gold" />
-                          <span><strong className="text-slate-700 dark:text-slate-300">Audience:</strong> {card.audience}</span>
+                          <span>
+                            <strong className="text-slate-700 dark:text-slate-300">
+                              Audience:
+                            </strong>{' '}
+                            {card.audience}
+                          </span>
                         </div>
                       )}
                       {card.date && (
                         <div className="flex items-center gap-1.5 col-span-2 text-slate-500 dark:text-slate-400">
                           <Calendar size={14} className="text-brand-navy dark:text-brand-gold" />
                           <span>
-                            <strong className="text-slate-700 dark:text-slate-300">Next Batch:</strong> {new Date(card.date).toLocaleDateString()}
+                            <strong className="text-slate-700 dark:text-slate-300">
+                              Next Batch:
+                            </strong>{' '}
+                            {new Date(card.date).toLocaleDateString()}
                           </span>
                         </div>
                       )}
@@ -242,14 +279,17 @@ export const FeaturedCardsComponent: React.FC<FeaturedCardsProps> = ({
                       href={card.buttonUrl}
                       target={card.externalLink ? '_blank' : undefined}
                       className={cn(
-                        'inline-flex items-center text-xs font-bold uppercase tracking-wider transition-colors duration-250',
+                        'inline-flex items-center gap-2 px-6 py-3 border-2 rounded-xl font-semibold text-sm shadow-2xs hover:shadow-xs transition-all duration-200 group',
                         isLightCardText
-                          ? 'text-brand-gold hover:text-white'
-                          : 'text-brand-red hover:text-brand-navy dark:hover:text-white'
+                          ? 'border-brand-gold text-brand-gold hover:border-white hover:text-white'
+                          : 'border-brand-navy dark:border-slate-700 text-brand-navy dark:text-white hover:border-brand-red dark:hover:border-brand-gold hover:text-brand-red dark:hover:text-brand-gold',
                       )}
                     >
                       <span>{card.buttonLabel || 'View More'}</span>
-                      <ArrowRight className="w-4 h-4 ml-1.5 transition-transform duration-300 group-hover:translate-x-1" />
+                      <ArrowRight
+                        size={16}
+                        className="transition-transform duration-300 group-hover:translate-x-1.5"
+                      />
                     </Link>
                   </div>
                 )}
