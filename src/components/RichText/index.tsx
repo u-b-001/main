@@ -26,8 +26,8 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
   ...defaultConverters,
   ...LinkJSXConverter({ internalDocToHref }),
   blocks: {
-    contentLayout: ({ node }) => <ContentLayoutComponent {...(node.fields as any)} />,
-    imageBlock: ({ node }) => <ImageBlockComponent {...(node.fields as any)} />,
+    contentLayout: ({ node }: { node: any }) => <ContentLayoutComponent {...(node.fields as any)} />,
+    imageBlock: ({ node }: { node: any }) => <ImageBlockComponent {...(node.fields as any)} />,
   },
 })
 

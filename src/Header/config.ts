@@ -55,15 +55,6 @@ export const Header: GlobalConfig = {
       ],
     },
     {
-      name: 'showThemeSelector',
-      type: 'checkbox',
-      label: 'Show Theme Selector',
-      defaultValue: true,
-      admin: {
-        description: 'Show/hide the light-dark mode toggle in the header.',
-      },
-    },
-    {
       name: 'announcementBar',
       type: 'group',
       label: 'Announcement Bar',

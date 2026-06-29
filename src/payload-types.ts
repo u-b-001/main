@@ -530,6 +530,7 @@ export interface Page {
       }
     | {
         heading?: string | null;
+        imageSource?: ('manual' | 'gallery') | null;
         images?:
           | {
               image: number | Media;
@@ -537,8 +538,18 @@ export interface Page {
               id?: string | null;
             }[]
           | null;
+        /**
+         * Select items from the Gallery collection
+         */
+        galleryItems?: (number | Gallery)[] | null;
         layout?: ('grid' | 'masonry') | null;
         columns?: ('2' | '3' | '4') | null;
+        hoverEffect?: ('none' | 'zoom' | 'overlay' | 'lift' | 'grayscale') | null;
+        enableViewMore?: boolean | null;
+        /**
+         * Number of images visible before "View More" is clicked
+         */
+        initialVisibleCount?: number | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'imageGallery';
@@ -1576,6 +1587,59 @@ export interface CallToActionBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "gallery".
+ */
+export interface Gallery {
+  id: number;
+  title: string;
+  image: number | Media;
+  /**
+   * Optional caption shown under the image (e.g. "Dr. Ashok Jain, President MOSAI")
+   */
+  caption?: string | null;
+  /**
+   * Link this image to a specific event, if applicable
+   */
+  event?: (number | null) | Event;
+  /**
+   * Group images by album/event name (optional, use only if not linking via event above)
+   */
+  album?: string | null;
+  date?: string | null;
+  /**
+   * Show in homepage gallery carousel
+   */
+  featured?: boolean | null;
+  /**
+   * Lower numbers appear first
+   */
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "events".
+ */
+export interface Event {
+  id: number;
+  title: string;
+  /**
+   * Paste the full YouTube embed URL (https://www.youtube.com/embed/VIDEO_ID)
+   */
+  youtubeUrl: string;
+  eventDate?: string | null;
+  organizer?: string | null;
+  description?: string | null;
+  /**
+   * Show on homepage Past Events section
+   */
+  featured?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "HelpSupportBlock".
  */
 export interface HelpSupportBlock {
@@ -2107,59 +2171,6 @@ export interface News {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "gallery".
- */
-export interface Gallery {
-  id: number;
-  title: string;
-  image: number | Media;
-  /**
-   * Optional caption shown under the image (e.g. "Dr. Ashok Jain, President MOSAI")
-   */
-  caption?: string | null;
-  /**
-   * Link this image to a specific event, if applicable
-   */
-  event?: (number | null) | Event;
-  /**
-   * Group images by album/event name (optional, use only if not linking via event above)
-   */
-  album?: string | null;
-  date?: string | null;
-  /**
-   * Show in homepage gallery carousel
-   */
-  featured?: boolean | null;
-  /**
-   * Lower numbers appear first
-   */
-  order?: number | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "events".
- */
-export interface Event {
-  id: number;
-  title: string;
-  /**
-   * Paste the full YouTube embed URL (https://www.youtube.com/embed/VIDEO_ID)
-   */
-  youtubeUrl: string;
-  eventDate?: string | null;
-  organizer?: string | null;
-  description?: string | null;
-  /**
-   * Show on homepage Past Events section
-   */
-  featured?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2995,6 +3006,7 @@ export interface PagesSelect<T extends boolean = true> {
           | T
           | {
               heading?: T;
+              imageSource?: T;
               images?:
                 | T
                 | {
@@ -3002,8 +3014,12 @@ export interface PagesSelect<T extends boolean = true> {
                     caption?: T;
                     id?: T;
                   };
+              galleryItems?: T;
               layout?: T;
               columns?: T;
+              hoverEffect?: T;
+              enableViewMore?: T;
+              initialVisibleCount?: T;
               id?: T;
               blockName?: T;
             };
@@ -4191,10 +4207,6 @@ export interface Header {
    */
   overlapHomepageHero?: boolean | null;
   /**
-   * Show/hide the light-dark mode toggle in the header.
-   */
-  showThemeSelector?: boolean | null;
-  /**
    * Optional thin bar above the header, e.g. for urgent notices (admit cards, deadlines).
    */
   announcementBar?: {
@@ -4346,7 +4358,6 @@ export interface HeaderSelect<T extends boolean = true> {
   logoMobile?: T;
   sticky?: T;
   overlapHomepageHero?: T;
-  showThemeSelector?: T;
   announcementBar?:
     | T
     | {

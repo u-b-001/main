@@ -258,14 +258,6 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
                 </div>
               )
             })}
-            <div
-              className={cn(
-                'ml-3 pl-3 border-l',
-                shouldOverlap && !scrolled ? 'border-white/20' : 'border-slate-200 dark:border-slate-800',
-              )}
-            >
-              <ThemeSelector />
-            </div>
           </nav>
 
           {/* Hamburger Icon (Mobile) */}
