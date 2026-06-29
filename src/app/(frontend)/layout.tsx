@@ -39,6 +39,18 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const showBgPattern = siteSettings?.showBgPattern !== false
   const bgPatternOpacity = showBgPattern ? (Number(siteSettings?.bgPatternOpacity || 15) / 100).toFixed(2) : '0'
 
+  const themeColors = siteSettings?.themeColors || {}
+  const themePreset = siteSettings?.themePreset || 'default'
+  const primaryColor = themeColors.primaryColor || '#000000'
+  const secondaryColor = themeColors.secondaryColor || '#ffffff'
+  const accentColor = themeColors.accentColor || '#ff0000'
+  const mutedBackgroundColor = themeColors.mutedBackgroundColor || '#f5f5f5'
+  const surfaceColor = themeColors.surfaceColor || '#ffffff'
+  const textColor = themeColors.textColor || '#000000'
+  const backgroundColor = themeColors.backgroundColor || '#ffffff'
+  
+  const headingFontFamily = siteSettings?.headingFontFamily || 'Inter'
+  const bodyFontFamily = siteSettings?.bodyFontFamily || 'Inter'
   return (
     <html
       className={cn(inter.variable, notoSerifJp.variable, GeistMono.variable)}

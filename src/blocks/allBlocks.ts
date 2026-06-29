@@ -28,6 +28,7 @@ import { CallToAction as CallToActionNew } from './CallToAction/config'
 import { RichTextBlock } from './RichTextBlock/config'
 import { ImageWithTextBlock } from './ImageWithTextBlock/config'
 import { InfoCardBlock } from './InfoCardBlock/config'
+import { ResourceLinksBlock } from './ResourceLinks/config'
 import { TableBlock } from './TableBlock/config'
 import { EmbedBlock } from './EmbedBlock/config'
 import { FlexibleRowBlock } from './FlexibleRow/config'
@@ -100,4 +101,5 @@ export const collectionBlocks = [
   FlexibleRowBlock,
   FeaturedCardsBlock,
   MediaContactBlock,
+  ResourceLinksBlock,
 ]
