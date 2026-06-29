@@ -1,5 +1,6 @@
 import type { Block, Field } from 'payload'
 import { sectionHeadingFields, colorField, iconField } from './shared'
+import { FeaturedCardsBlock } from './FeaturedCards/config'
 
 /* ── Sub-block: Rich Text ── */
 const RichTextSub: Block = {
@@ -861,6 +862,7 @@ export const FlexibleRow: Block = {
             ButtonsSub,
             DashboardMockSub,
             IconSub,
+            FeaturedCardsBlock,
           ],
         },
       ],

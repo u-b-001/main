@@ -13,7 +13,7 @@ export const StepsBlock: Block = {
     },
     {
       name: 'description',
-      type: 'textarea',
+      type: 'richText',
       label: 'Section Description',
     },
     {
@@ -41,7 +41,7 @@ export const StepsBlock: Block = {
         },
         {
           name: 'description',
-          type: 'textarea',
+          type: 'richText',
         },
         iconField('icon', 'Icon'),
       ],

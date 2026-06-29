@@ -34,6 +34,7 @@ import { EmbedBlock } from './EmbedBlock/config'
 import { FlexibleRowBlock } from './FlexibleRow/config'
 import { FeaturedCardsBlock } from './FeaturedCards/config'
 import { MediaContactBlock } from './MediaContact/config'
+import { MembersDirectoryBlock } from './MembersDirectory/config'
 
 export const allBlocks = [
   Hero,
@@ -67,6 +68,7 @@ export const allBlocks = [
   FlexibleRowBlock,
   FeaturedCardsBlock,
   MediaContactBlock,
+  MembersDirectoryBlock,
 ]
 
 /** Blocks safe for non-Pages collections (excludes blocks with deeply nested names) */
@@ -102,4 +104,5 @@ export const collectionBlocks = [
   FeaturedCardsBlock,
   MediaContactBlock,
   ResourceLinksBlock,
+  MembersDirectoryBlock,
 ]

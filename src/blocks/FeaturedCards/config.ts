@@ -3,6 +3,7 @@ import type { Block } from 'payload'
 export const FeaturedCardsBlock: Block = {
   slug: 'featuredCards',
   interfaceName: 'FeaturedCardsBlock',
+  labels: { singular: 'Featured Cards', plural: 'Featured Cards' },
   fields: [
     {
       name: 'heading',

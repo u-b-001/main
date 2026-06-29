@@ -78,22 +78,7 @@ export default async function Page({ params: paramsPromise }: Args) {
             <CommitteeGrid type="committee" />
           </div>
         )}
-        {fullSlug === 'japanese-language/advisory-board-and-faculty' && (
-          <div className="container mx-auto px-4 mt-8 space-y-10">
-            <div>
-              <h3 className="font-serif font-bold text-xl border-b border-slate-200 dark:border-slate-850 pb-2 text-brand-navy dark:text-white uppercase tracking-wide">
-                Advisory Board
-              </h3>
-              <CommitteeGrid type="advisory" />
-            </div>
-            <div className="pt-6">
-              <h3 className="font-serif font-bold text-xl border-b border-slate-200 dark:border-slate-850 pb-2 text-brand-navy dark:text-white uppercase tracking-wide">
-                Faculty Members
-              </h3>
-              <CommitteeGrid type="faculty" />
-            </div>
-          </div>
-        )}
+
       </main>
     </article>
   )

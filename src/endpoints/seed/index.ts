@@ -466,7 +466,7 @@ export const seed = async ({
           alignItems: 'stretch',
           columns: [
             {
-              width: 'col-span-6',
+              width: '50',
               columnStyle: 'simple',
               backgroundColor: 'transparent',
               textColor: 'dark',
@@ -495,7 +495,7 @@ export const seed = async ({
               },
             },
             {
-              width: 'col-span-6',
+              width: '50',
               columnStyle: 'simple',
               backgroundColor: 'transparent',
               textColor: 'dark',

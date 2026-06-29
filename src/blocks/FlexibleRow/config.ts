@@ -2,6 +2,7 @@ import type { Block, Field } from 'payload'
 import { sectionHeadingFields, colorField, iconField } from '../shared'
 import { StatsImpact } from '../Statistics/config'
 import { FileDownloadsBlock } from '../FileDownloads/config'
+import { FeaturedCardsBlock } from '../FeaturedCards/config'
 
 /* ── Sub-block: Rich Text ── */
 const RichTextSub: Block = {
@@ -185,6 +186,22 @@ const VideoSub: Block = {
       type: 'checkbox',
       defaultValue: true,
       admin: { description: 'Show playback controls' },
+    },
+    {
+      name: 'hoverLift',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: { description: 'Lift the video block on hover' },
+    },
+    {
+      name: 'videoTitle',
+      type: 'text',
+      admin: { description: 'Title to display on the video card' },
+    },
+    {
+      name: 'videoDescription',
+      type: 'textarea',
+      admin: { description: 'Description to display on the video card' },
     },
   ],
 }
@@ -787,7 +804,20 @@ export const FlexibleRowBlock: Block = {
             { label: '100% (full width)', value: '100' },
           ],
         },
-        colorField('columnBgColor', 'Column Background Color', 'transparent'),
+        colorField('columnBgColor', 'Column Background Color (Custom)', 'transparent'),
+        {
+          name: 'colorTheme',
+          type: 'select',
+          label: 'Column Color Theme',
+          defaultValue: 'none',
+          options: [
+            { label: 'None (Use Custom Bg)', value: 'none' },
+            { label: 'Light Card', value: 'light' },
+            { label: 'Dark Card', value: 'dark' },
+            { label: 'Primary (Brand)', value: 'primary' },
+            { label: 'Secondary (Brand)', value: 'secondary' },
+          ],
+        },
         {
           name: 'padding',
           type: 'select',
@@ -817,6 +847,7 @@ export const FlexibleRowBlock: Block = {
             DashboardMockSub,
             StatsImpact,
             FileDownloadsBlock,
+            FeaturedCardsBlock,
           ],
         },
       ],

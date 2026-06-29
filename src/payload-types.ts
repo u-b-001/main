@@ -675,6 +675,7 @@ export interface Page {
            * Pick a color or enter hex value
            */
           columnBgColor?: string | null;
+          colorTheme?: ('none' | 'light' | 'dark' | 'primary' | 'secondary') | null;
           padding?: ('0' | '4' | '6' | '8') | null;
           blocks?:
             | (
@@ -784,6 +785,18 @@ export interface Page {
                      * Show playback controls
                      */
                     controls?: boolean | null;
+                    /**
+                     * Lift the video block on hover
+                     */
+                    hoverLift?: boolean | null;
+                    /**
+                     * Title to display on the video card
+                     */
+                    videoTitle?: string | null;
+                    /**
+                     * Description to display on the video card
+                     */
+                    videoDescription?: string | null;
                     id?: string | null;
                     blockName?: string | null;
                     blockType: 'flexVideo';
@@ -1269,6 +1282,7 @@ export interface Page {
                     blockType: 'statsImpact';
                   }
                 | FileDownloadsBlock
+                | FeaturedCardsBlock
               )[]
             | null;
           id?: string | null;
@@ -1308,6 +1322,7 @@ export interface Page {
     | StepsBlock
     | FileDownloadsBlock
     | ResourceLinksBlock
+    | MembersDirectoryBlock
   )[];
   seo?: {
     title?: string | null;
@@ -1882,12 +1897,40 @@ export interface ContentLayoutBlock {
  */
 export interface StepsBlock {
   title?: string | null;
-  description?: string | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   hoverLuminous?: boolean | null;
   hoverBulge?: boolean | null;
   steps: {
     title: string;
-    description?: string | null;
+    description?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
     /**
      * Select a Lucide icon
      */
@@ -1977,9 +2020,21 @@ export interface ResourceLinksBlock {
         id?: string | null;
       }[]
     | null;
+  hoverStyle?: ('standard' | 'luminous') | null;
+  glowColor?: ('yellow' | 'primary' | 'white') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'resourceLinks';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MembersDirectoryBlock".
+ */
+export interface MembersDirectoryBlock {
+  title?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'membersDirectory';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2195,6 +2250,14 @@ export interface Member {
   joinDate?: string | null;
   email?: string | null;
   phone?: string | null;
+  /**
+   * City in Japan
+   */
+  city?: string | null;
+  year?: string | null;
+  specialisation?: string | null;
+  fellowship?: string | null;
+  presentAddress?: string | null;
   /**
    * Show this member in the public Members Directory
    */
@@ -3030,6 +3093,7 @@ export interface PagesSelect<T extends boolean = true> {
                 | {
                     width?: T;
                     columnBgColor?: T;
+                    colorTheme?: T;
                     padding?: T;
                     blocks?:
                       | T
@@ -3068,6 +3132,9 @@ export interface PagesSelect<T extends boolean = true> {
                                 autoplay?: T;
                                 loop?: T;
                                 controls?: T;
+                                hoverLift?: T;
+                                videoTitle?: T;
+                                videoDescription?: T;
                                 id?: T;
                                 blockName?: T;
                               };
@@ -3236,6 +3303,7 @@ export interface PagesSelect<T extends boolean = true> {
                                 blockName?: T;
                               };
                           fileDownloads?: T | FileDownloadsBlockSelect<T>;
+                          featuredCards?: T | FeaturedCardsBlockSelect<T>;
                         };
                     id?: T;
                   };
@@ -3260,6 +3328,7 @@ export interface PagesSelect<T extends boolean = true> {
         steps?: T | StepsBlockSelect<T>;
         fileDownloads?: T | FileDownloadsBlockSelect<T>;
         resourceLinks?: T | ResourceLinksBlockSelect<T>;
+        membersDirectory?: T | MembersDirectoryBlockSelect<T>;
       };
   seo?:
     | T
@@ -3627,6 +3696,17 @@ export interface ResourceLinksBlockSelect<T extends boolean = true> {
         icon?: T;
         id?: T;
       };
+  hoverStyle?: T;
+  glowColor?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MembersDirectoryBlock_select".
+ */
+export interface MembersDirectoryBlockSelect<T extends boolean = true> {
+  title?: T;
   id?: T;
   blockName?: T;
 }
@@ -3819,6 +3899,11 @@ export interface MembersSelect<T extends boolean = true> {
   joinDate?: T;
   email?: T;
   phone?: T;
+  city?: T;
+  year?: T;
+  specialisation?: T;
+  fellowship?: T;
+  presentAddress?: T;
   isPublic?: T;
   updatedAt?: T;
   createdAt?: T;
