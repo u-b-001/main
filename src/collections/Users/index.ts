@@ -31,7 +31,7 @@ export const Users: CollectionConfig = {
       defaultValue: 'viewer',
       required: true,
       access: {
-        update: isSuperAdmin,
+        update: isSuperAdmin as any,
       },
       admin: { position: 'sidebar' },
     },

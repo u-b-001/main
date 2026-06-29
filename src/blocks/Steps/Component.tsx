@@ -21,7 +21,7 @@ export const StepsComponent: React.FC<StepsProps> = ({ title, description, steps
           <div className="space-y-8">
             {steps?.map((step, idx) => {
               const isEven = idx % 2 === 0
-              const IconComponent = step.icon && step.icon !== 'none' ? (LucideIcons as any)[step.icon] : null
+              const IconComponent = step.icon && (step.icon as any) !== 'none' ? (LucideIcons as any)[step.icon] : null
 
               return (
                 <div key={idx} className={cn("relative flex items-center md:justify-between w-full")}>
