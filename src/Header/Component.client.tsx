@@ -90,23 +90,26 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
               : 'bg-white py-5 dark:bg-slate-950 text-brand-navy dark:text-white',
         )}
       >
-        <div className="container mx-auto px-4 flex justify-between items-center">
+        <div className="w-full max-w-[1920px] mx-auto px-4 xl:px-6 flex justify-between xl:justify-start xl:gap-8 2xl:gap-16 items-center">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3">
+          <Link href="/" className="flex items-center gap-3 shrink-0">
             {data?.logo && typeof data.logo === 'object' ? (
               <div
                 className={cn(
-                  'relative flex items-center transition-all duration-300',
+                  'relative flex items-center transition-all duration-300 w-32 lg:w-48',
                   isSticky && scrolled ? 'h-10 lg:h-12' : 'h-14 lg:h-16',
                 )}
               >
                 <Media
                   resource={data.logo}
-                  className="h-full w-auto"
+                  htmlElement={null}
+                  pictureClassName="relative w-full h-full block"
+                  fill
                   imgClassName={cn(
-                    'h-full w-auto object-contain transition-all duration-300',
+                    'object-contain object-left transition-all duration-300',
                     shouldOverlap && !scrolled ? 'brightness-0 invert' : 'dark:brightness-110',
                   )}
+                  priority
                 />
               </div>
             ) : (
@@ -122,7 +125,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-1" aria-label="Main navigation">
+          <nav className="hidden xl:flex items-center gap-0.5 xl:gap-1" aria-label="Main navigation">
             {navItems.map((item, idx) => {
               const hasChildren = item.children && item.children.length > 0
               const isActive = isLinkActive(item.link)
@@ -147,7 +150,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
                       aria-haspopup={hasChildren ? 'true' : undefined}
                       aria-expanded={hasChildren ? isDropdownOpen : undefined}
                       className={cn(
-                        'px-4 py-2 rounded-lg text-sm font-semibold tracking-wide flex items-center gap-1 transition-all duration-200',
+                        'px-2 py-2 rounded-lg text-[13px] 2xl:text-sm font-semibold tracking-wide flex items-center gap-1 whitespace-nowrap transition-all duration-200',
                         isActive
                           ? 'text-brand-red'
                           : shouldOverlap && !scrolled
@@ -171,7 +174,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
                       aria-haspopup={hasChildren ? 'true' : undefined}
                       aria-expanded={hasChildren ? isDropdownOpen : undefined}
                       className={cn(
-                        'px-4 py-2 rounded-lg text-sm font-semibold tracking-wide flex items-center gap-1 transition-all duration-200 cursor-pointer',
+                        'px-2 py-2 rounded-lg text-[13px] 2xl:text-sm font-semibold tracking-wide flex items-center gap-1 whitespace-nowrap transition-all duration-200 cursor-pointer',
                         isActive
                           ? 'text-brand-red'
                           : shouldOverlap && !scrolled
@@ -265,7 +268,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
             type="button"
             onClick={() => setIsOpen(!isOpen)}
             className={cn(
-              'lg:hidden p-2 rounded-lg transition-colors focus:outline-hidden',
+              'xl:hidden p-2 rounded-lg transition-colors focus:outline-hidden',
               shouldOverlap && !scrolled
                 ? 'text-white hover:text-brand-red/90'
                 : 'text-brand-navy hover:text-brand-red dark:text-slate-200 dark:hover:text-brand-red',
@@ -289,7 +292,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
         aria-modal="true"
         aria-label="Mobile navigation"
         className={cn(
-          'fixed inset-y-0 right-0 w-full max-w-[320px] bg-white dark:bg-slate-900 z-50 shadow-2xl border-l border-gray-100 dark:border-slate-800 transition-transform duration-300 transform lg:hidden flex flex-col',
+          'fixed inset-y-0 right-0 w-full max-w-[320px] bg-white dark:bg-slate-900 z-50 shadow-2xl border-l border-gray-100 dark:border-slate-800 transition-transform duration-300 transform xl:hidden flex flex-col',
           isOpen ? 'translate-x-0' : 'translate-x-full',
         )}
       >
@@ -441,7 +444,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
       {isOpen && (
         <div
           onClick={() => setIsOpen(false)}
-          className="fixed inset-0 bg-black/40 z-40 lg:hidden"
+          className="fixed inset-0 bg-black/40 z-40 xl:hidden"
           aria-hidden="true"
         />
       )}
