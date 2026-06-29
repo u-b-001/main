@@ -46,6 +46,8 @@ export const SiteSettings: GlobalConfig = {
         const newPreset = doc?.themePreset
         const oldPreset = previousDoc?.themePreset
 
+        revalidateTag('global_site-settings')
+
         if (newPreset && newPreset !== oldPreset) {
           try {
             await applyThemeToBlocks(req.payload, newPreset)

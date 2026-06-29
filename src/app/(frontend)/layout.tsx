@@ -63,7 +63,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       data-heading-font={headingFontFamily}
       data-body-font={bodyFontFamily}
       data-text-size={siteTextSize}
-      style={{ '--bg-pattern-opacity': bgPatternOpacity } as React.CSSProperties}
+      style={customStyles}
       suppressHydrationWarning
     >
       <head>
