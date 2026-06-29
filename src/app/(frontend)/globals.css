@@ -330,7 +330,6 @@ body.has-pattern::before {
   content: '';
   position: fixed;
   inset: 0;
-  background-image: url('/pattern.png');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center bottom;

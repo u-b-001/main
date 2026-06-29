@@ -65,5 +65,29 @@ export const ResourceLinksBlock: Block = {
         },
       ],
     },
+    {
+      name: 'hoverStyle',
+      type: 'select',
+      label: 'Hover Style',
+      defaultValue: 'standard',
+      options: [
+        { label: 'Standard', value: 'standard' },
+        { label: 'Luminous Glow', value: 'luminous' },
+      ],
+    },
+    {
+      name: 'glowColor',
+      type: 'select',
+      label: 'Glow Color (if Luminous)',
+      defaultValue: 'yellow',
+      admin: {
+        condition: (_: any, siblingData: any) => siblingData?.hoverStyle === 'luminous',
+      },
+      options: [
+        { label: 'Yellow (Radial)', value: 'yellow' },
+        { label: 'Primary (Brand)', value: 'primary' },
+        { label: 'White', value: 'white' },
+      ],
+    },
   ],
 }

@@ -30,8 +30,9 @@ import { StepsComponent } from '@/blocks/Steps/Component'
 import { FileDownloadsComponent } from '@/blocks/FileDownloads/Component'
 import { NewsAndUpdatesComponent } from '@/blocks/NewsAndUpdates/Component'
 import { ResourceLinksComponent } from '@/blocks/ResourceLinks/Component'
+import { MembersDirectoryComponent } from '@/blocks/MembersDirectory/Component'
 
-const blockComponents = {
+export const blockComponents = {
   cta: CallToActionBlock,
   richText: RichTextBlock,
   imageWithText: ImageWithTextBlock,
@@ -61,6 +62,7 @@ const blockComponents = {
   steps: StepsComponent,
   fileDownloads: FileDownloadsComponent,
   resourceLinks: ResourceLinksComponent,
+  membersDirectory: MembersDirectoryComponent,
 }
 
 export const RenderBlocks: React.FC<{
