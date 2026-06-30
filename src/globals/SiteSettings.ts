@@ -1,4 +1,5 @@
 import type { GlobalConfig } from 'payload'
+import { revalidateTag } from 'next/cache'
 import { publicAccess, isSuperAdmin } from '../access/roles'
 import { themePresets } from '../globals/themePresets'
 import { applyThemeToBlocks } from '../lib/applyThemeToBlocks'
@@ -46,7 +47,7 @@ export const SiteSettings: GlobalConfig = {
         const newPreset = doc?.themePreset
         const oldPreset = previousDoc?.themePreset
 
-        revalidateTag('global_site-settings')
+        revalidateTag('global_site-settings', 'max')
 
         if (newPreset && newPreset !== oldPreset) {
           try {

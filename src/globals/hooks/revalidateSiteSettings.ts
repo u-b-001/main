@@ -5,7 +5,7 @@ export const revalidateSiteSettings: GlobalAfterChangeHook = ({ doc, req: { payl
   if (!context?.disableRevalidate) {
     payload.logger.info(`Revalidating site settings`)
     try {
-      revalidateTag('global_site-settings')
+      revalidateTag('global_site-settings', 'max')
     } catch (err: any) {
       payload.logger.warn(`Failed to revalidate site settings (this is normal during CLI seed): ${err.message}`)
     }

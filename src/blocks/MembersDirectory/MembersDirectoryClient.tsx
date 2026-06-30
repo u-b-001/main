@@ -3,15 +3,15 @@
 import React, { useState, useMemo } from 'react'
 
 interface Member {
-  id: string
+  id: string | number
   name: string
-  university?: string
-  city?: string
-  year?: string
-  specialisation?: string
-  fellowship?: string
-  email?: string
-  presentAddress?: string
+  university?: string | null
+  city?: string | null
+  year?: string | null
+  specialisation?: string | null
+  fellowship?: string | null
+  email?: string | null
+  presentAddress?: string | null
 }
 
 interface Props {
