@@ -32,6 +32,41 @@ export const Header: GlobalConfig = {
       type: 'row',
       fields: [
         {
+          name: 'logoWidth',
+          type: 'number',
+          admin: {
+            description: 'Custom logo width (in pixels) for desktop',
+            width: '33%',
+          },
+        },
+        {
+          name: 'logoHeight',
+          type: 'number',
+          admin: {
+            description: 'Custom logo height (in pixels) for desktop',
+            width: '33%',
+          },
+        },
+        {
+          name: 'logoPlacement',
+          type: 'select',
+          defaultValue: 'left',
+          options: [
+            { label: 'Left', value: 'left' },
+            { label: 'Center', value: 'center' },
+            { label: 'Right', value: 'right' },
+          ],
+          admin: {
+            description: 'Where the logo should appear in the header',
+            width: '33%',
+          },
+        },
+      ],
+    },
+    {
+      type: 'row',
+      fields: [
+        {
           name: 'sticky',
           type: 'checkbox',
           label: 'Sticky Header',

@@ -4199,6 +4199,18 @@ export interface Header {
    */
   logoMobile?: (number | null) | Media;
   /**
+   * Custom logo width (in pixels) for desktop
+   */
+  logoWidth?: number | null;
+  /**
+   * Custom logo height (in pixels) for desktop
+   */
+  logoHeight?: number | null;
+  /**
+   * Where the logo should appear in the header
+   */
+  logoPlacement?: ('left' | 'center' | 'right') | null;
+  /**
    * Header stays visible at the top of the screen while scrolling.
    */
   sticky: boolean;
@@ -4356,6 +4368,9 @@ export interface SiteSetting {
 export interface HeaderSelect<T extends boolean = true> {
   logo?: T;
   logoMobile?: T;
+  logoWidth?: T;
+  logoHeight?: T;
+  logoPlacement?: T;
   sticky?: T;
   overlapHomepageHero?: T;
   announcementBar?:

@@ -90,15 +90,27 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
               : 'bg-white py-5 dark:bg-slate-950 text-brand-navy dark:text-white',
         )}
       >
-        <div className="w-full max-w-[1920px] mx-auto px-4 xl:px-6 flex justify-between xl:justify-start xl:gap-8 2xl:gap-16 items-center">
+        <div className="w-full max-w-[1920px] relative mx-auto px-4 xl:px-6 flex justify-between xl:justify-start xl:gap-8 2xl:gap-16 items-center">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 shrink-0">
+          <Link 
+            href="/" 
+            className={cn(
+              "flex items-center gap-3 shrink-0 z-50",
+              data?.logoPlacement === 'center' && "absolute left-1/2 -translate-x-1/2",
+              data?.logoPlacement === 'right' && "order-last xl:ml-auto"
+            )}
+          >
             {data?.logo && typeof data.logo === 'object' ? (
               <div
                 className={cn(
-                  'relative flex items-center transition-all duration-300 w-32 lg:w-48',
-                  isSticky && scrolled ? 'h-10 lg:h-12' : 'h-14 lg:h-16',
+                  'relative flex items-center transition-all duration-300',
+                  !data?.logoWidth && 'w-32 lg:w-48',
+                  !data?.logoHeight && (isSticky && scrolled ? 'h-10 lg:h-12' : 'h-14 lg:h-16')
                 )}
+                style={{
+                  width: data?.logoWidth ? `${isSticky && scrolled ? data.logoWidth * 0.8 : data.logoWidth}px` : undefined,
+                  height: data?.logoHeight ? `${isSticky && scrolled ? data.logoHeight * 0.8 : data.logoHeight}px` : undefined,
+                }}
               >
                 <Media
                   resource={data.logo}
@@ -125,7 +137,14 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden xl:flex items-center gap-0.5 xl:gap-1" aria-label="Main navigation">
+          <nav 
+            className={cn(
+              "hidden xl:flex items-center gap-0.5 xl:gap-1",
+              data?.logoPlacement === 'center' && "w-full justify-between xl:justify-center xl:gap-6",
+              data?.logoPlacement === 'right' && "mr-auto"
+            )} 
+            aria-label="Main navigation"
+          >
             {navItems.map((item, idx) => {
               const hasChildren = item.children && item.children.length > 0
               const isActive = isLinkActive(item.link)
