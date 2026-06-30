@@ -55,6 +55,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const headingFontFamily = siteSettings?.headingFont || 'Playfair Display'
   const bodyFontFamily = siteSettings?.bodyFont || 'Inter'
 
+  const customStyles = {
+    '--bg-pattern-opacity': bgPatternOpacity,
+  } as React.CSSProperties
+
   return (
     <html
       className={cn(inter.variable, notoSerifJp.variable, GeistMono.variable)}
