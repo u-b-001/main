@@ -148,6 +148,7 @@ function slideFields() {
             description: 'Select button icon',
           },
         },
+
       ],
     },
   ]
@@ -390,6 +391,7 @@ export const Hero: Block = {
                 description: 'Select button icon',
               },
             },
+
           ],
         },
       ],

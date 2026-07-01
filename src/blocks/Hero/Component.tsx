@@ -198,8 +198,8 @@ function TextBlock({
                 className={`inline-flex items-center gap-2 rounded-md px-5 py-2.5 text-sm font-medium transition-colors ${customClasses}`}
                 style={buttonStyle}
               >
-                {IconComponent && <IconComponent className="w-4 h-4 shrink-0" />}
                 {btn.label}
+                {IconComponent && <IconComponent className="w-4 h-4 shrink-0" />}
               </Link>
             )
           })}
@@ -721,8 +721,8 @@ function SplitHero(props: HeroBlockProps) {
                 className={`inline-flex items-center gap-2 rounded-md px-5 py-2.5 text-sm font-medium transition-colors ${customClasses}`}
                 style={buttonStyle}
               >
-                {IconComponent && <IconComponent className="w-4 h-4 shrink-0" />}
                 {btn.label}
+                {IconComponent && <IconComponent className="w-4 h-4 shrink-0" />}
               </Link>
             )
           })}
