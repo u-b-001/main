@@ -230,7 +230,7 @@ function MediaOverlay({ overlay }: { overlay?: OverlaySettings }) {
 function FullWidthHero(props: HeroBlockProps) {
   const isCarousel = props.mode === 'carousel'
   const slides = isCarousel ? props.slides || [] : props.singleSlide ? [props.singleSlide] : []
-  const { index } = useCarousel(slides.length, props.carouselSettings)
+  const { index, goTo, next, prev } = useCarousel(slides.length, props.carouselSettings)
   const activeSlide = slides[index] || {}
 
   return (
@@ -273,6 +273,9 @@ function FullWidthHero(props: HeroBlockProps) {
           count={slides.length}
           activeIndex={index}
           settings={props.carouselSettings}
+          onGoTo={goTo}
+          onPrev={prev}
+          onNext={next}
         />
       )}
     </section>

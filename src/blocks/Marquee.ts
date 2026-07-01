@@ -18,7 +18,7 @@ export const Marquee: Block = {
         },
         {
           name: 'url',
-          type: 'text',
+          type: 'text', 
           admin: { description: 'Optional link when clicked' },
         },
         iconField('icon', 'Item Icon'),
