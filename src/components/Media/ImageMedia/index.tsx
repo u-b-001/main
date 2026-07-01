@@ -88,6 +88,9 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
         .map(([, value]) => `(max-width: ${value}px) ${value * 2}w`)
         .join(', ')
 
+  console.log('ImageMedia debug:', { srcFromProps, resource, url: typeof resource === 'object' ? resource?.url : undefined, src })
+  if (!src || (typeof src === 'object' && !src.src)) return null
+
   return (
     <picture className={cn(fill ? 'relative w-full h-full block' : '', pictureClassName)}>
       <NextImage

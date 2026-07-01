@@ -76,13 +76,7 @@ function SlideMedia({ slide, priority }: { slide: any; priority?: boolean }) {
 
   if (mediaType === 'image') {
     return (
-      <Media
-        resource={slide.image}
-        priority={priority}
-        fill
-        imgClassName="object-cover"
-        className="w-full h-full"
-      />
+      <Media htmlElement={null} resource={slide.image} priority={priority} fill imgClassName="object-cover" pictureClassName="w-full h-full" />
     )
   }
 
