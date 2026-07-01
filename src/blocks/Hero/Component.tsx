@@ -547,7 +547,7 @@ function MosiaFullscreenHero(props: HeroBlockProps) {
 }
 
 /* ────────────────────────────────────────────────────────────────────────
-   Layout: 50/50 Split (Text + Media)
+   Layout: 50/50 Split (Text + Media) - FIXED WITH PADDING
    ──────────────────────────────────────────────────────────────────────── */
 
 function SplitHero(props: HeroBlockProps) {
@@ -567,11 +567,21 @@ function SplitHero(props: HeroBlockProps) {
   const subtitleDefaultColor = isDark ? '#E5E7EB' : '#4B5563'
   const headingDefaultColor = isDark ? '#FFFFFF' : '#111827'
 
+  // Get padding values with defaults
+  const paddingX = props.contentPaddingX ?? 48
+  const paddingY = props.contentPaddingY ?? 48
+
   const textColumn = (
     <div
-      className={`flex flex-col justify-center gap-4 px-6 py-12 md:px-12 ${alignmentClasses(
+      className={`flex h-full flex-col justify-center gap-4 ${alignmentClasses(
         props.textAlignment || 'left',
       )}`}
+      style={{
+        paddingLeft: `${paddingX}px`,
+        paddingRight: `${paddingX}px`,
+        paddingTop: `${paddingY}px`,
+        paddingBottom: `${paddingY}px`,
+      }}
     >
       {textSlide.eyebrowText && (
         <span
@@ -624,8 +634,7 @@ function SplitHero(props: HeroBlockProps) {
   )
 
   const mediaColumn = (
-    // Add relative positioning and explicit height here
-    <div className="relative min-h-[300px] overflow-hidden md:min-h-0 md:h-full">
+    <div className="relative h-full min-h-[300px] w-full overflow-hidden md:min-h-0">
       <div className="absolute inset-0">
         <SlideMedia slide={activeSlide} priority />
       </div>
@@ -650,12 +659,12 @@ function SplitHero(props: HeroBlockProps) {
     >
       {textOnRight ? (
         <>
-          <div className="order-2 md:order-1 h-full">{mediaColumn}</div>
-          <div className="order-1 md:order-2">{textColumn}</div>
+          <div className="order-2 h-full md:order-1">{mediaColumn}</div>
+          <div className="order-1 h-full md:order-2">{textColumn}</div>
         </>
       ) : (
         <>
-          <div className="order-1">{textColumn}</div>
+          <div className="order-1 h-full">{textColumn}</div>
           <div className="order-2 h-full">{mediaColumn}</div>
         </>
       )}
