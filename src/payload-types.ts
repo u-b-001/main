@@ -220,7 +220,7 @@ export interface Page {
          * Hero height in pixels (e.g. 600)
          */
         height?: number | null;
-        textAlignment?: ('left' | 'center' | 'right') | null;
+        textAlignment?: ('left' | 'center' | 'right' | 'justify') | null;
         textVerticalPosition?: ('top' | 'center' | 'bottom') | null;
         /**
          * Maximum content width in pixels for hero text container
