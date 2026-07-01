@@ -365,16 +365,6 @@ function FullscreenOverlayCarouselHero(props: HeroBlockProps) {
       className="relative w-full overflow-hidden"
       style={{ height: props.height ? `${props.height}px` : '600px' }}
     >
-      {glass?.enabled !== false && glass && (
-        <div
-          className={`absolute inset-x-0 top-0 z-30 h-16 ${glass.showDivider !== false ? 'border-b border-white/10' : ''}`}
-          style={{
-            backgroundColor: hexToRgba(glass.fillColor, glass.fillOpacity),
-            backdropFilter: `blur(${glass.blurAmount ?? 16}px)`,
-            WebkitBackdropFilter: `blur(${glass.blurAmount ?? 16}px)`,
-          }}
-        />
-      )}
 
       <div className="absolute inset-0">
         <SlideMedia slide={activeSlide} priority />

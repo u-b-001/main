@@ -56,10 +56,36 @@ export default async function Page({ params: paramsPromise }: Args) {
     return notFound()
   }
 
-  // Sidebar auto-generation removed. Layout relies entirely on blocks.
+  const bgSettings = page?.backgroundSettings
+  const bgTheme = bgSettings?.theme || 'default'
+  const customBgColor = bgSettings?.customColor
+  const bgImage = bgSettings?.backgroundImage
+
+  let bgClass = "min-h-screen pb-16 "
+  const style: React.CSSProperties = {}
+
+  if (bgTheme === 'light-gray') {
+    bgClass += "bg-gray-50 dark:bg-gray-900"
+  } else if (bgTheme === 'dark-navy') {
+    bgClass += "bg-slate-900 text-white"
+  } else if (bgTheme === 'custom' && customBgColor) {
+    style.backgroundColor = customBgColor
+  } else {
+    bgClass += "bg-white dark:bg-slate-950"
+  }
+
+  if (bgImage && typeof bgImage === 'object' && bgImage.url) {
+    style.backgroundImage = `url(${bgImage.url})`
+    style.backgroundSize = 'cover'
+    style.backgroundPosition = 'center'
+    style.backgroundAttachment = 'fixed'
+  }
+
+  const layoutHeadingFont = page?.typographySettings?.headingFont || 'serif'
+  const fontClass = layoutHeadingFont === 'serif' ? '[&_h2]:font-serif [&_h3]:font-serif' : '[&_h2]:font-sans [&_h3]:font-sans'
 
   return (
-    <article className="min-h-screen bg-white dark:bg-slate-950 pb-16">
+    <article className={bgClass} style={Object.keys(style).length > 0 ? style : undefined}>
       {draft && <LivePreviewListener />}
 
       {/* Hero Banner */}
@@ -70,7 +96,9 @@ export default async function Page({ params: paramsPromise }: Args) {
 
       {/* Main Grid Content */}
       <main className="w-full">
-        <RenderBlocks blocks={page.layout || []} />
+        <div className={fontClass}>
+          <RenderBlocks blocks={page.layout || []} />
+        </div>
 
         {/* Dynamic Committee/Faculty Grids */}
         {fullSlug === 'about-mosai/managing-committee' && (

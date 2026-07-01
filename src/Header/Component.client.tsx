@@ -90,7 +90,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
               : 'bg-white py-5 dark:bg-slate-950 text-brand-navy dark:text-white',
         )}
       >
-        <div className="w-full max-w-[1920px] relative mx-auto px-4 xl:px-6 flex justify-between xl:justify-start xl:gap-8 2xl:gap-16 items-center">
+        <div className="w-full max-w-[1920px] relative mx-auto px-4 xl:px-6 flex justify-between xl:justify-center xl:gap-8 2xl:gap-16 items-center">
           {/* Logo */}
           <Link 
             href="/" 

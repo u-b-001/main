@@ -129,6 +129,69 @@ export const Pages: CollectionConfig<'pages'> = {
       },
     },
     {
+      name: 'backgroundSettings',
+      type: 'group',
+      label: 'Background Settings',
+      admin: {
+        position: 'sidebar',
+      },
+      fields: [
+        {
+          name: 'theme',
+          type: 'select',
+          label: 'Background Theme',
+          defaultValue: 'default',
+          options: [
+            { label: 'Default (White/Dark based on system)', value: 'default' },
+            { label: 'Light Gray', value: 'light-gray' },
+            { label: 'Dark Navy', value: 'dark-navy' },
+            { label: 'Custom Color', value: 'custom' },
+          ],
+        },
+        {
+          name: 'customColor',
+          type: 'text',
+          label: 'Custom Background Color',
+          admin: {
+            condition: (_, siblingData) => siblingData?.theme === 'custom',
+            description: 'Enter a valid CSS color (e.g. #f3f4f6, rgb(0,0,0))',
+          },
+        },
+        {
+          name: 'backgroundImage',
+          type: 'upload',
+          relationTo: 'media',
+          label: 'Background Image',
+          admin: {
+            description: 'Optional image to place behind all page content.',
+          },
+        },
+      ],
+    },
+    {
+      name: 'typographySettings',
+      type: 'group',
+      label: 'Typography Settings',
+      admin: {
+        position: 'sidebar',
+      },
+      fields: [
+        {
+          name: 'headingFont',
+          type: 'select',
+          label: 'Layout Heading Font',
+          defaultValue: 'serif',
+          options: [
+            { label: 'Serif (Playfair Display)', value: 'serif' },
+            { label: 'Sans-Serif (Inter)', value: 'sans' },
+          ],
+          admin: {
+            description: 'Select the font family for headings (h2, h3) in this page\'s layouts.',
+          },
+        },
+      ],
+    },
+    {
       name: 'layout',
       type: 'blocks',
       blocks: [

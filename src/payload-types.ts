@@ -170,6 +170,23 @@ export interface Page {
    * Banner image shown at the top of inner pages. WARNING: To change this image, click the "X" button to clear the field, then select or upload a new one. DO NOT click the pencil "Edit" icon to replace the file inside the media drawer, as that will overwrite the shared media asset globally across all pages!
    */
   hero?: (number | null) | Media;
+  backgroundSettings?: {
+    theme?: ('default' | 'light-gray' | 'dark-navy' | 'custom') | null;
+    /**
+     * Enter a valid CSS color (e.g. #f3f4f6, rgb(0,0,0))
+     */
+    customColor?: string | null;
+    /**
+     * Optional image to place behind all page content.
+     */
+    backgroundImage?: (number | null) | Media;
+  };
+  typographySettings?: {
+    /**
+     * Select the font family for headings (h2, h3) in this page's layouts.
+     */
+    headingFont?: ('serif' | 'sans') | null;
+  };
   layout: (
     | RichTextBlock
     | ImageWithTextBlock
@@ -2752,6 +2769,18 @@ export interface PagesSelect<T extends boolean = true> {
   layoutStyle?: T;
   heroStyle?: T;
   hero?: T;
+  backgroundSettings?:
+    | T
+    | {
+        theme?: T;
+        customColor?: T;
+        backgroundImage?: T;
+      };
+  typographySettings?:
+    | T
+    | {
+        headingFont?: T;
+      };
   layout?:
     | T
     | {

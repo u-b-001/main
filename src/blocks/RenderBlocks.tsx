@@ -83,7 +83,7 @@ export const RenderBlocks: React.FC<{
 
             if (Block) {
               return (
-                <div className="my-8" key={index}>
+                <div className={index === 0 ? "mb-8" : "my-8"} key={index}>
                   <Block {...block} />
                 </div>
               )
