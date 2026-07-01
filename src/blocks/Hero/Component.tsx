@@ -7,7 +7,14 @@ import { cn } from '@/utilities/ui'
 import { Media } from '@/components/Media'
 
 type FeatureTag = { icon?: string; text: string }
-type HeroButton = { label: string; url: string; variant?: 'primary' | 'secondary' | 'outline'; icon?: string }
+type HeroButton = { 
+  label: string; 
+  url: string; 
+  variant?: 'primary' | 'secondary' | 'outline'; 
+  icon?: string;
+  backgroundColor?: string;
+  textColor?: string;
+}
 type Slide = any
 type CarouselSettings = any
 type OverlaySettings = any
@@ -22,7 +29,7 @@ export type HeroBlockProps = {
   splitTextBehavior?: 'static' | 'slide'
   splitFeatures?: FeatureTag[]
   height?: number
-  textAlignment?: 'left' | 'center' | 'right' | 'justify'  
+  textAlignment?: 'left' | 'center' | 'right' | 'justify'
   textVerticalPosition?: 'top' | 'center' | 'bottom'
   contentMaxWidth?: number
   contentPaddingX?: number
@@ -59,12 +66,6 @@ function verticalClasses(val?: 'top' | 'center' | 'bottom') {
   if (val === 'top') return 'items-start'
   if (val === 'bottom') return 'items-end'
   return 'items-center'
-}
-
-function buttonClasses(variant?: string) {
-  if (variant === 'secondary') return 'bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm'
-  if (variant === 'outline') return 'border-2 border-white/80 text-white hover:bg-white hover:text-black'
-  return 'bg-brand-red text-white hover:bg-brand-red/90'
 }
 
 function SlideMedia({ slide, priority }: { slide: any; priority?: boolean }) {
@@ -153,18 +154,41 @@ function TextBlock({
       <h1 className="text-4xl md:text-6xl font-bold max-w-3xl relative z-10" style={headingColor ? { color: headingColor } : undefined}>{heading}</h1>
       {subtitle && <p className="mt-4 text-lg text-gray-300 max-w-2xl relative z-10" style={subtitleColor ? { color: subtitleColor } : undefined}>{subtitle}</p>}
       {buttons && buttons.length > 0 && (
-        <div className="mt-8 flex gap-4 relative z-10">
-          {buttons.map((btn, i) => (
-            <Link
-              key={`${btn.label}-${i}`}
-              href={btn.url || '#'}
-              className={`inline-flex items-center gap-2 rounded-md px-5 py-2.5 text-sm font-medium transition-colors ${buttonClasses(
-                btn.variant,
-              )}`}
-            >
-              {btn.label}
-            </Link>
-          ))}
+        <div className="mt-8 flex gap-4 relative z-10 flex-wrap">
+          {buttons.map((btn, i) => {
+            const buttonStyle: React.CSSProperties = {}
+            if (btn.backgroundColor) {
+              buttonStyle.backgroundColor = btn.backgroundColor
+            }
+            if (btn.textColor) {
+              buttonStyle.color = btn.textColor
+            }
+            
+            // Determine default classes based on variant
+            let defaultClasses = ''
+            if (btn.variant === 'secondary') {
+              defaultClasses = 'bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm'
+            } else if (btn.variant === 'outline') {
+              defaultClasses = 'border-2 border-white/80 text-white hover:bg-white hover:text-black'
+            } else {
+              defaultClasses = 'bg-brand-red text-white hover:bg-brand-red/90'
+            }
+            
+            // If custom colors are provided, override default classes
+            const customClasses = btn.backgroundColor || btn.textColor ? '' : defaultClasses
+            
+            return (
+              <Link
+                key={`${btn.label}-${i}`}
+                href={btn.url || '#'}
+                className={`inline-flex items-center gap-2 rounded-md px-5 py-2.5 text-sm font-medium transition-colors ${customClasses}`}
+                style={buttonStyle}
+              >
+                {btn.icon && <span className="text-base">{btn.icon}</span>}
+                {btn.label}
+              </Link>
+            )
+          })}
         </div>
       )}
     </div>
@@ -548,7 +572,7 @@ function MosiaFullscreenHero(props: HeroBlockProps) {
 }
 
 /* ────────────────────────────────────────────────────────────────────────
-   Layout: 50/50 Split (Text + Media) - FIXED WITH PADDING
+   Layout: 50/50 Split (Text + Media) - FIXED WITH PADDING AND BUTTONS
    ──────────────────────────────────────────────────────────────────────── */
 
 function SplitHero(props: HeroBlockProps) {
@@ -571,6 +595,25 @@ function SplitHero(props: HeroBlockProps) {
   // Get padding values with defaults
   const paddingX = props.contentPaddingX ?? 48
   const paddingY = props.contentPaddingY ?? 48
+
+  // Helper function for button classes in split layout
+  const getSplitButtonClasses = (btn: HeroButton) => {
+    // If custom colors are provided, use them
+    if (btn.backgroundColor || btn.textColor) {
+      return ''
+    }
+    
+    // Otherwise use variant-based styling
+    if (isDark) {
+      if (btn.variant === 'secondary') return 'bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm'
+      if (btn.variant === 'outline') return 'border-2 border-white/80 text-white hover:bg-white hover:text-black'
+      return 'bg-brand-red text-white hover:bg-brand-red/90'
+    } else {
+      if (btn.variant === 'outline') return 'border border-neutral-900 text-neutral-900 hover:bg-neutral-900/5'
+      if (btn.variant === 'secondary') return 'bg-neutral-700 text-white hover:bg-neutral-600'
+      return 'bg-neutral-900 text-white hover:bg-neutral-800'
+    }
+  }
 
   const textColumn = (
     <div
@@ -611,23 +654,30 @@ function SplitHero(props: HeroBlockProps) {
       )}
       {textSlide.buttons && textSlide.buttons.length > 0 && (
         <div className="mt-2 flex flex-wrap gap-3">
-          {textSlide.buttons.map((btn: HeroButton, i: number) => (
-            <Link
-              key={`${btn.label}-${i}`}
-              href={btn.url || '#'}
-              className={`inline-flex items-center gap-2 rounded-md px-5 py-2.5 text-sm font-medium transition-colors ${
-                isDark
-                  ? buttonClasses(btn.variant)
-                  : btn.variant === 'outline'
-                    ? 'border border-neutral-900 text-neutral-900 hover:bg-neutral-900/5'
-                    : btn.variant === 'secondary'
-                      ? 'bg-neutral-700 text-white hover:bg-neutral-600'
-                      : 'bg-neutral-900 text-white hover:bg-neutral-800'
-              }`}
-            >
-              {btn.label}
-            </Link>
-          ))}
+          {textSlide.buttons.map((btn: HeroButton, i: number) => {
+            const buttonStyle: React.CSSProperties = {}
+            if (btn.backgroundColor) {
+              buttonStyle.backgroundColor = btn.backgroundColor
+            }
+            if (btn.textColor) {
+              buttonStyle.color = btn.textColor
+            }
+            
+            const defaultClasses = getSplitButtonClasses(btn)
+            const customClasses = btn.backgroundColor || btn.textColor ? '' : defaultClasses
+            
+            return (
+              <Link
+                key={`${btn.label}-${i}`}
+                href={btn.url || '#'}
+                className={`inline-flex items-center gap-2 rounded-md px-5 py-2.5 text-sm font-medium transition-colors ${customClasses}`}
+                style={buttonStyle}
+              >
+                {btn.icon && <span className="text-base">{btn.icon}</span>}
+                {btn.label}
+              </Link>
+            )
+          })}
         </div>
       )}
       <FeatureTags features={props.splitFeatures} />
@@ -753,16 +803,36 @@ function QuickAccessBarSection({ bar }: { bar?: QuickAccessBar }) {
         }}
       >
         {bar.items.map((item: any, i: number) => {
-          const isDark = item.colorVariant === 'dark'
+          const cardStyle: React.CSSProperties = {}
+          
+          // Use custom colors if provided
+          if (item.backgroundColor) {
+            cardStyle.backgroundColor = item.backgroundColor
+          } else {
+            // Fallback to colorVariant
+            const isDark = item.colorVariant === 'dark'
+            cardStyle.backgroundColor = isDark ? '#1A103D' : '#4B2E83'
+          }
+          
+          if (item.textColor) {
+            cardStyle.color = item.textColor
+          } else {
+            cardStyle.color = '#FFFFFF'
+          }
+          
           const content = (
             <div
-              className={`flex h-full flex-col items-center justify-center gap-2 rounded-xl p-5 text-center shadow-lg transition-transform hover:-translate-y-1 ${
-                isDark ? 'bg-[#1A103D] text-white' : 'bg-[#4B2E83] text-white'
-              }`}
+              className="flex h-full flex-col items-center justify-center gap-2 rounded-xl p-5 text-center shadow-lg transition-transform hover:-translate-y-1"
+              style={cardStyle}
             >
+              {item.icon && <span className="text-2xl">{item.icon}</span>}
               <span className="text-sm font-semibold">{item.label}</span>
+              {item.description && (
+                <span className="text-xs opacity-80">{item.description}</span>
+              )}
             </div>
           )
+          
           return item.external ? (
             <a key={`${item.label}-${i}`} href={item.link} target="_blank" rel="noopener noreferrer">
               {content}
