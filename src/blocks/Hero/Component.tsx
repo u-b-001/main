@@ -230,7 +230,7 @@ function MediaOverlay({ overlay }: { overlay?: OverlaySettings }) {
 function FullWidthHero(props: HeroBlockProps) {
   const isCarousel = props.mode === 'carousel'
   const slides = isCarousel ? props.slides || [] : props.singleSlide ? [props.singleSlide] : []
-  const { index } = useCarousel(slides.length, props.carouselSettings)
+  const { index, goTo, next, prev } = useCarousel(slides.length, props.carouselSettings)
   const activeSlide = slides[index] || {}
 
   return (
@@ -273,6 +273,9 @@ function FullWidthHero(props: HeroBlockProps) {
           count={slides.length}
           activeIndex={index}
           settings={props.carouselSettings}
+          onGoTo={goTo}
+          onPrev={prev}
+          onNext={next}
         />
       )}
     </section>
@@ -621,7 +624,8 @@ function SplitHero(props: HeroBlockProps) {
   )
 
   const mediaColumn = (
-    <div className="relative min-h-[300px] overflow-hidden md:min-h-0">
+    // Add relative positioning and explicit height here
+    <div className="relative min-h-[300px] overflow-hidden md:min-h-0 md:h-full">
       <div className="absolute inset-0">
         <SlideMedia slide={activeSlide} priority />
       </div>
@@ -646,13 +650,13 @@ function SplitHero(props: HeroBlockProps) {
     >
       {textOnRight ? (
         <>
-          <div className="order-2 md:order-1">{mediaColumn}</div>
+          <div className="order-2 md:order-1 h-full">{mediaColumn}</div>
           <div className="order-1 md:order-2">{textColumn}</div>
         </>
       ) : (
         <>
           <div className="order-1">{textColumn}</div>
-          <div className="order-2">{mediaColumn}</div>
+          <div className="order-2 h-full">{mediaColumn}</div>
         </>
       )}
     </section>
