@@ -2,6 +2,7 @@
 
 import React, { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
+import * as LucideIcons from 'lucide-react'
 import { cn } from '@/utilities/ui'
 
 
@@ -188,6 +189,7 @@ function TextBlock({
 
             // If custom colors are provided, override default classes
             const customClasses = btn.backgroundColor || btn.textColor ? '' : defaultClasses
+            const IconComponent = btn.icon ? (LucideIcons as any)[btn.icon] : null
 
             return (
               <Link
@@ -196,7 +198,7 @@ function TextBlock({
                 className={`inline-flex items-center gap-2 rounded-md px-5 py-2.5 text-sm font-medium transition-colors ${customClasses}`}
                 style={buttonStyle}
               >
-                {btn.icon && <span className="text-base">{btn.icon}</span>}
+                {IconComponent && <IconComponent className="w-4 h-4 shrink-0" />}
                 {btn.label}
               </Link>
             )
@@ -710,6 +712,7 @@ function SplitHero(props: HeroBlockProps) {
 
             const defaultClasses = getSplitButtonClasses(btn)
             const customClasses = btn.backgroundColor || btn.textColor ? '' : defaultClasses
+            const IconComponent = btn.icon ? (LucideIcons as any)[btn.icon] : null
 
             return (
               <Link
@@ -718,7 +721,7 @@ function SplitHero(props: HeroBlockProps) {
                 className={`inline-flex items-center gap-2 rounded-md px-5 py-2.5 text-sm font-medium transition-colors ${customClasses}`}
                 style={buttonStyle}
               >
-                {btn.icon && <span className="text-base">{btn.icon}</span>}
+                {IconComponent && <IconComponent className="w-4 h-4 shrink-0" />}
                 {btn.label}
               </Link>
             )
@@ -867,12 +870,13 @@ function QuickAccessBarSection({ bar }: { bar?: QuickAccessBar }) {
             cardStyle.color = '#FFFFFF'
           }
 
+          const IconComponent = item.icon ? (LucideIcons as any)[item.icon] : null
           const content = (
             <div
               className="flex h-full flex-col items-center justify-center gap-2 rounded-xl p-5 text-center shadow-lg transition-transform hover:-translate-y-1"
               style={cardStyle}
             >
-              {item.icon && <span className="text-2xl">{item.icon}</span>}
+              {IconComponent && <IconComponent className="w-6 h-6 shrink-0" />}
               <span className="text-sm font-semibold">{item.label}</span>
               {item.description && <span className="text-xs opacity-80">{item.description}</span>}
             </div>
