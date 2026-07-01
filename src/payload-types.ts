@@ -256,6 +256,14 @@ export interface Page {
                 url: string;
                 variant?: ('primary' | 'secondary' | 'outline') | null;
                 /**
+                 * Button background color (overrides variant)
+                 */
+                backgroundColor?: string | null;
+                /**
+                 * Button text color (overrides variant)
+                 */
+                textColor?: string | null;
+                /**
                  * Select button icon
                  */
                 icon?: string | null;
@@ -346,6 +354,14 @@ export interface Page {
                 url: string;
                 variant?: ('primary' | 'secondary' | 'outline') | null;
                 /**
+                 * Button background color (overrides variant)
+                 */
+                backgroundColor?: string | null;
+                /**
+                 * Button text color (overrides variant)
+                 */
+                textColor?: string | null;
+                /**
                  * Select button icon
                  */
                 icon?: string | null;
@@ -398,6 +414,14 @@ export interface Page {
                     url: string;
                     variant?: ('primary' | 'secondary' | 'outline') | null;
                     /**
+                     * Button background color (overrides variant)
+                     */
+                    backgroundColor?: string | null;
+                    /**
+                     * Button text color (overrides variant)
+                     */
+                    textColor?: string | null;
+                    /**
                      * Select button icon
                      */
                     icon?: string | null;
@@ -444,6 +468,14 @@ export interface Page {
                  */
                 link: string;
                 external?: boolean | null;
+                /**
+                 * Card background color
+                 */
+                backgroundColor?: string | null;
+                /**
+                 * Card text color
+                 */
+                textColor?: string | null;
                 colorVariant?: ('primary' | 'dark') | null;
                 id?: string | null;
               }[]
@@ -2826,6 +2858,8 @@ export interface PagesSelect<T extends boolean = true> {
                           label?: T;
                           url?: T;
                           variant?: T;
+                          backgroundColor?: T;
+                          textColor?: T;
                           icon?: T;
                           id?: T;
                         };
@@ -2876,6 +2910,8 @@ export interface PagesSelect<T extends boolean = true> {
                           label?: T;
                           url?: T;
                           variant?: T;
+                          backgroundColor?: T;
+                          textColor?: T;
                           icon?: T;
                           id?: T;
                         };
@@ -2902,6 +2938,8 @@ export interface PagesSelect<T extends boolean = true> {
                           label?: T;
                           url?: T;
                           variant?: T;
+                          backgroundColor?: T;
+                          textColor?: T;
                           icon?: T;
                           id?: T;
                         };
@@ -2937,6 +2975,8 @@ export interface PagesSelect<T extends boolean = true> {
                           icon?: T;
                           link?: T;
                           external?: T;
+                          backgroundColor?: T;
+                          textColor?: T;
                           colorVariant?: T;
                           id?: T;
                         };

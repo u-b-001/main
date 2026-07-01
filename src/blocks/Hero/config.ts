@@ -126,8 +126,16 @@ function slideFields() {
         condition: (_: any, siblingData: any) => siblingData?.showText !== false,
       },
       fields: [
-        { name: 'label', type: 'text' as const, required: true },
-        { name: 'url', type: 'text' as const, required: true },
+        { 
+          name: 'label', 
+          type: 'text' as const, 
+          required: true 
+        },
+        { 
+          name: 'url', 
+          type: 'text' as const, 
+          required: true 
+        },
         {
           name: 'variant',
           type: 'select' as const,
@@ -137,6 +145,26 @@ function slideFields() {
             { label: 'Secondary (Filled)', value: 'secondary' },
             { label: 'Outline', value: 'outline' },
           ],
+        },
+        {
+          name: 'backgroundColor',
+          type: 'text' as const,
+          admin: {
+            components: {
+              Field: '@/globals/ColorPickerField#ColorPickerField',
+            },
+            description: 'Button background color (overrides variant)',
+          },
+        },
+        {
+          name: 'textColor',
+          type: 'text' as const,
+          admin: {
+            components: {
+              Field: '@/globals/ColorPickerField#ColorPickerField',
+            },
+            description: 'Button text color (overrides variant)',
+          },
         },
         {
           name: 'icon',
@@ -380,6 +408,26 @@ export const Hero: Block = {
                 { label: 'Secondary (Filled)', value: 'secondary' },
                 { label: 'Outline', value: 'outline' },
               ],
+            },
+            {
+              name: 'backgroundColor',
+              type: 'text',
+              admin: {
+                components: {
+                  Field: '@/globals/ColorPickerField#ColorPickerField',
+                },
+                description: 'Button background color (overrides variant)',
+              },
+            },
+            {
+              name: 'textColor',
+              type: 'text',
+              admin: {
+                components: {
+                  Field: '@/globals/ColorPickerField#ColorPickerField',
+                },
+                description: 'Button text color (overrides variant)',
+              },
             },
             {
               name: 'icon',
@@ -652,6 +700,26 @@ export const Hero: Block = {
               type: 'checkbox',
               defaultValue: false,
               label: 'Opens in new tab',
+            },
+            {
+              name: 'backgroundColor',
+              type: 'text',
+              admin: {
+                components: {
+                  Field: '@/globals/ColorPickerField#ColorPickerField',
+                },
+                description: 'Card background color',
+              },
+            },
+            {
+              name: 'textColor',
+              type: 'text',
+              admin: {
+                components: {
+                  Field: '@/globals/ColorPickerField#ColorPickerField',
+                },
+                description: 'Card text color',
+              },
             },
             {
               name: 'colorVariant',
