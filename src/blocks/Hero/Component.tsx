@@ -22,7 +22,7 @@ export type HeroBlockProps = {
   splitTextBehavior?: 'static' | 'slide'
   splitFeatures?: FeatureTag[]
   height?: number
-  textAlignment?: 'left' | 'center' | 'right'
+  textAlignment?: 'left' | 'center' | 'right' | 'justify'  
   textVerticalPosition?: 'top' | 'center' | 'bottom'
   contentMaxWidth?: number
   contentPaddingX?: number
@@ -48,9 +48,10 @@ function hexToRgba(hex: string, opacity: number) {
   return `rgba(${r}, ${g}, ${b}, ${opacity / 100})`
 }
 
-function alignmentClasses(align?: 'left' | 'center' | 'right') {
+function alignmentClasses(align?: 'left' | 'center' | 'right' | 'justify') {
   if (align === 'right') return 'text-right items-end'
   if (align === 'left') return 'text-left items-start'
+  if (align === 'justify') return 'text-justify items-start'
   return 'text-center items-center mx-auto'
 }
 
@@ -140,7 +141,7 @@ function TextBlock({
   subtitle?: string
   subtitleColor?: string
   buttons?: HeroButton[]
-  align?: 'left' | 'center' | 'right'
+  align?: 'left' | 'center' | 'right' | 'justify'
 }) {
   return (
     <div className={`flex flex-col gap-4 ${alignmentClasses(align)}`}>

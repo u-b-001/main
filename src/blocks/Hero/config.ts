@@ -259,6 +259,7 @@ export const Hero: Block = {
         { label: 'Left', value: 'left' },
         { label: 'Center', value: 'center' },
         { label: 'Right', value: 'right' },
+        { label: 'Justify', value: 'justify' },
       ],
     },
     {
