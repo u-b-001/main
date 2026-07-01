@@ -20,6 +20,7 @@ export const FeaturedCardsBlock: Block = {
       type: 'select',
       label: 'Columns in Grid',
       options: [
+        { label: '1 Column', value: '1' },
         { label: '2 Columns', value: '2' },
         { label: '3 Columns (Default)', value: '3' },
         { label: '4 Columns', value: '4' },
