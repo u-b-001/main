@@ -72,7 +72,7 @@ function SlideMedia({ slide, priority }: { slide: any; priority?: boolean }) {
 
   if (mediaType === 'image') {
     return (
-      <Media resource={slide.image} priority={priority} fill imgClassName="object-cover" className="w-full h-full" />
+      <Media htmlElement={null} resource={slide.image} priority={priority} fill imgClassName="object-cover" pictureClassName="w-full h-full" />
     )
   }
 
@@ -622,7 +622,9 @@ function SplitHero(props: HeroBlockProps) {
 
   const mediaColumn = (
     <div className="relative min-h-[300px] overflow-hidden md:min-h-0">
-      <SlideMedia slide={activeSlide} priority />
+      <div className="absolute inset-0">
+        <SlideMedia slide={activeSlide} priority />
+      </div>
       <MediaOverlay overlay={props.overlay} />
       {isCarousel && slides.length > 1 && (
         <CarouselControls
