@@ -628,6 +628,11 @@ export const Hero: Block = {
               required: true,
             },
             {
+              name: 'description',
+              type: 'text',
+              label: 'Description',
+            },
+            {
               name: 'icon',
               type: 'text',
               label: 'Icon',

@@ -459,6 +459,7 @@ export interface Page {
           items?:
             | {
                 label: string;
+                description?: string | null;
                 /**
                  * Select a Lucide icon
                  */
@@ -2972,6 +2973,7 @@ export interface PagesSelect<T extends boolean = true> {
                       | T
                       | {
                           label?: T;
+                          description?: T;
                           icon?: T;
                           link?: T;
                           external?: T;
