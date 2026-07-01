@@ -4,16 +4,18 @@ import React, { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { cn } from '@/utilities/ui'
 
+
 import { Media } from '@/components/Media'
 
 type FeatureTag = { icon?: string; text: string }
-type HeroButton = { 
-  label: string; 
-  url: string; 
-  variant?: 'primary' | 'secondary' | 'outline'; 
-  icon?: string;
-  backgroundColor?: string;
-  textColor?: string;
+type HeroButton = {
+  label: string
+  url: string
+  variant?: 'primary' | 'secondary' | 'outline'
+  iconPosition?: 'left' | 'right'
+  icon?: string
+  backgroundColor?: string
+  textColor?: string
 }
 type Slide = any
 type CarouselSettings = any
@@ -74,7 +76,13 @@ function SlideMedia({ slide, priority }: { slide: any; priority?: boolean }) {
 
   if (mediaType === 'image') {
     return (
-      <Media resource={slide.image} priority={priority} fill imgClassName="object-cover" className="w-full h-full" />
+      <Media
+        resource={slide.image}
+        priority={priority}
+        fill
+        imgClassName="object-cover"
+        className="w-full h-full"
+      />
     )
   }
 
@@ -105,9 +113,7 @@ function SlideMedia({ slide, priority }: { slide: any; priority?: boolean }) {
   }
 
   if (mediaType === 'animation') {
-    return (
-      <img src={slide.animationUrl} className="h-full w-full object-contain" alt="" />
-    )
+    return <img src={slide.animationUrl} className="h-full w-full object-contain" alt="" />
   }
 
   if (mediaType === 'dataViz') {
@@ -151,8 +157,20 @@ function TextBlock({
           {eyebrowText}
         </span>
       )}
-      <h1 className="text-4xl md:text-6xl font-bold max-w-3xl relative z-10" style={headingColor ? { color: headingColor } : undefined}>{heading}</h1>
-      {subtitle && <p className="mt-4 text-lg text-gray-300 max-w-2xl relative z-10" style={subtitleColor ? { color: subtitleColor } : undefined}>{subtitle}</p>}
+      <h1
+        className="text-4xl md:text-6xl font-bold max-w-3xl relative z-10"
+        style={headingColor ? { color: headingColor } : undefined}
+      >
+        {heading}
+      </h1>
+      {subtitle && (
+        <p
+          className="mt-4 text-lg text-gray-300 max-w-2xl relative z-10"
+          style={subtitleColor ? { color: subtitleColor } : undefined}
+        >
+          {subtitle}
+        </p>
+      )}
       {buttons && buttons.length > 0 && (
         <div className="mt-8 flex gap-4 relative z-10 flex-wrap">
           {buttons.map((btn, i) => {
@@ -163,7 +181,7 @@ function TextBlock({
             if (btn.textColor) {
               buttonStyle.color = btn.textColor
             }
-            
+
             // Determine default classes based on variant
             let defaultClasses = ''
             if (btn.variant === 'secondary') {
@@ -173,10 +191,10 @@ function TextBlock({
             } else {
               defaultClasses = 'bg-brand-red text-white hover:bg-brand-red/90'
             }
-            
+
             // If custom colors are provided, override default classes
             const customClasses = btn.backgroundColor || btn.textColor ? '' : defaultClasses
-            
+
             return (
               <Link
                 key={`${btn.label}-${i}`}
@@ -336,7 +354,14 @@ function CarouselControls({
             onClick={onPrev}
             className="absolute left-4 top-1/2 z-20 -translate-y-1/2 rounded-full bg-black/40 p-2 text-white hover:bg-black/60"
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
               <path d="M15 18l-6-6 6-6" />
             </svg>
           </button>
@@ -346,7 +371,14 @@ function CarouselControls({
             onClick={onNext}
             className="absolute right-4 top-1/2 z-20 -translate-y-1/2 rounded-full bg-black/40 p-2 text-white hover:bg-black/60"
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
               <path d="M9 18l6-6-6-6" />
             </svg>
           </button>
@@ -393,7 +425,6 @@ function FullscreenOverlayCarouselHero(props: HeroBlockProps) {
       className="relative w-full overflow-hidden"
       style={{ height: props.height ? `${props.height}px` : '600px' }}
     >
-
       <div className="absolute inset-0">
         <SlideMedia slide={activeSlide} priority />
       </div>
@@ -507,7 +538,10 @@ function MosiaFullscreenHero(props: HeroBlockProps) {
                   <div className="mt-4 flex items-center justify-between border-t border-neutral-200 pt-4 text-xs text-neutral-500">
                     <span>{card.footerText}</span>
                     {card.footerLink && (
-                      <Link href={card.footerLink} className="font-medium text-neutral-900 hover:underline">
+                      <Link
+                        href={card.footerLink}
+                        className="font-medium text-neutral-900 hover:underline"
+                      >
                         {card.footerLinkLabel || 'View →'}
                       </Link>
                     )}
@@ -551,7 +585,14 @@ function MosiaFullscreenHero(props: HeroBlockProps) {
             onClick={prev}
             className="rounded-full bg-black/40 p-2 hover:bg-black/60"
           >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
               <path d="M15 18l-6-6 6-6" />
             </svg>
           </button>
@@ -561,7 +602,14 @@ function MosiaFullscreenHero(props: HeroBlockProps) {
             onClick={next}
             className="rounded-full bg-black/40 p-2 hover:bg-black/60"
           >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
               <path d="M9 18l6-6-6-6" />
             </svg>
           </button>
@@ -602,14 +650,17 @@ function SplitHero(props: HeroBlockProps) {
     if (btn.backgroundColor || btn.textColor) {
       return ''
     }
-    
+
     // Otherwise use variant-based styling
     if (isDark) {
-      if (btn.variant === 'secondary') return 'bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm'
-      if (btn.variant === 'outline') return 'border-2 border-white/80 text-white hover:bg-white hover:text-black'
+      if (btn.variant === 'secondary')
+        return 'bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm'
+      if (btn.variant === 'outline')
+        return 'border-2 border-white/80 text-white hover:bg-white hover:text-black'
       return 'bg-brand-red text-white hover:bg-brand-red/90'
     } else {
-      if (btn.variant === 'outline') return 'border border-neutral-900 text-neutral-900 hover:bg-neutral-900/5'
+      if (btn.variant === 'outline')
+        return 'border border-neutral-900 text-neutral-900 hover:bg-neutral-900/5'
       if (btn.variant === 'secondary') return 'bg-neutral-700 text-white hover:bg-neutral-600'
       return 'bg-neutral-900 text-white hover:bg-neutral-800'
     }
@@ -662,10 +713,10 @@ function SplitHero(props: HeroBlockProps) {
             if (btn.textColor) {
               buttonStyle.color = btn.textColor
             }
-            
+
             const defaultClasses = getSplitButtonClasses(btn)
             const customClasses = btn.backgroundColor || btn.textColor ? '' : defaultClasses
-            
+
             return (
               <Link
                 key={`${btn.label}-${i}`}
@@ -747,7 +798,9 @@ function ContainedHero(props: HeroBlockProps) {
         </div>
         <MediaOverlay overlay={props.overlay} />
         {activeSlide.showText !== false && (
-          <div className={`relative z-10 flex h-full w-full ${verticalClasses(props.textVerticalPosition)}`}>
+          <div
+            className={`relative z-10 flex h-full w-full ${verticalClasses(props.textVerticalPosition)}`}
+          >
             <div
               className="w-full"
               style={{
@@ -804,7 +857,7 @@ function QuickAccessBarSection({ bar }: { bar?: QuickAccessBar }) {
       >
         {bar.items.map((item: any, i: number) => {
           const cardStyle: React.CSSProperties = {}
-          
+
           // Use custom colors if provided
           if (item.backgroundColor) {
             cardStyle.backgroundColor = item.backgroundColor
@@ -813,13 +866,13 @@ function QuickAccessBarSection({ bar }: { bar?: QuickAccessBar }) {
             const isDark = item.colorVariant === 'dark'
             cardStyle.backgroundColor = isDark ? '#1A103D' : '#4B2E83'
           }
-          
+
           if (item.textColor) {
             cardStyle.color = item.textColor
           } else {
             cardStyle.color = '#FFFFFF'
           }
-          
+
           const content = (
             <div
               className="flex h-full flex-col items-center justify-center gap-2 rounded-xl p-5 text-center shadow-lg transition-transform hover:-translate-y-1"
@@ -827,14 +880,17 @@ function QuickAccessBarSection({ bar }: { bar?: QuickAccessBar }) {
             >
               {item.icon && <span className="text-2xl">{item.icon}</span>}
               <span className="text-sm font-semibold">{item.label}</span>
-              {item.description && (
-                <span className="text-xs opacity-80">{item.description}</span>
-              )}
+              {item.description && <span className="text-xs opacity-80">{item.description}</span>}
             </div>
           )
-          
+
           return item.external ? (
-            <a key={`${item.label}-${i}`} href={item.link} target="_blank" rel="noopener noreferrer">
+            <a
+              key={`${item.label}-${i}`}
+              href={item.link}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               {content}
             </a>
           ) : (

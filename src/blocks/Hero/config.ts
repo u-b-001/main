@@ -40,7 +40,7 @@ function slideFields() {
         condition: (_: any, siblingData: any) => siblingData?.mediaType === 'video',
         description: 'Poster/thumbnail image for the video',
       },
-    },
+    }, 
     {
       name: 'externalVideoUrl',
       type: 'text' as const,
@@ -57,7 +57,7 @@ function slideFields() {
         description: 'URL to Lottie JSON file or GIF image',
       },
     },
-    {
+    { 
       name: 'dataVizEmbed',
       type: 'code' as const,
       admin: {
@@ -71,8 +71,7 @@ function slideFields() {
       type: 'text' as const,
       label: 'Eyebrow Badge Text',
       admin: {
-        description:
-          'Small badge text above the heading (e.g. "ESTABLISHED 1956", "CORE SERVICE DOMAINS")',
+        description: 'Small badge text above the heading (e.g. "ESTABLISHED 1956", "CORE SERVICE DOMAINS")',
       },
     },
     {
@@ -82,7 +81,7 @@ function slideFields() {
       label: 'Show text overlay',
     },
     {
-      name: 'heading',
+      name: 'heading', 
       type: 'text' as const,
       admin: {
         condition: (_: any, siblingData: any) => siblingData?.showText !== false,
@@ -127,15 +126,15 @@ function slideFields() {
         condition: (_: any, siblingData: any) => siblingData?.showText !== false,
       },
       fields: [
-        {
-          name: 'label',
-          type: 'text' as const,
-          required: true,
+        { 
+          name: 'label', 
+          type: 'text' as const, 
+          required: true 
         },
-        {
-          name: 'url',
-          type: 'text' as const,
-          required: true,
+        { 
+          name: 'url', 
+          type: 'text' as const, 
+          required: true 
         },
         {
           name: 'variant',
@@ -244,10 +243,8 @@ export const Hero: Block = {
         { label: 'Text and media both slide together', value: 'slide' },
       ],
       admin: {
-        condition: (_, siblingData) =>
-          siblingData?.layout === 'split' && siblingData?.mode === 'carousel',
-        description:
-          'Static: text stays fixed while images change. Slide: heading, subtitle, and buttons change with each slide.',
+        condition: (_, siblingData) => siblingData?.layout === 'split' && siblingData?.mode === 'carousel',
+        description: 'Static: text stays fixed while images change. Slide: heading, subtitle, and buttons change with each slide.',
       },
     },
     {
@@ -257,8 +254,7 @@ export const Hero: Block = {
       maxRows: 6,
       admin: {
         condition: (_, siblingData) => siblingData?.layout === 'split',
-        description:
-          'Small icon + text tags shown below the buttons (e.g. "PHD Programs", "Internships")',
+        description: 'Small icon + text tags shown below the buttons (e.g. "PHD Programs", "Internships")',
       },
       fields: [
         {
@@ -464,7 +460,7 @@ export const Hero: Block = {
             },
             description: 'Pick overlay color',
           },
-        },
+        }, 
         {
           name: 'opacity',
           type: 'number',
@@ -546,7 +542,7 @@ export const Hero: Block = {
           name: 'autoPlayInterval',
           type: 'number',
           defaultValue: 5000,
-          admin: {
+          admin: { 
             description: 'Interval in milliseconds (e.g. 5000 = 5 seconds)',
             condition: (_, siblingData) => siblingData?.autoPlay,
           },
@@ -642,14 +638,12 @@ export const Hero: Block = {
       },
     },
     /* ── Quick Access Bar (overlapping bottom of hero) ── */
-    /* ── Quick Access Bar (overlapping bottom of hero) ── */
     {
       type: 'group',
       name: 'quickAccessBar',
       label: 'Quick Access Bar',
       admin: {
-        description:
-          'Floating card grid that overlaps the bottom of the hero into the next section',
+        description: 'Floating card grid that overlaps the bottom of the hero into the next section',
       },
       fields: [
         {
@@ -681,13 +675,6 @@ export const Hero: Block = {
               name: 'label',
               type: 'text',
               required: true,
-            },
-            {
-              name: 'description',
-              type: 'text',
-              admin: {
-                description: 'Short description text shown below the label',
-              },
             },
             {
               name: 'icon',
@@ -783,8 +770,7 @@ export const Hero: Block = {
           max: 200,
           label: 'Background Image Scale (%)',
           admin: {
-            description:
-              'Scale the background image up or down (e.g., 110 for slight zoom). Default is 100.',
+            description: 'Scale the background image up or down (e.g., 110 for slight zoom). Default is 100.',
           },
         },
       ],
