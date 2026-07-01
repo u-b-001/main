@@ -1766,7 +1766,7 @@ export interface FileDownloadsBlock {
 export interface FeaturedCardsBlock {
   heading?: string | null;
   subheading?: string | null;
-  columns: '2' | '3' | '4';
+  columns: '1' | '2' | '3' | '4';
   cardStyle: 'standard' | 'glassmorphism' | 'navy' | 'red' | 'bordered';
   cards: {
     title: string;
