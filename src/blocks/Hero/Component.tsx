@@ -2,9 +2,7 @@
 
 import React, { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
-import * as LucideIcons from 'lucide-react'
 import { cn } from '@/utilities/ui'
-
 
 import { Media } from '@/components/Media'
 
@@ -77,7 +75,13 @@ function SlideMedia({ slide, priority }: { slide: any; priority?: boolean }) {
 
   if (mediaType === 'image') {
     return (
-      <Media htmlElement={null} resource={slide.image} priority={priority} fill imgClassName="object-cover" pictureClassName="w-full h-full" />
+      <Media
+        resource={slide.image}
+        priority={priority}
+        fill
+        imgClassName="object-cover"
+        className="w-full h-full"
+      />
     )
   }
 
@@ -98,12 +102,15 @@ function SlideMedia({ slide, priority }: { slide: any; priority?: boolean }) {
 
   if (mediaType === 'externalVideo') {
     return (
-      <iframe
-        src={slide.externalVideoUrl}
-        className="h-full w-full object-cover pointer-events-none"
-        allow="autoplay; fullscreen; picture-in-picture"
-        allowFullScreen
-      />
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <iframe
+          src={slide.externalVideoUrl}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full w-[177.78vh] h-[56.25vw] max-w-none max-h-none border-0"
+          style={{ aspectRatio: '16/9' }}
+          allow="autoplay; fullscreen; picture-in-picture"
+          allowFullScreen
+        />
+      </div>
     )
   }
 
@@ -189,7 +196,6 @@ function TextBlock({
 
             // If custom colors are provided, override default classes
             const customClasses = btn.backgroundColor || btn.textColor ? '' : defaultClasses
-            const IconComponent = btn.icon ? (LucideIcons as any)[btn.icon] : null
 
             return (
               <Link
@@ -198,7 +204,7 @@ function TextBlock({
                 className={`inline-flex items-center gap-2 rounded-md px-5 py-2.5 text-sm font-medium transition-colors ${customClasses}`}
                 style={buttonStyle}
               >
-                {IconComponent && <IconComponent className="w-4 h-4 shrink-0" />}
+                {btn.icon && <span className="text-base">{btn.icon}</span>}
                 {btn.label}
               </Link>
             )
@@ -274,8 +280,8 @@ function FullWidthHero(props: HeroBlockProps) {
 
   return (
     <section
-      className="relative w-full overflow-hidden"
-      style={{ height: props.height ? `${props.height}px` : '600px' }}
+      className="relative w-full overflow-hidden flex flex-col"
+      style={{ minHeight: props.height ? `${props.height}px` : '600px' }}
     >
       <div className="absolute inset-0">
         <SlideMedia slide={activeSlide} priority />
@@ -283,7 +289,7 @@ function FullWidthHero(props: HeroBlockProps) {
       <MediaOverlay overlay={props.overlay} />
       {activeSlide.showText !== false && (
         <div
-          className={`relative z-10 flex h-full w-full ${verticalClasses(props.textVerticalPosition)}`}
+          className={`relative z-10 flex flex-1 w-full ${verticalClasses(props.textVerticalPosition)}`}
         >
           <div
             className="mx-auto w-full"
@@ -418,8 +424,8 @@ function FullscreenOverlayCarouselHero(props: HeroBlockProps) {
 
   return (
     <section
-      className="relative w-full overflow-hidden"
-      style={{ height: props.height ? `${props.height}px` : '600px' }}
+      className="relative w-full overflow-hidden flex flex-col"
+      style={{ minHeight: props.height ? `${props.height}px` : '600px' }}
     >
       <div className="absolute inset-0">
         <SlideMedia slide={activeSlide} priority />
@@ -428,7 +434,7 @@ function FullscreenOverlayCarouselHero(props: HeroBlockProps) {
 
       {textSource.showText !== false && (
         <div
-          className={`relative z-10 flex h-full w-full ${verticalClasses(props.textVerticalPosition)}`}
+          className={`relative z-10 flex flex-1 w-full ${verticalClasses(props.textVerticalPosition)}`}
         >
           <div
             className="mx-auto w-full"
@@ -483,15 +489,15 @@ function MosiaFullscreenHero(props: HeroBlockProps) {
 
   return (
     <section
-      className="relative w-full overflow-hidden"
-      style={{ height: props.height ? `${props.height}px` : '600px' }}
+      className="relative w-full overflow-hidden flex flex-col"
+      style={{ minHeight: props.height ? `${props.height}px` : '600px' }}
     >
       <div className="absolute inset-0">
         <SlideMedia slide={activeSlide} priority />
       </div>
       <MediaOverlay overlay={props.overlay} />
 
-      <div className="relative z-10 flex h-full w-full items-center">
+      <div className="relative z-10 flex flex-1 w-full items-center">
         <div
           className="mx-auto grid w-full grid-cols-1 gap-8 md:grid-cols-2 md:items-center"
           style={{
@@ -712,7 +718,6 @@ function SplitHero(props: HeroBlockProps) {
 
             const defaultClasses = getSplitButtonClasses(btn)
             const customClasses = btn.backgroundColor || btn.textColor ? '' : defaultClasses
-            const IconComponent = btn.icon ? (LucideIcons as any)[btn.icon] : null
 
             return (
               <Link
@@ -721,7 +726,7 @@ function SplitHero(props: HeroBlockProps) {
                 className={`inline-flex items-center gap-2 rounded-md px-5 py-2.5 text-sm font-medium transition-colors ${customClasses}`}
                 style={buttonStyle}
               >
-                {IconComponent && <IconComponent className="w-4 h-4 shrink-0" />}
+                {btn.icon && <span className="text-base">{btn.icon}</span>}
                 {btn.label}
               </Link>
             )
@@ -784,10 +789,10 @@ function ContainedHero(props: HeroBlockProps) {
   return (
     <section className="w-full px-4 py-10 sm:px-6 lg:px-8">
       <div
-        className="relative mx-auto overflow-hidden rounded-2xl"
+        className="relative mx-auto overflow-hidden rounded-2xl flex flex-col"
         style={{
           maxWidth: props.contentMaxWidth ? `${props.contentMaxWidth}px` : '1200px',
-          height: props.height ? `${props.height}px` : '500px',
+          minHeight: props.height ? `${props.height}px` : '500px',
         }}
       >
         <div className="absolute inset-0">
@@ -796,7 +801,7 @@ function ContainedHero(props: HeroBlockProps) {
         <MediaOverlay overlay={props.overlay} />
         {activeSlide.showText !== false && (
           <div
-            className={`relative z-10 flex h-full w-full ${verticalClasses(props.textVerticalPosition)}`}
+            className={`relative z-10 flex flex-1 w-full ${verticalClasses(props.textVerticalPosition)}`}
           >
             <div
               className="w-full"
@@ -870,13 +875,12 @@ function QuickAccessBarSection({ bar }: { bar?: QuickAccessBar }) {
             cardStyle.color = '#FFFFFF'
           }
 
-          const IconComponent = item.icon ? (LucideIcons as any)[item.icon] : null
           const content = (
             <div
               className="flex h-full flex-col items-center justify-center gap-2 rounded-xl p-5 text-center shadow-lg transition-transform hover:-translate-y-1"
               style={cardStyle}
             >
-              {IconComponent && <IconComponent className="w-6 h-6 shrink-0" />}
+              {item.icon && <span className="text-2xl">{item.icon}</span>}
               <span className="text-sm font-semibold">{item.label}</span>
               {item.description && <span className="text-xs opacity-80">{item.description}</span>}
             </div>

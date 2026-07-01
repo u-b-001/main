@@ -107,6 +107,55 @@ const ImageSub: Block = {
         { label: 'Full (Circle)', value: 'full' },
       ],
     },
+    {
+      name: 'imageSize',
+      type: 'select',
+      label: 'Image Size Preset',
+      defaultValue: 'full',
+      options: [
+        { label: 'Full Width (100%)', value: 'full' },
+        { label: 'Large (75%)', value: 'large' },
+        { label: 'Medium (50%)', value: 'medium' },
+        { label: 'Small (25%)', value: 'small' },
+        { label: 'Custom Width', value: 'custom' },
+      ],
+    },
+    {
+      name: 'customWidth',
+      type: 'text',
+      label: 'Custom Max Width',
+      defaultValue: '300px',
+      admin: {
+        condition: (_: unknown, siblingData: Record<string, unknown>) =>
+          siblingData?.imageSize === 'custom',
+        description: 'Enter a CSS width value (e.g. 200px, 50%, 15rem)',
+      },
+    },
+    {
+      name: 'customHeight',
+      type: 'text',
+      label: 'Custom Height',
+      defaultValue: 'auto',
+      admin: {
+        condition: (_: unknown, siblingData: Record<string, unknown>) =>
+          siblingData?.imageSize === 'custom',
+        description: 'Enter a CSS height value (e.g. 200px, auto, 15rem)',
+      },
+    },
+    {
+      name: 'alignment',
+      type: 'select',
+      label: 'Horizontal Alignment',
+      defaultValue: 'center',
+      options: [
+        { label: 'Left', value: 'left' },
+        { label: 'Center', value: 'center' },
+        { label: 'Right', value: 'right' },
+      ],
+      admin: {
+        description: 'Alignment of the image within its column (only visible if size is less than 100%)',
+      },
+    },
   ],
 }
 

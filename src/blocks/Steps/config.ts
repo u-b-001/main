@@ -1,5 +1,5 @@
 import type { Block } from 'payload'
-import { iconField } from '../shared'
+import { iconField, colorField } from '../shared'
 
 export const StepsBlock: Block = {
   slug: 'steps',
@@ -46,5 +46,6 @@ export const StepsBlock: Block = {
         iconField('icon', 'Icon'),
       ],
     },
+    colorField('backgroundColor', 'Section Background Color', '#FFFFFF'),
   ],
 }

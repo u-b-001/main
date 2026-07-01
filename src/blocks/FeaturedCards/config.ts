@@ -83,7 +83,8 @@ export const FeaturedCardsBlock: Block = {
           relationTo: 'media',
           label: 'Background/Top Image (Optional)',
           admin: {
-            description: 'Image for this card. WARNING: To change this image, click the "X" button to clear the field, then select or upload a new one. DO NOT click the pencil "Edit" icon to replace the file inside the media drawer, as that will overwrite the shared media asset globally across all pages!',
+            description:
+              'Image for this card. WARNING: To change this image, click the "X" button to clear the field, then select or upload a new one. DO NOT click the pencil "Edit" icon to replace the file inside the media drawer, as that will overwrite the shared media asset globally across all pages!',
           },
         },
         {
