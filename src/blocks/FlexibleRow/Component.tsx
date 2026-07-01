@@ -124,31 +124,68 @@ export const FlexibleRowComponent: React.FC<any> = ({
                         </div>
                       )
                     case 'flexImage':
+                      // Determine max width and height styles
+                      let maxWidthStyle = '100%'
+                      let heightStyle = 'auto'
+                      if (block.imageSize === 'large') {
+                        maxWidthStyle = '75%'
+                      } else if (block.imageSize === 'medium') {
+                        maxWidthStyle = '50%'
+                      } else if (block.imageSize === 'small') {
+                        maxWidthStyle = '25%'
+                      } else if (block.imageSize === 'custom') {
+                        maxWidthStyle = block.customWidth || '300px'
+                        heightStyle = block.customHeight || 'auto'
+                      }
+
+                      // Determine flex horizontal alignment for parent wrapper
+                      const flexAlignmentClass = cn('w-full flex', {
+                        'justify-start': block.alignment === 'left',
+                        'justify-center': block.alignment === 'center' || !block.alignment,
+                        'justify-end': block.alignment === 'right',
+                      })
+
+                      const isHeightFixed = heightStyle !== 'auto'
+
                       return (
-                        <div key={bIdx} className="w-full">
-                          {block.image && typeof block.image === 'object' && (
-                            <div className={cn('relative w-full overflow-hidden mb-2', {
-                              'rounded-none': block.rounded === 'none',
-                              'rounded-sm': block.rounded === 'sm',
-                              'rounded-md': block.rounded === 'md',
-                              'rounded-lg': block.rounded === 'lg' || !block.rounded,
-                              'rounded-full aspect-square': block.rounded === 'full',
-                            })}>
-                              <Media
-                                resource={block.image}
-                                className={cn('w-full', {
-                                  'object-cover h-full': block.objectFit === 'cover',
-                                  'object-contain': block.objectFit === 'contain',
-                                  'object-none': block.objectFit === 'none',
+                        <div key={bIdx} className={flexAlignmentClass}>
+                          <div
+                            className="w-full flex flex-col items-stretch"
+                            style={{
+                              maxWidth: maxWidthStyle,
+                              height: isHeightFixed ? heightStyle : undefined,
+                            }}
+                          >
+                            {block.image && typeof block.image === 'object' && (
+                              <div
+                                className={cn('relative w-full overflow-hidden mb-2', {
+                                  'rounded-none': block.rounded === 'none',
+                                  'rounded-sm': block.rounded === 'sm',
+                                  'rounded-md': block.rounded === 'md',
+                                  'rounded-lg': block.rounded === 'lg' || !block.rounded,
+                                  'rounded-full aspect-square': block.rounded === 'full',
                                 })}
-                              />
-                            </div>
-                          )}
-                          {block.caption && (
-                            <p className="text-sm mt-1 text-center" style={{ color: block.captionColor }}>
-                              {block.caption}
-                            </p>
-                          )}
+                                style={{
+                                  height: isHeightFixed ? '100%' : undefined,
+                                }}
+                              >
+                                <Media
+                                  resource={block.image}
+                                  className={cn('w-full', {
+                                    'object-cover h-full': block.objectFit === 'cover' || isHeightFixed,
+                                    'object-contain h-full': block.objectFit === 'contain' && isHeightFixed,
+                                    'object-contain': block.objectFit === 'contain' && !isHeightFixed,
+                                    'object-none': block.objectFit === 'none',
+                                  })}
+                                />
+                              </div>
+                            )}
+                            {block.caption && (
+                              <p className="text-sm mt-1 text-center" style={{ color: block.captionColor }}>
+                                {block.caption}
+                              </p>
+                            )}
+                          </div>
                         </div>
                       )
                     case 'flexButtons':

@@ -459,7 +459,6 @@ export interface Page {
           items?:
             | {
                 label: string;
-                description?: string | null;
                 /**
                  * Select a Lucide icon
                  */
@@ -811,6 +810,19 @@ export interface Page {
                     captionColor?: string | null;
                     objectFit?: ('cover' | 'contain' | 'none') | null;
                     rounded?: ('none' | 'sm' | 'md' | 'lg' | 'full') | null;
+                    imageSize?: ('full' | 'large' | 'medium' | 'small' | 'custom') | null;
+                    /**
+                     * Enter a CSS width value (e.g. 200px, 50%, 15rem)
+                     */
+                    customWidth?: string | null;
+                    /**
+                     * Enter a CSS height value (e.g. 200px, auto, 15rem)
+                     */
+                    customHeight?: string | null;
+                    /**
+                     * Alignment of the image within its column (only visible if size is less than 100%)
+                     */
+                    alignment?: ('left' | 'center' | 'right') | null;
                     id?: string | null;
                     blockName?: string | null;
                     blockType: 'flexImage';
@@ -2112,6 +2124,10 @@ export interface StepsBlock {
       | null;
     id?: string | null;
   }[];
+  /**
+   * Pick a color or enter hex value
+   */
+  backgroundColor?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'steps';
@@ -2973,7 +2989,6 @@ export interface PagesSelect<T extends boolean = true> {
                       | T
                       | {
                           label?: T;
-                          description?: T;
                           icon?: T;
                           link?: T;
                           external?: T;
@@ -3204,6 +3219,10 @@ export interface PagesSelect<T extends boolean = true> {
                                 captionColor?: T;
                                 objectFit?: T;
                                 rounded?: T;
+                                imageSize?: T;
+                                customWidth?: T;
+                                customHeight?: T;
+                                alignment?: T;
                                 id?: T;
                                 blockName?: T;
                               };
@@ -3762,6 +3781,7 @@ export interface StepsBlockSelect<T extends boolean = true> {
         icon?: T;
         id?: T;
       };
+  backgroundColor?: T;
   id?: T;
   blockName?: T;
 }

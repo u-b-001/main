@@ -4,9 +4,19 @@ import type { StepsBlock as StepsProps } from '@/payload-types'
 import * as LucideIcons from 'lucide-react'
 import RichText from '@/components/RichText'
 
-export const StepsComponent: React.FC<StepsProps> = ({ title, description, steps, hoverBulge, hoverLuminous }) => {
+export const StepsComponent: React.FC<StepsProps> = ({
+  title,
+  description,
+  steps,
+  hoverBulge,
+  hoverLuminous,
+  backgroundColor,
+}) => {
   return (
-    <section className="py-16 bg-white dark:bg-gray-900">
+    <section 
+      className="py-16 bg-white dark:bg-gray-900"
+      style={backgroundColor ? { backgroundColor } : undefined}
+    >
       <div className="container mx-auto px-4 max-w-5xl">
         {(title || description) && (
           <div className="text-center mb-12 flex flex-col items-center">
