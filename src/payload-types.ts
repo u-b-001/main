@@ -1161,6 +1161,14 @@ export interface Page {
                   }
                 | {
                     title?: string | null;
+                    /**
+                     * Select a Lucide icon
+                     */
+                    icon?: string | null;
+                    /**
+                     * Pick a color or enter hex value
+                     */
+                    iconColor?: string | null;
                     content?: {
                       root: {
                         type: string;
@@ -1371,6 +1379,14 @@ export interface ImageWithTextBlock {
  */
 export interface InfoCardBlock {
   title?: string | null;
+  /**
+   * Select a Lucide icon
+   */
+  icon?: string | null;
+  /**
+   * Pick a color or enter hex value
+   */
+  iconColor?: string | null;
   content?: {
     root: {
       type: string;
@@ -3233,6 +3249,8 @@ export interface PagesSelect<T extends boolean = true> {
                             | T
                             | {
                                 title?: T;
+                                icon?: T;
+                                iconColor?: T;
                                 content?: T;
                                 style?: T;
                                 id?: T;
@@ -3315,6 +3333,8 @@ export interface ImageWithTextBlockSelect<T extends boolean = true> {
  */
 export interface InfoCardBlockSelect<T extends boolean = true> {
   title?: T;
+  icon?: T;
+  iconColor?: T;
   content?: T;
   style?: T;
   id?: T;

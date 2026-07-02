@@ -2,8 +2,9 @@ import React from 'react'
 import type { InfoCardBlock as InfoCardBlockProps } from '@/payload-types'
 import RichText from '@/components/RichText'
 import { cn } from '@/utilities/ui'
+import * as LucideIcons from 'lucide-react'
 
-export const InfoCardBlock: React.FC<InfoCardBlockProps> = ({ title, content, style }) => {
+export const InfoCardBlock: React.FC<InfoCardBlockProps> = ({ title, content, style, icon, iconColor }) => {
   const styles = {
     default: 'bg-brand-lightgray border-l-4 border-brand-navy text-brand-text',
     highlight: 'bg-brand-cream border border-brand-gold text-brand-navy shadow-sm',
@@ -13,7 +14,21 @@ export const InfoCardBlock: React.FC<InfoCardBlockProps> = ({ title, content, st
   return (
     <div className="container mx-auto px-4 py-4 max-w-[48rem]">
       <div className={cn('p-6 rounded-lg shadow-xs transition-shadow hover:shadow-md', styles[style || 'default'])}>
-        {title && <h3 className="text-xl font-bold font-serif mb-3 leading-tight">{title}</h3>}
+        {(title || icon) && (
+          <div className="flex items-center gap-3 mb-3">
+            {(() => {
+              const IconComponent = icon ? (LucideIcons as any)[icon] : null;
+              if (!IconComponent) return null;
+              return (
+                <IconComponent
+                  className="shrink-0 w-6 h-6"
+                  style={{ color: iconColor || '#1A103D' }}
+                />
+              );
+            })()}
+            {title && <h3 className="text-xl font-bold font-serif leading-tight">{title}</h3>}
+          </div>
+        )}
         {content && <RichText data={content} enableGutter={false} className="prose-sm" />}
       </div>
     </div>

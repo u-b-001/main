@@ -967,6 +967,8 @@ const InfoCardSub: Block = {
       type: 'text',
       label: 'Title',
     },
+    iconField('icon', 'Icon'),
+    colorField('iconColor', 'Icon Color', '#1A103D'),
     {
       name: 'content',
       type: 'richText',
