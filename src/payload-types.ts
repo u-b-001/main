@@ -946,68 +946,7 @@ export interface Page {
                       /**
                        * Select a Lucide icon
                        */
-                      icon?:
-                        | (
-                            | 'ArrowRight'
-                            | 'ArrowLeft'
-                            | 'ArrowUp'
-                            | 'ArrowDown'
-                            | 'ChevronRight'
-                            | 'ChevronLeft'
-                            | 'ChevronUp'
-                            | 'ChevronDown'
-                            | 'Check'
-                            | 'CheckCircle2'
-                            | 'X'
-                            | 'XCircle'
-                            | 'Info'
-                            | 'AlertCircle'
-                            | 'AlertTriangle'
-                            | 'HelpCircle'
-                            | 'Settings'
-                            | 'Search'
-                            | 'User'
-                            | 'Users'
-                            | 'Home'
-                            | 'Menu'
-                            | 'MoreHorizontal'
-                            | 'MoreVertical'
-                            | 'Star'
-                            | 'Heart'
-                            | 'ThumbsUp'
-                            | 'ThumbsDown'
-                            | 'MapPin'
-                            | 'Phone'
-                            | 'Mail'
-                            | 'Clock'
-                            | 'Calendar'
-                            | 'Globe'
-                            | 'Award'
-                            | 'BookOpen'
-                            | 'GraduationCap'
-                            | 'Briefcase'
-                            | 'Play'
-                            | 'Shield'
-                            | 'Zap'
-                            | 'Download'
-                            | 'Camera'
-                            | 'Bell'
-                            | 'Send'
-                            | 'academic'
-                            | 'globe'
-                            | 'calendar'
-                            | 'award'
-                            | 'book'
-                            | 'group'
-                            | 'info'
-                            | 'star'
-                            | 'address'
-                            | 'phone'
-                            | 'email'
-                            | 'hours'
-                            | 'general'
-                          )
-                        | null;
+                      icon?: string | null;
                       /**
                        * Pick a color or enter hex value
                        */
@@ -1026,68 +965,7 @@ export interface Page {
                       /**
                        * Select a Lucide icon
                        */
-                      icon?:
-                        | (
-                            | 'ArrowRight'
-                            | 'ArrowLeft'
-                            | 'ArrowUp'
-                            | 'ArrowDown'
-                            | 'ChevronRight'
-                            | 'ChevronLeft'
-                            | 'ChevronUp'
-                            | 'ChevronDown'
-                            | 'Check'
-                            | 'CheckCircle2'
-                            | 'X'
-                            | 'XCircle'
-                            | 'Info'
-                            | 'AlertCircle'
-                            | 'AlertTriangle'
-                            | 'HelpCircle'
-                            | 'Settings'
-                            | 'Search'
-                            | 'User'
-                            | 'Users'
-                            | 'Home'
-                            | 'Menu'
-                            | 'MoreHorizontal'
-                            | 'MoreVertical'
-                            | 'Star'
-                            | 'Heart'
-                            | 'ThumbsUp'
-                            | 'ThumbsDown'
-                            | 'MapPin'
-                            | 'Phone'
-                            | 'Mail'
-                            | 'Clock'
-                            | 'Calendar'
-                            | 'Globe'
-                            | 'Award'
-                            | 'BookOpen'
-                            | 'GraduationCap'
-                            | 'Briefcase'
-                            | 'Play'
-                            | 'Shield'
-                            | 'Zap'
-                            | 'Download'
-                            | 'Camera'
-                            | 'Bell'
-                            | 'Send'
-                            | 'academic'
-                            | 'globe'
-                            | 'calendar'
-                            | 'award'
-                            | 'book'
-                            | 'group'
-                            | 'info'
-                            | 'star'
-                            | 'address'
-                            | 'phone'
-                            | 'email'
-                            | 'hours'
-                            | 'general'
-                          )
-                        | null;
+                      icon?: string | null;
                       /**
                        * Pick a color or enter hex value
                        */
@@ -1153,68 +1031,7 @@ export interface Page {
                       /**
                        * Select a Lucide icon
                        */
-                      icon?:
-                        | (
-                            | 'ArrowRight'
-                            | 'ArrowLeft'
-                            | 'ArrowUp'
-                            | 'ArrowDown'
-                            | 'ChevronRight'
-                            | 'ChevronLeft'
-                            | 'ChevronUp'
-                            | 'ChevronDown'
-                            | 'Check'
-                            | 'CheckCircle2'
-                            | 'X'
-                            | 'XCircle'
-                            | 'Info'
-                            | 'AlertCircle'
-                            | 'AlertTriangle'
-                            | 'HelpCircle'
-                            | 'Settings'
-                            | 'Search'
-                            | 'User'
-                            | 'Users'
-                            | 'Home'
-                            | 'Menu'
-                            | 'MoreHorizontal'
-                            | 'MoreVertical'
-                            | 'Star'
-                            | 'Heart'
-                            | 'ThumbsUp'
-                            | 'ThumbsDown'
-                            | 'MapPin'
-                            | 'Phone'
-                            | 'Mail'
-                            | 'Clock'
-                            | 'Calendar'
-                            | 'Globe'
-                            | 'Award'
-                            | 'BookOpen'
-                            | 'GraduationCap'
-                            | 'Briefcase'
-                            | 'Play'
-                            | 'Shield'
-                            | 'Zap'
-                            | 'Download'
-                            | 'Camera'
-                            | 'Bell'
-                            | 'Send'
-                            | 'academic'
-                            | 'globe'
-                            | 'calendar'
-                            | 'award'
-                            | 'book'
-                            | 'group'
-                            | 'info'
-                            | 'star'
-                            | 'address'
-                            | 'phone'
-                            | 'email'
-                            | 'hours'
-                            | 'general'
-                          )
-                        | null;
+                      icon?: string | null;
                       /**
                        * Pick a color or enter hex value
                        */
@@ -1238,68 +1055,7 @@ export interface Page {
                       /**
                        * Select a Lucide icon
                        */
-                      icon?:
-                        | (
-                            | 'ArrowRight'
-                            | 'ArrowLeft'
-                            | 'ArrowUp'
-                            | 'ArrowDown'
-                            | 'ChevronRight'
-                            | 'ChevronLeft'
-                            | 'ChevronUp'
-                            | 'ChevronDown'
-                            | 'Check'
-                            | 'CheckCircle2'
-                            | 'X'
-                            | 'XCircle'
-                            | 'Info'
-                            | 'AlertCircle'
-                            | 'AlertTriangle'
-                            | 'HelpCircle'
-                            | 'Settings'
-                            | 'Search'
-                            | 'User'
-                            | 'Users'
-                            | 'Home'
-                            | 'Menu'
-                            | 'MoreHorizontal'
-                            | 'MoreVertical'
-                            | 'Star'
-                            | 'Heart'
-                            | 'ThumbsUp'
-                            | 'ThumbsDown'
-                            | 'MapPin'
-                            | 'Phone'
-                            | 'Mail'
-                            | 'Clock'
-                            | 'Calendar'
-                            | 'Globe'
-                            | 'Award'
-                            | 'BookOpen'
-                            | 'GraduationCap'
-                            | 'Briefcase'
-                            | 'Play'
-                            | 'Shield'
-                            | 'Zap'
-                            | 'Download'
-                            | 'Camera'
-                            | 'Bell'
-                            | 'Send'
-                            | 'academic'
-                            | 'globe'
-                            | 'calendar'
-                            | 'award'
-                            | 'book'
-                            | 'group'
-                            | 'info'
-                            | 'star'
-                            | 'address'
-                            | 'phone'
-                            | 'email'
-                            | 'hours'
-                            | 'general'
-                          )
-                        | null;
+                      icon?: string | null;
                       openInNewTab?: boolean | null;
                       id?: string | null;
                     }[];
@@ -1360,6 +1116,44 @@ export interface Page {
                   }
                 | FileDownloadsBlock
                 | FeaturedCardsBlock
+                | {
+                    heading?: string | null;
+                    /**
+                     * Select a Lucide icon
+                     */
+                    icon?: string | null;
+                    /**
+                     * Pick a color or enter hex value
+                     */
+                    iconColor?: string | null;
+                    iconSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
+                    caption?: string | null;
+                    stripedRows?: boolean | null;
+                    bordered?: boolean | null;
+                    hoverEffect?: boolean | null;
+                    /**
+                     * Pick a color or enter hex value
+                     */
+                    headerBgColor?: string | null;
+                    /**
+                     * Pick a color or enter hex value
+                     */
+                    headerTextColor?: string | null;
+                    cellPadding?: ('compact' | 'medium' | 'spacious') | null;
+                    rows: {
+                      isHeader?: boolean | null;
+                      cells?:
+                        | {
+                            value?: string | null;
+                            id?: string | null;
+                          }[]
+                        | null;
+                      id?: string | null;
+                    }[];
+                    id?: string | null;
+                    blockName?: string | null;
+                    blockType: 'flexTable';
+                  }
               )[]
             | null;
           id?: string | null;
@@ -2064,68 +1858,7 @@ export interface StepsBlock {
     /**
      * Select a Lucide icon
      */
-    icon?:
-      | (
-          | 'ArrowRight'
-          | 'ArrowLeft'
-          | 'ArrowUp'
-          | 'ArrowDown'
-          | 'ChevronRight'
-          | 'ChevronLeft'
-          | 'ChevronUp'
-          | 'ChevronDown'
-          | 'Check'
-          | 'CheckCircle2'
-          | 'X'
-          | 'XCircle'
-          | 'Info'
-          | 'AlertCircle'
-          | 'AlertTriangle'
-          | 'HelpCircle'
-          | 'Settings'
-          | 'Search'
-          | 'User'
-          | 'Users'
-          | 'Home'
-          | 'Menu'
-          | 'MoreHorizontal'
-          | 'MoreVertical'
-          | 'Star'
-          | 'Heart'
-          | 'ThumbsUp'
-          | 'ThumbsDown'
-          | 'MapPin'
-          | 'Phone'
-          | 'Mail'
-          | 'Clock'
-          | 'Calendar'
-          | 'Globe'
-          | 'Award'
-          | 'BookOpen'
-          | 'GraduationCap'
-          | 'Briefcase'
-          | 'Play'
-          | 'Shield'
-          | 'Zap'
-          | 'Download'
-          | 'Camera'
-          | 'Bell'
-          | 'Send'
-          | 'academic'
-          | 'globe'
-          | 'calendar'
-          | 'award'
-          | 'book'
-          | 'group'
-          | 'info'
-          | 'star'
-          | 'address'
-          | 'phone'
-          | 'email'
-          | 'hours'
-          | 'general'
-        )
-      | null;
+    icon?: string | null;
     id?: string | null;
   }[];
   /**
@@ -2166,6 +1899,26 @@ export interface ResourceLinksBlock {
  */
 export interface MembersDirectoryBlock {
   title?: string | null;
+  defaultView?: ('all' | 'empty') | null;
+  enableLiveSearch?: boolean | null;
+  searchFields?: ('name' | 'university' | 'city' | 'specialisation' | 'designation' | 'fellowship')[] | null;
+  showFields?:
+    | (
+        | 'university'
+        | 'city'
+        | 'year'
+        | 'specialisation'
+        | 'designation'
+        | 'fellowship'
+        | 'email'
+        | 'phone'
+        | 'presentAddress'
+      )[]
+    | null;
+  /**
+   * Only show members matching this designation (e.g. Professor)
+   */
+  designationFilter?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'membersDirectory';
@@ -3415,6 +3168,35 @@ export interface PagesSelect<T extends boolean = true> {
                               };
                           fileDownloads?: T | FileDownloadsBlockSelect<T>;
                           featuredCards?: T | FeaturedCardsBlockSelect<T>;
+                          flexTable?:
+                            | T
+                            | {
+                                heading?: T;
+                                icon?: T;
+                                iconColor?: T;
+                                iconSize?: T;
+                                caption?: T;
+                                stripedRows?: T;
+                                bordered?: T;
+                                hoverEffect?: T;
+                                headerBgColor?: T;
+                                headerTextColor?: T;
+                                cellPadding?: T;
+                                rows?:
+                                  | T
+                                  | {
+                                      isHeader?: T;
+                                      cells?:
+                                        | T
+                                        | {
+                                            value?: T;
+                                            id?: T;
+                                          };
+                                      id?: T;
+                                    };
+                                id?: T;
+                                blockName?: T;
+                              };
                         };
                     id?: T;
                   };
@@ -3819,6 +3601,11 @@ export interface ResourceLinksBlockSelect<T extends boolean = true> {
  */
 export interface MembersDirectoryBlockSelect<T extends boolean = true> {
   title?: T;
+  defaultView?: T;
+  enableLiveSearch?: T;
+  searchFields?: T;
+  showFields?: T;
+  designationFilter?: T;
   id?: T;
   blockName?: T;
 }

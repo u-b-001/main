@@ -45,12 +45,11 @@ const commonLucideIcons = [
 
 export const iconField = (name: string, label?: string): Field => ({
   name,
-  type: 'select',
+  type: 'text',
   label: label || 'Icon',
-  options: commonLucideIcons,
   admin: {
     components: {
-      Field: '@/components/admin/IconPickerField#IconPickerField',
+      Field: '@/globals/IconPickerField#IconPickerField',
     },
     description: 'Select a Lucide icon',
   },
