@@ -693,114 +693,224 @@ export const FlexibleRowComponent: React.FC<any> = ({
                     case 'flexTable': {
                       if (!block.rows || block.rows.length === 0) return null
 
-                      // Padding classes based on selection
+                      // 1. Padding classes based on selection
                       const paddingMap = {
-                        compact: 'px-3 py-1.5 text-xs',
-                        medium: 'px-6 py-4 text-sm',
-                        spacious: 'px-8 py-5 text-base',
+                        compact: 'px-4 py-2 text-xs md:text-sm',
+                        medium: 'px-6 py-4 text-sm md:text-base',
+                        spacious: 'px-8 py-5 text-base md:text-lg',
                       }
                       const cellPaddingClass = paddingMap[block.cellPadding as keyof typeof paddingMap] || paddingMap.medium
 
+                      // 2. Corner radius mapping
+                      const radiusMap = {
+                        none: 'rounded-none',
+                        sm: 'rounded-sm',
+                        md: 'rounded-md',
+                        lg: 'rounded-lg',
+                        xl: 'rounded-xl',
+                        '2xl': 'rounded-2xl',
+                      }
+                      const borderRadiusClass = radiusMap[block.borderRadius as keyof typeof radiusMap] || radiusMap.xl
+
+                      // 3. Shadow mapping
+                      const shadowMap = {
+                        none: 'shadow-none',
+                        xs: 'shadow-xs',
+                        sm: 'shadow-sm',
+                        md: 'shadow-md border border-slate-150 dark:border-slate-800',
+                        lg: 'shadow-lg border border-slate-150 dark:border-slate-800',
+                      }
+                      const shadowClass = shadowMap[block.shadow as keyof typeof shadowMap] || shadowMap.sm
+
+                      // Find max column count across all rows
+                      const maxCols = Math.max(...block.rows.map((r: any) => (r.cells || []).length), 1)
+
+                      // 4. Style Themes
+                      const theme = block.tableTheme || 'gradient'
+                      const isGlass = theme === 'glass'
+                      const isMinimal = theme === 'minimal'
+                      const isBrutalist = theme === 'brutalist'
+
+                      let tableContainerClass = cn("overflow-x-auto transition-all duration-300", borderRadiusClass, shadowClass)
+                      let tableElementClass = "min-w-full text-left border-collapse"
+                      
+                      if (isGlass) {
+                        tableContainerClass = cn(
+                          tableContainerClass,
+                          "bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-white/20 dark:border-slate-800/30"
+                        )
+                      } else if (isMinimal) {
+                        tableContainerClass = cn(tableContainerClass, "bg-transparent shadow-none border-none")
+                      } else if (isBrutalist) {
+                        tableContainerClass = cn(tableContainerClass, "bg-white dark:bg-slate-950 border-3 border-slate-900 dark:border-white shadow-[6px_6px_0px_0px_#000] dark:shadow-[6px_6px_0px_0px_#fff]")
+                      } else { // gradient theme / standard card
+                        tableContainerClass = cn(tableContainerClass, "bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800")
+                      }
+
+                      // Header styling
+                      const headerStyle = {
+                        backgroundColor: block.headerBgColor || '#1A103D',
+                        color: '#FFFFFF'
+                      }
+
                       return (
-                        <div key={bIdx} className="w-full my-6">
-                          {/* Heading with optional Icon */}
-                          {(block.heading || block.icon) && (
-                            <div className="flex items-center gap-3 mb-4">
-                              {(() => {
-                                const IconComponent = block.icon ? (LucideIcons as any)[block.icon] : null;
-                                if (!IconComponent) return null;
+                        <div key={bIdx} className="w-full my-8 group/table">
+                          {/* Heading & Subtitle Block */}
+                          {(block.heading || block.subtitle || block.icon) && (
+                            <div className={cn(
+                              "flex flex-col mb-6 gap-1",
+                              block.headingAlignment === 'left' && "text-left items-start",
+                              block.headingAlignment === 'right' && "text-right items-end",
+                              (block.headingAlignment === 'center' || !block.headingAlignment) && "text-center items-center"
+                            )}>
+                              <div className="flex items-center gap-2.5">
+                                {(() => {
+                                  const IconComponent = block.icon ? (LucideIcons as any)[block.icon] : null;
+                                  if (!IconComponent) return null;
 
-                                const sizeClasses = {
-                                  sm: 'w-5 h-5',
-                                  md: 'w-6 h-6',
-                                  lg: 'w-8 h-8',
-                                  xl: 'w-10 h-10',
-                                };
-                                const iconSizeClass = sizeClasses[block.iconSize as keyof typeof sizeClasses] || sizeClasses.md;
+                                  const sizeClasses = {
+                                    sm: 'w-5 h-5',
+                                    md: 'w-6 h-6',
+                                    lg: 'w-8 h-8',
+                                    xl: 'w-10 h-10',
+                                  };
+                                  const iconSizeClass = sizeClasses[block.iconSize as keyof typeof sizeClasses] || sizeClasses.md;
 
-                                return (
-                                  <IconComponent
-                                    className={cn("shrink-0", iconSizeClass)}
-                                    style={{ color: block.iconColor || '#1A103D' }}
-                                  />
-                                );
-                              })()}
-                              {block.heading && (
-                                <h3 className="text-lg md:text-xl font-bold text-slate-800 dark:text-white font-serif">
-                                  {block.heading}
-                                </h3>
+                                  return (
+                                    <IconComponent
+                                      className="shrink-0"
+                                      style={{ color: block.iconColor || '#1A103D', width: '1.5rem', height: '1.5rem' }}
+                                    />
+                                  );
+                                })()}
+                                {block.heading && (
+                                  <h3 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white tracking-tight font-serif">
+                                    {block.heading}
+                                  </h3>
+                                )}
+                              </div>
+                              {block.subtitle && (
+                                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1 max-w-xl font-sans">
+                                  {block.subtitle}
+                                </p>
                               )}
                             </div>
                           )}
 
-                          <div className={cn(
-                            "overflow-x-auto rounded-xl shadow-xs border border-slate-200 dark:border-slate-800",
-                            block.bordered ? "border" : "border-none shadow-none"
-                          )}>
-                            <table className="min-w-full text-left border-collapse">
-                              <tbody className={cn("divide-y divide-slate-200 dark:divide-slate-800", block.bordered ? "" : "divide-y-0")}>
-                                {block.rows.map((row: any, rowIndex: number) => {
-                                  const cells = row.cells || []
-                                  if (row.isHeader) {
+                          {/* Scroll wrapper */}
+                          <div className="relative">
+                            <div className={tableContainerClass}>
+                              <table className={tableElementClass}>
+                                <tbody className="divide-y divide-slate-200/60 dark:divide-slate-800/40">
+                                  {block.rows.map((row: any, rowIndex: number) => {
+                                    const cells = row.cells || []
+                                    const isSingleCell = cells.length === 1 && maxCols > 1
+
+                                    if (row.isHeader) {
+                                      return (
+                                        <tr 
+                                          key={rowIndex} 
+                                          className={cn(
+                                            "font-semibold tracking-wide uppercase text-sm border-b",
+                                            isSingleCell ? "text-center" : "text-left"
+                                          )}
+                                          style={headerStyle}
+                                        >
+                                          {isSingleCell ? (
+                                            <th
+                                              colSpan={maxCols}
+                                              className={cellPaddingClass}
+                                            >
+                                              {cells[0].value || ''}
+                                            </th>
+                                          ) : (
+                                            cells.map((cell: any, cellIndex: number) => (
+                                              <th
+                                                key={cellIndex}
+                                                className={cn(
+                                                  cellPaddingClass,
+                                                  block.bordered && !isMinimal ? "border-r border-white/10 last:border-r-0" : ""
+                                                )}
+                                              >
+                                                {cell.value || ''}
+                                              </th>
+                                            ))
+                                          )}
+                                        </tr>
+                                      )
+                                    }
+
+                                    // Dynamic Row Styling
+                                    const isAlternate = rowIndex % 2 !== 0
+                                    let rowStyle: React.CSSProperties = {}
+                                    if (block.stripedRows && isAlternate && !isMinimal) {
+                                      rowStyle.backgroundColor = '#F8FAFC'
+                                    }
+
+                                    // Border rules
+                                    const cellBorderClass = block.bordered && !isMinimal
+                                      ? `border-r border-slate-200 dark:border-slate-800 last:border-r-0`
+                                      : ''
+
                                     return (
-                                      <tr 
-                                        key={rowIndex} 
-                                        className="font-bold tracking-wider uppercase text-left"
-                                        style={{ 
-                                          backgroundColor: block.headerBgColor || '#1A103D', 
-                                          color: block.headerTextColor || '#FFFFFF' 
-                                        }}
+                                      <tr
+                                        key={rowIndex}
+                                        className={cn(
+                                          "transition-all duration-200",
+                                          block.hoverEffect && !isMinimal && "hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:translate-x-0.5"
+                                        )}
+                                        style={rowStyle}
                                       >
-                                        {cells.map((cell: any, cellIndex: number) => (
-                                          <th
-                                            key={cellIndex}
+                                        {isSingleCell ? (
+                                          <td
+                                            colSpan={maxCols}
                                             className={cn(
                                               cellPaddingClass,
-                                              block.bordered ? "border-r border-slate-700/30 last:border-r-0" : ""
+                                              "text-slate-700 dark:text-slate-300 font-serif leading-relaxed text-center font-medium"
                                             )}
                                           >
-                                            {cell.value || ''}
-                                          </th>
-                                        ))}
+                                            {cells[0].value || ''}
+                                          </td>
+                                        ) : (
+                                          cells.map((cell: any, cellIndex: number) => {
+                                            const cellVal = cell.value || ''
+                                            // Check if it's a number to right align
+                                            const isNumeric = !isNaN(Number(cellVal.replace(/[^0-9.-]/g, ''))) && cellVal.trim() !== ''
+
+                                            return (
+                                              <td
+                                                key={cellIndex}
+                                                className={cn(
+                                                  cellPaddingClass,
+                                                  "text-slate-700 dark:text-slate-300 font-serif leading-relaxed font-sans",
+                                                  cellBorderClass,
+                                                  isNumeric ? "text-right tabular-nums" : "text-left"
+                                                )}
+                                              >
+                                                {cellVal}
+                                              </td>
+                                            )
+                                          })
+                                        )}
                                       </tr>
                                     )
-                                  }
+                                  })}
+                                </tbody>
+                              </table>
+                            </div>
 
-                                  const rowBgClass = block.stripedRows 
-                                    ? (rowIndex % 2 === 0 
-                                        ? 'bg-white dark:bg-slate-900' 
-                                        : 'bg-slate-50 dark:bg-slate-800/40')
-                                    : 'bg-white dark:bg-slate-900'
-
-                                  const hoverClass = block.hoverEffect 
-                                    ? 'hover:bg-slate-100/60 dark:hover:bg-slate-800/70 transition-colors' 
-                                    : ''
-
-                                  return (
-                                    <tr
-                                      key={rowIndex}
-                                      className={cn(rowBgClass, hoverClass)}
-                                    >
-                                      {cells.map((cell: any, cellIndex: number) => (
-                                        <td
-                                          key={cellIndex}
-                                          className={cn(
-                                            cellPaddingClass,
-                                            "text-slate-700 dark:text-slate-300 font-serif leading-relaxed",
-                                            block.bordered ? "border-r border-slate-200 dark:border-slate-850 last:border-r-0" : ""
-                                          )}
-                                        >
-                                          {cell.value || ''}
-                                        </td>
-                                      ))}
-                                    </tr>
-                                  )
-                                })}
-                              </tbody>
-                            </table>
+                            {/* Swipe Hint overlay (appears on mobile only if width overflows) */}
+                            {block.showScrollHint && (
+                              <div className="lg:hidden flex items-center justify-center gap-1.5 mt-2.5 text-xs text-slate-400 dark:text-slate-500 select-none">
+                                <LucideIcons.ArrowLeft className="w-3.5 h-3.5" />
+                                <span>Swipe horizontally to view full table</span>
+                                <LucideIcons.ArrowRight className="w-3.5 h-3.5" />
+                              </div>
+                            )}
                           </div>
+
                           {block.caption && (
-                            <p className="mt-2 text-xs text-slate-500 font-semibold text-center italic">
+                            <p className="mt-2 text-xs text-slate-400 dark:text-slate-500 font-semibold text-center italic font-sans">
                               {block.caption}
                             </p>
                           )}
