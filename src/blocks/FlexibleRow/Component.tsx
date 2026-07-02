@@ -690,6 +690,123 @@ export const FlexibleRowComponent: React.FC<any> = ({
                         </div>
                       )
                     }
+                    case 'flexTable': {
+                      if (!block.rows || block.rows.length === 0) return null
+
+                      // Padding classes based on selection
+                      const paddingMap = {
+                        compact: 'px-3 py-1.5 text-xs',
+                        medium: 'px-6 py-4 text-sm',
+                        spacious: 'px-8 py-5 text-base',
+                      }
+                      const cellPaddingClass = paddingMap[block.cellPadding as keyof typeof paddingMap] || paddingMap.medium
+
+                      return (
+                        <div key={bIdx} className="w-full my-6">
+                          {/* Heading with optional Icon */}
+                          {(block.heading || block.icon) && (
+                            <div className="flex items-center gap-3 mb-4">
+                              {(() => {
+                                const IconComponent = block.icon ? (LucideIcons as any)[block.icon] : null;
+                                if (!IconComponent) return null;
+
+                                const sizeClasses = {
+                                  sm: 'w-5 h-5',
+                                  md: 'w-6 h-6',
+                                  lg: 'w-8 h-8',
+                                  xl: 'w-10 h-10',
+                                };
+                                const iconSizeClass = sizeClasses[block.iconSize as keyof typeof sizeClasses] || sizeClasses.md;
+
+                                return (
+                                  <IconComponent
+                                    className={cn("shrink-0", iconSizeClass)}
+                                    style={{ color: block.iconColor || '#1A103D' }}
+                                  />
+                                );
+                              })()}
+                              {block.heading && (
+                                <h3 className="text-lg md:text-xl font-bold text-slate-800 dark:text-white font-serif">
+                                  {block.heading}
+                                </h3>
+                              )}
+                            </div>
+                          )}
+
+                          <div className={cn(
+                            "overflow-x-auto rounded-xl shadow-xs border border-slate-200 dark:border-slate-800",
+                            block.bordered ? "border" : "border-none shadow-none"
+                          )}>
+                            <table className="min-w-full text-left border-collapse">
+                              <tbody className={cn("divide-y divide-slate-200 dark:divide-slate-800", block.bordered ? "" : "divide-y-0")}>
+                                {block.rows.map((row: any, rowIndex: number) => {
+                                  const cells = row.cells || []
+                                  if (row.isHeader) {
+                                    return (
+                                      <tr 
+                                        key={rowIndex} 
+                                        className="font-bold tracking-wider uppercase text-left"
+                                        style={{ 
+                                          backgroundColor: block.headerBgColor || '#1A103D', 
+                                          color: block.headerTextColor || '#FFFFFF' 
+                                        }}
+                                      >
+                                        {cells.map((cell: any, cellIndex: number) => (
+                                          <th
+                                            key={cellIndex}
+                                            className={cn(
+                                              cellPaddingClass,
+                                              block.bordered ? "border-r border-slate-700/30 last:border-r-0" : ""
+                                            )}
+                                          >
+                                            {cell.value || ''}
+                                          </th>
+                                        ))}
+                                      </tr>
+                                    )
+                                  }
+
+                                  const rowBgClass = block.stripedRows 
+                                    ? (rowIndex % 2 === 0 
+                                        ? 'bg-white dark:bg-slate-900' 
+                                        : 'bg-slate-50 dark:bg-slate-800/40')
+                                    : 'bg-white dark:bg-slate-900'
+
+                                  const hoverClass = block.hoverEffect 
+                                    ? 'hover:bg-slate-100/60 dark:hover:bg-slate-800/70 transition-colors' 
+                                    : ''
+
+                                  return (
+                                    <tr
+                                      key={rowIndex}
+                                      className={cn(rowBgClass, hoverClass)}
+                                    >
+                                      {cells.map((cell: any, cellIndex: number) => (
+                                        <td
+                                          key={cellIndex}
+                                          className={cn(
+                                            cellPaddingClass,
+                                            "text-slate-700 dark:text-slate-300 font-serif leading-relaxed",
+                                            block.bordered ? "border-r border-slate-200 dark:border-slate-850 last:border-r-0" : ""
+                                          )}
+                                        >
+                                          {cell.value || ''}
+                                        </td>
+                                      ))}
+                                    </tr>
+                                  )
+                                })}
+                              </tbody>
+                            </table>
+                          </div>
+                          {block.caption && (
+                            <p className="mt-2 text-xs text-slate-500 font-semibold text-center italic">
+                              {block.caption}
+                            </p>
+                          )}
+                        </div>
+                      )
+                    }
                     default: {
                       const Block = blockComponents[block.blockType as keyof typeof blockComponents]
                       if (Block) {

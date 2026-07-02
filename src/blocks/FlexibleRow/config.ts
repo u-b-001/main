@@ -788,6 +788,94 @@ const DashboardMockSub: Block = {
   ],
 }
 
+/* ── Sub-block: Table ── */
+const TableSub: Block = {
+  slug: 'flexTable',
+  labels: { singular: 'Table', plural: 'Tables' },
+  fields: [
+    {
+      name: 'heading',
+      type: 'text',
+      label: 'Table Heading',
+    },
+    iconField('icon', 'Table Icon'),
+    colorField('iconColor', 'Icon Color', '#1A103D'),
+    {
+      name: 'iconSize',
+      type: 'select',
+      defaultValue: 'md',
+      label: 'Icon Size',
+      options: [
+        { label: 'Small', value: 'sm' },
+        { label: 'Medium', value: 'md' },
+        { label: 'Large', value: 'lg' },
+        { label: 'Extra Large', value: 'xl' },
+      ],
+    },
+    {
+      name: 'caption',
+      type: 'text',
+      label: 'Table Caption (Below table)',
+    },
+    {
+      name: 'stripedRows',
+      type: 'checkbox',
+      label: 'Striped Rows (Alternate background)',
+      defaultValue: true,
+    },
+    {
+      name: 'bordered',
+      type: 'checkbox',
+      label: 'Bordered Grid',
+      defaultValue: true,
+    },
+    {
+      name: 'hoverEffect',
+      type: 'checkbox',
+      label: 'Highlight Rows on Hover',
+      defaultValue: true,
+    },
+    colorField('headerBgColor', 'Header Background Color', '#1A103D'),
+    colorField('headerTextColor', 'Header Text Color', '#FFFFFF'),
+    {
+      name: 'cellPadding',
+      type: 'select',
+      defaultValue: 'medium',
+      options: [
+        { label: 'Compact', value: 'compact' },
+        { label: 'Medium', value: 'medium' },
+        { label: 'Spacious', value: 'spacious' },
+      ],
+    },
+    {
+      name: 'rows',
+      type: 'array',
+      label: 'Table Rows',
+      required: true,
+      fields: [
+        {
+          name: 'isHeader',
+          type: 'checkbox',
+          defaultValue: false,
+          label: 'Is Header Row?',
+        },
+        {
+          name: 'cells',
+          type: 'array',
+          label: 'Cells',
+          fields: [
+            {
+              name: 'value',
+              type: 'text',
+              label: 'Cell Value',
+            },
+          ],
+        },
+      ],
+    },
+  ],
+}
+
 /* ── Main Block: Flexible Row ── */
 export const FlexibleRowBlock: Block = {
   slug: 'flexibleRow',
@@ -897,6 +985,7 @@ export const FlexibleRowBlock: Block = {
             StatsImpact,
             FileDownloadsBlock,
             FeaturedCardsBlock,
+            TableSub,
           ],
         },
       ],
