@@ -917,6 +917,19 @@ export const FlexibleRowComponent: React.FC<any> = ({
                         </div>
                       )
                     }
+                    case 'flexInfoCard': {
+                      const styles = {
+                        default: 'bg-brand-lightgray border-l-4 border-brand-navy text-brand-text',
+                        highlight: 'bg-brand-cream border border-brand-gold text-brand-navy shadow-sm',
+                        warning: 'bg-red-50 border-l-4 border-brand-red text-red-900',
+                      }
+                      return (
+                        <div key={bIdx} className={cn('p-6 rounded-lg shadow-xs transition-shadow hover:shadow-md my-4 w-full', styles[block.style as keyof typeof styles || 'default'])}>
+                          {block.title && <h3 className="text-xl font-bold font-serif mb-3 leading-tight">{block.title}</h3>}
+                          {block.content && <RichText data={block.content} enableGutter={false} className="prose-sm" />}
+                        </div>
+                      )
+                    }
                     default: {
                       const Block = blockComponents[block.blockType as keyof typeof blockComponents]
                       if (Block) {
