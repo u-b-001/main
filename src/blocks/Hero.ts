@@ -247,6 +247,17 @@ export const Hero: Block = {
           type: 'text',
           required: true,
         },
+        {
+          name: 'color',
+          type: 'text',
+          defaultValue: '#FFFFFF',
+          admin: {
+            components: {
+              Field: '@/components/admin/ColorPickerField#ColorPickerField',
+            },
+            description: 'Text and icon color for this feature tag',
+          },
+        },
       ],
     },
     {

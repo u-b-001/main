@@ -3,10 +3,11 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { cn } from '@/utilities/ui'
+import * as LucideIcons from 'lucide-react'
 
 import { Media } from '@/components/Media'
 
-type FeatureTag = { icon?: string; text: string }
+type FeatureTag = { icon?: string; text: string; color?: string }
 type HeroButton = {
   label: string
   url: string
@@ -15,6 +16,34 @@ type HeroButton = {
   icon?: string
   backgroundColor?: string
   textColor?: string
+}
+
+function HeroIcon({ name, className }: { name?: string; className?: string }) {
+  if (!name) return null
+  
+  // Try to find the icon matching the name directly (e.g., "Check", "ArrowRight")
+  let IconComponent = (LucideIcons as any)[name]
+  
+  // If not found, try to format to PascalCase
+  if (!IconComponent) {
+    const formattedName = name
+      .split(/[-_ ]+/)
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join('')
+    IconComponent = (LucideIcons as any)[formattedName]
+  }
+
+  // If still not found, try lowercase match
+  if (!IconComponent) {
+    const lowerName = name.toLowerCase()
+    const match = Object.keys(LucideIcons).find((key) => key.toLowerCase() === lowerName)
+    if (match) {
+      IconComponent = (LucideIcons as any)[match]
+    }
+  }
+
+  if (!IconComponent) return null
+  return <IconComponent className={className} />
 }
 type Slide = any
 type CarouselSettings = any
@@ -135,6 +164,11 @@ function SlideMedia({ slide, priority }: { slide: any; priority?: boolean }) {
    Text overlay block (heading / subtitle / buttons) — shared by layouts
    ──────────────────────────────────────────────────────────────────────── */
 
+function isUrl(str?: string) {
+  if (!str) return false
+  return str.startsWith('/') || str.startsWith('http://') || str.startsWith('https://')
+}
+
 function TextBlock({
   eyebrowText,
   heading,
@@ -196,6 +230,7 @@ function TextBlock({
 
             // If custom colors are provided, override default classes
             const customClasses = btn.backgroundColor || btn.textColor ? '' : defaultClasses
+            const hasUrlLabel = isUrl(btn.label)
 
             return (
               <Link
@@ -204,8 +239,8 @@ function TextBlock({
                 className={`inline-flex items-center gap-2 rounded-md px-5 py-2.5 text-sm font-medium transition-colors ${customClasses}`}
                 style={buttonStyle}
               >
-                {btn.icon && <span className="text-base">{btn.icon}</span>}
-                {btn.label}
+                {btn.icon && <HeroIcon name={btn.icon} className="h-4 w-4 shrink-0" />}
+                {!hasUrlLabel && btn.label}
               </Link>
             )
           })}
@@ -219,12 +254,30 @@ function FeatureTags({ features }: { features?: FeatureTag[] }) {
   if (!features || features.length === 0) return null
   return (
     <div className="mt-4 flex flex-wrap gap-4">
-      {features.map((f, i) => (
-        <div key={`${f.text}-${i}`} className="flex items-center gap-2 text-sm text-white/80">
-          <span className="h-1.5 w-1.5 rounded-full bg-white/60" />
-          <span>{f.text}</span>
-        </div>
-      ))}
+      {features.map((f, i) => {
+        const style: React.CSSProperties = {}
+        if (f.color) {
+          style.color = f.color
+        }
+
+        return (
+          <div
+            key={`${f.text}-${i}`}
+            className={cn("flex items-center gap-2 text-sm", f.color ? "" : "opacity-80")}
+            style={style}
+          >
+            {f.icon ? (
+              <HeroIcon name={f.icon} className="h-4 w-4 shrink-0" />
+            ) : (
+              <span
+                className="h-1.5 w-1.5 rounded-full"
+                style={{ backgroundColor: f.color || 'currentColor' }}
+              />
+            )}
+            <span>{f.text}</span>
+          </div>
+        )
+      })}
     </div>
   )
 }
@@ -719,6 +772,8 @@ function SplitHero(props: HeroBlockProps) {
             const defaultClasses = getSplitButtonClasses(btn)
             const customClasses = btn.backgroundColor || btn.textColor ? '' : defaultClasses
 
+            const hasUrlLabel = isUrl(btn.label)
+
             return (
               <Link
                 key={`${btn.label}-${i}`}
@@ -726,8 +781,8 @@ function SplitHero(props: HeroBlockProps) {
                 className={`inline-flex items-center gap-2 rounded-md px-5 py-2.5 text-sm font-medium transition-colors ${customClasses}`}
                 style={buttonStyle}
               >
-                {btn.icon && <span className="text-base">{btn.icon}</span>}
-                {btn.label}
+                {btn.icon && <HeroIcon name={btn.icon} className="h-4 w-4 shrink-0" />}
+                {!hasUrlLabel && btn.label}
               </Link>
             )
           })}
@@ -880,7 +935,7 @@ function QuickAccessBarSection({ bar }: { bar?: QuickAccessBar }) {
               className="flex h-full flex-col items-center justify-center gap-2 rounded-xl p-5 text-center shadow-lg transition-transform hover:-translate-y-1"
               style={cardStyle}
             >
-              {item.icon && <span className="text-2xl">{item.icon}</span>}
+              {item.icon && <HeroIcon name={item.icon} className="h-6 w-6 shrink-0" />}
               <span className="text-sm font-semibold">{item.label}</span>
               {item.description && <span className="text-xs opacity-80">{item.description}</span>}
             </div>
