@@ -2166,6 +2166,26 @@ export interface ResourceLinksBlock {
  */
 export interface MembersDirectoryBlock {
   title?: string | null;
+  defaultView?: ('all' | 'empty') | null;
+  enableLiveSearch?: boolean | null;
+  searchFields?: ('name' | 'university' | 'city' | 'specialisation' | 'designation' | 'fellowship')[] | null;
+  showFields?:
+    | (
+        | 'university'
+        | 'city'
+        | 'year'
+        | 'specialisation'
+        | 'designation'
+        | 'fellowship'
+        | 'email'
+        | 'phone'
+        | 'presentAddress'
+      )[]
+    | null;
+  /**
+   * Only show members matching this designation (e.g. Professor)
+   */
+  designationFilter?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'membersDirectory';
@@ -3819,6 +3839,11 @@ export interface ResourceLinksBlockSelect<T extends boolean = true> {
  */
 export interface MembersDirectoryBlockSelect<T extends boolean = true> {
   title?: T;
+  defaultView?: T;
+  enableLiveSearch?: T;
+  searchFields?: T;
+  showFields?: T;
+  designationFilter?: T;
   id?: T;
   blockName?: T;
 }

@@ -5,19 +5,41 @@ import { MembersDirectoryClient } from './MembersDirectoryClient'
 
 export const MembersDirectoryComponent: React.FC<{
   title?: string
-}> = async ({ title = 'MEMBERS DIRECTORY' }) => {
+  defaultView?: 'all' | 'empty'
+  enableLiveSearch?: boolean
+  searchFields?: ('name' | 'university' | 'city' | 'specialisation' | 'designation' | 'fellowship')[]
+  showFields?: ('university' | 'city' | 'year' | 'specialisation' | 'designation' | 'fellowship' | 'email' | 'phone' | 'presentAddress')[]
+  designationFilter?: string
+}> = async (props) => {
+  const {
+    title = 'MEMBERS DIRECTORY',
+    defaultView = 'all',
+    enableLiveSearch = true,
+    searchFields = ['name', 'university', 'city', 'specialisation', 'designation'],
+    showFields = ['university', 'city', 'year', 'specialisation', 'designation', 'email'],
+    designationFilter,
+  } = props
+
   const payload = await getPayload({ config: configPromise })
   
+  const query: any = {
+    isPublic: {
+      equals: true,
+    },
+  }
+
+  if (designationFilter) {
+    query.designation = {
+      equals: designationFilter,
+    }
+  }
+
   // Fetch members, limit 1000 to ensure we get all of them
   const result = await payload.find({
     collection: 'members',
     limit: 1000,
     sort: 'name',
-    where: {
-      isPublic: {
-        equals: true,
-      },
-    },
+    where: query,
   })
 
   const members = result.docs || []
@@ -25,7 +47,14 @@ export const MembersDirectoryComponent: React.FC<{
   return (
     <div className="py-12 bg-[#f4f9ff]">
       <div className="container mx-auto px-4 max-w-6xl">
-        <MembersDirectoryClient title={title} members={members} />
+        <MembersDirectoryClient
+          title={title}
+          members={members}
+          defaultView={defaultView}
+          enableLiveSearch={enableLiveSearch}
+          searchFields={searchFields}
+          showFields={showFields}
+        />
       </div>
     </div>
   )
