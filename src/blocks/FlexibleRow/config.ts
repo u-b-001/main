@@ -940,6 +940,35 @@ const TableSub: Block = {
   ],
 }
 
+/* ── Sub-block: Info Card ── */
+const InfoCardSub: Block = {
+  slug: 'flexInfoCard',
+  labels: { singular: 'Info Card', plural: 'Info Cards' },
+  fields: [
+    {
+      name: 'title',
+      type: 'text',
+      label: 'Title',
+    },
+    {
+      name: 'content',
+      type: 'richText',
+      label: 'Content',
+    },
+    {
+      name: 'style',
+      type: 'select',
+      options: [
+        { label: 'Default', value: 'default' },
+        { label: 'Highlight', value: 'highlight' },
+        { label: 'Warning', value: 'warning' },
+      ],
+      defaultValue: 'default',
+      required: true,
+    },
+  ],
+}
+
 /* ── Main Block: Flexible Row ── */
 export const FlexibleRowBlock: Block = {
   slug: 'flexibleRow',
@@ -1050,6 +1079,7 @@ export const FlexibleRowBlock: Block = {
             FileDownloadsBlock,
             FeaturedCardsBlock,
             TableSub,
+            InfoCardSub,
           ],
         },
       ],
