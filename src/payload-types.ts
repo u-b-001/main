@@ -1119,6 +1119,11 @@ export interface Page {
                 | {
                     heading?: string | null;
                     /**
+                     * Optional description text below the heading
+                     */
+                    subtitle?: string | null;
+                    headingAlignment?: ('left' | 'center' | 'right') | null;
+                    /**
                      * Select a Lucide icon
                      */
                     icon?: string | null;
@@ -1127,19 +1132,19 @@ export interface Page {
                      */
                     iconColor?: string | null;
                     iconSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
-                    caption?: string | null;
-                    stripedRows?: boolean | null;
-                    bordered?: boolean | null;
-                    hoverEffect?: boolean | null;
+                    tableTheme?: ('gradient' | 'glass' | 'minimal' | 'brutalist') | null;
                     /**
                      * Pick a color or enter hex value
                      */
                     headerBgColor?: string | null;
-                    /**
-                     * Pick a color or enter hex value
-                     */
-                    headerTextColor?: string | null;
+                    stripedRows?: boolean | null;
+                    hoverEffect?: boolean | null;
+                    bordered?: boolean | null;
+                    borderRadius?: ('none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl') | null;
+                    shadow?: ('none' | 'xs' | 'sm' | 'md' | 'lg') | null;
                     cellPadding?: ('compact' | 'medium' | 'spacious') | null;
+                    showScrollHint?: boolean | null;
+                    caption?: string | null;
                     rows: {
                       isHeader?: boolean | null;
                       cells?:
@@ -3172,16 +3177,21 @@ export interface PagesSelect<T extends boolean = true> {
                             | T
                             | {
                                 heading?: T;
+                                subtitle?: T;
+                                headingAlignment?: T;
                                 icon?: T;
                                 iconColor?: T;
                                 iconSize?: T;
-                                caption?: T;
-                                stripedRows?: T;
-                                bordered?: T;
-                                hoverEffect?: T;
+                                tableTheme?: T;
                                 headerBgColor?: T;
-                                headerTextColor?: T;
+                                stripedRows?: T;
+                                hoverEffect?: T;
+                                bordered?: T;
+                                borderRadius?: T;
+                                shadow?: T;
                                 cellPadding?: T;
+                                showScrollHint?: T;
+                                caption?: T;
                                 rows?:
                                   | T
                                   | {
