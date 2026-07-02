@@ -213,6 +213,10 @@ export interface Page {
           | {
               icon?: string | null;
               text: string;
+              /**
+               * Text and icon color for this feature tag
+               */
+              color?: string | null;
               id?: string | null;
             }[]
           | null;
@@ -2852,6 +2856,7 @@ export interface PagesSelect<T extends boolean = true> {
                 | {
                     icon?: T;
                     text?: T;
+                    color?: T;
                     id?: T;
                   };
               height?: T;
