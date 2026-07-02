@@ -22,13 +22,13 @@ import { BoldFeatureClient as BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864
 import { ItalicFeatureClient as ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { UnderlineFeatureClient as UnderlineFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { ParagraphFeatureClient as ParagraphFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
-import { ColorPickerField as ColorPickerField_af73c183b1aec1e53ff448b3aa789f02 } from '@/globals/ColorPickerField.tsx'
 import { IconPickerField as IconPickerField_02d34ee8c618e932869aee54e1d0b4ef } from '@/globals/IconPickerField'
+import { ColorPickerField as ColorPickerField_d572ded1c017fe858839e8cdc754e090 } from '@/components/admin/ColorPickerField'
+import { ColorPickerField as ColorPickerField_af73c183b1aec1e53ff448b3aa789f02 } from '@/globals/ColorPickerField.tsx'
 import { ColorPickerField as ColorPickerField_e0bbaddc3f177beaf296513b848335d7 } from '@/globals/ColorPickerField'
 import { OpacitySliderField as OpacitySliderField_4ec15420c1a37cc75771fbc6c1e030fc } from '@/globals/OpacitySliderField'
 import { OpacitySliderField as OpacitySliderField_d9f8aa60d2835cb71c5a3aec409904f0 } from '@/components/admin/OpacitySliderField'
 import { InlineToolbarFeatureClient as InlineToolbarFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
-import { ColorPickerField as ColorPickerField_d572ded1c017fe858839e8cdc754e090 } from '@/components/admin/ColorPickerField'
 import { OverviewComponent as OverviewComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { MetaTitleComponent as MetaTitleComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { MetaImageComponent as MetaImageComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
@@ -68,13 +68,13 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#ItalicFeatureClient": ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#UnderlineFeatureClient": UnderlineFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#ParagraphFeatureClient": ParagraphFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
-  "@/globals/ColorPickerField.tsx#ColorPickerField": ColorPickerField_af73c183b1aec1e53ff448b3aa789f02,
   "@/globals/IconPickerField#IconPickerField": IconPickerField_02d34ee8c618e932869aee54e1d0b4ef,
+  "@/components/admin/ColorPickerField#ColorPickerField": ColorPickerField_d572ded1c017fe858839e8cdc754e090,
+  "@/globals/ColorPickerField.tsx#ColorPickerField": ColorPickerField_af73c183b1aec1e53ff448b3aa789f02,
   "@/globals/ColorPickerField#ColorPickerField": ColorPickerField_e0bbaddc3f177beaf296513b848335d7,
   "@/globals/OpacitySliderField#OpacitySliderField": OpacitySliderField_4ec15420c1a37cc75771fbc6c1e030fc,
   "@/components/admin/OpacitySliderField#OpacitySliderField": OpacitySliderField_d9f8aa60d2835cb71c5a3aec409904f0,
   "@payloadcms/richtext-lexical/client#InlineToolbarFeatureClient": InlineToolbarFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
-  "@/components/admin/ColorPickerField#ColorPickerField": ColorPickerField_d572ded1c017fe858839e8cdc754e090,
   "@payloadcms/plugin-seo/client#OverviewComponent": OverviewComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@payloadcms/plugin-seo/client#MetaTitleComponent": MetaTitleComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@payloadcms/plugin-seo/client#MetaImageComponent": MetaImageComponent_a8a977ebc872c5d5ea7ee689724c0860,

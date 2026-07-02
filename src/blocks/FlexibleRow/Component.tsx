@@ -925,7 +925,21 @@ export const FlexibleRowComponent: React.FC<any> = ({
                       }
                       return (
                         <div key={bIdx} className={cn('p-6 rounded-lg shadow-xs transition-shadow hover:shadow-md my-4 w-full', styles[block.style as keyof typeof styles || 'default'])}>
-                          {block.title && <h3 className="text-xl font-bold font-serif mb-3 leading-tight">{block.title}</h3>}
+                          {(block.title || block.icon) && (
+                            <div className="flex items-center gap-3 mb-3">
+                              {(() => {
+                                const IconComponent = block.icon ? (LucideIcons as any)[block.icon] : null;
+                                if (!IconComponent) return null;
+                                return (
+                                  <IconComponent
+                                    className="shrink-0 w-6 h-6"
+                                    style={{ color: block.iconColor || '#1A103D' }}
+                                  />
+                                );
+                              })()}
+                              {block.title && <h3 className="text-xl font-bold font-serif leading-tight">{block.title}</h3>}
+                            </div>
+                          )}
                           {block.content && <RichText data={block.content} enableGutter={false} className="prose-sm" />}
                         </div>
                       )
