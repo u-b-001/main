@@ -595,7 +595,7 @@ export interface Page {
          * Select items from the Gallery collection
          */
         galleryItems?: (number | Gallery)[] | null;
-        layout?: ('grid' | 'masonry') | null;
+        layout?: ('grid' | 'masonry' | 'bento') | null;
         columns?: ('2' | '3' | '4') | null;
         hoverEffect?: ('none' | 'zoom' | 'overlay' | 'lift' | 'grayscale') | null;
         enableViewMore?: boolean | null;

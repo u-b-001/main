@@ -15,7 +15,7 @@ type ImageGalleryProps = {
   imageSource?: 'manual' | 'gallery'
   images?: ManualImage[]
   galleryItems?: GalleryDoc[]
-  layout?: 'grid' | 'masonry'
+  layout?: 'grid' | 'masonry' | 'bento'
   columns?: '2' | '3' | '4'
   hoverEffect?: 'none' | 'zoom' | 'overlay' | 'lift' | 'grayscale'
   enableViewMore?: boolean
@@ -34,6 +34,22 @@ const hoverClassMap: Record<string, string> = {
   lift: 'transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-xl',
   grayscale: 'transition-all duration-500 grayscale group-hover:grayscale-0',
   overlay: '',
+}
+
+const getBentoClass = (index: number) => {
+  const i = index % 9;
+  switch (i) {
+    case 0: return 'md:col-span-2 md:row-span-2';
+    case 1: return 'md:col-span-1 md:row-span-1';
+    case 2: return 'md:col-span-1 md:row-span-1';
+    case 3: return 'md:col-span-2 md:row-span-1';
+    case 4: return 'md:col-span-2 md:row-span-1';
+    case 5: return 'md:col-span-1 md:row-span-2';
+    case 6: return 'md:col-span-1 md:row-span-2';
+    case 7: return 'md:col-span-1 md:row-span-1';
+    case 8: return 'md:col-span-1 md:row-span-1';
+    default: return '';
+  }
 }
 
 // 👇 if Gallery collection field names differ, just edit this mapping
@@ -78,6 +94,8 @@ export const ImageGalleryBlock: React.FC<ImageGalleryProps> = ({
         className={
           layout === 'masonry'
             ? `columns-1 ${colsMap[columns].replace('grid-cols', 'columns')} gap-4`
+            : layout === 'bento'
+            ? `grid grid-cols-1 md:grid-cols-4 auto-rows-[250px] gap-4`
             : `grid grid-cols-1 ${colsMap[columns]} gap-4`
         }
       >
@@ -89,7 +107,11 @@ export const ImageGalleryBlock: React.FC<ImageGalleryProps> = ({
             <figure
               key={i}
               className={`group relative overflow-hidden rounded-md ${
-                layout === 'masonry' ? 'mb-4' : 'w-full h-64'
+                layout === 'masonry'
+                  ? 'mb-4'
+                  : layout === 'bento'
+                  ? `w-full h-full ${getBentoClass(i)}`
+                  : 'w-full h-64'
               }`}
             >
               {url && (

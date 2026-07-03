@@ -41,7 +41,7 @@ export const ImageGallery: Block = {
       name: 'layout',
       type: 'select',
       defaultValue: 'grid',
-      options: ['grid', 'masonry'],
+      options: ['grid', 'masonry', 'bento'],
     },
     {
       name: 'columns',
