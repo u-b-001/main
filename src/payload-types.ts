@@ -1611,7 +1611,8 @@ export interface FeaturedCardsBlock {
   cardStyle: 'standard' | 'glassmorphism' | 'navy' | 'red' | 'bordered';
   cards: {
     title: string;
-    description: {
+    description?: string | null;
+    descriptionRichText?: {
       root: {
         type: string;
         children: {
@@ -1625,7 +1626,7 @@ export interface FeaturedCardsBlock {
         version: number;
       };
       [k: string]: unknown;
-    };
+    } | null;
     icon?: ('none' | 'academic' | 'globe' | 'calendar' | 'award' | 'book' | 'group' | 'info' | 'star') | null;
     /**
      * Image for this card. WARNING: To change this image, click the "X" button to clear the field, then select or upload a new one. DO NOT click the pencil "Edit" icon to replace the file inside the media drawer, as that will overwrite the shared media asset globally across all pages!
@@ -3477,6 +3478,7 @@ export interface FeaturedCardsBlockSelect<T extends boolean = true> {
     | {
         title?: T;
         description?: T;
+        descriptionRichText?: T;
         icon?: T;
         image?: T;
         tag?: T;

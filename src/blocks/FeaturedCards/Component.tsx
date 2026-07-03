@@ -156,18 +156,20 @@ export const FeaturedCardsComponent: React.FC<FeaturedCardsProps> = ({
                   </h3>
 
                   {/* Description */}
-                  <div
-                    className={cn(
-                      'text-sm leading-relaxed mb-6 flex-grow [&_p]:mb-2 last:[&_p]:mb-0',
-                      isLightCardText ? 'text-white/80' : 'text-slate-600 dark:text-slate-400',
-                    )}
-                  >
-                    {typeof card.description === 'string' ? (
-                      <p>{card.description}</p>
-                    ) : (
-                      <RichText data={card.description} enableGutter={false} enableProse={false} />
-                    )}
-                  </div>
+                  {(card.descriptionRichText || card.description) && (
+                    <div
+                      className={cn(
+                        'text-sm leading-relaxed mb-6 flex-grow [&_p]:mb-2 last:[&_p]:mb-0',
+                        isLightCardText ? 'text-white/80' : 'text-slate-600 dark:text-slate-400',
+                      )}
+                    >
+                      {card.descriptionRichText ? (
+                        <RichText data={card.descriptionRichText} enableGutter={false} enableProse={false} />
+                      ) : (
+                        <p>{card.description}</p>
+                      )}
+                    </div>
+                  )}
 
                   {/* Progress bar */}
                   {card.progress && (
