@@ -7,44 +7,8 @@ import * as LucideIcons from 'lucide-react'
 
 import { Media } from '@/components/Media'
 
-type FeatureTag = { icon?: string; text: string; color?: string }
-type HeroButton = {
-  label: string
-  url: string
-  variant?: 'primary' | 'secondary' | 'outline'
-  iconPosition?: 'left' | 'right'
-  icon?: string
-  backgroundColor?: string
-  textColor?: string
-}
-
-function HeroIcon({ name, className }: { name?: string; className?: string }) {
-  if (!name) return null
-  
-  // Try to find the icon matching the name directly (e.g., "Check", "ArrowRight")
-  let IconComponent = (LucideIcons as any)[name]
-  
-  // If not found, try to format to PascalCase
-  if (!IconComponent) {
-    const formattedName = name
-      .split(/[-_ ]+/)
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-      .join('')
-    IconComponent = (LucideIcons as any)[formattedName]
-  }
-
-  // If still not found, try lowercase match
-  if (!IconComponent) {
-    const lowerName = name.toLowerCase()
-    const match = Object.keys(LucideIcons).find((key) => key.toLowerCase() === lowerName)
-    if (match) {
-      IconComponent = (LucideIcons as any)[match]
-    }
-  }
-
-  if (!IconComponent) return null
-  return <IconComponent className={className} />
-}
+type FeatureTag = { icon?: string; text: string }
+type HeroButton = { label: string; url: string; variant?: 'primary' | 'secondary' | 'outline'; icon?: string }
 type Slide = any
 type CarouselSettings = any
 type OverlaySettings = any
