@@ -9,6 +9,33 @@ export const RichTextBlock: Block = {
   interfaceName: 'RichTextBlock',
   fields: [
     {
+      type: 'row',
+      fields: [
+        {
+          name: 'textColor',
+          type: 'text',
+          label: 'Text Color',
+          admin: {
+            description: 'Custom color for the body text',
+            components: {
+              Field: '@/globals/ColorPickerField#ColorPickerField',
+            },
+          },
+        },
+        {
+          name: 'headingColor',
+          type: 'text',
+          label: 'Heading Color',
+          admin: {
+            description: 'Custom color for headings',
+            components: {
+              Field: '@/globals/ColorPickerField#ColorPickerField',
+            },
+          },
+        },
+      ],
+    },
+    {
       name: 'content',
       type: 'richText',
       required: true,

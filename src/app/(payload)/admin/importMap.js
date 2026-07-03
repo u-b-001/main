@@ -1,3 +1,4 @@
+import { ColorPickerField as ColorPickerField_e0bbaddc3f177beaf296513b848335d7 } from '@/globals/ColorPickerField'
 import { RscEntryLexicalCell as RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { RscEntryLexicalField as RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { LexicalDiffComponent as LexicalDiffComponent_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
@@ -25,7 +26,6 @@ import { ParagraphFeatureClient as ParagraphFeatureClient_e70f5e05f09f93e00b997e
 import { IconPickerField as IconPickerField_02d34ee8c618e932869aee54e1d0b4ef } from '@/globals/IconPickerField'
 import { ColorPickerField as ColorPickerField_d572ded1c017fe858839e8cdc754e090 } from '@/components/admin/ColorPickerField'
 import { ColorPickerField as ColorPickerField_af73c183b1aec1e53ff448b3aa789f02 } from '@/globals/ColorPickerField.tsx'
-import { ColorPickerField as ColorPickerField_e0bbaddc3f177beaf296513b848335d7 } from '@/globals/ColorPickerField'
 import { OpacitySliderField as OpacitySliderField_4ec15420c1a37cc75771fbc6c1e030fc } from '@/globals/OpacitySliderField'
 import { OpacitySliderField as OpacitySliderField_d9f8aa60d2835cb71c5a3aec409904f0 } from '@/components/admin/OpacitySliderField'
 import { InlineToolbarFeatureClient as InlineToolbarFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
@@ -44,6 +44,7 @@ import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } f
 
 /** @type import('payload').ImportMap */
 export const importMap = {
+  "@/globals/ColorPickerField#ColorPickerField": ColorPickerField_e0bbaddc3f177beaf296513b848335d7,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalCell": RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalField": RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/rsc#LexicalDiffComponent": LexicalDiffComponent_44fe37237e0ebf4470c9990d8cb7b07e,
@@ -71,7 +72,6 @@ export const importMap = {
   "@/globals/IconPickerField#IconPickerField": IconPickerField_02d34ee8c618e932869aee54e1d0b4ef,
   "@/components/admin/ColorPickerField#ColorPickerField": ColorPickerField_d572ded1c017fe858839e8cdc754e090,
   "@/globals/ColorPickerField.tsx#ColorPickerField": ColorPickerField_af73c183b1aec1e53ff448b3aa789f02,
-  "@/globals/ColorPickerField#ColorPickerField": ColorPickerField_e0bbaddc3f177beaf296513b848335d7,
   "@/globals/OpacitySliderField#OpacitySliderField": OpacitySliderField_4ec15420c1a37cc75771fbc6c1e030fc,
   "@/components/admin/OpacitySliderField#OpacitySliderField": OpacitySliderField_d9f8aa60d2835cb71c5a3aec409904f0,
   "@payloadcms/richtext-lexical/client#InlineToolbarFeatureClient": InlineToolbarFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,

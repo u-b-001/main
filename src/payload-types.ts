@@ -1325,6 +1325,14 @@ export interface Media {
  * via the `definition` "RichTextBlock".
  */
 export interface RichTextBlock {
+  /**
+   * Custom color for the body text
+   */
+  textColor?: string | null;
+  /**
+   * Custom color for headings
+   */
+  headingColor?: string | null;
   content: {
     root: {
       type: string;
@@ -3327,6 +3335,8 @@ export interface PagesSelect<T extends boolean = true> {
  * via the `definition` "RichTextBlock_select".
  */
 export interface RichTextBlockSelect<T extends boolean = true> {
+  textColor?: T;
+  headingColor?: T;
   content?: T;
   id?: T;
   blockName?: T;
