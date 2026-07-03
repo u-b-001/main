@@ -7,8 +7,8 @@ import * as LucideIcons from 'lucide-react'
 
 import { Media } from '@/components/Media'
 
-type FeatureTag = { icon?: string; text: string }
-type HeroButton = { label: string; url: string; variant?: 'primary' | 'secondary' | 'outline'; icon?: string }
+type FeatureTag = { icon?: string; text: string; color?: string }
+type HeroButton = { label: string; url: string; variant?: 'primary' | 'secondary' | 'outline'; icon?: string; backgroundColor?: string; textColor?: string }
 type Slide = any
 type CarouselSettings = any
 type OverlaySettings = any
@@ -131,6 +131,12 @@ function SlideMedia({ slide, priority }: { slide: any; priority?: boolean }) {
 function isUrl(str?: string) {
   if (!str) return false
   return str.startsWith('/') || str.startsWith('http://') || str.startsWith('https://')
+}
+
+function HeroIcon({ name, className }: { name: string; className?: string }) {
+  const IconComponent = (LucideIcons as any)[name]
+  if (!IconComponent) return null
+  return <IconComponent className={className} />
 }
 
 function TextBlock({
