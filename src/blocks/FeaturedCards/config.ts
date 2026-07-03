@@ -57,7 +57,7 @@ export const FeaturedCardsBlock: Block = {
         },
         {
           name: 'description',
-          type: 'textarea',
+          type: 'richText',
           label: 'Card Description',
           required: true,
         },

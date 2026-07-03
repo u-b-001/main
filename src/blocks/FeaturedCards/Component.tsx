@@ -6,6 +6,7 @@ const { GraduationCap, Globe, Calendar, Award, BookOpen, Users, Info, Star, Arro
 import { Media } from '@/components/Media'
 import { cn } from '@/utilities/ui'
 import type { FeaturedCardsBlock as FeaturedCardsProps } from '@/payload-types'
+import RichText from '@/components/RichText'
 
 const iconMap = {
   academic: GraduationCap,
@@ -155,14 +156,18 @@ export const FeaturedCardsComponent: React.FC<FeaturedCardsProps> = ({
                   </h3>
 
                   {/* Description */}
-                  <p
+                  <div
                     className={cn(
-                      'text-sm leading-relaxed mb-6 flex-grow',
+                      'text-sm leading-relaxed mb-6 flex-grow [&_p]:mb-2 last:[&_p]:mb-0',
                       isLightCardText ? 'text-white/80' : 'text-slate-600 dark:text-slate-400',
                     )}
                   >
-                    {card.description}
-                  </p>
+                    {typeof card.description === 'string' ? (
+                      <p>{card.description}</p>
+                    ) : (
+                      <RichText data={card.description} enableGutter={false} enableProse={false} />
+                    )}
+                  </div>
 
                   {/* Progress bar */}
                   {card.progress && (

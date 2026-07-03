@@ -1611,7 +1611,21 @@ export interface FeaturedCardsBlock {
   cardStyle: 'standard' | 'glassmorphism' | 'navy' | 'red' | 'bordered';
   cards: {
     title: string;
-    description: string;
+    description: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
     icon?: ('none' | 'academic' | 'globe' | 'calendar' | 'award' | 'book' | 'group' | 'info' | 'star') | null;
     /**
      * Image for this card. WARNING: To change this image, click the "X" button to clear the field, then select or upload a new one. DO NOT click the pencil "Edit" icon to replace the file inside the media drawer, as that will overwrite the shared media asset globally across all pages!
