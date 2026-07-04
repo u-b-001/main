@@ -166,6 +166,20 @@ export interface Page {
   title: string;
   layoutStyle: 'sidebar' | 'rightSidebar' | 'centered' | 'fullWidth';
   heroStyle: 'none' | 'small' | 'medium' | 'large';
+  heroType?: ('image' | 'gradient') | null;
+  heroGradientPreset?: ('blue' | 'navy' | 'purple' | 'emerald') | null;
+  heroShape?: ('straight' | 'curved' | 'wavy') | null;
+  /**
+   * Small uppercase badge text above the main title.
+   */
+  heroEyebrow?: string | null;
+  /**
+   * A description displayed below the title.
+   */
+  heroSubtitle?: string | null;
+  heroPaddingTop?: ('none' | 'small' | 'medium' | 'large' | 'xlarge') | null;
+  heroPaddingBottom?: ('none' | 'small' | 'medium' | 'large' | 'xlarge') | null;
+  heroMarginBottom?: ('none' | 'small' | 'medium' | 'large' | 'xlarge') | null;
   /**
    * Banner image shown at the top of inner pages. WARNING: To change this image, click the "X" button to clear the field, then select or upload a new one. DO NOT click the pencil "Edit" icon to replace the file inside the media drawer, as that will overwrite the shared media asset globally across all pages!
    */
@@ -2640,6 +2654,14 @@ export interface PagesSelect<T extends boolean = true> {
   title?: T;
   layoutStyle?: T;
   heroStyle?: T;
+  heroType?: T;
+  heroGradientPreset?: T;
+  heroShape?: T;
+  heroEyebrow?: T;
+  heroSubtitle?: T;
+  heroPaddingTop?: T;
+  heroPaddingBottom?: T;
+  heroMarginBottom?: T;
   hero?: T;
   backgroundSettings?:
     | T
