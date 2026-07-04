@@ -1434,19 +1434,44 @@ export interface InfoCardBlock {
  * via the `definition` "TableBlock".
  */
 export interface TableBlock {
+  heading?: string | null;
+  /**
+   * Optional description text below the heading
+   */
+  subtitle?: string | null;
+  headingAlignment?: ('left' | 'center' | 'right') | null;
+  /**
+   * Select a Lucide icon
+   */
+  icon?: string | null;
+  /**
+   * Pick a color or enter hex value
+   */
+  iconColor?: string | null;
+  iconSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
+  tableTheme?: ('gradient' | 'glass' | 'minimal' | 'brutalist') | null;
+  /**
+   * Pick a color or enter hex value
+   */
+  headerBgColor?: string | null;
+  stripedRows?: boolean | null;
+  hoverEffect?: boolean | null;
+  bordered?: boolean | null;
+  borderRadius?: ('none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl') | null;
+  shadow?: ('none' | 'xs' | 'sm' | 'md' | 'lg') | null;
+  cellPadding?: ('compact' | 'medium' | 'spacious') | null;
+  showScrollHint?: boolean | null;
   caption?: string | null;
-  rows?:
-    | {
-        isHeader?: boolean | null;
-        cells?:
-          | {
-              value?: string | null;
-              id?: string | null;
-            }[]
-          | null;
-        id?: string | null;
-      }[]
-    | null;
+  rows: {
+    isHeader?: boolean | null;
+    cells?:
+      | {
+          value?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    id?: string | null;
+  }[];
   id?: string | null;
   blockName?: string | null;
   blockType: 'table';
@@ -3392,6 +3417,21 @@ export interface InfoCardBlockSelect<T extends boolean = true> {
  * via the `definition` "TableBlock_select".
  */
 export interface TableBlockSelect<T extends boolean = true> {
+  heading?: T;
+  subtitle?: T;
+  headingAlignment?: T;
+  icon?: T;
+  iconColor?: T;
+  iconSize?: T;
+  tableTheme?: T;
+  headerBgColor?: T;
+  stripedRows?: T;
+  hoverEffect?: T;
+  bordered?: T;
+  borderRadius?: T;
+  shadow?: T;
+  cellPadding?: T;
+  showScrollHint?: T;
   caption?: T;
   rows?:
     | T
