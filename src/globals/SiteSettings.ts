@@ -426,6 +426,14 @@ export const SiteSettings: GlobalConfig = {
                 description: 'A button with this link will appear below the image.',
               },
             },
+            {
+              name: 'linkTitle',
+              type: 'text',
+              label: 'Link Button Title (Optional)',
+              admin: {
+                description: 'The text to display on the button. If empty, the URL will be shown.',
+              },
+            },
           ],
         },
       ],

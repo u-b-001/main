@@ -4439,6 +4439,10 @@ export interface SiteSetting {
            * A button with this link will appear below the image.
            */
           linkUrl?: string | null;
+          /**
+           * The text to display on the button. If empty, the URL will be shown.
+           */
+          linkTitle?: string | null;
           id?: string | null;
         }[]
       | null;
@@ -4580,6 +4584,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
               image?: T;
               title?: T;
               linkUrl?: T;
+              linkTitle?: T;
               id?: T;
             };
       };

@@ -17,7 +17,7 @@ type Props = {
   textSectionBackgroundColor?: string | null
   imageSectionBackgroundColor?: string | null
   popupBackgroundImage?: string | null
-  popupImages?: { image?: any | null, title?: string | null, linkUrl?: string | null, id?: string | null }[] | null
+  popupImages?: { image?: any | null, title?: string | null, linkUrl?: string | null, linkTitle?: string | null, id?: string | null }[] | null
 }
 
 export const PopupNotification: React.FC<Props> = ({
@@ -238,7 +238,7 @@ export const PopupNotification: React.FC<Props> = ({
                             rel="noopener noreferrer"
                             className="bg-[#295188] hover:bg-[#1a3862] text-white text-sm font-medium px-4 py-3 rounded-md w-full max-w-sm text-center transition-colors break-words line-clamp-2"
                           >
-                            {imgObj.linkUrl}
+                            {imgObj.linkTitle || imgObj.linkUrl}
                           </a>
                         )}
                       </div>
