@@ -4414,6 +4414,10 @@ export interface SiteSetting {
      * Background color for the images area
      */
     imageSectionBackgroundColor?: string | null;
+    /**
+     * Set a background image for the entire popup
+     */
+    popupBackgroundImage?: (number | null) | Media;
     popupTitle?: string | null;
     popupDescription?: string | null;
     /**
@@ -4565,6 +4569,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         popupTextColor?: T;
         textSectionBackgroundColor?: T;
         imageSectionBackgroundColor?: T;
+        popupBackgroundImage?: T;
         popupTitle?: T;
         popupDescription?: T;
         bottomDescription?: T;

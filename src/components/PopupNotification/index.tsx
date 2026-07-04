@@ -16,6 +16,7 @@ type Props = {
   popupTextColor?: string | null
   textSectionBackgroundColor?: string | null
   imageSectionBackgroundColor?: string | null
+  popupBackgroundImage?: string | null
   popupImages?: { image?: any | null, title?: string | null, linkUrl?: string | null, id?: string | null }[] | null
 }
 
@@ -32,6 +33,7 @@ export const PopupNotification: React.FC<Props> = ({
   popupTextColor,
   textSectionBackgroundColor,
   imageSectionBackgroundColor,
+  popupBackgroundImage,
   popupImages,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -145,7 +147,8 @@ export const PopupNotification: React.FC<Props> = ({
           aria-labelledby="popup-title"
         >
           <div
-            className={`relative w-full max-w-3xl shadow-2xl rounded-2xl overflow-hidden flex flex-col max-h-[90vh] animate-in fade-in zoom-in-95 duration-300 p-8 sm:p-10 border ${containerClasses}`}
+            className={`relative w-full max-w-3xl shadow-2xl rounded-2xl overflow-hidden flex flex-col max-h-[90vh] animate-in fade-in zoom-in-95 duration-300 p-8 sm:p-10 border ${containerClasses} ${popupBackgroundImage ? 'bg-cover bg-center bg-no-repeat' : ''}`}
+            style={popupBackgroundImage ? { backgroundImage: `url(${popupBackgroundImage})` } : undefined}
           >
             <button
               onClick={handleClose}

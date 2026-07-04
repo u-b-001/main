@@ -66,6 +66,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     popupTextColor: popupProps.popupTextColor || null,
     textSectionBackgroundColor: popupProps.textSectionBackgroundColor || null,
     imageSectionBackgroundColor: popupProps.imageSectionBackgroundColor || null,
+    popupBackgroundImage: typeof popupProps.popupBackgroundImage === 'object' && popupProps.popupBackgroundImage?.url ? popupProps.popupBackgroundImage.url : null,
     imageLayoutDirection: popupProps.imageLayoutDirection || 'horizontal',
     popupTitle: popupProps.popupTitle || null,
     popupDescription: popupProps.popupDescription || null,

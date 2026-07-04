@@ -348,6 +348,16 @@ export const SiteSettings: GlobalConfig = {
           },
         },
         {
+          name: 'popupBackgroundImage',
+          type: 'upload',
+          relationTo: 'media',
+          label: 'Popup Background Image (Optional)',
+          admin: {
+            description: 'Set a background image for the entire popup',
+            condition: (_, siblingData) => siblingData?.enablePopup,
+          },
+        },
+        {
           name: 'popupTitle',
           type: 'text',
           label: 'Popup Title',
