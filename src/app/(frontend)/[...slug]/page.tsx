@@ -89,7 +89,21 @@ export default async function Page({ params: paramsPromise }: Args) {
       {draft && <LivePreviewListener />}
 
       {/* Hero Banner */}
-      <PageHero title={page.title} heroImage={page.hero} heroStyle={page.heroStyle} />
+      <PageHero
+        title={page.title}
+        heroImage={page.hero}
+        heroStyle={page.heroStyle}
+        heroType={page.heroType}
+        heroGradientPreset={page.heroGradientPreset}
+        heroShape={page.heroShape}
+        heroEyebrow={page.heroEyebrow}
+        heroSubtitle={page.heroSubtitle}
+        heroPaddingTop={page.heroPaddingTop}
+        heroPaddingBottom={page.heroPaddingBottom}
+        heroMarginBottom={page.heroMarginBottom}
+        bgTheme={bgTheme}
+        customBgColor={customBgColor}
+      />
 
       {/* Breadcrumbs */}
       <Breadcrumb />

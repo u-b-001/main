@@ -166,6 +166,20 @@ export interface Page {
   title: string;
   layoutStyle: 'sidebar' | 'rightSidebar' | 'centered' | 'fullWidth';
   heroStyle: 'none' | 'small' | 'medium' | 'large';
+  heroType?: ('image' | 'gradient') | null;
+  heroGradientPreset?: ('blue' | 'navy' | 'purple' | 'emerald') | null;
+  heroShape?: ('straight' | 'curved' | 'wavy') | null;
+  /**
+   * Small uppercase badge text above the main title.
+   */
+  heroEyebrow?: string | null;
+  /**
+   * A description displayed below the title.
+   */
+  heroSubtitle?: string | null;
+  heroPaddingTop?: ('none' | 'small' | 'medium' | 'large' | 'xlarge') | null;
+  heroPaddingBottom?: ('none' | 'small' | 'medium' | 'large' | 'xlarge') | null;
+  heroMarginBottom?: ('none' | 'small' | 'medium' | 'large' | 'xlarge') | null;
   /**
    * Banner image shown at the top of inner pages. WARNING: To change this image, click the "X" button to clear the field, then select or upload a new one. DO NOT click the pencil "Edit" icon to replace the file inside the media drawer, as that will overwrite the shared media asset globally across all pages!
    */
@@ -1420,19 +1434,44 @@ export interface InfoCardBlock {
  * via the `definition` "TableBlock".
  */
 export interface TableBlock {
+  heading?: string | null;
+  /**
+   * Optional description text below the heading
+   */
+  subtitle?: string | null;
+  headingAlignment?: ('left' | 'center' | 'right') | null;
+  /**
+   * Select a Lucide icon
+   */
+  icon?: string | null;
+  /**
+   * Pick a color or enter hex value
+   */
+  iconColor?: string | null;
+  iconSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
+  tableTheme?: ('gradient' | 'glass' | 'minimal' | 'brutalist') | null;
+  /**
+   * Pick a color or enter hex value
+   */
+  headerBgColor?: string | null;
+  stripedRows?: boolean | null;
+  hoverEffect?: boolean | null;
+  bordered?: boolean | null;
+  borderRadius?: ('none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl') | null;
+  shadow?: ('none' | 'xs' | 'sm' | 'md' | 'lg') | null;
+  cellPadding?: ('compact' | 'medium' | 'spacious') | null;
+  showScrollHint?: boolean | null;
   caption?: string | null;
-  rows?:
-    | {
-        isHeader?: boolean | null;
-        cells?:
-          | {
-              value?: string | null;
-              id?: string | null;
-            }[]
-          | null;
-        id?: string | null;
-      }[]
-    | null;
+  rows: {
+    isHeader?: boolean | null;
+    cells?:
+      | {
+          value?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    id?: string | null;
+  }[];
   id?: string | null;
   blockName?: string | null;
   blockType: 'table';
@@ -2640,6 +2679,14 @@ export interface PagesSelect<T extends boolean = true> {
   title?: T;
   layoutStyle?: T;
   heroStyle?: T;
+  heroType?: T;
+  heroGradientPreset?: T;
+  heroShape?: T;
+  heroEyebrow?: T;
+  heroSubtitle?: T;
+  heroPaddingTop?: T;
+  heroPaddingBottom?: T;
+  heroMarginBottom?: T;
   hero?: T;
   backgroundSettings?:
     | T
@@ -3370,6 +3417,21 @@ export interface InfoCardBlockSelect<T extends boolean = true> {
  * via the `definition` "TableBlock_select".
  */
 export interface TableBlockSelect<T extends boolean = true> {
+  heading?: T;
+  subtitle?: T;
+  headingAlignment?: T;
+  icon?: T;
+  iconColor?: T;
+  iconSize?: T;
+  tableTheme?: T;
+  headerBgColor?: T;
+  stripedRows?: T;
+  hoverEffect?: T;
+  bordered?: T;
+  borderRadius?: T;
+  shadow?: T;
+  cellPadding?: T;
+  showScrollHint?: T;
   caption?: T;
   rows?:
     | T

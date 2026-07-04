@@ -120,10 +120,118 @@ export const Pages: CollectionConfig<'pages'> = {
       },
     },
     {
+      name: 'heroType',
+      type: 'select',
+      label: 'Hero Type',
+      defaultValue: 'image',
+      options: [
+        { label: 'Background Image', value: 'image' },
+        { label: 'Curved/Wavy Gradient', value: 'gradient' },
+      ],
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'heroGradientPreset',
+      type: 'select',
+      label: 'Hero Gradient Preset',
+      defaultValue: 'blue',
+      options: [
+        { label: 'Blue Wave', value: 'blue' },
+        { label: 'Deep Navy', value: 'navy' },
+        { label: 'Purple Sunset', value: 'purple' },
+        { label: 'Emerald Wave', value: 'emerald' },
+      ],
+      admin: {
+        position: 'sidebar',
+        condition: (_, siblingData) => siblingData?.heroType === 'gradient',
+      },
+    },
+    {
+      name: 'heroShape',
+      type: 'select',
+      label: 'Hero Bottom Shape',
+      defaultValue: 'straight',
+      options: [
+        { label: 'Straight Bottom', value: 'straight' },
+        { label: 'Curved Bottom', value: 'curved' },
+        { label: 'Wavy Bottom', value: 'wavy' },
+      ],
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'heroEyebrow',
+      type: 'text',
+      label: 'Hero Eyebrow (Badge Text)',
+      admin: {
+        description: 'Small uppercase badge text above the main title.',
+      },
+    },
+    {
+      name: 'heroSubtitle',
+      type: 'textarea',
+      label: 'Hero Subtitle (Description)',
+      admin: {
+        description: 'A description displayed below the title.',
+      },
+    },
+    {
+      name: 'heroPaddingTop',
+      type: 'select',
+      label: 'Hero Padding Top',
+      defaultValue: 'medium',
+      options: [
+        { label: 'None', value: 'none' },
+        { label: 'Small', value: 'small' },
+        { label: 'Medium', value: 'medium' },
+        { label: 'Large', value: 'large' },
+        { label: 'X-Large', value: 'xlarge' },
+      ],
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'heroPaddingBottom',
+      type: 'select',
+      label: 'Hero Padding Bottom',
+      defaultValue: 'medium',
+      options: [
+        { label: 'None', value: 'none' },
+        { label: 'Small', value: 'small' },
+        { label: 'Medium', value: 'medium' },
+        { label: 'Large', value: 'large' },
+        { label: 'X-Large', value: 'xlarge' },
+      ],
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'heroMarginBottom',
+      type: 'select',
+      label: 'Hero Margin Bottom',
+      defaultValue: 'medium',
+      options: [
+        { label: 'None', value: 'none' },
+        { label: 'Small', value: 'small' },
+        { label: 'Medium', value: 'medium' },
+        { label: 'Large', value: 'large' },
+        { label: 'X-Large', value: 'xlarge' },
+      ],
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
       name: 'hero',
       type: 'upload',
       relationTo: 'media',
       admin: {
+        condition: (_, siblingData) => siblingData?.heroType === 'image',
         description:
           'Banner image shown at the top of inner pages. WARNING: To change this image, click the "X" button to clear the field, then select or upload a new one. DO NOT click the pencil "Edit" icon to replace the file inside the media drawer, as that will overwrite the shared media asset globally across all pages!',
       },
