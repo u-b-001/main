@@ -22,9 +22,18 @@ const syncNavToHeader = async (payload: any) => {
       depth: 0,
       limit: 1000,
       where: {
-        _status: {
-          equals: 'published',
-        },
+        and: [
+          {
+            _status: {
+              equals: 'published',
+            },
+          },
+          {
+            showInNav: {
+              equals: true,
+            },
+          },
+        ],
       },
     })
     const pages = pagesRes.docs

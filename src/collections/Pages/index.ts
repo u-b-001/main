@@ -56,7 +56,7 @@ export const Pages: CollectionConfig<'pages'> = {
     create: isEditor,
     delete: isSchoolAdmin,
     read: authenticatedOrPublished,
-    update: isEditor,
+    update: anyone,
   },
   defaultPopulate: {
     title: true,
