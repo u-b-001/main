@@ -4395,11 +4395,38 @@ export interface SiteSetting {
    */
   popupNotification?: {
     enablePopup?: boolean | null;
+    showOnAllPages?: boolean | null;
+    displayFrequency?: ('always' | 'once_per_session' | 'once_per_day') | null;
+    theme?: ('light' | 'dark' | 'primary') | null;
+    /**
+     * Override the theme heading color
+     */
+    popupHeadingColor?: string | null;
+    /**
+     * Override the theme description text color
+     */
+    popupTextColor?: string | null;
     popupTitle?: string | null;
     popupDescription?: string | null;
+    /**
+     * This description will appear at the bottom of the popup, below the images.
+     */
+    bottomDescription?: string | null;
+    /**
+     * Choose how multiple images should be displayed.
+     */
+    imageLayoutDirection?: ('horizontal' | 'vertical') | null;
     popupImages?:
       | {
           image: number | Media;
+          /**
+           * e.g. "Vahan" or "Sarathi"
+           */
+          title?: string | null;
+          /**
+           * A button with this link will appear below the image.
+           */
+          linkUrl?: string | null;
           id?: string | null;
         }[]
       | null;
@@ -4523,12 +4550,21 @@ export interface SiteSettingsSelect<T extends boolean = true> {
     | T
     | {
         enablePopup?: T;
+        showOnAllPages?: T;
+        displayFrequency?: T;
+        theme?: T;
+        popupHeadingColor?: T;
+        popupTextColor?: T;
         popupTitle?: T;
         popupDescription?: T;
+        bottomDescription?: T;
+        imageLayoutDirection?: T;
         popupImages?:
           | T
           | {
               image?: T;
+              title?: T;
+              linkUrl?: T;
               id?: T;
             };
       };

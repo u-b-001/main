@@ -13,6 +13,7 @@ import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { draftMode } from 'next/headers'
 import { getCachedGlobal } from '@/utilities/getGlobals'
+import { PopupNotification } from '@/components/PopupNotification'
 
 import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
@@ -54,6 +55,21 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   // selected in the admin panel — that was the whole bug.
   const headingFontFamily = siteSettings?.headingFont || 'Playfair Display'
   const bodyFontFamily = siteSettings?.bodyFont || 'Inter'
+
+  const popupProps = siteSettings?.popupNotification || {}
+  const safePopupProps = {
+    enablePopup: Boolean(popupProps.enablePopup),
+    showOnAllPages: Boolean(popupProps.showOnAllPages),
+    displayFrequency: popupProps.displayFrequency || 'once_per_session',
+    theme: popupProps.theme || 'light',
+    popupHeadingColor: popupProps.popupHeadingColor || null,
+    popupTextColor: popupProps.popupTextColor || null,
+    imageLayoutDirection: popupProps.imageLayoutDirection || 'horizontal',
+    popupTitle: popupProps.popupTitle || null,
+    popupDescription: popupProps.popupDescription || null,
+    bottomDescription: popupProps.bottomDescription || null,
+    popupImages: Array.isArray(popupProps.popupImages) ? JSON.parse(JSON.stringify(popupProps.popupImages)) : [],
+  }
 
   const customStyles = {
     '--bg-pattern-opacity': bgPatternOpacity,
@@ -126,6 +142,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <Header />
           {children}
           <Footer />
+          <PopupNotification {...safePopupProps} />
         </Providers>
       </body>
     </html>

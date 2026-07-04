@@ -263,6 +263,67 @@ export const SiteSettings: GlobalConfig = {
           defaultValue: false,
         },
         {
+          name: 'showOnAllPages',
+          type: 'checkbox',
+          label: 'Show on all pages (Disable to show only on Home Page)',
+          defaultValue: false,
+          admin: {
+            condition: (_, siblingData) => siblingData?.enablePopup,
+          },
+        },
+        {
+          name: 'displayFrequency',
+          type: 'select',
+          label: 'Display Frequency',
+          defaultValue: 'once_per_session',
+          options: [
+            { label: 'Every time the page loads', value: 'always' },
+            { label: 'Once per browser session', value: 'once_per_session' },
+            { label: 'Once a day per user', value: 'once_per_day' },
+          ],
+          admin: {
+            condition: (_, siblingData) => siblingData?.enablePopup,
+          },
+        },
+        {
+          name: 'theme',
+          type: 'select',
+          label: 'Theme',
+          defaultValue: 'light',
+          options: [
+            { label: 'Light', value: 'light' },
+            { label: 'Dark', value: 'dark' },
+            { label: 'Primary Color', value: 'primary' },
+          ],
+          admin: {
+            condition: (_, siblingData) => siblingData?.enablePopup,
+          },
+        },
+        {
+          name: 'popupHeadingColor',
+          type: 'text',
+          label: 'Popup Heading Color (Optional)',
+          admin: {
+            components: {
+              Field: '@/globals/ColorPickerField.tsx#ColorPickerField',
+            },
+            description: 'Override the theme heading color',
+            condition: (_, siblingData) => siblingData?.enablePopup,
+          },
+        },
+        {
+          name: 'popupTextColor',
+          type: 'text',
+          label: 'Popup Text Color (Optional)',
+          admin: {
+            components: {
+              Field: '@/globals/ColorPickerField.tsx#ColorPickerField',
+            },
+            description: 'Override the theme description text color',
+            condition: (_, siblingData) => siblingData?.enablePopup,
+          },
+        },
+        {
           name: 'popupTitle',
           type: 'text',
           label: 'Popup Title',
@@ -279,9 +340,32 @@ export const SiteSettings: GlobalConfig = {
           },
         },
         {
+          name: 'bottomDescription',
+          type: 'textarea',
+          label: 'Bottom Description',
+          admin: {
+            condition: (_, siblingData) => siblingData?.enablePopup,
+            description: 'This description will appear at the bottom of the popup, below the images.',
+          },
+        },
+        {
+          name: 'imageLayoutDirection',
+          type: 'radio',
+          label: 'Image Layout Direction',
+          defaultValue: 'horizontal',
+          options: [
+            { label: 'Side-by-side (Horizontal)', value: 'horizontal' },
+            { label: 'Stacked (Vertical)', value: 'vertical' },
+          ],
+          admin: {
+            condition: (_, siblingData) => siblingData?.enablePopup && siblingData?.popupImages?.length > 1,
+            description: 'Choose how multiple images should be displayed.',
+          },
+        },
+        {
           name: 'popupImages',
           type: 'array',
-          label: 'Popup Images',
+          label: 'Popup Images (e.g. QR Codes, Logos)',
           admin: {
             condition: (_, siblingData) => siblingData?.enablePopup,
           },
@@ -291,6 +375,22 @@ export const SiteSettings: GlobalConfig = {
               type: 'upload',
               relationTo: 'media',
               required: true,
+            },
+            {
+              name: 'title',
+              type: 'text',
+              label: 'Image Title (Optional)',
+              admin: {
+                description: 'e.g. "Vahan" or "Sarathi"',
+              },
+            },
+            {
+              name: 'linkUrl',
+              type: 'text',
+              label: 'Link URL (Optional)',
+              admin: {
+                description: 'A button with this link will appear below the image.',
+              },
             },
           ],
         },
