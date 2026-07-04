@@ -1282,7 +1282,7 @@ export interface Media {
   /**
    * Required for accessibility — describe the image for screen readers/SEO
    */
-  alt: string;
+  alt?: string | null;
   caption?: string | null;
   /**
    * Photo credit/source, e.g. "Embassy of Japan" (optional, useful for event/official photos)

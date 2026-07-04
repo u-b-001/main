@@ -35,11 +35,18 @@ const nextConfig: NextConfig = {
       }),
     ],
   },
-  webpack: (webpackConfig) => {
+  webpack: (webpackConfig, { dev }) => {
     webpackConfig.resolve.extensionAlias = {
       '.cjs': ['.cts', '.cjs'],
       '.js': ['.ts', '.tsx', '.js', '.jsx'],
       '.mjs': ['.mts', '.mjs'],
+    }
+
+    if (dev) {
+      webpackConfig.watchOptions = {
+        ...webpackConfig.watchOptions,
+        ignored: ['**/public/media/**'],
+      }
     }
 
     return webpackConfig
