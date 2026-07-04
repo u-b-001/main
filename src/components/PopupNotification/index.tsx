@@ -64,11 +64,11 @@ export const PopupNotification: React.FC<Props> = ({
       aria-labelledby="popup-title"
     >
       <div
-        className="relative w-full max-w-2xl bg-background border border-border shadow-2xl rounded-2xl overflow-hidden flex flex-col max-h-[90vh] animate-in fade-in zoom-in-95 duration-300"
+        className="relative w-full max-w-md bg-background border border-border shadow-2xl rounded-2xl overflow-hidden flex flex-col max-h-[90vh] animate-in fade-in zoom-in-95 duration-300"
       >
         {/* Header */}
-        <div className="flex justify-between items-center p-6 border-b border-border/50">
-          <h2 id="popup-title" className="text-2xl font-semibold text-foreground font-serif">
+        <div className="flex justify-between items-center p-5 border-b border-border/50">
+          <h2 id="popup-title" className="text-xl font-semibold text-foreground font-serif">
             {popupTitle}
           </h2>
           <button
@@ -78,8 +78,8 @@ export const PopupNotification: React.FC<Props> = ({
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
+              width="20"
+              height="20"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -94,7 +94,7 @@ export const PopupNotification: React.FC<Props> = ({
         </div>
 
         {/* Content */}
-        <div className="overflow-y-auto p-6 flex flex-col gap-6">
+        <div className="overflow-y-auto p-5 flex flex-col gap-4">
           {popupDescription && (
             <div className="text-foreground/90 leading-relaxed whitespace-pre-wrap font-sans text-[var(--text-size)]">
               {popupDescription}
