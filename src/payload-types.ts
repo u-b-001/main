@@ -4390,6 +4390,20 @@ export interface SiteSetting {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Configure the popup notification that appears on the home page.
+   */
+  popupNotification?: {
+    enablePopup?: boolean | null;
+    popupTitle?: string | null;
+    popupDescription?: string | null;
+    popupImages?:
+      | {
+          image: number | Media;
+          id?: string | null;
+        }[]
+      | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -4504,6 +4518,19 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         platform?: T;
         url?: T;
         id?: T;
+      };
+  popupNotification?:
+    | T
+    | {
+        enablePopup?: T;
+        popupTitle?: T;
+        popupDescription?: T;
+        popupImages?:
+          | T
+          | {
+              image?: T;
+              id?: T;
+            };
       };
   updatedAt?: T;
   createdAt?: T;

@@ -4,6 +4,7 @@ import configPromise from '@payload-config'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 import type { Metadata } from 'next'
 import { generateMeta } from '@/utilities/generateMeta'
+import { PopupNotification } from '@/components/PopupNotification'
 
 export async function generateMetadata(): Promise<Metadata> {
   const payload = await getPayload({ config: configPromise })
@@ -25,6 +26,11 @@ export default async function HomePage() {
     limit: 1,
   })
   const homepage = result.docs?.[0]
+
+  const siteSettings = await payload.findGlobal({
+    slug: 'site-settings',
+    depth: 1,
+  })
 
   const bgSettings = homepage?.backgroundSettings
   const bgTheme = bgSettings?.theme || 'default'
@@ -54,11 +60,14 @@ export default async function HomePage() {
   const layoutHeadingFont = homepage?.typographySettings?.headingFont || 'serif'
   const fontClass = layoutHeadingFont === 'serif' ? '[&_h2]:font-serif [&_h3]:font-serif' : '[&_h2]:font-sans [&_h3]:font-sans'
 
+  const popupProps = siteSettings?.popupNotification || {}
+
   return (
     <main className={bgClass} style={Object.keys(style).length > 0 ? style : undefined}>
       <div className={fontClass}>
         <RenderBlocks blocks={homepage?.layout || []} />
       </div>
+      <PopupNotification {...popupProps} />
     </main>
   )
 }

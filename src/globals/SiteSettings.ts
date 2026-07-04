@@ -248,5 +248,53 @@ export const SiteSettings: GlobalConfig = {
         },
       ],
     },
+    {
+      type: 'group',
+      name: 'popupNotification',
+      label: 'Popup Notification',
+      admin: {
+        description: 'Configure the popup notification that appears on the home page.',
+      },
+      fields: [
+        {
+          name: 'enablePopup',
+          type: 'checkbox',
+          label: 'Enable Popup',
+          defaultValue: false,
+        },
+        {
+          name: 'popupTitle',
+          type: 'text',
+          label: 'Popup Title',
+          admin: {
+            condition: (_, siblingData) => siblingData?.enablePopup,
+          },
+        },
+        {
+          name: 'popupDescription',
+          type: 'textarea',
+          label: 'Popup Description',
+          admin: {
+            condition: (_, siblingData) => siblingData?.enablePopup,
+          },
+        },
+        {
+          name: 'popupImages',
+          type: 'array',
+          label: 'Popup Images',
+          admin: {
+            condition: (_, siblingData) => siblingData?.enablePopup,
+          },
+          fields: [
+            {
+              name: 'image',
+              type: 'upload',
+              relationTo: 'media',
+              required: true,
+            },
+          ],
+        },
+      ],
+    },
   ],
 }
