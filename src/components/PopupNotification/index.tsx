@@ -14,6 +14,8 @@ type Props = {
   bottomDescription?: string | null
   popupHeadingColor?: string | null
   popupTextColor?: string | null
+  textSectionBackgroundColor?: string | null
+  imageSectionBackgroundColor?: string | null
   popupImages?: { image?: any | null, title?: string | null, linkUrl?: string | null, id?: string | null }[] | null
 }
 
@@ -28,6 +30,8 @@ export const PopupNotification: React.FC<Props> = ({
   bottomDescription,
   popupHeadingColor,
   popupTextColor,
+  textSectionBackgroundColor,
+  imageSectionBackgroundColor,
   popupImages,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -165,34 +169,45 @@ export const PopupNotification: React.FC<Props> = ({
             </button>
 
             <div className="overflow-y-auto flex flex-col gap-6 text-center">
-              {popupTitle && (
-                <h2 
-                  id="popup-title" 
-                  className={`text-2xl font-bold font-sans mt-2 ${titleClasses}`}
-                  style={popupHeadingColor ? { color: popupHeadingColor } : undefined}
-                >
-                  {popupTitle}
-                </h2>
-              )}
-
-              {popupDescription && (
+              {(popupTitle || popupDescription) && (
                 <div 
-                  className={`leading-relaxed whitespace-pre-wrap font-sans text-base sm:text-lg max-w-2xl mx-auto ${descClasses}`}
-                  style={popupTextColor ? { color: popupTextColor } : undefined}
+                  className={textSectionBackgroundColor ? "p-6 rounded-xl flex flex-col gap-4" : "flex flex-col gap-4"}
+                  style={textSectionBackgroundColor ? { backgroundColor: textSectionBackgroundColor } : undefined}
                 >
-                  {popupDescription}
+                  {popupTitle && (
+                    <h2 
+                      id="popup-title" 
+                      className={`text-2xl font-bold font-sans ${titleClasses}`}
+                      style={popupHeadingColor ? { color: popupHeadingColor } : undefined}
+                    >
+                      {popupTitle}
+                    </h2>
+                  )}
+
+                  {popupDescription && (
+                    <div 
+                      className={`leading-relaxed whitespace-pre-wrap font-sans text-base sm:text-lg max-w-2xl mx-auto ${descClasses}`}
+                      style={popupTextColor ? { color: popupTextColor } : undefined}
+                    >
+                      {popupDescription}
+                    </div>
+                  )}
                 </div>
               )}
 
               {/* Images Grid */}
               {popupImages && popupImages.length > 0 && (
                 <div
-                  className={`grid gap-8 mt-4 w-full ${
-                    popupImages.length === 1 || imageLayoutDirection === 'vertical' 
-                      ? 'grid-cols-1' 
-                      : 'grid-cols-1 sm:grid-cols-2'
-                  }`}
+                  className={imageSectionBackgroundColor ? "p-6 rounded-xl" : ""}
+                  style={imageSectionBackgroundColor ? { backgroundColor: imageSectionBackgroundColor } : undefined}
                 >
+                  <div
+                    className={`grid gap-8 w-full ${
+                      popupImages.length === 1 || imageLayoutDirection === 'vertical' 
+                        ? 'grid-cols-1' 
+                        : 'grid-cols-1 sm:grid-cols-2'
+                    }`}
+                  >
                   {popupImages.map((imgObj, i) => {
                     if (!imgObj || !imgObj.image || typeof imgObj.image === 'string') return null
                     const media = imgObj.image
@@ -226,15 +241,21 @@ export const PopupNotification: React.FC<Props> = ({
                       </div>
                     )
                   })}
+                  </div>
                 </div>
               )}
 
               {bottomDescription && (
                 <div 
-                  className={`leading-relaxed whitespace-pre-wrap font-sans text-base sm:text-lg max-w-2xl mx-auto mt-4 ${descClasses}`}
-                  style={popupTextColor ? { color: popupTextColor } : undefined}
+                  className={textSectionBackgroundColor ? "p-6 rounded-xl flex flex-col gap-4 mt-4" : "flex flex-col gap-4 mt-4"}
+                  style={textSectionBackgroundColor ? { backgroundColor: textSectionBackgroundColor } : undefined}
                 >
-                  {bottomDescription}
+                  <div 
+                    className={`leading-relaxed whitespace-pre-wrap font-sans text-base sm:text-lg max-w-2xl mx-auto ${descClasses}`}
+                    style={popupTextColor ? { color: popupTextColor } : undefined}
+                  >
+                    {bottomDescription}
+                  </div>
                 </div>
               )}
             </div>
