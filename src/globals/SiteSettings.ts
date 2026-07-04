@@ -324,6 +324,30 @@ export const SiteSettings: GlobalConfig = {
           },
         },
         {
+          name: 'textSectionBackgroundColor',
+          type: 'text',
+          label: 'Text Section Background Color (Optional)',
+          admin: {
+            components: {
+              Field: '@/globals/ColorPickerField.tsx#ColorPickerField',
+            },
+            description: 'Background color for the title and description area',
+            condition: (_, siblingData) => siblingData?.enablePopup,
+          },
+        },
+        {
+          name: 'imageSectionBackgroundColor',
+          type: 'text',
+          label: 'Images Section Background Color (Optional)',
+          admin: {
+            components: {
+              Field: '@/globals/ColorPickerField.tsx#ColorPickerField',
+            },
+            description: 'Background color for the images area',
+            condition: (_, siblingData) => siblingData?.enablePopup,
+          },
+        },
+        {
           name: 'popupTitle',
           type: 'text',
           label: 'Popup Title',

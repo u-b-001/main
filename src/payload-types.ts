@@ -4406,6 +4406,14 @@ export interface SiteSetting {
      * Override the theme description text color
      */
     popupTextColor?: string | null;
+    /**
+     * Background color for the title and description area
+     */
+    textSectionBackgroundColor?: string | null;
+    /**
+     * Background color for the images area
+     */
+    imageSectionBackgroundColor?: string | null;
     popupTitle?: string | null;
     popupDescription?: string | null;
     /**
@@ -4555,6 +4563,8 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         theme?: T;
         popupHeadingColor?: T;
         popupTextColor?: T;
+        textSectionBackgroundColor?: T;
+        imageSectionBackgroundColor?: T;
         popupTitle?: T;
         popupDescription?: T;
         bottomDescription?: T;
