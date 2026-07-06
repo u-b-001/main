@@ -300,6 +300,32 @@ export const SiteSettings: GlobalConfig = {
           },
         },
         {
+          name: 'titleFont',
+          type: 'select',
+          label: 'Title Font',
+          defaultValue: 'sans',
+          options: [
+            { label: 'Sans-Serif (Inter)', value: 'sans' },
+            { label: 'Serif (Poppins)', value: 'serif' },
+          ],
+          admin: {
+            condition: (_, siblingData) => siblingData?.enablePopup,
+          },
+        },
+        {
+          name: 'descriptionFont',
+          type: 'select',
+          label: 'Description Font',
+          defaultValue: 'sans',
+          options: [
+            { label: 'Sans-Serif (Inter)', value: 'sans' },
+            { label: 'Serif (Poppins)', value: 'serif' },
+          ],
+          admin: {
+            condition: (_, siblingData) => siblingData?.enablePopup,
+          },
+        },
+        {
           name: 'popupHeadingColor',
           type: 'text',
           label: 'Popup Heading Color (Optional)',
@@ -435,6 +461,97 @@ export const SiteSettings: GlobalConfig = {
               },
             },
           ],
+        },
+        {
+          name: 'buttons',
+          type: 'array',
+          label: 'Buttons',
+          maxRows: 3,
+          admin: {
+            condition: (_, siblingData) => siblingData?.enablePopup,
+          },
+          fields: [
+            {
+              name: 'label',
+              type: 'text',
+              required: true,
+            },
+            {
+              name: 'url',
+              type: 'text',
+              required: true,
+            },
+            {
+              name: 'variant',
+              type: 'select',
+              defaultValue: 'primary',
+              options: [
+                { label: 'Primary (Filled)', value: 'primary' },
+                { label: 'Secondary (Filled)', value: 'secondary' },
+                { label: 'Outline', value: 'outline' },
+              ],
+            },
+            {
+              name: 'backgroundColor',
+              type: 'text',
+              admin: {
+                components: {
+                  Field: '@/globals/ColorPickerField#ColorPickerField',
+                },
+                description: 'Button background color (overrides variant)',
+              },
+            },
+            {
+              name: 'textColor',
+              type: 'text',
+              admin: {
+                components: {
+                  Field: '@/globals/ColorPickerField#ColorPickerField',
+                },
+                description: 'Button text color (overrides variant)',
+              },
+            },
+            {
+              name: 'icon',
+              type: 'text',
+              admin: {
+                components: {
+                  Field: '@/globals/IconPickerField#IconPickerField',
+                },
+                description: 'Select button icon',
+              },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      type: 'group',
+      name: 'breadcrumbs',
+      label: 'Breadcrumbs',
+      admin: {
+        description: 'Configure the appearance of the breadcrumbs navigation.',
+      },
+      fields: [
+        {
+          name: 'transparentBackground',
+          type: 'checkbox',
+          label: 'Transparent Background',
+          defaultValue: false,
+          admin: {
+            description: 'Remove the white background and border from the breadcrumbs.',
+          }
+        },
+        {
+          name: 'textColor',
+          type: 'text',
+          label: 'Breadcrumb Text Color',
+          admin: {
+            components: {
+              Field: '@/globals/ColorPickerField.tsx#ColorPickerField',
+            },
+            description: 'Override the default text color of breadcrumbs. Leave empty for default.',
+          },
         },
       ],
     },

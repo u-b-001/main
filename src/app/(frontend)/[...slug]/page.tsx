@@ -97,6 +97,7 @@ export default async function Page({ params: paramsPromise }: Args) {
         heroGradientPreset={page.heroGradientPreset}
         heroShape={page.heroShape}
         heroEyebrow={page.heroEyebrow}
+        heroEyebrowColor={page.heroEyebrowColor}
         heroSubtitle={page.heroSubtitle}
         heroPaddingTop={page.heroPaddingTop}
         heroPaddingBottom={page.heroPaddingBottom}

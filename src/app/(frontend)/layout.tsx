@@ -69,9 +69,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     popupBackgroundImage: typeof popupProps.popupBackgroundImage === 'object' && popupProps.popupBackgroundImage?.url ? popupProps.popupBackgroundImage.url : null,
     imageLayoutDirection: popupProps.imageLayoutDirection || 'horizontal',
     popupTitle: popupProps.popupTitle || null,
+    titleFont: popupProps.titleFont || 'sans',
     popupDescription: popupProps.popupDescription || null,
+    descriptionFont: popupProps.descriptionFont || 'sans',
     bottomDescription: popupProps.bottomDescription || null,
     popupImages: Array.isArray(popupProps.popupImages) ? JSON.parse(JSON.stringify(popupProps.popupImages)) : [],
+    buttons: Array.isArray(popupProps.buttons) ? JSON.parse(JSON.stringify(popupProps.buttons)) : [],
   }
 
   const customStyles = {

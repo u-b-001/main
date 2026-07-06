@@ -2,6 +2,19 @@
 
 import React, { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
+import Link from 'next/link'
+import * as LucideIcons from 'lucide-react'
+
+function isUrl(str?: string) {
+  if (!str) return false
+  return str.startsWith('/') || str.startsWith('http://') || str.startsWith('https://')
+}
+
+function PopupIcon({ name, className }: { name: string; className?: string }) {
+  const IconComponent = (LucideIcons as any)[name]
+  if (!IconComponent) return null
+  return <IconComponent className={className} />
+}
 
 type Props = {
   enablePopup?: boolean | null
@@ -10,7 +23,9 @@ type Props = {
   theme?: 'light' | 'dark' | 'primary' | string | null
   imageLayoutDirection?: 'horizontal' | 'vertical' | string | null
   popupTitle?: string | null
+  titleFont?: 'sans' | 'serif' | string | null
   popupDescription?: string | null
+  descriptionFont?: 'sans' | 'serif' | string | null
   bottomDescription?: string | null
   popupHeadingColor?: string | null
   popupTextColor?: string | null
@@ -18,6 +33,7 @@ type Props = {
   imageSectionBackgroundColor?: string | null
   popupBackgroundImage?: string | null
   popupImages?: { image?: any | null, title?: string | null, linkUrl?: string | null, linkTitle?: string | null, id?: string | null }[] | null
+  buttons?: any[] | null
 }
 
 export const PopupNotification: React.FC<Props> = ({
@@ -27,7 +43,9 @@ export const PopupNotification: React.FC<Props> = ({
   theme,
   imageLayoutDirection,
   popupTitle,
+  titleFont,
   popupDescription,
+  descriptionFont,
   bottomDescription,
   popupHeadingColor,
   popupTextColor,
@@ -35,6 +53,7 @@ export const PopupNotification: React.FC<Props> = ({
   imageSectionBackgroundColor,
   popupBackgroundImage,
   popupImages,
+  buttons,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const pathname = usePathname()
@@ -180,7 +199,7 @@ export const PopupNotification: React.FC<Props> = ({
                   {popupTitle && (
                     <h2 
                       id="popup-title" 
-                      className={`text-2xl font-bold font-sans ${titleClasses}`}
+                      className={`text-2xl font-bold ${titleFont === 'serif' ? 'font-serif' : 'font-sans'} ${titleClasses}`}
                       style={popupHeadingColor ? { color: popupHeadingColor } : undefined}
                     >
                       {popupTitle}
@@ -189,10 +208,59 @@ export const PopupNotification: React.FC<Props> = ({
 
                   {popupDescription && (
                     <div 
-                      className={`leading-relaxed whitespace-pre-wrap font-sans text-base sm:text-lg max-w-2xl mx-auto ${descClasses}`}
+                      className={`leading-relaxed whitespace-pre-wrap ${descriptionFont === 'serif' ? 'font-serif' : 'font-sans'} text-base sm:text-lg max-w-2xl mx-auto ${descClasses}`}
                       style={popupTextColor ? { color: popupTextColor } : undefined}
                     >
                       {popupDescription}
+                    </div>
+                  )}
+
+                  {buttons && buttons.length > 0 && (
+                    <div className="mt-4 flex gap-4 flex-wrap justify-center items-center">
+                      {buttons.map((btn, i) => {
+                        const buttonStyle: React.CSSProperties = {}
+                        if (btn.backgroundColor) {
+                          buttonStyle.backgroundColor = btn.backgroundColor
+                        }
+                        if (btn.textColor) {
+                          buttonStyle.color = btn.textColor
+                        }
+
+                        // Determine default classes based on variant
+                        let defaultClasses = ''
+                        if (theme === 'dark') {
+                          if (btn.variant === 'secondary') {
+                            defaultClasses = 'bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm'
+                          } else if (btn.variant === 'outline') {
+                            defaultClasses = 'border-2 border-zinc-700 text-white hover:bg-zinc-800'
+                          } else {
+                            defaultClasses = 'bg-primary text-primary-foreground hover:bg-primary/90'
+                          }
+                        } else {
+                          if (btn.variant === 'secondary') {
+                            defaultClasses = 'bg-zinc-200 text-zinc-900 hover:bg-zinc-300'
+                          } else if (btn.variant === 'outline') {
+                            defaultClasses = 'border border-border text-foreground hover:bg-muted'
+                          } else {
+                            defaultClasses = 'bg-primary text-primary-foreground hover:bg-primary/90'
+                          }
+                        }
+
+                        const customClasses = btn.backgroundColor || btn.textColor ? '' : defaultClasses
+                        const hasUrlLabel = isUrl(btn.label)
+
+                        return (
+                          <Link
+                            key={`${btn.label}-${i}`}
+                            href={btn.url || '#'}
+                            className={`inline-flex items-center gap-2 rounded-md px-5 py-2.5 text-sm font-medium transition-colors ${customClasses}`}
+                            style={buttonStyle}
+                          >
+                            {btn.icon && <PopupIcon name={btn.icon} className="h-4 w-4 shrink-0" />}
+                            {!hasUrlLabel && btn.label}
+                          </Link>
+                        )
+                      })}
                     </div>
                   )}
                 </div>
@@ -254,7 +322,7 @@ export const PopupNotification: React.FC<Props> = ({
                   style={textSectionBackgroundColor ? { backgroundColor: textSectionBackgroundColor } : undefined}
                 >
                   <div 
-                    className={`leading-relaxed whitespace-pre-wrap font-sans text-base sm:text-lg max-w-2xl mx-auto ${descClasses}`}
+                    className={`leading-relaxed whitespace-pre-wrap ${descriptionFont === 'serif' ? 'font-serif' : 'font-sans'} text-base sm:text-lg max-w-2xl mx-auto ${descClasses}`}
                     style={popupTextColor ? { color: popupTextColor } : undefined}
                   >
                     {bottomDescription}

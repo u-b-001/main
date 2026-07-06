@@ -11,6 +11,7 @@ interface PageHeroProps {
   heroGradientPreset?: 'blue' | 'navy' | 'purple' | 'emerald' | null
   heroShape?: 'straight' | 'curved' | 'wavy' | null
   heroEyebrow?: string | null
+  heroEyebrowColor?: string | null
   heroSubtitle?: string | null
   heroPaddingTop?: 'none' | 'small' | 'medium' | 'large' | 'xlarge' | null
   heroPaddingBottom?: 'none' | 'small' | 'medium' | 'large' | 'xlarge' | null
@@ -58,6 +59,7 @@ export const PageHero: React.FC<PageHeroProps> = ({
   heroGradientPreset = 'blue',
   heroShape = 'straight',
   heroEyebrow,
+  heroEyebrowColor,
   heroSubtitle,
   heroPaddingTop = 'medium',
   heroPaddingBottom = 'medium',
@@ -138,7 +140,10 @@ export const PageHero: React.FC<PageHeroProps> = ({
       <div className="relative container mx-auto px-4 z-10 w-full max-w-6xl">
         <div className="flex flex-col items-start text-left max-w-3xl">
           {heroEyebrow && (
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-white/10 text-white border border-white/20 mb-4 backdrop-blur-xs">
+            <span 
+              className="inline-block px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-white/10 text-white border border-white/20 mb-4 backdrop-blur-xs"
+              style={heroEyebrowColor ? { color: heroEyebrowColor, borderColor: heroEyebrowColor } : undefined}
+            >
               {heroEyebrow}
             </span>
           )}

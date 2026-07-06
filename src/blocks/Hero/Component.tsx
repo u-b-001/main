@@ -141,6 +141,7 @@ function HeroIcon({ name, className }: { name: string; className?: string }) {
 
 function TextBlock({
   eyebrowText,
+  eyebrowTextColor,
   heading,
   headingColor,
   subtitle,
@@ -149,6 +150,7 @@ function TextBlock({
   align,
 }: {
   eyebrowText?: string
+  eyebrowTextColor?: string
   heading?: string
   headingColor?: string
   subtitle?: string
@@ -159,7 +161,10 @@ function TextBlock({
   return (
     <div className={`flex flex-col gap-4 ${alignmentClasses(align)}`}>
       {eyebrowText && (
-        <span className="inline-block rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-white">
+        <span 
+          className="inline-block rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-white"
+          style={eyebrowTextColor ? { color: eyebrowTextColor } : undefined}
+        >
           {eyebrowText}
         </span>
       )}
@@ -326,6 +331,7 @@ function FullWidthHero(props: HeroBlockProps) {
           >
             <TextBlock
               eyebrowText={activeSlide.eyebrowText}
+              eyebrowTextColor={activeSlide.eyebrowTextColor}
               heading={activeSlide.heading}
               headingColor={activeSlide.headingColor}
               subtitle={activeSlide.subtitle}
@@ -471,6 +477,7 @@ function FullscreenOverlayCarouselHero(props: HeroBlockProps) {
           >
             <TextBlock
               eyebrowText={'eyebrowText' in textSource ? textSource.eyebrowText : undefined}
+              eyebrowTextColor={'eyebrowTextColor' in textSource ? textSource.eyebrowTextColor : undefined}
               heading={textSource.heading}
               headingColor={textSource.headingColor}
               subtitle={textSource.subtitle}
@@ -532,6 +539,7 @@ function MosiaFullscreenHero(props: HeroBlockProps) {
           {activeSlide.showText !== false && (
             <TextBlock
               eyebrowText={activeSlide.eyebrowText}
+              eyebrowTextColor={activeSlide.eyebrowTextColor}
               heading={activeSlide.heading}
               headingColor={activeSlide.headingColor}
               subtitle={activeSlide.subtitle}
@@ -708,6 +716,7 @@ function SplitHero(props: HeroBlockProps) {
           className={`inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider ${
             isDark ? 'bg-white/10 text-white' : 'bg-neutral-900/10 text-neutral-900'
           }`}
+          style={textSlide.eyebrowTextColor ? { color: textSlide.eyebrowTextColor } : undefined}
         >
           {textSlide.eyebrowText}
         </span>
@@ -839,6 +848,7 @@ function ContainedHero(props: HeroBlockProps) {
             >
               <TextBlock
                 eyebrowText={activeSlide.eyebrowText}
+                eyebrowTextColor={activeSlide.eyebrowTextColor}
                 heading={activeSlide.heading}
                 headingColor={activeSlide.headingColor}
                 subtitle={activeSlide.subtitle}

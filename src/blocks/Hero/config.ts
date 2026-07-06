@@ -76,6 +76,17 @@ function slideFields() {
       },
     },
     {
+      name: 'eyebrowTextColor',
+      type: 'text' as const,
+      label: 'Eyebrow Badge Text Color',
+      admin: {
+        components: {
+          Field: '@/globals/ColorPickerField#ColorPickerField',
+        },
+        description: 'Optional color for the eyebrow badge text (overrides default).',
+      },
+    },
+    {
       name: 'showText',
       type: 'checkbox' as const,
       defaultValue: true,

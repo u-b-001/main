@@ -171,6 +171,17 @@ export const Pages: CollectionConfig<'pages'> = {
       },
     },
     {
+      name: 'heroEyebrowColor',
+      type: 'text',
+      label: 'Hero Eyebrow Text Color',
+      admin: {
+        components: {
+          Field: '@/globals/ColorPickerField#ColorPickerField',
+        },
+        description: 'Optional color for the eyebrow badge text (overrides default).',
+      },
+    },
+    {
       name: 'heroSubtitle',
       type: 'textarea',
       label: 'Hero Subtitle (Description)',

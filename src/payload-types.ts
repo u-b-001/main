@@ -174,6 +174,10 @@ export interface Page {
    */
   heroEyebrow?: string | null;
   /**
+   * Optional color for the eyebrow badge text (overrides default).
+   */
+  heroEyebrowColor?: string | null;
+  /**
    * A description displayed below the title.
    */
   heroSubtitle?: string | null;
@@ -355,6 +359,10 @@ export interface Page {
            * Small badge text above the heading (e.g. "ESTABLISHED 1956", "CORE SERVICE DOMAINS")
            */
           eyebrowText?: string | null;
+          /**
+           * Optional color for the eyebrow badge text (overrides default).
+           */
+          eyebrowTextColor?: string | null;
           showText?: boolean | null;
           heading?: string | null;
           /**
@@ -415,6 +423,10 @@ export interface Page {
                * Small badge text above the heading (e.g. "ESTABLISHED 1956", "CORE SERVICE DOMAINS")
                */
               eyebrowText?: string | null;
+              /**
+               * Optional color for the eyebrow badge text (overrides default).
+               */
+              eyebrowTextColor?: string | null;
               showText?: boolean | null;
               heading?: string | null;
               /**
@@ -2683,6 +2695,7 @@ export interface PagesSelect<T extends boolean = true> {
   heroGradientPreset?: T;
   heroShape?: T;
   heroEyebrow?: T;
+  heroEyebrowColor?: T;
   heroSubtitle?: T;
   heroPaddingTop?: T;
   heroPaddingBottom?: T;
@@ -2787,6 +2800,7 @@ export interface PagesSelect<T extends boolean = true> {
                     animationUrl?: T;
                     dataVizEmbed?: T;
                     eyebrowText?: T;
+                    eyebrowTextColor?: T;
                     showText?: T;
                     heading?: T;
                     headingColor?: T;
@@ -2815,6 +2829,7 @@ export interface PagesSelect<T extends boolean = true> {
                     animationUrl?: T;
                     dataVizEmbed?: T;
                     eyebrowText?: T;
+                    eyebrowTextColor?: T;
                     showText?: T;
                     heading?: T;
                     headingColor?: T;
@@ -4398,6 +4413,8 @@ export interface SiteSetting {
     showOnAllPages?: boolean | null;
     displayFrequency?: ('always' | 'once_per_session' | 'once_per_day') | null;
     theme?: ('light' | 'dark' | 'primary') | null;
+    titleFont?: ('sans' | 'serif') | null;
+    descriptionFont?: ('sans' | 'serif') | null;
     /**
      * Override the theme heading color
      */
@@ -4446,6 +4463,39 @@ export interface SiteSetting {
           id?: string | null;
         }[]
       | null;
+    buttons?:
+      | {
+          label: string;
+          url: string;
+          variant?: ('primary' | 'secondary' | 'outline') | null;
+          /**
+           * Button background color (overrides variant)
+           */
+          backgroundColor?: string | null;
+          /**
+           * Button text color (overrides variant)
+           */
+          textColor?: string | null;
+          /**
+           * Select button icon
+           */
+          icon?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  /**
+   * Configure the appearance of the breadcrumbs navigation.
+   */
+  breadcrumbs?: {
+    /**
+     * Remove the white background and border from the breadcrumbs.
+     */
+    transparentBackground?: boolean | null;
+    /**
+     * Override the default text color of breadcrumbs. Leave empty for default.
+     */
+    textColor?: string | null;
   };
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -4569,6 +4619,8 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         showOnAllPages?: T;
         displayFrequency?: T;
         theme?: T;
+        titleFont?: T;
+        descriptionFont?: T;
         popupHeadingColor?: T;
         popupTextColor?: T;
         textSectionBackgroundColor?: T;
@@ -4587,6 +4639,23 @@ export interface SiteSettingsSelect<T extends boolean = true> {
               linkTitle?: T;
               id?: T;
             };
+        buttons?:
+          | T
+          | {
+              label?: T;
+              url?: T;
+              variant?: T;
+              backgroundColor?: T;
+              textColor?: T;
+              icon?: T;
+              id?: T;
+            };
+      };
+  breadcrumbs?:
+    | T
+    | {
+        transparentBackground?: T;
+        textColor?: T;
       };
   updatedAt?: T;
   createdAt?: T;
