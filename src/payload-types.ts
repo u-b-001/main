@@ -165,11 +165,17 @@ export interface Page {
   id: number;
   title: string;
   layoutStyle: 'sidebar' | 'rightSidebar' | 'centered' | 'fullWidth';
+  /**
+   * Configure the size/style of this page hero. Note: This will be overridden if "Use universal hero banner settings" is enabled in Site Settings.
+   */
   heroStyle: 'none' | 'small' | 'medium' | 'large';
+  /**
+   * Configure the background type of this page hero. Note: This will be overridden if "Use universal hero banner settings" is enabled in Site Settings.
+   */
   heroType?: ('image' | 'gradient' | 'color') | null;
   heroGradientPreset?: ('blue' | 'navy' | 'purple' | 'emerald') | null;
   /**
-   * Choose a background color for the hero banner.
+   * Choose a background color for the hero banner. Note: This color is overridden if "Use a single universal background color" is enabled in Site Settings.
    */
   heroBgColor?: string | null;
   heroShape?: ('straight' | 'curved' | 'wavy') | null;
@@ -4518,6 +4524,39 @@ export interface SiteSetting {
      */
     textColor?: string | null;
   };
+  /**
+   * Configure global styling and default layout for Page Hero banners.
+   */
+  pageHeroSettings?: {
+    heroSettingsMode?: ('manual' | 'universal') | null;
+    heroStyle?: ('none' | 'small' | 'medium' | 'large') | null;
+    heroType?: ('image' | 'gradient' | 'color') | null;
+    heroGradientPreset?: ('blue' | 'navy' | 'purple' | 'emerald') | null;
+    /**
+     * Choose a background color for the hero banner.
+     */
+    heroBgColor?: string | null;
+    heroShape?: ('straight' | 'curved' | 'wavy') | null;
+    /**
+     * Small uppercase badge text above the main title.
+     */
+    heroEyebrow?: string | null;
+    /**
+     * Optional color for the eyebrow badge text (overrides default).
+     */
+    heroEyebrowColor?: string | null;
+    /**
+     * A description displayed below the title.
+     */
+    heroSubtitle?: string | null;
+    heroPaddingTop?: ('none' | 'small' | 'medium' | 'large' | 'xlarge') | null;
+    heroPaddingBottom?: ('none' | 'small' | 'medium' | 'large' | 'xlarge') | null;
+    heroMarginBottom?: ('none' | 'small' | 'medium' | 'large' | 'xlarge') | null;
+    /**
+     * Banner image shown at the top of inner pages.
+     */
+    hero?: (number | null) | Media;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -4685,6 +4724,23 @@ export interface SiteSettingsSelect<T extends boolean = true> {
     | {
         transparentBackground?: T;
         textColor?: T;
+      };
+  pageHeroSettings?:
+    | T
+    | {
+        heroSettingsMode?: T;
+        heroStyle?: T;
+        heroType?: T;
+        heroGradientPreset?: T;
+        heroBgColor?: T;
+        heroShape?: T;
+        heroEyebrow?: T;
+        heroEyebrowColor?: T;
+        heroSubtitle?: T;
+        heroPaddingTop?: T;
+        heroPaddingBottom?: T;
+        heroMarginBottom?: T;
+        hero?: T;
       };
   updatedAt?: T;
   createdAt?: T;

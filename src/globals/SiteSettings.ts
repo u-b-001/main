@@ -555,5 +555,185 @@ export const SiteSettings: GlobalConfig = {
         },
       ],
     },
+    {
+      type: 'group',
+      name: 'pageHeroSettings',
+      label: 'Page Hero Banner Settings',
+      admin: {
+        description: 'Configure global styling and default layout for Page Hero banners.',
+      },
+      fields: [
+        {
+          name: 'heroSettingsMode',
+          type: 'radio',
+          label: 'Hero Banner Settings Mode',
+          defaultValue: 'manual',
+          options: [
+            { label: 'Configure hero banner manually on each page', value: 'manual' },
+            { label: 'Use universal hero banner settings for all pages', value: 'universal' },
+          ],
+        },
+        {
+          name: 'heroStyle',
+          type: 'select',
+          label: 'Page Hero Banner Style',
+          defaultValue: 'medium',
+          options: [
+            { label: 'No Hero (Minimal Text Header)', value: 'none' },
+            { label: 'Small Banner', value: 'small' },
+            { label: 'Medium Banner (Default)', value: 'medium' },
+            { label: 'Large Banner', value: 'large' },
+          ],
+          admin: {
+            condition: (_, siblingData) => siblingData?.heroSettingsMode === 'universal',
+          },
+        },
+        {
+          name: 'heroType',
+          type: 'select',
+          label: 'Hero Type',
+          defaultValue: 'image',
+          options: [
+            { label: 'Background Image', value: 'image' },
+            { label: 'Curved/Wavy Gradient', value: 'gradient' },
+            { label: 'Solid Color', value: 'color' },
+          ],
+          admin: {
+            condition: (_, siblingData) => siblingData?.heroSettingsMode === 'universal',
+          },
+        },
+        {
+          name: 'heroGradientPreset',
+          type: 'select',
+          label: 'Hero Gradient Preset',
+          defaultValue: 'blue',
+          options: [
+            { label: 'Blue Wave', value: 'blue' },
+            { label: 'Deep Navy', value: 'navy' },
+            { label: 'Purple Sunset', value: 'purple' },
+            { label: 'Emerald Wave', value: 'emerald' },
+          ],
+          admin: {
+            condition: (_, siblingData) =>
+              siblingData?.heroSettingsMode === 'universal' && siblingData?.heroType === 'gradient',
+          },
+        },
+        {
+          name: 'heroBgColor',
+          type: 'text',
+          label: 'Hero Background Color',
+          admin: {
+            components: {
+              Field: '@/globals/ColorPickerField#ColorPickerField',
+            },
+            condition: (_, siblingData) =>
+              siblingData?.heroSettingsMode === 'universal' && siblingData?.heroType === 'color',
+            description: 'Choose a background color for the hero banner.',
+          },
+        },
+        {
+          name: 'heroShape',
+          type: 'select',
+          label: 'Hero Bottom Shape',
+          defaultValue: 'straight',
+          options: [
+            { label: 'Straight Bottom', value: 'straight' },
+            { label: 'Curved Bottom', value: 'curved' },
+            { label: 'Wavy Bottom', value: 'wavy' },
+          ],
+          admin: {
+            condition: (_, siblingData) => siblingData?.heroSettingsMode === 'universal',
+          },
+        },
+        {
+          name: 'heroEyebrow',
+          type: 'text',
+          label: 'Hero Eyebrow (Badge Text)',
+          admin: {
+            condition: (_, siblingData) => siblingData?.heroSettingsMode === 'universal',
+            description: 'Small uppercase badge text above the main title.',
+          },
+        },
+        {
+          name: 'heroEyebrowColor',
+          type: 'text',
+          label: 'Hero Eyebrow Text Color',
+          admin: {
+            components: {
+              Field: '@/globals/ColorPickerField#ColorPickerField',
+            },
+            condition: (_, siblingData) => siblingData?.heroSettingsMode === 'universal',
+            description: 'Optional color for the eyebrow badge text (overrides default).',
+          },
+        },
+        {
+          name: 'heroSubtitle',
+          type: 'textarea',
+          label: 'Hero Subtitle (Description)',
+          admin: {
+            condition: (_, siblingData) => siblingData?.heroSettingsMode === 'universal',
+            description: 'A description displayed below the title.',
+          },
+        },
+        {
+          name: 'heroPaddingTop',
+          type: 'select',
+          label: 'Hero Padding Top',
+          defaultValue: 'medium',
+          options: [
+            { label: 'None', value: 'none' },
+            { label: 'Small', value: 'small' },
+            { label: 'Medium', value: 'medium' },
+            { label: 'Large', value: 'large' },
+            { label: 'X-Large', value: 'xlarge' },
+          ],
+          admin: {
+            condition: (_, siblingData) => siblingData?.heroSettingsMode === 'universal',
+          },
+        },
+        {
+          name: 'heroPaddingBottom',
+          type: 'select',
+          label: 'Hero Padding Bottom',
+          defaultValue: 'medium',
+          options: [
+            { label: 'None', value: 'none' },
+            { label: 'Small', value: 'small' },
+            { label: 'Medium', value: 'medium' },
+            { label: 'Large', value: 'large' },
+            { label: 'X-Large', value: 'xlarge' },
+          ],
+          admin: {
+            condition: (_, siblingData) => siblingData?.heroSettingsMode === 'universal',
+          },
+        },
+        {
+          name: 'heroMarginBottom',
+          type: 'select',
+          label: 'Hero Margin Bottom',
+          defaultValue: 'medium',
+          options: [
+            { label: 'None', value: 'none' },
+            { label: 'Small', value: 'small' },
+            { label: 'Medium', value: 'medium' },
+            { label: 'Large', value: 'large' },
+            { label: 'X-Large', value: 'xlarge' },
+          ],
+          admin: {
+            condition: (_, siblingData) => siblingData?.heroSettingsMode === 'universal',
+          },
+        },
+        {
+          name: 'hero',
+          type: 'upload',
+          relationTo: 'media',
+          admin: {
+            condition: (_, siblingData) =>
+              siblingData?.heroSettingsMode === 'universal' && siblingData?.heroType === 'image',
+            description: 'Banner image shown at the top of inner pages.',
+          },
+        },
+      ],
+    },
   ],
 }
