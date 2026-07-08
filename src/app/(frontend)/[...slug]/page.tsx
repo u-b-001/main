@@ -104,6 +104,7 @@ export default async function Page({ params: paramsPromise }: Args) {
         heroMarginBottom={page.heroMarginBottom}
         bgTheme={bgTheme}
         customBgColor={customBgColor}
+        heroBgColor={page.heroBgColor}
       />
 
       {/* Breadcrumbs */}

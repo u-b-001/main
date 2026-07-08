@@ -156,18 +156,14 @@ export const FeaturedCardsComponent: React.FC<FeaturedCardsProps> = ({
                   </h3>
 
                   {/* Description */}
-                  {(card.descriptionRichText || card.description) && (
+                  {card.descriptionRichText && (
                     <div
                       className={cn(
                         'text-sm leading-relaxed mb-6 flex-grow [&_p]:mb-2 last:[&_p]:mb-0',
                         isLightCardText ? 'text-white/80' : 'text-slate-600 dark:text-slate-400',
                       )}
                     >
-                      {card.descriptionRichText ? (
-                        <RichText data={card.descriptionRichText} enableGutter={false} enableProse={false} />
-                      ) : (
-                        <p>{card.description}</p>
-                      )}
+                      <RichText data={card.descriptionRichText} enableGutter={false} enableProse={false} />
                     </div>
                   )}
 

@@ -7,7 +7,7 @@ interface PageHeroProps {
   title: string
   heroImage?: string | number | MediaType | null
   heroStyle?: 'none' | 'small' | 'medium' | 'large' | null
-  heroType?: 'image' | 'gradient' | null
+  heroType?: 'image' | 'gradient' | 'color' | null
   heroGradientPreset?: 'blue' | 'navy' | 'purple' | 'emerald' | null
   heroShape?: 'straight' | 'curved' | 'wavy' | null
   heroEyebrow?: string | null
@@ -18,6 +18,7 @@ interface PageHeroProps {
   heroMarginBottom?: 'none' | 'small' | 'medium' | 'large' | 'xlarge' | null
   bgTheme?: string | null
   customBgColor?: string | null
+  heroBgColor?: string | null
 }
 
 const paddingTopClasses = {
@@ -66,6 +67,7 @@ export const PageHero: React.FC<PageHeroProps> = ({
   heroMarginBottom = 'medium',
   bgTheme,
   customBgColor,
+  heroBgColor,
 }) => {
   if (heroStyle === 'none') {
     return (
@@ -85,7 +87,13 @@ export const PageHero: React.FC<PageHeroProps> = ({
 
   // Background Class
   const isGradient = heroType === 'gradient'
+  const isColor = heroType === 'color'
   const gradientClass = gradientPresets[heroGradientPreset || 'blue']
+
+  const containerStyle: React.CSSProperties = {}
+  if (isColor) {
+    containerStyle.backgroundColor = heroBgColor || '#0f172a'
+  }
 
   // SVG Bottom Shape Curve
   let shapePath = ''
@@ -112,14 +120,15 @@ export const PageHero: React.FC<PageHeroProps> = ({
     <div
       className={cn(
         'relative w-full overflow-hidden flex items-center transition-all duration-300',
-        isGradient ? gradientClass : 'bg-slate-900',
+        isGradient ? gradientClass : (!isColor ? 'bg-slate-900' : ''),
         ptClass,
         pbClass,
         mbClass,
       )}
+      style={containerStyle}
     >
       {/* Background Image Banner if Type is Image */}
-      {!isGradient && (
+      {heroType === 'image' && (
         <>
           {heroImage && typeof heroImage === 'object' ? (
             <div className="absolute inset-0 w-full h-full">

@@ -127,6 +127,7 @@ export const Pages: CollectionConfig<'pages'> = {
       options: [
         { label: 'Background Image', value: 'image' },
         { label: 'Curved/Wavy Gradient', value: 'gradient' },
+        { label: 'Solid Color', value: 'color' },
       ],
       admin: {
         position: 'sidebar',
@@ -146,6 +147,19 @@ export const Pages: CollectionConfig<'pages'> = {
       admin: {
         position: 'sidebar',
         condition: (_, siblingData) => siblingData?.heroType === 'gradient',
+      },
+    },
+    {
+      name: 'heroBgColor',
+      type: 'text',
+      label: 'Hero Background Color',
+      admin: {
+        components: {
+          Field: '@/globals/ColorPickerField#ColorPickerField',
+        },
+        condition: (_, siblingData) => siblingData?.heroType === 'color',
+        description: 'Choose a background color for the hero banner.',
+        position: 'sidebar',
       },
     },
     {

@@ -54,6 +54,57 @@ export const Footer: GlobalConfig = {
       type: 'checkbox',
       defaultValue: true,
     },
+    {
+      name: 'styling',
+      type: 'group',
+      label: 'Styling & Design',
+      fields: [
+        {
+          name: 'footerBgColor',
+          type: 'text',
+          label: 'Footer Background Color',
+          admin: {
+            components: {
+              Field: '@/globals/ColorPickerField#ColorPickerField',
+            },
+            description: 'Custom background color for the site footer.',
+          },
+        },
+        {
+          name: 'textColor',
+          type: 'text',
+          label: 'Text Color',
+          admin: {
+            components: {
+              Field: '@/globals/ColorPickerField#ColorPickerField',
+            },
+            description: 'Custom text color for footer descriptions, copyright, and lists.',
+          },
+        },
+        {
+          name: 'iconColor',
+          type: 'text',
+          label: 'Icon Color',
+          admin: {
+            components: {
+              Field: '@/globals/ColorPickerField#ColorPickerField',
+            },
+            description: 'Custom color for both contact and social icons.',
+          },
+        },
+        {
+          name: 'widgetBgColor',
+          type: 'text',
+          label: 'Visitor/Calendar Background Color',
+          admin: {
+            components: {
+              Field: '@/globals/ColorPickerField#ColorPickerField',
+            },
+            description: 'Background color for the stats and calendar widgets.',
+          },
+        },
+      ],
+    },
   ],
   hooks: {
     afterChange: [revalidateFooter],
