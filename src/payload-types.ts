@@ -166,8 +166,12 @@ export interface Page {
   title: string;
   layoutStyle: 'sidebar' | 'rightSidebar' | 'centered' | 'fullWidth';
   heroStyle: 'none' | 'small' | 'medium' | 'large';
-  heroType?: ('image' | 'gradient') | null;
+  heroType?: ('image' | 'gradient' | 'color') | null;
   heroGradientPreset?: ('blue' | 'navy' | 'purple' | 'emerald') | null;
+  /**
+   * Choose a background color for the hero banner.
+   */
+  heroBgColor?: string | null;
   heroShape?: ('straight' | 'curved' | 'wavy') | null;
   /**
    * Small uppercase badge text above the main title.
@@ -2693,6 +2697,7 @@ export interface PagesSelect<T extends boolean = true> {
   heroStyle?: T;
   heroType?: T;
   heroGradientPreset?: T;
+  heroBgColor?: T;
   heroShape?: T;
   heroEyebrow?: T;
   heroEyebrowColor?: T;
@@ -4347,6 +4352,24 @@ export interface Footer {
    */
   showVisitorCounter?: boolean | null;
   showCalendar?: boolean | null;
+  styling?: {
+    /**
+     * Custom background color for the site footer.
+     */
+    footerBgColor?: string | null;
+    /**
+     * Custom text color for footer descriptions, copyright, and lists.
+     */
+    textColor?: string | null;
+    /**
+     * Custom color for both contact and social icons.
+     */
+    iconColor?: string | null;
+    /**
+     * Background color for the stats and calendar widgets.
+     */
+    widgetBgColor?: string | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -4579,6 +4602,14 @@ export interface FooterSelect<T extends boolean = true> {
   copyright?: T;
   showVisitorCounter?: T;
   showCalendar?: T;
+  styling?:
+    | T
+    | {
+        footerBgColor?: T;
+        textColor?: T;
+        iconColor?: T;
+        widgetBgColor?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

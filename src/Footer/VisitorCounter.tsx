@@ -20,40 +20,40 @@ export const VisitorCounter: React.FC = () => {
   }, [])
 
   return (
-    <div className="bg-slate-900 border border-slate-800 p-4 rounded-lg w-full max-w-[240px] text-white">
-      <div className="flex items-center gap-2 mb-3 border-b border-slate-850 pb-2">
-        <Users className="w-4 h-4 text-brand-gold" />
-        <span className="text-xs font-bold tracking-wider text-slate-400 uppercase">
+    <div className="custom-footer-widget bg-slate-900 border border-slate-800 p-4 rounded-lg w-full max-w-[240px] text-white">
+      <div className="custom-footer-widget-header flex items-center gap-2 mb-3 border-b border-slate-850 pb-2">
+        <Users className="w-4 h-4 custom-footer-widget-accent text-brand-gold" />
+        <span className="text-xs font-bold tracking-wider text-slate-400 uppercase custom-footer-widget-text">
           VISITORS STATS
         </span>
       </div>
 
       <div className="space-y-2 text-xs font-sans">
-        <div className="flex justify-between items-center text-slate-300">
+        <div className="flex justify-between items-center custom-footer-widget-text text-slate-300">
           <span>Today</span>
-          <span className="font-semibold text-slate-100">1,248</span>
+          <span className="font-semibold custom-footer-widget-text text-slate-100">1,248</span>
         </div>
-        <div className="flex justify-between items-center text-slate-300">
+        <div className="flex justify-between items-center custom-footer-widget-text text-slate-300">
           <span>Yesterday</span>
-          <span className="font-semibold text-slate-100">2,410</span>
+          <span className="font-semibold custom-footer-widget-text text-slate-100">2,410</span>
         </div>
-        <div className="flex justify-between items-center text-slate-300">
+        <div className="flex justify-between items-center custom-footer-widget-text text-slate-300">
           <span>This Week</span>
-          <span className="font-semibold text-slate-100">8,590</span>
+          <span className="font-semibold custom-footer-widget-text text-slate-100">8,590</span>
         </div>
-        <div className="flex justify-between items-center text-slate-300">
+        <div className="flex justify-between items-center custom-footer-widget-text text-slate-300">
           <span>This Month</span>
-          <span className="font-semibold text-slate-100">32,492</span>
+          <span className="font-semibold custom-footer-widget-text text-slate-100">32,492</span>
         </div>
-        <div className="flex justify-between items-center text-slate-300 border-t border-slate-850 pt-2">
+        <div className="flex justify-between items-center custom-footer-widget-text border-t border-slate-850 pt-2 custom-footer-widget-header text-slate-300">
           <span>Total Hits</span>
-          <span className="font-bold text-brand-gold">142,398</span>
+          <span className="font-bold custom-footer-widget-accent text-brand-gold">142,398</span>
         </div>
 
-        <div className="flex items-center justify-between mt-3 text-xs bg-slate-950 p-2 rounded-md border border-slate-850">
+        <div className="flex items-center justify-between mt-3 text-xs bg-slate-950 p-2 rounded-md border border-slate-850 custom-footer-widget-header">
           <div className="flex items-center gap-1.5">
             <span className="w-2.5 h-2.5 bg-green-500 rounded-full inline-block animate-pulse"></span>
-            <span className="text-slate-400 font-medium">Online Now</span>
+            <span className="text-slate-400 font-medium custom-footer-widget-text">Online Now</span>
           </div>
           <span className="font-bold text-green-400">{onlineCount}</span>
         </div>

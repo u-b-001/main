@@ -60,8 +60,8 @@ export const CalendarWidget: React.FC = () => {
         key={`day-${d}`}
         className={`h-6 w-6 flex items-center justify-center text-xs rounded-full font-sans transition-colors ${
           active
-            ? 'bg-brand-red text-white font-bold'
-            : 'text-gray-300 hover:bg-slate-800 hover:text-white cursor-pointer'
+            ? 'custom-footer-calendar-active bg-brand-red text-white font-bold'
+            : 'text-gray-300 hover:bg-slate-800 hover:text-white cursor-pointer custom-footer-calendar-cell'
         }`}
       >
         {d}
@@ -70,11 +70,11 @@ export const CalendarWidget: React.FC = () => {
   }
 
   return (
-    <div className="bg-slate-900 border border-slate-800 p-4 rounded-lg w-full max-w-[240px] text-white">
+    <div className="custom-footer-widget bg-slate-900 border border-slate-800 p-4 rounded-lg w-full max-w-[240px] text-white">
       <div className="flex justify-between items-center mb-3">
         <button
           onClick={handlePrevMonth}
-          className="p-1 rounded-md hover:bg-slate-800 text-gray-400 hover:text-white"
+          className="p-1 rounded-md hover:bg-slate-800 text-gray-400 hover:text-white custom-footer-calendar-btn"
           aria-label="Previous Month"
         >
           <ChevronLeft className="w-4 h-4" />
@@ -84,7 +84,7 @@ export const CalendarWidget: React.FC = () => {
         </span>
         <button
           onClick={handleNextMonth}
-          className="p-1 rounded-md hover:bg-slate-800 text-gray-400 hover:text-white"
+          className="p-1 rounded-md hover:bg-slate-800 text-gray-400 hover:text-white custom-footer-calendar-btn"
           aria-label="Next Month"
         >
           <ChevronRight className="w-4 h-4" />
