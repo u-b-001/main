@@ -56,12 +56,6 @@ export const FeaturedCardsBlock: Block = {
           required: true,
         },
         {
-          name: 'description',
-          type: 'textarea',
-          label: 'Card Description (Legacy - Do not use for new cards)',
-          required: false,
-        },
-        {
           name: 'descriptionRichText',
           type: 'richText',
           label: 'Card Description',

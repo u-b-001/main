@@ -1674,7 +1674,6 @@ export interface FeaturedCardsBlock {
   cardStyle: 'standard' | 'glassmorphism' | 'navy' | 'red' | 'bordered';
   cards: {
     title: string;
-    description?: string | null;
     descriptionRichText?: {
       root: {
         type: string;
@@ -3569,7 +3568,6 @@ export interface FeaturedCardsBlockSelect<T extends boolean = true> {
     | T
     | {
         title?: T;
-        description?: T;
         descriptionRichText?: T;
         icon?: T;
         image?: T;
