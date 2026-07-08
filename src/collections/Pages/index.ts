@@ -117,6 +117,7 @@ export const Pages: CollectionConfig<'pages'> = {
       required: true,
       admin: {
         position: 'sidebar',
+        description: 'Configure the size/style of this page hero. Note: This will be overridden if "Use universal hero banner settings" is enabled in Site Settings.',
       },
     },
     {
@@ -131,6 +132,7 @@ export const Pages: CollectionConfig<'pages'> = {
       ],
       admin: {
         position: 'sidebar',
+        description: 'Configure the background type of this page hero. Note: This will be overridden if "Use universal hero banner settings" is enabled in Site Settings.',
       },
     },
     {
@@ -158,7 +160,7 @@ export const Pages: CollectionConfig<'pages'> = {
           Field: '@/globals/ColorPickerField#ColorPickerField',
         },
         condition: (_, siblingData) => siblingData?.heroType === 'color',
-        description: 'Choose a background color for the hero banner.',
+        description: 'Choose a background color for the hero banner. Note: This color is overridden if "Use a single universal background color" is enabled in Site Settings.',
         position: 'sidebar',
       },
     },

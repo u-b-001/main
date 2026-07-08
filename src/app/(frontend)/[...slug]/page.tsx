@@ -11,6 +11,7 @@ import { PageHero } from '@/components/shared/PageHero'
 import { Breadcrumb } from '@/components/shared/Breadcrumb'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { generateMeta } from '@/utilities/generateMeta'
+import { getCachedGlobal } from '@/utilities/getGlobals'
 import { CommitteeGrid } from '@/components/shared/CommitteeGrid'
 
 type Args = {
@@ -56,6 +57,24 @@ export default async function Page({ params: paramsPromise }: Args) {
     return notFound()
   }
 
+  const siteSettings = (await getCachedGlobal('site-settings', 1)()) as any
+  const heroSettings = siteSettings?.pageHeroSettings || {}
+  const isUniversalHero = heroSettings.heroSettingsMode === 'universal'
+
+  // Map hero banner parameters based on mode (universal vs page-specific)
+  const heroImage = isUniversalHero ? heroSettings.hero : page.hero
+  const heroStyle = isUniversalHero ? heroSettings.heroStyle : page.heroStyle
+  const heroType = isUniversalHero ? heroSettings.heroType : page.heroType
+  const heroGradientPreset = isUniversalHero ? heroSettings.heroGradientPreset : page.heroGradientPreset
+  const heroShape = isUniversalHero ? heroSettings.heroShape : page.heroShape
+  const heroEyebrow = isUniversalHero ? (heroSettings.heroEyebrow || page.heroEyebrow) : page.heroEyebrow
+  const heroEyebrowColor = isUniversalHero ? (heroSettings.heroEyebrowColor || page.heroEyebrowColor) : page.heroEyebrowColor
+  const heroSubtitle = isUniversalHero ? (heroSettings.heroSubtitle || page.heroSubtitle) : page.heroSubtitle
+  const heroPaddingTop = isUniversalHero ? heroSettings.heroPaddingTop : page.heroPaddingTop
+  const heroPaddingBottom = isUniversalHero ? heroSettings.heroPaddingBottom : page.heroPaddingBottom
+  const heroMarginBottom = isUniversalHero ? heroSettings.heroMarginBottom : page.heroMarginBottom
+  const heroBgColor = isUniversalHero ? heroSettings.heroBgColor : page.heroBgColor
+
   const bgSettings = page?.backgroundSettings
   const bgTheme = bgSettings?.theme || 'default'
   const customBgColor = bgSettings?.customColor
@@ -91,20 +110,20 @@ export default async function Page({ params: paramsPromise }: Args) {
       {/* Hero Banner */}
       <PageHero
         title={page.title}
-        heroImage={page.hero}
-        heroStyle={page.heroStyle}
-        heroType={page.heroType}
-        heroGradientPreset={page.heroGradientPreset}
-        heroShape={page.heroShape}
-        heroEyebrow={page.heroEyebrow}
-        heroEyebrowColor={page.heroEyebrowColor}
-        heroSubtitle={page.heroSubtitle}
-        heroPaddingTop={page.heroPaddingTop}
-        heroPaddingBottom={page.heroPaddingBottom}
-        heroMarginBottom={page.heroMarginBottom}
+        heroImage={heroImage}
+        heroStyle={heroStyle}
+        heroType={heroType}
+        heroGradientPreset={heroGradientPreset}
+        heroShape={heroShape}
+        heroEyebrow={heroEyebrow}
+        heroEyebrowColor={heroEyebrowColor}
+        heroSubtitle={heroSubtitle}
+        heroPaddingTop={heroPaddingTop}
+        heroPaddingBottom={heroPaddingBottom}
+        heroMarginBottom={heroMarginBottom}
         bgTheme={bgTheme}
         customBgColor={customBgColor}
-        heroBgColor={page.heroBgColor}
+        heroBgColor={heroBgColor}
       />
 
       {/* Breadcrumbs */}
