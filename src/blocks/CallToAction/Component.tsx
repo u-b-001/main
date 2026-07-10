@@ -55,7 +55,7 @@ export const CallToActionBlock: React.FC<CallToActionProps> = ({
   }
 
   return (
-    <section className="w-full py-16 md:py-24 relative overflow-hidden bg-transparent">
+    <section className="w-full py-16 md:py-24 relative overflow-hidden bg-transparent block-call-to-action">
       <div className="container mx-auto px-4">
         {/* Optional Header Section Heading */}
         {(sectionHeading || sectionDescription) && (
@@ -83,7 +83,7 @@ export const CallToActionBlock: React.FC<CallToActionProps> = ({
         {layout === 'gradient' && (
           <div
             className={cn(
-              'rounded-3xl p-8 md:p-16 relative overflow-hidden shadow-lg border border-white/10 flex flex-col justify-center min-h-[300px]',
+              'rounded-3xl p-8 md:p-16 relative overflow-hidden shadow-lg border border-white/10 flex flex-col justify-center min-h-[300px] cta-card transition-all duration-300',
               alignmentClass
             )}
             style={bgStyles}
@@ -131,7 +131,7 @@ export const CallToActionBlock: React.FC<CallToActionProps> = ({
           <div className="max-w-3xl mx-auto">
             <div
               className={cn(
-                'rounded-2xl p-8 md:p-12 border border-slate-100 dark:border-slate-800 shadow-md text-center flex flex-col items-center justify-center relative overflow-hidden',
+                'rounded-2xl p-8 md:p-12 border border-slate-100 dark:border-slate-800 shadow-md text-center flex flex-col items-center justify-center relative overflow-hidden cta-card transition-all duration-300',
                 textColorClass
               )}
               style={bgStyles}
@@ -177,7 +177,7 @@ export const CallToActionBlock: React.FC<CallToActionProps> = ({
 
         {/* ── Split Image Banner Layout ── */}
         {layout === 'split' && (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch bg-white dark:bg-slate-950 rounded-3xl border border-slate-100 dark:border-slate-850 overflow-hidden shadow-md">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch bg-white dark:bg-slate-950 rounded-3xl border border-slate-100 dark:border-slate-850 overflow-hidden shadow-md cta-card transition-all duration-300">
             {/* Left Column content */}
             <div className="lg:col-span-7 p-8 md:p-14 flex flex-col justify-center">
               <h2 className="text-2xl md:text-4xl font-extrabold font-serif text-brand-navy dark:text-white mb-4 leading-snug">

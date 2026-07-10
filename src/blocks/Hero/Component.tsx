@@ -308,7 +308,7 @@ function FullWidthHero(props: HeroBlockProps) {
 
   return (
     <section
-      className="relative w-full overflow-hidden flex flex-col"
+      className="relative w-full overflow-hidden flex flex-col block-hero"
       style={{ minHeight: props.height ? `${props.height}px` : '600px' }}
     >
       <div className="absolute inset-0">
@@ -453,7 +453,7 @@ function FullscreenOverlayCarouselHero(props: HeroBlockProps) {
 
   return (
     <section
-      className="relative w-full overflow-hidden flex flex-col"
+      className="relative w-full overflow-hidden flex flex-col block-hero"
       style={{ minHeight: props.height ? `${props.height}px` : '600px' }}
     >
       <div className="absolute inset-0">
@@ -519,7 +519,7 @@ function MosiaFullscreenHero(props: HeroBlockProps) {
 
   return (
     <section
-      className="relative w-full overflow-hidden flex flex-col"
+      className="relative w-full overflow-hidden flex flex-col block-hero"
       style={{ minHeight: props.height ? `${props.height}px` : '600px' }}
     >
       <div className="absolute inset-0">
@@ -551,7 +551,7 @@ function MosiaFullscreenHero(props: HeroBlockProps) {
 
           {card?.enabled !== false && card && (
             <div className="hidden md:block">
-              <div className="ml-auto w-full max-w-sm rounded-2xl bg-white/95 p-6 shadow-xl backdrop-blur">
+              <div className="ml-auto w-full max-w-sm rounded-2xl bg-white/95 p-6 shadow-xl backdrop-blur hero-floating-card transition-all duration-300">
                 {card.badgeLabel && (
                   <span className="inline-block rounded-full bg-neutral-900 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white">
                     {card.badgeLabel}
@@ -792,7 +792,7 @@ function SplitHero(props: HeroBlockProps) {
 
   return (
     <section
-      className={`grid w-full grid-cols-1 md:grid-cols-2 ${themeWrapperClass}`}
+      className={`grid w-full grid-cols-1 md:grid-cols-2 block-hero ${themeWrapperClass}`}
       style={{ minHeight: props.height ? `${props.height}px` : '600px' }}
     >
       {textOnRight ? (
