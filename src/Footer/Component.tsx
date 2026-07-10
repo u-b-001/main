@@ -167,28 +167,24 @@ export async function Footer() {
           </div>
 
           {/* Column 3 — Visitor Counter */}
-          <div className="space-y-4">
-            <h4 className="font-serif font-bold text-sm text-white tracking-wider uppercase border-b border-slate-900 pb-2 custom-footer-widget-header">
-              VISITORS
-            </h4>
-            {footerData?.showVisitorCounter !== false ? (
+          {footerData?.showVisitorCounter !== false && (
+            <div className="space-y-4">
+              <h4 className="font-serif font-bold text-sm text-white tracking-wider uppercase border-b border-slate-900 pb-2 custom-footer-widget-header">
+                VISITORS
+              </h4>
               <VisitorCounter />
-            ) : (
-              <div className="text-xs text-slate-500 italic">Visitor statistics disabled</div>
-            )}
-          </div>
+            </div>
+          )}
 
           {/* Column 4 — Calendar */}
-          <div className="space-y-4">
-            <h4 className="font-serif font-bold text-sm text-white tracking-wider uppercase border-b border-slate-900 pb-2 custom-footer-widget-header">
-              CALENDAR
-            </h4>
-            {footerData?.showCalendar !== false ? (
+          {footerData?.showCalendar !== false && (
+            <div className="space-y-4">
+              <h4 className="font-serif font-bold text-sm text-white tracking-wider uppercase border-b border-slate-900 pb-2 custom-footer-widget-header">
+                CALENDAR
+              </h4>
               <CalendarWidget />
-            ) : (
-              <div className="text-xs text-slate-500 italic">Calendar disabled</div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
 
         {/* Bottom Bar */}
