@@ -12,8 +12,8 @@ export const InfoCardBlock: React.FC<InfoCardBlockProps> = ({ title, content, st
   }
 
   return (
-    <div className="container mx-auto px-4 py-4 max-w-[48rem]">
-      <div className={cn('p-6 rounded-lg shadow-xs transition-shadow hover:shadow-md', styles[style || 'default'])}>
+    <div className="container mx-auto px-4 py-4 max-w-[48rem] block-info-card">
+      <div className={cn('p-6 rounded-lg shadow-xs transition-all duration-300 hover:shadow-md info-card', styles[style || 'default'])}>
         {(title || icon) && (
           <div className="flex items-center gap-3 mb-3">
             {(() => {

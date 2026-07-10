@@ -49,7 +49,7 @@ export const FeaturedCardsComponent: React.FC<FeaturedCardsProps> = ({
   const isLightCardText = cardStyle === 'navy' || cardStyle === 'red'
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 block-featured-cards">
       {/* Headers */}
       {(heading || subheading) && (
         <div className="text-center max-w-2xl mx-auto mb-12">
@@ -80,7 +80,7 @@ export const FeaturedCardsComponent: React.FC<FeaturedCardsProps> = ({
             <div
               key={idx}
               className={cn(
-                'group flex flex-col h-full rounded-2xl overflow-hidden transition-all duration-300 transform hover:-translate-y-1',
+                'group flex flex-col h-full rounded-2xl overflow-hidden transition-all duration-300 transform hover:-translate-y-1 featured-card',
                 cardThemeClasses[cardStyle || 'standard'],
               )}
             >
@@ -283,7 +283,7 @@ export const FeaturedCardsComponent: React.FC<FeaturedCardsProps> = ({
                       href={card.buttonUrl}
                       target={card.externalLink ? '_blank' : undefined}
                       className={cn(
-                        'inline-flex items-center gap-2 px-6 py-3 border-2 rounded-xl font-semibold text-sm shadow-2xs hover:shadow-xs transition-all duration-200 group',
+                        'inline-flex items-center gap-2 px-6 py-3 border-2 rounded-xl font-semibold text-sm shadow-2xs hover:shadow-xs transition-all duration-200 group featured-card-btn',
                         isLightCardText
                           ? 'border-brand-gold text-brand-gold hover:border-white hover:text-white'
                           : 'border-brand-navy dark:border-slate-700 text-brand-navy dark:text-white hover:border-brand-red dark:hover:border-brand-gold hover:text-brand-red dark:hover:text-brand-gold',
