@@ -64,7 +64,7 @@ export const FlexibleRowComponent: React.FC<any> = ({
 
   return (
     <div
-      className={cn('w-full relative overflow-hidden py-16')}
+      className={cn('w-full relative overflow-hidden py-16 block-flexible-row')}
       style={{ backgroundColor: sectionBgColor || 'transparent' }}
     >
       {radialGlow && (
@@ -111,7 +111,7 @@ export const FlexibleRowComponent: React.FC<any> = ({
             return (
               <div
                 key={idx}
-                className={cn('flex flex-col relative overflow-hidden', colWidth, colPadding, themeClasses[colTheme])}
+                className={cn('flex flex-col relative overflow-hidden flexible-row-column', colWidth, colPadding, themeClasses[colTheme])}
                 style={column.columnBgColor && column.columnBgColor !== 'transparent' ? { backgroundColor: column.columnBgColor } : {}}
                 data-theme={colTheme === 'dark' ? 'dark' : undefined}
               >

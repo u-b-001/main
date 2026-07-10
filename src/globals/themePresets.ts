@@ -106,7 +106,7 @@ export const themePresets: Record<string, ThemePreset> = {
       ctaStyle: 'pill',
     },
     layouts: {
-      hero: 'split',
+      hero: 'mosaiFullscreen',
       featureCards: 'classic',
       featureCardsTheme: 'light',
       featureCardsShowButton: true,
