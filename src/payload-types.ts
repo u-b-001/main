@@ -646,7 +646,30 @@ export interface Page {
     | HelpSupportBlock
     | {
         heading?: string | null;
-        description?: string | null;
+        content?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        formType?: ('custom' | 'collection') | null;
+        /**
+         * Set how many fields should be visible per step. Set a high number to disable pagination.
+         */
+        fieldsPerPage?: number | null;
+        /**
+         * Select a Form Builder form to display.
+         */
+        formFromCollection?: (number | null) | Form;
         fields?:
           | {
               label: string;
@@ -1447,6 +1470,10 @@ export interface InfoCardBlock {
     [k: string]: unknown;
   } | null;
   style: 'default' | 'highlight' | 'warning';
+  /**
+   * Select an animation for this info card
+   */
+  animation?: ('none' | 'fade-in' | 'slide-up' | 'pulse' | 'bounce' | 'lift-up') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'infoCard';
@@ -1653,6 +1680,271 @@ export interface HelpSupportBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "forms".
+ */
+export interface Form {
+  id: number;
+  /**
+   * Optional description for this form.
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  title: string;
+  fields?:
+    | (
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            required?: boolean | null;
+            defaultValue?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'checkbox';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'country';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'email';
+          }
+        | {
+            message?: {
+              root: {
+                type: string;
+                children: {
+                  type: any;
+                  version: number;
+                  [k: string]: unknown;
+                }[];
+                direction: ('ltr' | 'rtl') | null;
+                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                indent: number;
+                version: number;
+              };
+              [k: string]: unknown;
+            } | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'message';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            defaultValue?: number | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'number';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            defaultValue?: string | null;
+            placeholder?: string | null;
+            options?:
+              | {
+                  label: string;
+                  value: string;
+                  id?: string | null;
+                }[]
+              | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'select';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'state';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            defaultValue?: string | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'text';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            defaultValue?: string | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'textarea';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            /**
+             * Select which upload collection to store files in
+             */
+            uploadCollection: 'media';
+            /**
+             * Restrict allowed file types (e.g., image/*, application/pdf). Leave empty to allow all types.
+             */
+            mimeTypes?:
+              | {
+                  mimeType: string;
+                  id?: string | null;
+                }[]
+              | null;
+            width?: number | null;
+            /**
+             * Maximum file size in bytes. Leave empty for no limit.
+             */
+            maxFileSize?: number | null;
+            required?: boolean | null;
+            multiple?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'upload';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            required?: boolean | null;
+            defaultValue?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'date';
+          }
+        | {
+            /**
+             * The internal name of this field for the form submission data.
+             */
+            name: string;
+            /**
+             * The label for the checkbox.
+             */
+            label: string;
+            /**
+             * Instructions to display above the media.
+             */
+            instructions?: {
+              root: {
+                type: string;
+                children: {
+                  type: any;
+                  version: number;
+                  [k: string]: unknown;
+                }[];
+                direction: ('ltr' | 'rtl') | null;
+                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                indent: number;
+                version: number;
+              };
+              [k: string]: unknown;
+            } | null;
+            /**
+             * The media (e.g. payment details) to display.
+             */
+            media: number | Media;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'mediaCheckbox';
+          }
+      )[]
+    | null;
+  submitButtonLabel?: string | null;
+  /**
+   * Choose whether to display an on-page message or redirect to a different page after they submit the form.
+   */
+  confirmationType?: ('message' | 'redirect') | null;
+  confirmationMessage?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  redirect?: {
+    url: string;
+  };
+  /**
+   * Send custom emails when the form submits. Use comma separated lists to send the same email to multiple recipients. To reference a value from this form, wrap that field's name with double curly brackets, i.e. {{firstName}}. You can use a wildcard {{*}} to output all data and {{*:table}} to format it as an HTML table in the email.
+   */
+  emails?:
+    | {
+        emailTo?: string | null;
+        cc?: string | null;
+        bcc?: string | null;
+        replyTo?: string | null;
+        emailFrom?: string | null;
+        subject: string;
+        /**
+         * Enter the message that should be sent in this email.
+         */
+        message?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "FileDownloadsBlock".
  */
 export interface FileDownloadsBlock {
@@ -1806,6 +2098,14 @@ export interface NewsAndUpdatesBlock {
    * Pick a color or enter hex value
    */
   sectionBgColor?: string | null;
+  /**
+   * Pick a color for the section heading
+   */
+  headingColor?: string | null;
+  /**
+   * Pick a color for the section description
+   */
+  descriptionColor?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'newsAndUpdates';
@@ -1964,6 +2264,10 @@ export interface StepsBlock {
   } | null;
   hoverLuminous?: boolean | null;
   hoverBulge?: boolean | null;
+  /**
+   * Choose how the steps are arranged.
+   */
+  layout?: ('vertical' | 'horizontal-snake') | null;
   steps: {
     title: string;
     description?: {
@@ -2083,11 +2387,19 @@ export interface User {
 export interface News {
   id: number;
   title: string;
+  /**
+   * Pick a color for the title
+   */
+  titleColor?: string | null;
   tag: 'ANNOUNCEMENT' | 'EVENT' | 'OPPORTUNITY' | 'RESULT' | 'NOTICE';
   /**
    * Short description shown in the notification list
    */
   excerpt: string;
+  /**
+   * Pick a color for the excerpt
+   */
+  excerptColor?: string | null;
   slug: string;
   /**
    * Full content (shown on the detail page)
@@ -2107,6 +2419,10 @@ export interface News {
     };
     [k: string]: unknown;
   } | null;
+  /**
+   * Pick a color for the content text
+   */
+  contentColor?: string | null;
   /**
    * If set, clicking the card redirects here instead of an internal page
    */
@@ -2253,180 +2569,6 @@ export interface Redirect {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "forms".
- */
-export interface Form {
-  id: number;
-  title: string;
-  fields?:
-    | (
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            required?: boolean | null;
-            defaultValue?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'checkbox';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'country';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'email';
-          }
-        | {
-            message?: {
-              root: {
-                type: string;
-                children: {
-                  type: any;
-                  version: number;
-                  [k: string]: unknown;
-                }[];
-                direction: ('ltr' | 'rtl') | null;
-                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-                indent: number;
-                version: number;
-              };
-              [k: string]: unknown;
-            } | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'message';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            defaultValue?: number | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'number';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            defaultValue?: string | null;
-            placeholder?: string | null;
-            options?:
-              | {
-                  label: string;
-                  value: string;
-                  id?: string | null;
-                }[]
-              | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'select';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'state';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            defaultValue?: string | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'text';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            defaultValue?: string | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'textarea';
-          }
-      )[]
-    | null;
-  submitButtonLabel?: string | null;
-  /**
-   * Choose whether to display an on-page message or redirect to a different page after they submit the form.
-   */
-  confirmationType?: ('message' | 'redirect') | null;
-  confirmationMessage?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  redirect?: {
-    url: string;
-  };
-  /**
-   * Send custom emails when the form submits. Use comma separated lists to send the same email to multiple recipients. To reference a value from this form, wrap that field's name with double curly brackets, i.e. {{firstName}}. You can use a wildcard {{*}} to output all data and {{*:table}} to format it as an HTML table in the email.
-   */
-  emails?:
-    | {
-        emailTo?: string | null;
-        cc?: string | null;
-        bcc?: string | null;
-        replyTo?: string | null;
-        emailFrom?: string | null;
-        subject: string;
-        /**
-         * Enter the message that should be sent in this email.
-         */
-        message?: {
-          root: {
-            type: string;
-            children: {
-              type: any;
-              version: number;
-              [k: string]: unknown;
-            }[];
-            direction: ('ltr' | 'rtl') | null;
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-            indent: number;
-            version: number;
-          };
-          [k: string]: unknown;
-        } | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "form-submissions".
  */
 export interface FormSubmission {
@@ -2436,6 +2578,16 @@ export interface FormSubmission {
     | {
         field: string;
         value: string;
+        id?: string | null;
+      }[]
+    | null;
+  submissionUploads?:
+    | {
+        field: string;
+        value: {
+          relationTo: 'media';
+          value: number | Media;
+        }[];
         id?: string | null;
       }[]
     | null;
@@ -3010,7 +3162,10 @@ export interface PagesSelect<T extends boolean = true> {
           | T
           | {
               heading?: T;
-              description?: T;
+              content?: T;
+              formType?: T;
+              fieldsPerPage?: T;
+              formFromCollection?: T;
               fields?:
                 | T
                 | {
@@ -3434,6 +3589,7 @@ export interface InfoCardBlockSelect<T extends boolean = true> {
   iconColor?: T;
   content?: T;
   style?: T;
+  animation?: T;
   id?: T;
   blockName?: T;
 }
@@ -3628,6 +3784,8 @@ export interface NewsAndUpdatesBlockSelect<T extends boolean = true> {
   viewAllLabel?: T;
   viewAllUrl?: T;
   sectionBgColor?: T;
+  headingColor?: T;
+  descriptionColor?: T;
   id?: T;
   blockName?: T;
 }
@@ -3733,6 +3891,7 @@ export interface StepsBlockSelect<T extends boolean = true> {
   description?: T;
   hoverLuminous?: T;
   hoverBulge?: T;
+  layout?: T;
   steps?:
     | T
     | {
@@ -3876,10 +4035,13 @@ export interface UsersSelect<T extends boolean = true> {
  */
 export interface NewsSelect<T extends boolean = true> {
   title?: T;
+  titleColor?: T;
   tag?: T;
   excerpt?: T;
+  excerptColor?: T;
   slug?: T;
   content?: T;
+  contentColor?: T;
   externalLink?: T;
   publishedAt?: T;
   featured?: T;
@@ -4001,6 +4163,7 @@ export interface RedirectsSelect<T extends boolean = true> {
  * via the `definition` "forms_select".
  */
 export interface FormsSelect<T extends boolean = true> {
+  description?: T;
   title?: T;
   fields?:
     | T
@@ -4105,6 +4268,47 @@ export interface FormsSelect<T extends boolean = true> {
               id?: T;
               blockName?: T;
             };
+        upload?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              uploadCollection?: T;
+              mimeTypes?:
+                | T
+                | {
+                    mimeType?: T;
+                    id?: T;
+                  };
+              width?: T;
+              maxFileSize?: T;
+              required?: T;
+              multiple?: T;
+              id?: T;
+              blockName?: T;
+            };
+        date?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              width?: T;
+              required?: T;
+              defaultValue?: T;
+              id?: T;
+              blockName?: T;
+            };
+        mediaCheckbox?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              instructions?: T;
+              media?: T;
+              required?: T;
+              id?: T;
+              blockName?: T;
+            };
       };
   submitButtonLabel?: T;
   confirmationType?: T;
@@ -4136,6 +4340,13 @@ export interface FormsSelect<T extends boolean = true> {
 export interface FormSubmissionsSelect<T extends boolean = true> {
   form?: T;
   submissionData?:
+    | T
+    | {
+        field?: T;
+        value?: T;
+        id?: T;
+      };
+  submissionUploads?:
     | T
     | {
         field?: T;
@@ -4392,7 +4603,7 @@ export interface SiteSetting {
   /**
    * Choose a website theme. Selecting a preset automatically updates the colors, typography, header, and block layouts.
    */
-  themePreset?: ('mosai' | 'mosaiClassic' | 'learner') | null;
+  themePreset?: ('default' | 'mosai' | 'mosaiClassic' | 'learner') | null;
   headingFont?: ('Playfair Display' | 'Raleway' | 'Montserrat' | 'Inter' | 'Roboto' | 'Poppins') | null;
   bodyFont?: ('Inter' | 'Roboto' | 'Open Sans' | 'Poppins' | 'Lato') | null;
   themeColors?: {

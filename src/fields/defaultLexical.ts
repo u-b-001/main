@@ -26,6 +26,9 @@ import {
   type LinkFields,
 } from '@payloadcms/richtext-lexical'
 
+import { ColorPickerFeature } from './features/ColorPicker/feature.server'
+import { FontPickerFeature } from './features/FontPicker/feature.server'
+
 export const getDefaultLexicalFeatures = () => [
     ParagraphFeature(),
     UnderlineFeature(),
@@ -44,6 +47,8 @@ export const getDefaultLexicalFeatures = () => [
     OrderedListFeature(),
     UnorderedListFeature(),
     ChecklistFeature(),
+    ColorPickerFeature(),
+    FontPickerFeature(),
     RelationshipFeature({ enabledCollections: ['pages', 'news'] }),
     UploadFeature({ enabledCollections: ['media'] }),
     BlocksFeature({

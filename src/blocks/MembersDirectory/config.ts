@@ -15,7 +15,7 @@ export const MembersDirectoryBlock: Block = {
       name: 'defaultView',
       type: 'select',
       label: 'Default View',
-      defaultValue: 'all',
+      defaultValue: 'empty',
       options: [
         { label: 'Show All Members', value: 'all' },
         { label: 'Show Empty (Requires selection/search)', value: 'empty' },

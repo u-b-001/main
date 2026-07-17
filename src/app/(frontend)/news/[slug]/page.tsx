@@ -91,13 +91,19 @@ export default async function NewsDetailPage({ params: paramsPromise }: Args) {
         </div>
 
         {/* Title */}
-        <h1 className="text-3xl md:text-4xl font-bold font-serif text-brand-navy dark:text-white leading-tight mb-8">
+        <h1 
+          className="text-3xl md:text-4xl font-bold font-serif text-brand-navy dark:text-white leading-tight mb-8"
+          style={{ color: (newsItem as any).titleColor || undefined }}
+        >
           {newsItem.title}
         </h1>
 
         {/* Content */}
         {newsItem.content && (
-          <div className="prose prose-slate dark:prose-invert max-w-none">
+          <div 
+            className="prose prose-slate dark:prose-invert max-w-none"
+            style={{ color: (newsItem as any).contentColor || undefined }}
+          >
             <RichText data={newsItem.content} enableGutter={false} />
           </div>
         )}

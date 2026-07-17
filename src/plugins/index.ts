@@ -11,6 +11,7 @@ import { searchFields } from '@/search/fieldOverrides'
 import { beforeSyncWithSearch } from '@/search/beforeSync'
 
 import { getServerSideURL } from '@/utilities/getURL'
+import { MediaCheckboxBlock } from '@/blocks/Form/MediaCheckbox'
 
 const generateTitle: GenerateTitle<any> = ({ doc }) => {
   return doc?.title ? `${doc.title} | MOSAI` : 'MOSAI'
@@ -56,26 +57,49 @@ export const plugins: Plugin[] = [
   formBuilderPlugin({
     fields: {
       payment: false,
+      message: true,
+      date: true,
+      upload: true,
     },
+    uploadCollections: ['media'],
     formOverrides: {
       fields: ({ defaultFields }) => {
-        return defaultFields.map((field) => {
-          if ('name' in field && field.name === 'confirmationMessage') {
-            return {
-              ...field,
-              editor: lexicalEditor({
-                features: ({ rootFeatures }) => {
-                  return [
-                    ...rootFeatures,
-                    FixedToolbarFeature(),
-                    HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-                  ]
-                },
-              }),
+        return [
+          {
+            name: 'description',
+            type: 'richText',
+            label: 'Form Description',
+            admin: {
+              description: 'Optional description for this form.',
+            },
+          },
+          ...defaultFields.map((field) => {
+            if ('name' in field && field.name === 'confirmationMessage') {
+              return {
+                ...field,
+                editor: lexicalEditor({
+                  features: ({ rootFeatures }) => {
+                    return [
+                      ...rootFeatures,
+                      FixedToolbarFeature(),
+                      HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+                    ]
+                  },
+                }),
+              }
             }
-          }
-          return field
-        })
+            if ('name' in field && field.name === 'fields' && field.type === 'blocks') {
+                return {
+                    ...field,
+                    blocks: [
+                        ...field.blocks,
+                        MediaCheckboxBlock,
+                    ]
+                }
+            }
+            return field
+          })
+        ]
       },
     },
   }),

@@ -66,7 +66,9 @@ export const NewsAndUpdatesComponent = async ({
   viewAllLabel = 'All news',
   viewAllUrl = '/news',
   sectionBgColor = '#FFFFFF',
-}: NewsAndUpdatesProps) => {
+  headingColor,
+  descriptionColor,
+}: NewsAndUpdatesProps & { headingColor?: string; descriptionColor?: string }) => {
   let newsItems: any[] = []
 
   if (newsSource === 'fetch') {
@@ -130,7 +132,10 @@ export const NewsAndUpdatesComponent = async ({
         {(heading || description) && (
           <div className={cn('mb-12 md:mb-18 max-w-3xl', alignmentClass, isCenter ? 'mx-auto' : '')}>
             {heading && (
-              <h2 className="text-3xl md:text-4xl font-serif font-extrabold tracking-tight text-slate-900 dark:text-white uppercase">
+              <h2 
+                className="text-3xl md:text-4xl font-serif font-extrabold tracking-tight text-slate-900 dark:text-white uppercase"
+                style={{ color: headingColor || undefined }}
+              >
                 {heading}
               </h2>
             )}
@@ -141,7 +146,10 @@ export const NewsAndUpdatesComponent = async ({
               )}
             />
             {description && (
-              <p className="text-base md:text-lg text-slate-500 dark:text-slate-400 leading-relaxed font-medium">
+              <p 
+                className="text-base md:text-lg text-slate-500 dark:text-slate-400 leading-relaxed font-medium"
+                style={{ color: descriptionColor || undefined }}
+              >
                 {description}
               </p>
             )}
@@ -169,10 +177,16 @@ export const NewsAndUpdatesComponent = async ({
                       )}
                     </div>
                   </div>
-                  <h3 className="text-2xl md:text-3xl font-bold font-serif text-brand-navy dark:text-white mb-4 uppercase leading-snug group-hover:text-brand-red dark:group-hover:text-brand-gold transition-colors duration-250">
+                  <h3 
+                    className="text-2xl md:text-3xl font-bold font-serif text-brand-navy dark:text-white mb-4 uppercase leading-snug group-hover:text-brand-red dark:group-hover:text-brand-gold transition-colors duration-250"
+                    style={{ color: featuredItem.titleColor || undefined }}
+                  >
                     {featuredItem.title}
                   </h3>
-                  <p className="text-slate-600 dark:text-slate-400 text-sm md:text-base leading-relaxed mb-8 font-medium">
+                  <p 
+                    className="text-slate-600 dark:text-slate-400 text-sm md:text-base leading-relaxed mb-8 font-medium"
+                    style={{ color: featuredItem.excerptColor || undefined }}
+                  >
                     {featuredItem.excerpt}
                   </p>
                 </div>
@@ -207,7 +221,10 @@ export const NewsAndUpdatesComponent = async ({
                         {formatDate(item.publishedAt)}
                       </span>
                     </div>
-                    <h4 className="text-base font-bold text-slate-900 dark:text-white uppercase tracking-wide group-hover:text-brand-red dark:group-hover:text-brand-gold transition-colors duration-200 line-clamp-2">
+                    <h4 
+                      className="text-base font-bold text-slate-900 dark:text-white uppercase tracking-wide group-hover:text-brand-red dark:group-hover:text-brand-gold transition-colors duration-200 line-clamp-2"
+                      style={{ color: item.titleColor || undefined }}
+                    >
                       {item.title}
                     </h4>
                   </Link>
@@ -234,10 +251,16 @@ export const NewsAndUpdatesComponent = async ({
                       {formatDate(item.publishedAt)}
                     </span>
                   </div>
-                  <h3 className="text-lg md:text-xl font-bold font-serif text-brand-navy dark:text-white mb-3 uppercase tracking-wide leading-snug group-hover:text-brand-red dark:group-hover:text-brand-gold transition-colors duration-250 line-clamp-2">
+                  <h3 
+                    className="text-lg md:text-xl font-bold font-serif text-brand-navy dark:text-white mb-3 uppercase tracking-wide leading-snug group-hover:text-brand-red dark:group-hover:text-brand-gold transition-colors duration-250 line-clamp-2"
+                    style={{ color: item.titleColor || undefined }}
+                  >
                     {item.title}
                   </h3>
-                  <p className="text-slate-650 dark:text-slate-400 text-sm leading-relaxed mb-6 font-medium line-clamp-3">
+                  <p 
+                    className="text-slate-650 dark:text-slate-400 text-sm leading-relaxed mb-6 font-medium line-clamp-3"
+                    style={{ color: item.excerptColor || undefined }}
+                  >
                     {item.excerpt}
                   </p>
                 </div>
@@ -279,10 +302,16 @@ export const NewsAndUpdatesComponent = async ({
                         {item.tag}
                       </span>
                     </div>
-                    <h3 className="text-base md:text-lg font-bold text-slate-900 dark:text-white uppercase tracking-wide group-hover:text-brand-red dark:group-hover:text-brand-gold transition-colors duration-200 line-clamp-1 mb-1.5">
+                    <h3 
+                      className="text-base md:text-lg font-bold text-slate-900 dark:text-white uppercase tracking-wide group-hover:text-brand-red dark:group-hover:text-brand-gold transition-colors duration-200 line-clamp-1 mb-1.5"
+                      style={{ color: item.titleColor || undefined }}
+                    >
                       {item.title}
                     </h3>
-                    <p className="text-slate-650 dark:text-slate-400 text-xs md:text-sm leading-relaxed line-clamp-2">
+                    <p 
+                      className="text-slate-650 dark:text-slate-400 text-xs md:text-sm leading-relaxed line-clamp-2"
+                      style={{ color: item.excerptColor || undefined }}
+                    >
                       {item.excerpt}
                     </p>
                   </div>

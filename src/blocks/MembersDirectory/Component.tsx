@@ -13,7 +13,7 @@ export const MembersDirectoryComponent: React.FC<{
 }> = async (props) => {
   const {
     title = 'MEMBERS DIRECTORY',
-    defaultView = 'all',
+    defaultView = 'empty',
     enableLiveSearch = true,
     searchFields = ['name', 'university', 'city', 'specialisation', 'designation'],
     showFields = ['university', 'city', 'year', 'specialisation', 'designation', 'email'],
@@ -50,7 +50,7 @@ export const MembersDirectoryComponent: React.FC<{
         <MembersDirectoryClient
           title={title}
           members={members}
-          defaultView={defaultView}
+          defaultView={'empty'}
           enableLiveSearch={enableLiveSearch}
           searchFields={searchFields}
           showFields={showFields}

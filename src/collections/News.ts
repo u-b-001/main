@@ -19,6 +19,14 @@ export const News: CollectionConfig = {
   fields: [
     { name: 'title', type: 'text', required: true },
     {
+      name: 'titleColor',
+      type: 'text',
+      admin: {
+        description: 'Pick a color for the title',
+        components: { Field: '@/globals/ColorPickerField.tsx#ColorPickerField' },
+      },
+    },
+    {
       name: 'tag',
       type: 'select',
       required: true,
@@ -36,11 +44,27 @@ export const News: CollectionConfig = {
       required: true,
       admin: { description: 'Short description shown in the notification list' },
     },
+    {
+      name: 'excerptColor',
+      type: 'text',
+      admin: {
+        description: 'Pick a color for the excerpt',
+        components: { Field: '@/globals/ColorPickerField.tsx#ColorPickerField' },
+      },
+    },
     { name: 'slug', type: 'text', unique: true, required: true },
     {
       name: 'content',
       type: 'richText',
       admin: { description: 'Full content (shown on the detail page)' },
+    },
+    {
+      name: 'contentColor',
+      type: 'text',
+      admin: {
+        description: 'Pick a color for the content text',
+        components: { Field: '@/globals/ColorPickerField.tsx#ColorPickerField' },
+      },
     },
     {
       name: 'externalLink',

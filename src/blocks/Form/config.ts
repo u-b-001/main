@@ -9,15 +9,46 @@ export const FormBlock: Block = {
       label: 'Header',
       fields: [
         { name: 'heading', type: 'text' },
-        { name: 'description', type: 'textarea' },
+        { name: 'content', type: 'richText', label: 'Description' },
       ],
+    },
+    {
+      name: 'formType',
+      type: 'radio',
+      defaultValue: 'custom',
+      options: [
+        { label: 'Custom Inline Fields', value: 'custom' },
+        { label: 'From Forms Collection', value: 'collection' },
+      ],
+      admin: { layout: 'horizontal' },
+    },
+    {
+      name: 'fieldsPerPage',
+      type: 'number',
+      label: 'Fields per Page',
+      defaultValue: 4,
+      admin: {
+        description: 'Set how many fields should be visible per step. Set a high number to disable pagination.',
+      },
+    },
+    {
+      name: 'formFromCollection',
+      type: 'relationship',
+      relationTo: 'forms',
+      admin: {
+        condition: (_, siblingData) => siblingData.formType === 'collection',
+        description: 'Select a Form Builder form to display.',
+      },
     },
     {
       name: 'fields',
       type: 'array',
       label: 'Form Fields',
       minRows: 1,
-      admin: { initCollapsed: true },
+      admin: { 
+        initCollapsed: true,
+        condition: (_, siblingData) => siblingData.formType === 'custom' || !siblingData.formType
+      },
       fields: [
         { name: 'label', type: 'text', required: true },
         {
@@ -60,6 +91,7 @@ export const FormBlock: Block = {
     {
       type: 'collapsible',
       label: 'Submission Settings',
+      admin: { condition: (_, siblingData) => siblingData.formType === 'custom' || !siblingData.formType },
       fields: [
         { name: 'submitLabel', type: 'text', defaultValue: 'Submit' },
         {

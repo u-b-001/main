@@ -29,6 +29,19 @@ export const StepsBlock: Block = {
       defaultValue: false,
     },
     {
+      name: 'layout',
+      type: 'select',
+      label: 'Steps Layout',
+      defaultValue: 'vertical',
+      options: [
+        { label: 'Vertical (Alternating)', value: 'vertical' },
+        { label: 'Horizontal (Snake Pattern)', value: 'horizontal-snake' },
+      ],
+      admin: {
+        description: 'Choose how the steps are arranged.',
+      }
+    },
+    {
       name: 'steps',
       type: 'array',
       required: true,

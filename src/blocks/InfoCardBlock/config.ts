@@ -26,5 +26,21 @@ export const InfoCardBlock: Block = {
       defaultValue: 'default',
       required: true,
     },
+    {
+      name: 'animation',
+      type: 'select',
+      options: [
+        { label: 'None', value: 'none' },
+        { label: 'Fade In', value: 'fade-in' },
+        { label: 'Slide Up', value: 'slide-up' },
+        { label: 'Pulse', value: 'pulse' },
+        { label: 'Bounce', value: 'bounce' },
+        { label: 'Lift Up (Hover)', value: 'lift-up' }
+      ],
+      defaultValue: 'none',
+      admin: {
+        description: 'Select an animation for this info card',
+      },
+    },
   ],
 }

@@ -96,6 +96,10 @@ export const SiteSettings: GlobalConfig = {
       defaultValue: 'mosai',
       options: [
         {
+          label: 'Default Theme (Clean base)',
+          value: 'default',
+        },
+        {
           label: 'MOSAI Modern (Purple & Gold)',
           value: 'mosai',
         },

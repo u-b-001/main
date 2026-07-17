@@ -215,7 +215,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
                   {hasChildren && (
                     <div
                       className={cn(
-                        'dropdown-panel absolute top-full left-0 mt-1 min-w-[240px] bg-white dark:bg-slate-900 shadow-xl rounded-lg border border-gray-100 dark:border-slate-800 py-2 transition-all duration-200 origin-top z-50',
+                        'dropdown-panel absolute top-full left-0 mt-1 min-w-[240px] bg-white dark:bg-slate-900 shadow-[0_10px_25px_-5px_rgba(0,0,0,0.1)] rounded-lg border border-gray-100 dark:border-slate-800 py-2 transition-all duration-200 origin-top z-50',
                       )}
                     >
                       {item.children?.map((child, childIdx) => {
@@ -237,7 +237,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
                                 {/* Sub-dropdown Menu */}
                                 <div
                                   className={cn(
-                                    'absolute left-full top-0 ml-1 min-w-[220px] bg-white dark:bg-slate-900 shadow-xl rounded-lg border border-gray-100 dark:border-slate-800 py-2 transition-all duration-200 opacity-0 translate-x-2 pointer-events-none',
+                                    'absolute left-full top-0 ml-1 min-w-[220px] bg-white dark:bg-slate-900 shadow-[0_10px_25px_-5px_rgba(0,0,0,0.1)] rounded-lg border border-gray-100 dark:border-slate-800 py-2 transition-all duration-200 opacity-0 translate-x-2 pointer-events-none',
                                     'group-hover/sub:opacity-100 group-hover/sub:translate-x-0 group-hover/sub:pointer-events-auto',
                                     'focus-within:opacity-100 focus-within:translate-x-0 focus-within:pointer-events-auto',
                                   )}

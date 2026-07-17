@@ -10,7 +10,7 @@ interface NewsCardProps {
 }
 
 export const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
-  const { title, tag, excerpt, slug, externalLink, publishedAt } = news
+  const { title, tag, excerpt, slug, externalLink, publishedAt, titleColor, excerptColor } = news as any
 
   // Select tag colors
   const tagColors = {
@@ -51,7 +51,10 @@ export const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
         </div>
 
         {/* Title */}
-        <h3 className="font-serif font-bold text-lg text-brand-navy dark:text-white leading-snug group-hover:text-brand-red transition-colors pt-1">
+        <h3 
+          className="font-serif font-bold text-lg text-brand-navy dark:text-white leading-snug group-hover:text-brand-red transition-colors pt-1"
+          style={{ color: titleColor || undefined }}
+        >
           {isExternal ? (
             <a
               href={linkHref}
@@ -70,7 +73,10 @@ export const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
         </h3>
 
         {/* Excerpt */}
-        <p className="text-sm text-brand-text dark:text-slate-400 leading-relaxed font-serif pt-1 line-clamp-3">
+        <p 
+          className="text-sm text-brand-text dark:text-slate-400 leading-relaxed font-serif pt-1 line-clamp-3"
+          style={{ color: excerptColor || undefined }}
+        >
           {excerpt}
         </p>
       </div>

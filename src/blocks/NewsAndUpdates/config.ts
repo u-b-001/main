@@ -196,5 +196,29 @@ export const NewsAndUpdatesBlock: Block = {
         },
       },
     },
+    // Section Heading Color
+    {
+      name: 'headingColor',
+      type: 'text',
+      label: 'Section Heading Color',
+      admin: {
+        description: 'Pick a color for the section heading',
+        components: {
+          Field: '@/globals/ColorPickerField.tsx#ColorPickerField',
+        },
+      },
+    },
+    // Section Description Color
+    {
+      name: 'descriptionColor',
+      type: 'text',
+      label: 'Section Description Color',
+      admin: {
+        description: 'Pick a color for the section description',
+        components: {
+          Field: '@/globals/ColorPickerField.tsx#ColorPickerField',
+        },
+      },
+    },
   ],
 }

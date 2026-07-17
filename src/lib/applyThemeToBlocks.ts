@@ -8,12 +8,14 @@ function translateLayout(blockType: string, layout: string): string {
   if (blockType === 'hero') {
     if (layout === 'mosaiFullscreen') return 'mosiaFullscreen'
     if (layout === 'mosaiClassicHero') return 'fullWidth'
+    if (layout === 'default') return 'split'
     return layout
   }
   if (blockType === 'featuredCards') {
     if (layout === 'mosaiService') return 'bordered'
     if (layout === 'classic') return 'standard'
     if (layout === 'mosaiClassicCards') return 'red'
+    if (layout === 'default') return 'standard'
     return layout
   }
   return layout
@@ -43,16 +45,19 @@ function getLayoutMappings(preset: ThemePreset, targetTheme: string) {
   }
 
   return {
-    hero: {
-      fromLayouts: getFromLayouts('hero', 'hero'),
-      toLayout: translateLayout('hero', preset.layouts.hero),
-      extraProps: preset.layouts.hero === 'split'
-        ? { split_theme: 'light', split_direction: 'textLeft' }
-        : {},
-    },
     featuredCards: {
       fromLayouts: getFromLayouts('featureCards', 'featuredCards'),
       toLayout: translateLayout('featuredCards', preset.layouts.featureCards),
+      extraProps: {},
+    },
+    newsAndUpdates: {
+      fromLayouts: getFromLayouts('news', 'newsAndUpdates'),
+      toLayout: translateLayout('newsAndUpdates', preset.layouts.news),
+      extraProps: {},
+    },
+    imageGallery: {
+      fromLayouts: getFromLayouts('gallery', 'imageGallery'),
+      toLayout: translateLayout('imageGallery', preset.layouts.gallery),
       extraProps: {},
     },
   }
@@ -62,16 +67,18 @@ function getLayoutMappings(preset: ThemePreset, targetTheme: string) {
  * Map block slug to the DB column name for its layout field.
  */
 const blockLayoutColumns: Record<string, string> = {
-  hero: 'layout',
   featuredCards: 'card_style',
+  newsAndUpdates: 'layout',
+  imageGallery: 'layout',
 }
 
 /**
  * Map block slug to its DB table suffix (used in pages_blocks_xxx, news_blocks_xxx, etc.)
  */
 const blockTableSuffixes: Record<string, string> = {
-  hero: 'hero',
   featuredCards: 'featured_cards',
+  newsAndUpdates: 'news_and_updates',
+  imageGallery: 'image_gallery',
 }
 
 /** All parent collections that have layout blocks */
@@ -86,6 +93,24 @@ export async function applyThemeToBlocks(payload: Payload, themeName: string) {
   const mappings = getLayoutMappings(preset, themeName)
   const db = (payload.db as any).pool
 
+  let homePageId: string | number | null = null
+  try {
+    const siteSettings = await payload.findGlobal({ slug: 'site-settings' })
+    const homePageValue = siteSettings?.homePage
+    if (typeof homePageValue === 'string' && homePageValue.startsWith('pages:')) {
+      const homePageSlug = homePageValue.replace('pages:', '')
+      const homePageQuery = await db.query(
+        `SELECT id FROM pages WHERE slug = $1 LIMIT 1`,
+        [homePageSlug]
+      )
+      if (homePageQuery.rows.length > 0) {
+        homePageId = homePageQuery.rows[0].id
+      }
+    }
+  } catch (err) {
+    payload.logger.error(`[Theme] Failed to get home page ID: ${(err as Error).message}`)
+  }
+
   let totalUpdated = 0
 
   for (const [blockType, mapping] of Object.entries(mappings)) {
@@ -94,6 +119,10 @@ export async function applyThemeToBlocks(payload: Payload, themeName: string) {
     if (!tableSuffix || !layoutCol) continue
 
     for (const parentTable of parentTables) {
+      if (blockType === 'imageGallery' && (!homePageId || parentTable !== 'pages')) {
+        continue
+      }
+
       const tableName = `${parentTable}_blocks_${tableSuffix}`
 
       // Check if table exists
@@ -119,15 +148,23 @@ export async function applyThemeToBlocks(payload: Payload, themeName: string) {
         const enumName = typeInfo.rows[0]?.udt_name
 
         let result
+        let queryArgs: any[] = [mapping.toLayout, fromValues]
+        let extraCondition = ''
+
+        if (blockType === 'imageGallery' && homePageId) {
+          extraCondition = ` AND "_parent_id" = $3`
+          queryArgs.push(homePageId)
+        }
+
         if (isEnum) {
           result = await db.query(
-            `UPDATE "${tableName}" SET "${layoutCol}" = $1::text::"${enumName}" WHERE "${layoutCol}"::text = ANY($2::text[])`,
-            [mapping.toLayout, fromValues]
+            `UPDATE "${tableName}" SET "${layoutCol}" = $1::text::"${enumName}" WHERE "${layoutCol}"::text = ANY($2::text[])${extraCondition}`,
+            queryArgs
           )
         } else {
           result = await db.query(
-            `UPDATE "${tableName}" SET "${layoutCol}" = $1 WHERE "${layoutCol}" = ANY($2::text[])`,
-            [mapping.toLayout, fromValues]
+            `UPDATE "${tableName}" SET "${layoutCol}" = $1 WHERE "${layoutCol}" = ANY($2::text[])${extraCondition}`,
+            queryArgs
           )
         }
         totalUpdated += result.rowCount || 0
@@ -142,16 +179,25 @@ export async function applyThemeToBlocks(payload: Payload, themeName: string) {
 
           const colIsEnum = colCheck.rows[0]?.data_type === 'USER-DEFINED'
           const colEnumName = colCheck.rows[0]?.udt_name
+          
+          let colQueryArgs: any[] = [val, mapping.toLayout]
+          let colExtraCondition = ''
+          
+          if (blockType === 'imageGallery' && homePageId) {
+            colExtraCondition = ` AND "_parent_id" = $3`
+            colQueryArgs.push(homePageId)
+          }
 
           if (colIsEnum && typeof val === 'string') {
             await db.query(
-              `UPDATE "${tableName}" SET "${col}" = $1::text::"${colEnumName}" WHERE "${layoutCol}"::text = $2`,
-              [val, mapping.toLayout]
+              `UPDATE "${tableName}" SET "${col}" = $1::text::"${colEnumName}" WHERE "${layoutCol}"::text = $2${colExtraCondition}`,
+              colQueryArgs
             )
           } else {
+            colQueryArgs[0] = typeof val === 'boolean' ? val : String(val)
             await db.query(
-              `UPDATE "${tableName}" SET "${col}" = $1 WHERE "${layoutCol}"::text = $2`,
-              [typeof val === 'boolean' ? val : String(val), mapping.toLayout]
+              `UPDATE "${tableName}" SET "${col}" = $1 WHERE "${layoutCol}"::text = $2${colExtraCondition}`,
+              colQueryArgs
             )
           }
         }

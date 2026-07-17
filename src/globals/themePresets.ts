@@ -27,12 +27,13 @@ export interface ThemePreset {
   }
   /** Layout overrides */
   layouts: {
-    hero: 'mosaiFullscreen' | 'mosaiClassicHero' | 'split'
-    featureCards: 'mosaiService' | 'mosaiClassicCards' | 'classic'
+    hero: 'mosaiFullscreen' | 'mosaiClassicHero' | 'split' | 'default'
+    featureCards: 'mosaiService' | 'mosaiClassicCards' | 'classic' | 'default'
     featureCardsTheme: 'dark' | 'light'
     featureCardsShowButton: boolean
-    news: 'mosaiCards' | 'mosaiClassicNews' | 'spotlight'
-    statistics: 'mosaiStrip' | 'cardGrid'
+    news: 'grid' | 'spotlight' | 'list' | 'default'
+    gallery: 'grid' | 'masonry' | 'bento' | 'default'
+    statistics: 'mosaiStrip' | 'cardGrid' | 'default'
     testimonials: 'mosaiQuote' | 'default'
     callToAction: 'mosaiBanner' | 'default'
     faq: 'mosaiAccordion' | 'default'
@@ -40,6 +41,44 @@ export interface ThemePreset {
 }
 
 export const themePresets: Record<string, ThemePreset> = {
+  /**
+   * Default Theme
+   * Clean, unstyled base theme using standard component layouts
+   */
+  default: {
+    colors: {
+      primary: '#0F172A',
+      secondary: '#1E293B',
+      accent: '#3B82F6',
+      background: '#FFFFFF',
+      surface: '#F8FAFC',
+      muted: '#F1F5F9',
+      text: '#0F172A',
+    },
+    fonts: {
+      heading: 'Inter',
+      body: 'Inter',
+    },
+    header: {
+      layout: 'mosai',
+      showTopBar: false,
+      height: 80,
+      showBottomBorder: true,
+      ctaStyle: 'square',
+    },
+    layouts: {
+      hero: 'default',
+      featureCards: 'default',
+      featureCardsTheme: 'light',
+      featureCardsShowButton: true,
+      news: 'grid',
+      gallery: 'grid',
+      statistics: 'default',
+      testimonials: 'default',
+      callToAction: 'default',
+      faq: 'default',
+    },
+  },
   /**
    * MOSAI Modern — Purple & Gold
    * Premium, academic, scholarship-prestige feel. Best default for mosai.org's
@@ -71,7 +110,8 @@ export const themePresets: Record<string, ThemePreset> = {
       featureCards: 'mosaiService',
       featureCardsTheme: 'dark',
       featureCardsShowButton: false,
-      news: 'mosaiCards',
+      news: 'grid',
+      gallery: 'bento',
       statistics: 'mosaiStrip',
       testimonials: 'mosaiQuote',
       callToAction: 'mosaiBanner',
@@ -110,7 +150,8 @@ export const themePresets: Record<string, ThemePreset> = {
       featureCards: 'classic',
       featureCardsTheme: 'light',
       featureCardsShowButton: true,
-      news: 'spotlight',
+      news: 'list',
+      gallery: 'masonry',
       statistics: 'mosaiStrip',
       testimonials: 'mosaiQuote',
       callToAction: 'mosaiBanner',
@@ -149,7 +190,8 @@ export const themePresets: Record<string, ThemePreset> = {
       featureCards: 'mosaiClassicCards',
       featureCardsTheme: 'light',
       featureCardsShowButton: true,
-      news: 'mosaiClassicNews',
+      news: 'spotlight',
+      gallery: 'grid',
       statistics: 'mosaiStrip',
       testimonials: 'mosaiQuote',
       callToAction: 'mosaiBanner',

@@ -25,6 +25,25 @@ const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
 const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) => ({
   ...defaultConverters,
   ...LinkJSXConverter({ internalDocToHref }),
+  text: ({ node, nodesToJSX }) => {
+    const textNode = typeof defaultConverters.text === 'function' ? defaultConverters.text({ node, nodesToJSX } as any) : node.text
+    if (node.style) {
+      const styleObj: React.CSSProperties = {}
+      node.style.split(';').forEach((styleStr: string) => {
+        if (!styleStr.trim()) return
+        const [key, ...valueParts] = styleStr.split(':')
+        const value = valueParts.join(':').trim()
+        if (key && value) {
+          const camelKey = key.trim().replace(/-([a-z])/g, (g) => g[1].toUpperCase())
+          styleObj[camelKey as keyof React.CSSProperties] = value as any
+        }
+      })
+      if (Object.keys(styleObj).length > 0) {
+        return <span style={styleObj}>{textNode}</span>
+      }
+    }
+    return textNode
+  },
   blocks: {
     contentLayout: ({ node }: { node: any }) => <ContentLayoutComponent {...(node.fields as any)} />,
     imageBlock: ({ node }: { node: any }) => <ImageBlockComponent {...(node.fields as any)} />,
