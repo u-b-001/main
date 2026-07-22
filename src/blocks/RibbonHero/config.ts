@@ -1,4 +1,5 @@
 import type { Block } from 'payload'
+import { defaultLexical } from '../../fields/defaultLexical'
 
 export const RibbonHeroBlock: Block = {
   slug: 'ribbonHero',
@@ -13,14 +14,15 @@ export const RibbonHeroBlock: Block = {
     },
     {
       name: 'title',
-      type: 'text',
-      required: true,
+      type: 'richText',
+      editor: defaultLexical,
       label: 'Title',
       admin: { description: 'The main large heading.' },
     },
     {
       name: 'description',
-      type: 'textarea',
+      type: 'richText',
+      editor: defaultLexical,
       label: 'Description',
       admin: { description: 'Paragraph text below the title.' },
     },

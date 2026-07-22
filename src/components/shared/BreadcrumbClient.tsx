@@ -34,7 +34,7 @@ export const BreadcrumbClient: React.FC<{
   return (
     <nav 
       aria-label="Breadcrumb" 
-      className={`py-3.5 ${isTransparent ? 'bg-transparent border-transparent' : 'bg-slate-50 dark:bg-slate-900 border-b border-gray-150 dark:border-slate-800'}`}
+      className={`py-3.5 ${isTransparent ? 'bg-transparent border-transparent' : 'bg-slate-50 dark:bg-slate-900'}`}
     >
       <div 
         className={`container mx-auto px-4 flex items-center gap-2 text-xs font-medium ${colorClass}`}

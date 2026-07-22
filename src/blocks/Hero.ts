@@ -1,4 +1,5 @@
 import type { Block } from 'payload'
+import { defaultLexical } from '../fields/defaultLexical'
 
 function slideFields() {
   return [
@@ -83,7 +84,8 @@ function slideFields() {
     },
     {
       name: 'heading',
-      type: 'text' as const,
+      type: 'richText' as const,
+      editor: defaultLexical,
       admin: {
         condition: (_: any, siblingData: any) => siblingData?.showText !== false,
       },
@@ -102,7 +104,8 @@ function slideFields() {
     },
     {
       name: 'subtitle',
-      type: 'textarea' as const,
+      type: 'richText' as const,
+      editor: defaultLexical,
       admin: {
         condition: (_: any, siblingData: any) => siblingData?.showText !== false,
       },

@@ -51,17 +51,19 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
     fill,
     pictureClassName,
     imgClassName,
+    loading: loadingFromProps,
     priority,
     resource,
     size: sizeFromProps,
     src: srcFromProps,
-    loading: loadingFromProps,
+    disableBlur,
   } = props
 
   let width: number | undefined
   let height: number | undefined
   let alt = altFromProps
   let src: StaticImageData | string = srcFromProps || ''
+  let mimeType: string | undefined
 
   if (!src && resource && typeof resource === 'object') {
     const { alt: altFromResource, height: fullHeight, url, width: fullWidth } = resource
@@ -69,6 +71,7 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
     width = fullWidth!
     height = fullHeight!
     alt = altFromResource || ''
+    mimeType = (resource as any).mimeType
 
     const cacheTag = resource.updatedAt
 
@@ -81,6 +84,13 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
 
   const loading = loadingFromProps || (!priority ? 'lazy' : undefined)
 
+  // Auto-disable blur placeholder for logos/transparent images to prevent dark background boxes
+  const isTransparent = mimeType
+    ? mimeType.includes('png') || mimeType.includes('svg') || mimeType.includes('webp')
+    : typeof src === 'string' && (src.includes('.png') || src.includes('.svg') || src.includes('.webp'))
+
+  const shouldDisableBlur = disableBlur || isTransparent
+
   // NOTE: this is used by the browser to determine which image to download at different screen sizes
   const sizes = sizeFromProps
     ? sizeFromProps
@@ -88,7 +98,6 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
         .map(([, value]) => `(max-width: ${value}px) ${value * 2}w`)
         .join(', ')
 
-  console.log('ImageMedia debug:', { srcFromProps, resource, url: typeof resource === 'object' ? resource?.url : undefined, src })
   if (!src || (typeof src === 'object' && !src.src)) return null
 
   return (
@@ -98,8 +107,8 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
         className={cn(imgClassName)}
         fill={fill}
         height={!fill ? height : undefined}
-        placeholder="blur"
-        blurDataURL={placeholderBlur}
+        placeholder={shouldDisableBlur ? undefined : 'blur'}
+        blurDataURL={shouldDisableBlur ? undefined : placeholderBlur}
         priority={priority}
         quality={100}
         loading={loading}

@@ -127,6 +127,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
                   htmlElement={null}
                   pictureClassName="relative w-full h-full block"
                   fill
+                  disableBlur
                   imgClassName={cn(
                     'object-contain object-left transition-all duration-300',
                     shouldOverlap && !scrolled ? 'brightness-0 invert' : 'dark:brightness-110',

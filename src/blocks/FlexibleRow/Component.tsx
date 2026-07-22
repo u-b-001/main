@@ -338,7 +338,14 @@ export const FlexibleRowComponent: React.FC<any> = ({
                     case 'flexCarousel': {
                       if (!block.slides || block.slides.length === 0) return null;
                       if (block.layout === 'stacked') {
-                        return <StackedCarousel key={bIdx} slides={block.slides} />
+                        return (
+                          <StackedCarousel 
+                            key={bIdx} 
+                            slides={block.slides} 
+                            autoplay={block.autoplay}
+                            interval={block.interval}
+                          />
+                        )
                       }
                       return (
                         <div key={bIdx} className="w-full overflow-hidden rounded-xl shadow-lg relative group">

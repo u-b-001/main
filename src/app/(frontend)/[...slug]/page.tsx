@@ -120,7 +120,7 @@ export default async function Page({ params: paramsPromise }: Args) {
         heroSubtitle={heroSubtitle}
         heroPaddingTop={heroPaddingTop}
         heroPaddingBottom={heroPaddingBottom}
-        heroMarginBottom={heroMarginBottom}
+        heroMarginBottom="none"
         bgTheme={bgTheme}
         customBgColor={customBgColor}
         heroBgColor={heroBgColor}

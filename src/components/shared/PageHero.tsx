@@ -39,10 +39,10 @@ const paddingBottomClasses = {
 
 const marginBottomClasses = {
   none: 'mb-0',
-  small: 'mb-4 md:mb-6',
-  medium: 'mb-8 md:mb-12',
-  large: 'mb-16 md:mb-20',
-  xlarge: 'mb-24 md:mb-28',
+  small: 'mb-0',
+  medium: 'mb-0',
+  large: 'mb-0',
+  xlarge: 'mb-0',
 }
 
 const gradientPresets = {
@@ -64,18 +64,17 @@ export const PageHero: React.FC<PageHeroProps> = ({
   heroSubtitle,
   heroPaddingTop = 'medium',
   heroPaddingBottom = 'medium',
-  heroMarginBottom = 'medium',
+  heroMarginBottom = 'none',
   bgTheme,
   customBgColor,
   heroBgColor,
 }) => {
   if (heroStyle === 'none') {
     return (
-      <div className="container mx-auto px-4 pt-10 pb-6 border-b border-slate-100 dark:border-slate-800">
+      <div className="container mx-auto px-4 pt-10 pb-6">
         <h1 className="text-3xl md:text-4xl font-bold font-serif text-brand-navy dark:text-white leading-tight uppercase tracking-wide">
           {title}
         </h1>
-        <div className="w-12 h-1 bg-brand-red mt-3 rounded-full" />
       </div>
     )
   }
@@ -83,7 +82,7 @@ export const PageHero: React.FC<PageHeroProps> = ({
   // Spacing classes
   const ptClass = paddingTopClasses[heroPaddingTop || 'medium']
   const pbClass = paddingBottomClasses[heroPaddingBottom || 'medium']
-  const mbClass = marginBottomClasses[heroMarginBottom || 'medium']
+  const mbClass = marginBottomClasses[heroMarginBottom || 'none']
 
   // Background Class
   const isGradient = heroType === 'gradient'
@@ -103,12 +102,12 @@ export const PageHero: React.FC<PageHeroProps> = ({
     shapePath = 'M0,60 C180,90 360,90 540,60 C720,30 900,30 1080,60 C1260,90 1350,90 1440,60 L1440,120 L0,120 Z'
   }
 
-  // Dynamic Fill Color for SVG path to blend with page content background
-  let curveFillClass = 'fill-white dark:fill-slate-950'
+  // Dynamic Fill Color for SVG path to blend seamlessly with breadcrumb / content background
+  let curveFillClass = 'fill-slate-50 dark:fill-slate-900'
   let curveStyle: React.CSSProperties = {}
 
   if (bgTheme === 'light-gray') {
-    curveFillClass = 'fill-gray-50 dark:fill-gray-900'
+    curveFillClass = 'fill-slate-50 dark:fill-slate-900'
   } else if (bgTheme === 'dark-navy') {
     curveFillClass = 'fill-slate-900'
   } else if (bgTheme === 'custom' && customBgColor) {
@@ -167,9 +166,7 @@ export const PageHero: React.FC<PageHeroProps> = ({
             </p>
           )}
 
-          {!heroEyebrow && !heroSubtitle && (
-            <div className="w-16 h-1 bg-brand-red mt-4 rounded-full" />
-          )}
+          {!heroEyebrow && !heroSubtitle && null}
         </div>
       </div>
 

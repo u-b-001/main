@@ -125,7 +125,7 @@ export const HeroMOSAIBlock: React.FC<HeroMOSAIBlockProps> = (props) => {
     featureStripScale = 100,
     featureStripShiftX = 0,
     featureStripShiftY = 0,
-    backgroundColor = 'faf5f0',
+    backgroundColor = 'transparent',
   } = props
 
   const isCarousel = mode === 'carousel' && heroSlides && heroSlides.length > 0

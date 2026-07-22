@@ -2,6 +2,7 @@
 
 import React from 'react'
 import Link from 'next/link'
+import RichText from '@/components/RichText'
 
 type RibbonHeroButton = {
   label: string
@@ -11,8 +12,8 @@ type RibbonHeroButton = {
 
 export type RibbonHeroBlockProps = {
   subtitle?: string
-  title?: string
-  description?: string
+  title?: any
+  description?: any
   buttons?: RibbonHeroButton[]
   backgroundImage?: { url: string; alt?: string } | null
   cutoutImage?: { url: string; alt?: string } | null
@@ -68,7 +69,7 @@ export const RibbonHeroBlock: React.FC<RibbonHeroBlockProps> = ({
     <section
       style={{
         position: 'relative',
-        backgroundColor: '#faf0e6',
+        backgroundColor: 'transparent',
         fontFamily: "'Inter', 'Segoe UI', Arial, sans-serif",
         // Use a fixed height to match the reference
         height: '580px',
@@ -102,7 +103,7 @@ export const RibbonHeroBlock: React.FC<RibbonHeroBlockProps> = ({
           inset: 0,
           zIndex: 1,
           background:
-            'linear-gradient(to right, #faf0e6 38%, rgba(250,240,230,0.65) 60%, rgba(250,240,230,0.05) 100%)',
+            'linear-gradient(to right, rgba(0,0,0,0.4) 38%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0) 100%)',
           pointerEvents: 'none',
         }}
       />
@@ -160,7 +161,7 @@ export const RibbonHeroBlock: React.FC<RibbonHeroBlockProps> = ({
         )}
 
         {title && (
-          <h1
+          <div
             style={{
               margin: 0,
               fontSize: 'clamp(1.8rem, 3vw, 2.9rem)',
@@ -170,12 +171,16 @@ export const RibbonHeroBlock: React.FC<RibbonHeroBlockProps> = ({
               wordBreak: 'break-word',
             }}
           >
-            {title}
-          </h1>
+            {typeof title === 'object' ? (
+              <RichText data={title} enableGutter={false} enableProse={false} />
+            ) : (
+              <h1>{title}</h1>
+            )}
+          </div>
         )}
 
         {description && (
-          <p
+          <div
             style={{
               margin: 0,
               fontSize: '14px',
@@ -184,8 +189,12 @@ export const RibbonHeroBlock: React.FC<RibbonHeroBlockProps> = ({
               maxWidth: '380px',
             }}
           >
-            {description}
-          </p>
+            {typeof description === 'object' ? (
+              <RichText data={description} enableGutter={false} enableProse={false} />
+            ) : (
+              <p>{description}</p>
+            )}
+          </div>
         )}
 
         {buttons && buttons.length > 0 && (

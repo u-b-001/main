@@ -185,7 +185,7 @@ html[data-color-scheme='learner'] a[class*="rounded-xl"] {
   border-radius: 9999px !important;
 }
 
-/* 3. MOSAI Classic Theme Preset (Retro/Brutalist style with 0px sharp corners, thick borders, and flat 3D shadows) */
+/* 3. MOSAI Classic Theme Preset */
 html[data-color-scheme='mosaiClassic'] {
   --radius: 0px;
   --radius-sm: 0px;
@@ -194,53 +194,6 @@ html[data-color-scheme='mosaiClassic'] {
   --radius-xl: 0px;
   --radius-2xl: 0px;
   --radius-3xl: 0px;
-
-  /* Thick brutalist shadows (lessened) */
-  --shadow-xs: 1px 1px 0px 0px var(--brand-navy);
-  --shadow-sm: 2px 2px 0px 0px var(--brand-navy);
-  --shadow-md: 3px 3px 0px 0px var(--brand-navy);
-  --shadow-lg: 4px 4px 0px 0px var(--brand-navy);
-  --shadow-xl: 6px 6px 0px 0px var(--brand-navy);
-}
-
-html[data-theme='dark'][data-color-scheme='mosaiClassic'] {
-  --shadow-xs: 1px 1px 0px 0px var(--brand-gold);
-  --shadow-sm: 2px 2px 0px 0px var(--brand-gold);
-  --shadow-md: 3px 3px 0px 0px var(--brand-gold);
-  --shadow-lg: 4px 4px 0px 0px var(--brand-gold);
-  --shadow-xl: 6px 6px 0px 0px var(--brand-gold);
-}
-
-
-html[data-color-scheme='mosaiClassic'] [data-slot="button"],
-html[data-color-scheme='mosaiClassic'] a[class*="rounded-xl"] {
-  border: 2px solid var(--brand-navy) !important;
-  border-radius: 0px !important;
-  background-color: var(--brand-navy) !important;
-  color: var(--brand-cream) !important;
-  box-shadow: 3px 3px 0px 0px var(--brand-navy) !important;
-  font-weight: 700 !important;
-  text-transform: uppercase !important;
-}
-html[data-theme='dark'][data-color-scheme='mosaiClassic'] [data-slot="button"],
-html[data-theme='dark'][data-color-scheme='mosaiClassic'] a[class*="rounded-xl"] {
-  border: 2px solid var(--brand-gold) !important;
-  background-color: var(--brand-navy) !important;
-  color: var(--brand-cream) !important;
-  box-shadow: 3px 3px 0px 0px var(--brand-cream) !important;
-}
-
-html[data-color-scheme='mosaiClassic'] [data-slot="button"]:hover,
-html[data-color-scheme='mosaiClassic'] a[class*="rounded-xl"]:hover {
-  box-shadow: 1px 1px 0px 0px var(--brand-navy) !important;
-  background-color: var(--brand-gold) !important;
-  color: var(--brand-navy) !important;
-}
-html[data-theme='dark'][data-color-scheme='mosaiClassic'] [data-slot="button"]:hover,
-html[data-theme='dark'][data-color-scheme='mosaiClassic'] a[class*="rounded-xl"]:hover {
-  box-shadow: 1px 1px 0px 0px var(--brand-cream) !important;
-  background-color: var(--brand-gold) !important;
-  color: var(--brand-navy) !important;
 }
 
 

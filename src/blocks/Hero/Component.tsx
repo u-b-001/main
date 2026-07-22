@@ -7,6 +7,7 @@ import * as LucideIcons from 'lucide-react'
 import { motion } from 'framer-motion'
 
 import { Media } from '@/components/Media'
+import RichText from '@/components/RichText'
 
 type FeatureTag = { icon?: string; text: string; color?: string }
 type HeroButton = { label: string; url: string; variant?: 'primary' | 'secondary' | 'outline'; icon?: string; backgroundColor?: string; textColor?: string }
@@ -99,10 +100,8 @@ function SlideMedia({ slide, priority }: { slide: any; priority?: boolean }) {
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <iframe
           src={slide.externalVideoUrl}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full w-[177.78vh] h-[56.25vw] max-w-none max-h-none border-0"
-          style={{ aspectRatio: '16/9' }}
-          allow="autoplay; fullscreen; picture-in-picture"
-          allowFullScreen
+          className="h-full w-full border-0 pointer-events-none scale-125"
+          allow="autoplay; encrypted-media"
         />
       </div>
     )
@@ -152,9 +151,9 @@ function TextBlock({
 }: {
   eyebrowText?: string
   eyebrowTextColor?: string
-  heading?: string
+  heading?: any
   headingColor?: string
-  subtitle?: string
+  subtitle?: any
   subtitleColor?: string
   buttons?: HeroButton[]
   align?: 'left' | 'center' | 'right' | 'justify'
@@ -169,19 +168,29 @@ function TextBlock({
           {eyebrowText}
         </span>
       )}
-      <h1
-        className="text-4xl md:text-6xl font-bold max-w-3xl relative z-10"
-        style={headingColor ? { color: headingColor } : undefined}
-      >
-        {heading}
-      </h1>
+      {heading && (
+        <div
+          className="text-4xl md:text-6xl font-bold max-w-3xl relative z-10"
+          style={headingColor ? { color: headingColor } : undefined}
+        >
+          {typeof heading === 'object' ? (
+            <RichText data={heading} enableGutter={false} enableProse={false} />
+          ) : (
+            <h1 className="text-4xl md:text-6xl font-bold">{heading}</h1>
+          )}
+        </div>
+      )}
       {subtitle && (
-        <p
+        <div
           className="mt-4 text-lg text-gray-300 max-w-2xl relative z-10"
           style={subtitleColor ? { color: subtitleColor } : undefined}
         >
-          {subtitle}
-        </p>
+          {typeof subtitle === 'object' ? (
+            <RichText data={subtitle} enableGutter={false} enableProse={false} />
+          ) : (
+            subtitle
+          )}
+        </div>
       )}
       {buttons && buttons.length > 0 && (
         <div className="mt-8 flex gap-4 relative z-10 flex-wrap">
@@ -723,20 +732,28 @@ function SplitHero(props: HeroBlockProps) {
         </span>
       )}
       {textSlide.heading && (
-        <h1
+        <div
           className="text-3xl font-bold leading-tight sm:text-4xl md:text-5xl"
           style={{ color: textSlide.headingColor || headingDefaultColor }}
         >
-          {textSlide.heading}
-        </h1>
+          {typeof textSlide.heading === 'object' ? (
+            <RichText data={textSlide.heading} enableGutter={false} enableProse={false} />
+          ) : (
+            <h1 className="text-3xl font-bold leading-tight sm:text-4xl md:text-5xl">{textSlide.heading}</h1>
+          )}
+        </div>
       )}
       {textSlide.subtitle && (
-        <p
+        <div
           className="max-w-xl text-base sm:text-lg"
           style={{ color: textSlide.subtitleColor || subtitleDefaultColor }}
         >
-          {textSlide.subtitle}
-        </p>
+          {typeof textSlide.subtitle === 'object' ? (
+            <RichText data={textSlide.subtitle} enableGutter={false} enableProse={false} />
+          ) : (
+            <p className="max-w-xl text-base sm:text-lg">{textSlide.subtitle}</p>
+          )}
+        </div>
       )}
       {textSlide.buttons && textSlide.buttons.length > 0 && (
         <div className="mt-2 flex flex-wrap gap-3">

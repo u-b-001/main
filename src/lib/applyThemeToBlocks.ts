@@ -44,23 +44,7 @@ function getLayoutMappings(preset: ThemePreset, targetTheme: string) {
     return Array.from(otherLayouts)
   }
 
-  return {
-    featuredCards: {
-      fromLayouts: getFromLayouts('featureCards', 'featuredCards'),
-      toLayout: translateLayout('featuredCards', preset.layouts.featureCards),
-      extraProps: {},
-    },
-    newsAndUpdates: {
-      fromLayouts: getFromLayouts('news', 'newsAndUpdates'),
-      toLayout: translateLayout('newsAndUpdates', preset.layouts.news),
-      extraProps: {},
-    },
-    imageGallery: {
-      fromLayouts: getFromLayouts('gallery', 'imageGallery'),
-      toLayout: translateLayout('imageGallery', preset.layouts.gallery),
-      extraProps: {},
-    },
-  }
+  return {}
 }
 
 /**
