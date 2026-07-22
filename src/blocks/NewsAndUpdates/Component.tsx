@@ -5,6 +5,7 @@ import configPromise from '@/payload.config'
 import { ArrowRight, Calendar, Pin } from 'lucide-react'
 import { cn } from '@/utilities/ui'
 import type { NewsAndUpdatesBlock as NewsAndUpdatesProps } from '@/payload-types'
+import CardSwap, { Card } from '@/components/ui/CardSwap'
 
 // Format dates nicely (e.g., Jun 27, 2026)
 const formatDate = (dateString?: string | null) => {
@@ -51,6 +52,26 @@ const getTagBadgeStyles = (tag?: string | null) => {
   }
 }
 
+// Resolve hex color and opacity into rgba
+const resolveColor = (
+  color?: string | null,
+  opacity?: number | null,
+  fallbackColor?: string | null,
+  fallbackOpacity?: number | null
+) => {
+  const finalColor = color || fallbackColor
+  if (!finalColor) return undefined
+  const finalOpacity = opacity ?? fallbackOpacity ?? 100
+  if (finalOpacity === 100) return finalColor
+  
+  const hex = finalColor.replace('#', '')
+  if (hex.length !== 6 && hex.length !== 3) return finalColor
+  const r = parseInt(hex.length === 3 ? hex[0]+hex[0] : hex.slice(0, 2), 16)
+  const g = parseInt(hex.length === 3 ? hex[1]+hex[1] : hex.slice(2, 4), 16)
+  const b = parseInt(hex.length === 3 ? hex[2]+hex[2] : hex.slice(4, 6), 16)
+  return `rgba(${r}, ${g}, ${b}, ${finalOpacity / 100})`
+}
+
 export const NewsAndUpdatesComponent = async ({
   heading,
   description,
@@ -68,7 +89,17 @@ export const NewsAndUpdatesComponent = async ({
   sectionBgColor = '#FFFFFF',
   headingColor,
   descriptionColor,
-}: NewsAndUpdatesProps & { headingColor?: string; descriptionColor?: string }) => {
+  cardOverlayColor,
+  cardOverlayOpacity,
+  enableRollingMotion = false,
+  animationDuration = 20,
+  cardSwapDelay = 5000,
+  cardSwapCardDistance = 60,
+  cardSwapVerticalDistance = 70,
+  cardSwapSkewAmount = 6,
+  cardSwapEasing = 'elastic',
+  cardSwapPauseOnHover = true,
+}: NewsAndUpdatesProps & { animationDuration?: number; enableRollingMotion?: boolean; headingColor?: string; descriptionColor?: string; cardOverlayColor?: string; cardOverlayOpacity?: number; cardSwapDelay?: number; cardSwapCardDistance?: number; cardSwapVerticalDistance?: number; cardSwapSkewAmount?: number; cardSwapEasing?: 'elastic' | 'linear'; cardSwapPauseOnHover?: boolean }) => {
   let newsItems: any[] = []
 
   if (newsSource === 'fetch') {
@@ -161,7 +192,10 @@ export const NewsAndUpdatesComponent = async ({
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
             {/* Featured Left Spotlight Card */}
             {featuredItem && (
-              <div className="lg:col-span-7 bg-white dark:bg-slate-900 border border-slate-150 dark:border-slate-800 rounded-3xl p-6 md:p-10 flex flex-col justify-between shadow-xs hover:shadow-md transition-all duration-300 group">
+              <div 
+                className="lg:col-span-7 bg-white dark:bg-slate-900 border border-slate-150 dark:border-slate-800 rounded-3xl p-6 md:p-10 flex flex-col justify-between shadow-xs transition-all duration-300 group"
+                style={{ backgroundColor: resolveColor(featuredItem.cardOverlayColor, featuredItem.cardOverlayOpacity, cardOverlayColor, cardOverlayOpacity) }}
+              >
                 <div>
                   <div className="flex items-center justify-between mb-6">
                     <span className={cn('px-3.5 py-1 text-xs font-bold uppercase tracking-wider rounded-full', getTagBadgeStyles(featuredItem.tag))}>
@@ -211,7 +245,8 @@ export const NewsAndUpdatesComponent = async ({
                     key={idx}
                     href={item.externalLink || `/news/${item.slug || ''}`}
                     target={item.externalLink ? '_blank' : undefined}
-                    className="flex flex-col bg-slate-50/50 dark:bg-slate-900/40 hover:bg-white dark:hover:bg-slate-900 border border-slate-100/50 dark:border-slate-800/40 hover:border-slate-200 dark:hover:border-slate-800 hover:shadow-xs p-5 rounded-2xl group transition-all duration-300"
+                    className="flex flex-col bg-slate-50/50 dark:bg-slate-900/40 hover:bg-white dark:hover:bg-slate-900 border border-slate-100/50 dark:border-slate-800/40 hover:border-slate-200 dark:hover:border-slate-800 p-5 rounded-2xl group transition-all duration-300"
+                    style={{ backgroundColor: resolveColor(item.cardOverlayColor, item.cardOverlayOpacity, cardOverlayColor, cardOverlayOpacity) }}
                   >
                     <div className="flex items-center justify-between mb-3.5">
                       <span className={cn('px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full', getTagBadgeStyles(item.tag))}>
@@ -240,7 +275,8 @@ export const NewsAndUpdatesComponent = async ({
             {newsItems.map((item, idx) => (
               <div
                 key={idx}
-                className="bg-white dark:bg-slate-900 border border-slate-150 dark:border-slate-800 p-6 md:p-8 rounded-3xl flex flex-col justify-between shadow-xs hover:shadow-md transition-all duration-300 transform hover:-translate-y-1 group"
+                className="bg-white dark:bg-slate-900 border border-slate-150 dark:border-slate-800 p-6 md:p-8 rounded-3xl flex flex-col justify-between shadow-xs transition-all duration-300 group"
+                style={{ backgroundColor: resolveColor(item.cardOverlayColor, item.cardOverlayOpacity, cardOverlayColor, cardOverlayOpacity) }}
               >
                 <div>
                   <div className="flex items-center justify-between mb-5">
@@ -279,45 +315,186 @@ export const NewsAndUpdatesComponent = async ({
 
         {/* ── List View Layout ── */}
         {layout === 'list' && (
-          <div className="space-y-6 max-w-4xl mx-auto">
-            {newsItems.map((item, idx) => {
-              const { day, month } = getDateParts(item.publishedAt)
-              return (
+          <div className="max-w-4xl mx-auto overflow-hidden relative" style={{ maxHeight: enableRollingMotion ? '500px' : 'none' }}>
+            {enableRollingMotion && (
+              <style>{`
+                @keyframes marquee-vertical {
+                  0% { transform: translateY(0); }
+                  100% { transform: translateY(calc(-50% - 12px)); } /* 12px accounts for half the 24px space-y-6 gap */
+                }
+                .animate-marquee-vertical {
+                  animation: marquee-vertical ${animationDuration}s linear infinite;
+                }
+              `}</style>
+            )}
+            {/* Optional gradient fade at top/bottom for better effect */}
+            {enableRollingMotion && (
+              <div className="absolute inset-0 z-10 pointer-events-none [mask-image:linear-gradient(to_bottom,transparent,black_10%,black_90%,transparent)] bg-transparent"></div>
+            )}
+            <div className={cn("space-y-6", enableRollingMotion && "animate-marquee-vertical hover:[animation-play-state:paused]")}>
+              {[...newsItems, ...(enableRollingMotion ? newsItems : [])].map((item, idx) => {
+                const { day, month } = getDateParts(item.publishedAt)
+                return (
+                  <Link
+                    key={idx}
+                    href={item.externalLink || `/news/${item.slug || ''}`}
+                    target={item.externalLink ? '_blank' : undefined}
+                    className="flex gap-4 md:gap-6 items-start bg-slate-50/50 dark:bg-slate-900/30 hover:bg-white dark:hover:bg-slate-900 border border-slate-100 dark:border-slate-800/80 p-5 md:p-6 rounded-2xl group shadow-2xs transition-all duration-300 relative z-20"
+                    style={{ backgroundColor: resolveColor(item.cardOverlayColor, item.cardOverlayOpacity, cardOverlayColor, cardOverlayOpacity) }}
+                  >
+                    {/* Date Badge Left */}
+                    <div className="w-14 md:w-16 h-14 md:h-16 rounded-xl flex-shrink-0 bg-brand-navy dark:bg-slate-800 text-white flex flex-col items-center justify-center font-mono">
+                      <span className="text-lg md:text-xl font-bold tracking-tight">{day}</span>
+                      <span className="text-[9px] md:text-[10px] font-semibold text-slate-300 tracking-wider mt-0.5">{month}</span>
+                    </div>
+  
+                    {/* Body Info Right */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className={cn('px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest rounded-md', getTagBadgeStyles(item.tag))}>
+                          {item.tag}
+                        </span>
+                      </div>
+                      <h3 
+                        className="text-base md:text-lg font-bold text-slate-900 dark:text-white uppercase tracking-wide group-hover:text-brand-red dark:group-hover:text-brand-gold transition-colors duration-200 line-clamp-1 mb-1.5"
+                        style={{ color: item.titleColor || undefined }}
+                      >
+                        {item.title}
+                      </h3>
+                      <p 
+                        className="text-slate-650 dark:text-slate-400 text-xs md:text-sm leading-relaxed line-clamp-2"
+                        style={{ color: item.excerptColor || undefined }}
+                      >
+                        {item.excerpt}
+                      </p>
+                    </div>
+                  </Link>
+                )
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* ── Horizontal Slide Layout ── */}
+        {layout === 'horizontal-slide' && (
+          <div className="relative w-full py-8 overflow-hidden">
+            {enableRollingMotion && (
+              <style>{`
+                @keyframes marquee-horizontal {
+                  0% { transform: translateX(calc(-50% - 12px)); } /* 12px accounts for half the 24px gap */
+                  100% { transform: translateX(0); }
+                }
+                .animate-marquee-horizontal {
+                  animation: marquee-horizontal ${animationDuration}s linear infinite;
+                }
+              `}</style>
+            )}
+            
+            {/* Optional gradient fade at edges for better effect */}
+            {enableRollingMotion && (
+              <div className="absolute inset-y-0 left-0 w-16 z-10 pointer-events-none bg-gradient-to-r from-white dark:from-slate-950 to-transparent"></div>
+            )}
+            {enableRollingMotion && (
+              <div className="absolute inset-y-0 right-0 w-16 z-10 pointer-events-none bg-gradient-to-l from-white dark:from-slate-950 to-transparent"></div>
+            )}
+            
+            <div className={cn(
+              "flex gap-6 group/carousel",
+              enableRollingMotion ? "animate-marquee-horizontal hover:[animation-play-state:paused] w-max" : "overflow-x-auto snap-x snap-mandatory pb-8 scrollbar-hide"
+            )}>
+              {[...newsItems, ...(enableRollingMotion ? newsItems : [])].map((item, idx) => (
                 <Link
                   key={idx}
                   href={item.externalLink || `/news/${item.slug || ''}`}
                   target={item.externalLink ? '_blank' : undefined}
-                  className="flex gap-4 md:gap-6 items-start bg-slate-50/50 dark:bg-slate-900/30 hover:bg-white dark:hover:bg-slate-900 border border-slate-100 dark:border-slate-800/80 p-5 md:p-6 rounded-2xl group shadow-2xs hover:shadow-xs transition-all duration-300"
+                  className={cn(
+                    "flex-shrink-0 w-[300px] md:w-[350px] bg-white dark:bg-slate-900 border border-slate-150 dark:border-slate-800 p-6 md:p-8 rounded-3xl flex flex-col justify-between shadow-xs transition-all duration-300 group group-hover/carousel:opacity-40 hover:!opacity-100",
+                    !enableRollingMotion && "snap-center"
+                  )}
+                  style={{ backgroundColor: resolveColor(item.cardOverlayColor, item.cardOverlayOpacity, cardOverlayColor, cardOverlayOpacity) }}
                 >
-                  {/* Date Badge Left */}
-                  <div className="w-14 md:w-16 h-14 md:h-16 rounded-xl flex-shrink-0 bg-brand-navy dark:bg-slate-800 text-white flex flex-col items-center justify-center font-mono">
-                    <span className="text-lg md:text-xl font-bold tracking-tight">{day}</span>
-                    <span className="text-[9px] md:text-[10px] font-semibold text-slate-300 tracking-wider mt-0.5">{month}</span>
-                  </div>
-
-                  {/* Body Info Right */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className={cn('px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest rounded-md', getTagBadgeStyles(item.tag))}>
+                  <div>
+                    <div className="flex items-center justify-between mb-5">
+                      <span className={cn('px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full', getTagBadgeStyles(item.tag))}>
                         {item.tag}
+                      </span>
+                      <span className="text-[11px] text-slate-400 dark:text-slate-500 font-semibold">
+                        {formatDate(item.publishedAt)}
                       </span>
                     </div>
                     <h3 
-                      className="text-base md:text-lg font-bold text-slate-900 dark:text-white uppercase tracking-wide group-hover:text-brand-red dark:group-hover:text-brand-gold transition-colors duration-200 line-clamp-1 mb-1.5"
+                      className="text-lg md:text-xl font-bold font-serif text-brand-navy dark:text-white mb-3 uppercase tracking-wide leading-snug group-hover:text-brand-red dark:group-hover:text-brand-gold transition-colors duration-250 line-clamp-2"
                       style={{ color: item.titleColor || undefined }}
                     >
                       {item.title}
                     </h3>
                     <p 
-                      className="text-slate-650 dark:text-slate-400 text-xs md:text-sm leading-relaxed line-clamp-2"
+                      className="text-slate-650 dark:text-slate-400 text-sm leading-relaxed mb-6 font-medium line-clamp-3"
                       style={{ color: item.excerptColor || undefined }}
                     >
                       {item.excerpt}
                     </p>
                   </div>
+                  <div className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-red dark:text-brand-gold hover:text-brand-navy dark:hover:text-white uppercase tracking-wider transition-colors duration-200 mt-auto pt-4">
+                    <span>Read Article</span>
+                    <ArrowRight size={12} className="transition-transform duration-300 group-hover:translate-x-1" />
+                  </div>
                 </Link>
-              )
-            })}
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ── Card Swap Layout ── */}
+        {layout === 'card-swap' && (
+          <div className="w-full flex justify-center py-12 md:py-24">
+            <div className="relative w-full max-w-[600px] h-[500px]">
+              <CardSwap
+                width="100%"
+                height="100%"
+                cardDistance={cardSwapCardDistance}
+                verticalDistance={cardSwapVerticalDistance}
+                delay={cardSwapDelay}
+                skewAmount={cardSwapSkewAmount}
+                easing={cardSwapEasing}
+                pauseOnHover={cardSwapPauseOnHover}
+              >
+                {newsItems.map((item, idx) => (
+                  <Card key={idx} className="p-8 flex flex-col justify-between shadow-2xl bg-white dark:bg-slate-900 overflow-hidden" style={{ backgroundColor: resolveColor(item.cardOverlayColor, item.cardOverlayOpacity, cardOverlayColor, cardOverlayOpacity) }}>
+                    <div>
+                      <div className="flex items-center justify-between mb-5">
+                        <span className={cn('px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full', getTagBadgeStyles(item.tag))}>
+                          {item.tag}
+                        </span>
+                        <span className="text-[11px] text-slate-400 dark:text-slate-500 font-semibold">
+                          {formatDate(item.publishedAt)}
+                        </span>
+                      </div>
+                      <h3 
+                        className="text-2xl md:text-3xl font-bold font-serif text-brand-navy dark:text-white mb-4 uppercase tracking-wide leading-snug line-clamp-3"
+                        style={{ color: item.titleColor || undefined }}
+                      >
+                        {item.title}
+                      </h3>
+                      <p 
+                        className="text-slate-650 dark:text-slate-400 text-base leading-relaxed mb-6 font-medium line-clamp-4"
+                        style={{ color: item.excerptColor || undefined }}
+                      >
+                        {item.excerpt}
+                      </p>
+                    </div>
+                    <Link
+                      href={item.externalLink || `/news/${item.slug || ''}`}
+                      target={item.externalLink ? '_blank' : undefined}
+                      className="inline-flex items-center gap-2 text-sm font-bold text-brand-red dark:text-brand-gold hover:text-brand-navy dark:hover:text-white uppercase tracking-wider transition-colors duration-200 mt-auto pt-4"
+                    >
+                      <span>Read Article</span>
+                      <ArrowRight size={16} className="transition-transform duration-300 translate-x-0" />
+                    </Link>
+                  </Card>
+                ))}
+              </CardSwap>
+            </div>
           </div>
         )}
 
@@ -326,7 +503,7 @@ export const NewsAndUpdatesComponent = async ({
           <div className={cn('mt-12 md:mt-16', layout === 'list' ? 'text-center' : alignmentClass)}>
             <Link
               href={viewAllUrl || '/news'}
-              className="inline-flex items-center gap-2 px-6 py-3 border-2 border-brand-navy dark:border-slate-700 hover:border-brand-red dark:hover:border-brand-gold rounded-xl font-semibold text-sm text-brand-navy dark:text-white hover:text-brand-red dark:hover:text-brand-gold shadow-2xs hover:shadow-xs transition-all duration-200 group"
+              className="inline-flex items-center gap-2 px-6 py-3 border-2 border-brand-navy dark:border-slate-700 hover:border-brand-red dark:hover:border-brand-gold rounded-xl font-semibold text-sm text-brand-navy dark:text-white hover:text-brand-red dark:hover:text-brand-gold shadow-2xs transition-all duration-200 group"
             >
               <span>{viewAllLabel}</span>
               <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1.5" />

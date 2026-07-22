@@ -350,6 +350,7 @@ export const Hero: Block = {
         description: 'Vertical content padding in pixels',
       },
     },
+
     {
       name: 'constantOverlayContent',
       type: 'checkbox',
@@ -662,6 +663,67 @@ export const Hero: Block = {
         condition: (_, siblingData) =>
           siblingData?.layout === 'mosiaFullscreen' && siblingData?.mode === 'carousel',
       },
+    },
+    /* ── Ribbon Hero ── */
+    {
+      type: 'group',
+      name: 'ribbonHeroOptions',
+      label: 'Ribbon Hero Settings',
+      admin: {
+        condition: (_, siblingData) => siblingData?.layout === 'ribbonHero',
+      },
+      fields: [
+        {
+          name: 'backgroundImage',
+          type: 'upload',
+          relationTo: 'media',
+          admin: {
+            description: 'Optional background image (e.g. Taj Mahal)',
+          },
+        },
+        {
+          name: 'cutoutImage',
+          type: 'upload',
+          relationTo: 'media',
+          admin: {
+            description: 'Foreground cutout image (e.g. People). Must be a transparent PNG.',
+          },
+        },
+        {
+          name: 'fontFamily',
+          type: 'select',
+          defaultValue: 'sans',
+          options: [
+            { label: 'Sans-serif', value: 'sans' },
+            { label: 'Serif', value: 'serif' },
+            { label: 'Monospace', value: 'mono' },
+          ],
+          admin: {
+            description: 'Font family for the text in this layout',
+          },
+        },
+        {
+          name: 'overlayColor',
+          type: 'text',
+          defaultValue: '#FFFFFF',
+          admin: {
+            components: {
+              Field: '@/globals/ColorPickerField#ColorPickerField',
+            },
+            description: 'Overlay color for the background image',
+          },
+        },
+        {
+          name: 'overlayOpacity',
+          type: 'number',
+          defaultValue: 70,
+          min: 0,
+          max: 100,
+          admin: {
+            description: 'Opacity of the background overlay (0-100)',
+          },
+        },
+      ],
     },
     /* ── Quick Access Bar (overlapping bottom of hero) ── */
     {

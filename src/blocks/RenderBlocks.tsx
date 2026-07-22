@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react'
+import { AnimatedBlock } from '@/components/ui/AnimatedBlock'
 
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { RichTextBlock } from '@/blocks/RichTextBlock/Component'
@@ -31,6 +32,9 @@ import { FileDownloadsComponent } from '@/blocks/FileDownloads/Component'
 import { NewsAndUpdatesComponent } from '@/blocks/NewsAndUpdates/Component'
 import { ResourceLinksComponent } from '@/blocks/ResourceLinks/Component'
 import { MembersDirectoryComponent } from '@/blocks/MembersDirectory/Component'
+import { LayoutCardsBlock } from '@/blocks/LayoutCards/Component'
+import { RibbonHeroBlock } from '@/blocks/RibbonHero/Component'
+import { HeroMOSAIBlock } from '@/blocks/HeroMOSAI/Component'
 
 export const blockComponents = {
   cta: CallToActionBlock,
@@ -39,7 +43,6 @@ export const blockComponents = {
   infoCard: InfoCardBlock,
   table: TableBlock,
   embed: EmbedBlock,
-
   hero : HeroBlock,
   marquee: MarqueeBlock,
   statistics: StatsImpactBlock,
@@ -63,6 +66,9 @@ export const blockComponents = {
   fileDownloads: FileDownloadsComponent,
   resourceLinks: ResourceLinksComponent,
   membersDirectory: MembersDirectoryComponent,
+  layoutCards: LayoutCardsBlock,
+  ribbonHero: RibbonHeroBlock,
+  heroMosai: HeroMOSAIBlock,
 }
 
 export const RenderBlocks: React.FC<{
@@ -81,11 +87,20 @@ export const RenderBlocks: React.FC<{
           if (blockType && blockType in blockComponents) {
             const Block = blockComponents[blockType as keyof typeof blockComponents]
 
-            if (Block) {
+          if (Block) {
+              // Hero-type blocks must be immediately visible — skip the opacity:0 AnimatedBlock
+              const skipAnimation = blockType === 'ribbonHero' || blockType === 'hero' || blockType === 'heroMosai'
+              if (skipAnimation) {
+                return (
+                  <div className="mb-8" key={index}>
+                    <Block {...block} />
+                  </div>
+                )
+              }
               return (
-                <div className={index === 0 ? "mb-8" : "my-8"} key={index}>
+                <AnimatedBlock className={index === 0 ? "mb-8" : "my-8"} key={index}>
                   <Block {...block} />
-                </div>
+                </AnimatedBlock>
               )
             }
           }

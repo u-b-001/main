@@ -121,6 +121,24 @@ html[data-color-scheme='modern'] {
   --brand-cream: #F8FAFC;
 }
 
+html[data-color-scheme='mosaiEnhanced'] {
+  --brand-navy: #142890;
+  --brand-red: #00AF00;
+  --brand-gold: #F48C06;
+  --brand-cream: #FFFFFF;
+  --brand-lightgray: #F1F1F1;
+  --brand-text: #0E0E0E;
+}
+
+html[data-color-scheme='crimsonAuthoritative'] {
+  --brand-navy: #1D2D44;
+  --brand-red: #B32424;
+  --brand-gold: #2F3E46;
+  --brand-cream: #FDFBF7;
+  --brand-lightgray: #FFFFFF;
+  --brand-text: #1D2D44;
+}
+
 /* ==========================================
    THEME-DRIVEN CARD AND BUTTON OVERRIDES
    ========================================== */
@@ -203,7 +221,6 @@ html[data-color-scheme='mosaiClassic'] a[class*="rounded-xl"] {
   box-shadow: 3px 3px 0px 0px var(--brand-navy) !important;
   font-weight: 700 !important;
   text-transform: uppercase !important;
-  transition: all 0.15s ease-in-out !important;
 }
 html[data-theme='dark'][data-color-scheme='mosaiClassic'] [data-slot="button"],
 html[data-theme='dark'][data-color-scheme='mosaiClassic'] a[class*="rounded-xl"] {
@@ -215,7 +232,6 @@ html[data-theme='dark'][data-color-scheme='mosaiClassic'] a[class*="rounded-xl"]
 
 html[data-color-scheme='mosaiClassic'] [data-slot="button"]:hover,
 html[data-color-scheme='mosaiClassic'] a[class*="rounded-xl"]:hover {
-  transform: translate(2px, 2px) !important;
   box-shadow: 1px 1px 0px 0px var(--brand-navy) !important;
   background-color: var(--brand-gold) !important;
   color: var(--brand-navy) !important;
@@ -232,17 +248,14 @@ html[data-theme='dark'][data-color-scheme='mosaiClassic'] a[class*="rounded-xl"]
 
 /* Featured Cards Overrides */
 html[data-color-scheme='mosai'] .featured-card {
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: 0 4px 12px rgba(75, 46, 131, 0.04);
 }
 html[data-color-scheme='mosai'] .featured-card:hover {
-  transform: translateY(-4px) scale(1.01);
   box-shadow: 0 20px 40px rgba(75, 46, 131, 0.08);
   border-color: rgba(75, 46, 131, 0.25);
 }
 html[data-color-scheme='learner'] .featured-card {
   border-radius: 24px !important;
-  transition: all 0.3s ease;
 }
 html[data-color-scheme='learner'] .featured-card:hover {
   background-color: var(--brand-cream) !important;

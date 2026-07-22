@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { anyone } from '../access/anyone'
 import { isEditor } from '../access/roles'
+import { opacityField } from '../blocks/shared'
 
 export const News: CollectionConfig = {
   slug: 'news',
@@ -66,6 +67,15 @@ export const News: CollectionConfig = {
         components: { Field: '@/globals/ColorPickerField.tsx#ColorPickerField' },
       },
     },
+    {
+      name: 'cardOverlayColor',
+      type: 'text',
+      admin: {
+        description: 'Pick a background / overlay color for the card (overrides block settings)',
+        components: { Field: '@/globals/ColorPickerField.tsx#ColorPickerField' },
+      },
+    },
+    opacityField('cardOverlayOpacity', 'Card Overlay Opacity', 100),
     {
       name: 'externalLink',
       type: 'text',

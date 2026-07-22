@@ -34,6 +34,9 @@ import { FileDownloadsBlock } from '../../blocks/FileDownloads/config'
 import { NewsAndUpdatesBlock } from '../../blocks/NewsAndUpdates/config'
 import { ResourceLinksBlock } from '../../blocks/ResourceLinks/config'
 import { MembersDirectoryBlock } from '../../blocks/MembersDirectory/config'
+import { LayoutCardsBlock } from '../../blocks/LayoutCards/config'
+import { RibbonHeroBlock } from '../../blocks/RibbonHero/config'
+import { HeroMOSAIBlock } from '../../blocks/HeroMOSAI/config'
 
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -360,6 +363,9 @@ export const Pages: CollectionConfig<'pages'> = {
         FileDownloadsBlock,
         ResourceLinksBlock,
         MembersDirectoryBlock,
+        LayoutCardsBlock,
+        RibbonHeroBlock,
+        HeroMOSAIBlock,
       ],
       required: true,
       admin: {

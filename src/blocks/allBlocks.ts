@@ -35,6 +35,9 @@ import { FlexibleRowBlock } from './FlexibleRow/config'
 import { FeaturedCardsBlock } from './FeaturedCards/config'
 import { MediaContactBlock } from './MediaContact/config'
 import { MembersDirectoryBlock } from './MembersDirectory/config'
+import { LayoutCardsBlock } from './LayoutCards/config'
+import { RibbonHeroBlock } from './RibbonHero/config'
+import { HeroMOSAIBlock } from './HeroMOSAI/config'
 
 export const allBlocks = [
   Hero,
@@ -69,6 +72,9 @@ export const allBlocks = [
   FeaturedCardsBlock,
   MediaContactBlock,
   MembersDirectoryBlock,
+  LayoutCardsBlock,
+  RibbonHeroBlock,
+  HeroMOSAIBlock,
 ]
 
 /** Blocks safe for non-Pages collections (excludes blocks with deeply nested names) */
@@ -105,4 +111,7 @@ export const collectionBlocks = [
   MediaContactBlock,
   ResourceLinksBlock,
   MembersDirectoryBlock,
+  LayoutCardsBlock,
+  RibbonHeroBlock,
+  HeroMOSAIBlock,
 ]

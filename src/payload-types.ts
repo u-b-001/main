@@ -487,6 +487,28 @@ export interface Page {
         };
         mosiaShowSlideCounter?: boolean | null;
         mosiaShowPlayPause?: boolean | null;
+        ribbonHeroOptions?: {
+          /**
+           * Optional background image (e.g. Taj Mahal)
+           */
+          backgroundImage?: (number | null) | Media;
+          /**
+           * Foreground cutout image (e.g. People). Must be a transparent PNG.
+           */
+          cutoutImage?: (number | null) | Media;
+          /**
+           * Font family for the text in this layout
+           */
+          fontFamily?: ('sans' | 'serif' | 'mono') | null;
+          /**
+           * Overlay color for the background image
+           */
+          overlayColor?: string | null;
+          /**
+           * Opacity of the background overlay (0-100)
+           */
+          overlayOpacity?: number | null;
+        };
         /**
          * Floating card grid that overlaps the bottom of the hero into the next section
          */
@@ -631,14 +653,35 @@ export interface Page {
          * Select items from the Gallery collection
          */
         galleryItems?: (number | Gallery)[] | null;
-        layout?: ('grid' | 'masonry' | 'bento') | null;
+        layout?: ('grid' | 'masonry' | 'bento' | 'carousel' | 'circular') | null;
+        /**
+         * Pick a glow color for the Bento hover effect.
+         */
+        bentoHoverColor?: string | null;
         columns?: ('2' | '3' | '4') | null;
         hoverEffect?: ('none' | 'zoom' | 'overlay' | 'lift' | 'grayscale') | null;
+        autoplay?: boolean | null;
+        /**
+         * Speed of continuous scroll (1 = normal, 2 = fast, etc)
+         */
+        autoplaySpeed?: number | null;
         enableViewMore?: boolean | null;
         /**
          * Number of images visible before "View More" is clicked
          */
         initialVisibleCount?: number | null;
+        /**
+         * Default is 3. Negative values bend in the opposite direction.
+         */
+        circularBend?: number | null;
+        /**
+         * Hex color for text (default: #ffffff)
+         */
+        circularTextColor?: string | null;
+        /**
+         * Border radius (default: 0.05)
+         */
+        circularBorderRadius?: number | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'imageGallery';
@@ -938,6 +981,7 @@ export interface Page {
                     blockType: 'flexVideo';
                   }
                 | {
+                    layout?: ('default' | 'stacked') | null;
                     slides: {
                       mediaType: 'image' | 'video' | 'youtube';
                       image?: (number | null) | Media;
@@ -947,6 +991,30 @@ export interface Page {
                        */
                       youtubeUrl?: string | null;
                       caption?: string | null;
+                      /**
+                       * Used for Stacked 3D layout.
+                       */
+                      title?: string | null;
+                      /**
+                       * e.g. "5 mins ago" (Used for Stacked 3D layout).
+                       */
+                      subtitle?: string | null;
+                      /**
+                       * e.g. "NEWS" (Used for Stacked 3D layout).
+                       */
+                      category?: string | null;
+                      /**
+                       * e.g. "Read more" (Used for Stacked 3D layout).
+                       */
+                      buttonText?: string | null;
+                      /**
+                       * URL for the button.
+                       */
+                      buttonLink?: string | null;
+                      /**
+                       * Pick a color or enter hex value
+                       */
+                      backgroundColor?: string | null;
                       id?: string | null;
                     }[];
                     /**
@@ -1244,6 +1312,10 @@ export interface Page {
                       [k: string]: unknown;
                     } | null;
                     style: 'default' | 'highlight' | 'warning';
+                    /**
+                     * Select an animation for this info card
+                     */
+                    animation?: ('none' | 'fade-in' | 'slide-up' | 'pulse' | 'bounce' | 'lift-up') | null;
                     id?: string | null;
                     blockName?: string | null;
                     blockType: 'flexInfoCard';
@@ -1288,6 +1360,76 @@ export interface Page {
     | FileDownloadsBlock
     | ResourceLinksBlock
     | MembersDirectoryBlock
+    | {
+        /**
+         * Section heading displayed above this block
+         */
+        sectionHeading?: string | null;
+        /**
+         * Optional description below the heading
+         */
+        sectionDescription?: string | null;
+        headingAlignment?: ('left' | 'center' | 'right') | null;
+        columns?: ('2' | '3' | '4') | null;
+        cards: {
+          /**
+           * Select a Lucide icon
+           */
+          icon?: string | null;
+          cardTitle: {
+            root: {
+              type: string;
+              children: {
+                type: any;
+                version: number;
+                [k: string]: unknown;
+              }[];
+              direction: ('ltr' | 'rtl') | null;
+              format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+              indent: number;
+              version: number;
+            };
+            [k: string]: unknown;
+          };
+          /**
+           * E.g., "From Beginner to Advanced"
+           */
+          cardSubtitle?: {
+            root: {
+              type: string;
+              children: {
+                type: any;
+                version: number;
+                [k: string]: unknown;
+              }[];
+              direction: ('ltr' | 'rtl') | null;
+              format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+              indent: number;
+              version: number;
+            };
+            [k: string]: unknown;
+          } | null;
+          backgroundImage: number | Media;
+          /**
+           * Pick a color or enter hex value
+           */
+          overlayColor?: string | null;
+          /**
+           * Opacity percentage (0-100)
+           */
+          overlayOpacity?: number | null;
+          /**
+           * URL when the card or arrow is clicked
+           */
+          link?: string | null;
+          id?: string | null;
+        }[];
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'layoutCards';
+      }
+    | RibbonHeroBlock
+    | HeroMOSAIBlock
   )[];
   seo?: {
     title?: string | null;
@@ -2065,7 +2207,21 @@ export interface NewsAndUpdatesBlock {
   /**
    * Choose between a card grid or a featured spotlight layout
    */
-  layout: 'spotlight' | 'grid' | 'list';
+  layout: 'spotlight' | 'grid' | 'list' | 'horizontal-slide' | 'card-swap';
+  /**
+   * Auto-scroll the news cards vertically
+   */
+  enableRollingMotion?: boolean | null;
+  /**
+   * Duration of one complete scroll cycle in seconds (e.g. 20 for fast, 40 for slow)
+   */
+  animationDuration?: number | null;
+  cardSwapDelay?: number | null;
+  cardSwapCardDistance?: number | null;
+  cardSwapVerticalDistance?: number | null;
+  cardSwapSkewAmount?: number | null;
+  cardSwapEasing?: ('elastic' | 'linear') | null;
+  cardSwapPauseOnHover?: boolean | null;
   /**
    * Choose manual card entry or automatic fetch from News collection.
    */
@@ -2086,6 +2242,14 @@ export interface NewsAndUpdatesBlock {
         tag: 'ANNOUNCEMENT' | 'EVENT' | 'OPPORTUNITY' | 'RESULT' | 'NOTICE';
         excerpt: string;
         externalLink?: string | null;
+        /**
+         * Pick a background / overlay color for the card (overrides block settings)
+         */
+        cardOverlayColor?: string | null;
+        /**
+         * Opacity percentage (0-100)
+         */
+        cardOverlayOpacity?: number | null;
         publishedAt: string;
         featured?: boolean | null;
         id?: string | null;
@@ -2094,6 +2258,14 @@ export interface NewsAndUpdatesBlock {
   viewAllEnabled?: boolean | null;
   viewAllLabel?: string | null;
   viewAllUrl?: string | null;
+  /**
+   * Pick an overlay / background color for the cards
+   */
+  cardOverlayColor?: string | null;
+  /**
+   * Opacity percentage (0-100)
+   */
+  cardOverlayOpacity?: number | null;
   /**
    * Pick a color or enter hex value
    */
@@ -2268,6 +2440,14 @@ export interface StepsBlock {
    * Choose how the steps are arranged.
    */
   layout?: ('vertical' | 'horizontal-snake') | null;
+  /**
+   * Animate steps one by one as they scroll into view.
+   */
+  enableStepAnimations?: boolean | null;
+  /**
+   * The delay between each step animating in.
+   */
+  staggerDelay?: number | null;
   steps: {
     title: string;
     description?: {
@@ -2355,30 +2535,284 @@ export interface MembersDirectoryBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
+ * via the `definition` "RibbonHeroBlock".
  */
-export interface User {
-  id: number;
-  name: string;
-  role: 'superAdmin' | 'schoolAdmin' | 'editor' | 'viewer';
-  updatedAt: string;
-  createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  sessions?:
+export interface RibbonHeroBlock {
+  /**
+   * Small text above the heading, e.g. "MOSAI - BRIDGING CULTURES..."
+   */
+  subtitle?: string | null;
+  /**
+   * The main large heading.
+   */
+  title: string;
+  /**
+   * Paragraph text below the title.
+   */
+  description?: string | null;
+  buttons?:
     | {
-        id: string;
-        createdAt?: string | null;
-        expiresAt: string;
+        label: string;
+        url: string;
+        variant?: ('primary' | 'secondary' | 'outline' | 'ghost') | null;
+        id?: string | null;
       }[]
     | null;
-  password?: string | null;
-  collection: 'users';
+  /**
+   * Faded background image for the entire section.
+   */
+  backgroundImage?: (number | null) | Media;
+  /**
+   * Image of people without boundaries, positioned on the right.
+   */
+  cutoutImage?: (number | null) | Media;
+  /**
+   * Wavy flag ribbon image positioned at the bottom.
+   */
+  ribbonImage?: (number | null) | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ribbonHero';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroMOSAIBlock".
+ */
+export interface HeroMOSAIBlock {
+  subtitle?: string | null;
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Color for the main heading and description text.
+   */
+  textColor?: string | null;
+  /**
+   * Hero height in pixels (e.g. 600)
+   */
+  height?: number | null;
+  textAlignment?: ('left' | 'center' | 'right') | null;
+  textVerticalPosition?: ('top' | 'center' | 'bottom') | null;
+  /**
+   * Maximum content width in pixels for hero text container
+   */
+  contentMaxWidth?: number | null;
+  /**
+   * Horizontal content padding in pixels
+   */
+  contentPaddingX?: number | null;
+  /**
+   * Vertical content padding in pixels
+   */
+  contentPaddingY?: number | null;
+  buttons?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'news';
+                value: number | News;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('primary' | 'secondary' | 'outline' | 'ghost') | null;
+        };
+        /**
+         * Background color for this button.
+         */
+        buttonColor?: string | null;
+        /**
+         * Text color for this button.
+         */
+        buttonTextColor?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Upload the main unified background image (including leaders, landmarks, etc.).
+   */
+  backgroundImage: number | Media;
+  /**
+   * Scale X (%)
+   */
+  bgImageScaleX?: number | null;
+  /**
+   * Scale Y (%)
+   */
+  bgImageScaleY?: number | null;
+  /**
+   * Opacity (%)
+   */
+  bgImageOpacity?: number | null;
+  /**
+   * Shift X (%)
+   */
+  bgImageShiftX?: number | null;
+  /**
+   * Shift Y (%)
+   */
+  bgImageShiftY?: number | null;
+  /**
+   * Select the mode for the hero image (right side).
+   */
+  mode?: ('single' | 'carousel') | null;
+  /**
+   * Upload the foreground hero image (typically displayed on the right).
+   */
+  heroImage?: (number | null) | Media;
+  /**
+   * Add multiple slides for the hero image carousel.
+   */
+  heroSlides?:
+    | {
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Scale X (%)
+   */
+  heroImageScaleX?: number | null;
+  /**
+   * Scale Y (%)
+   */
+  heroImageScaleY?: number | null;
+  /**
+   * Opacity (%)
+   */
+  heroImageOpacity?: number | null;
+  /**
+   * Shift X (%)
+   */
+  heroImageShiftX?: number | null;
+  /**
+   * Shift Y (%)
+   */
+  heroImageShiftY?: number | null;
+  /**
+   * Smoothly fade the edges of the image into the background so it looks like one seamless scene.
+   */
+  heroImageEdgeBlend?:
+    | (
+        | 'none'
+        | 'linear-top'
+        | 'radial'
+        | 'radial-bottom'
+        | 'radial-top'
+        | 'blob'
+        | 'blob-soft'
+        | 'blob-soft-sides'
+        | 'soft-blended'
+      )
+    | null;
+  /**
+   * Apply a physical pixel blur (out-of-focus effect) to the blended edges. Only works if an Edge Blend is selected above.
+   */
+  heroImageEdgePixelBlur?: boolean | null;
+  /**
+   * Apply a drop shadow around the hero image.
+   */
+  heroImageShadow?: ('none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'glow') | null;
+  /**
+   * Upload the wave/ribbon graphic that appears at the bottom.
+   */
+  ribbonImage?: (number | null) | Media;
+  /**
+   * Scale X (%)
+   */
+  ribbonImageScaleX?: number | null;
+  /**
+   * Scale Y (%)
+   */
+  ribbonImageScaleY?: number | null;
+  /**
+   * Opacity (%)
+   */
+  ribbonImageOpacity?: number | null;
+  /**
+   * Shift X (%)
+   */
+  ribbonImageShiftX?: number | null;
+  /**
+   * Shift Y (%)
+   */
+  ribbonImageShiftY?: number | null;
+  /**
+   * Scale (%)
+   */
+  featureStripScale?: number | null;
+  /**
+   * Shift X (%)
+   */
+  featureStripShiftX?: number | null;
+  /**
+   * Shift Y (%)
+   */
+  featureStripShiftY?: number | null;
+  features?:
+    | {
+        /**
+         * Select a Lucide icon
+         */
+        icon: string;
+        title: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  enabled?: boolean | null;
+  backgroundColor?: ('faf5f0' | 'ffffff' | 'f9fafb') | null;
+  containerWidth?: ('full' | 'contained') | null;
+  paddingTop?: number | null;
+  paddingBottom?: number | null;
+  backgroundSettings?: {
+    backgroundGradient?: boolean | null;
+    radialGlow?: boolean | null;
+    /**
+     * 0 to 1
+     */
+    overlayOpacity?: number | null;
+    paperTexture?: (number | null) | Media;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'heroMosai';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2424,6 +2858,14 @@ export interface News {
    */
   contentColor?: string | null;
   /**
+   * Pick a background / overlay color for the card (overrides block settings)
+   */
+  cardOverlayColor?: string | null;
+  /**
+   * Opacity percentage (0-100)
+   */
+  cardOverlayOpacity?: number | null;
+  /**
    * If set, clicking the card redirects here instead of an internal page
    */
   externalLink?: string | null;
@@ -2436,6 +2878,33 @@ export interface News {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: number;
+  name: string;
+  role: 'superAdmin' | 'schoolAdmin' | 'editor' | 'viewer';
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  sessions?:
+    | {
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
+      }[]
+    | null;
+  password?: string | null;
+  collection: 'users';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -3028,6 +3497,15 @@ export interface PagesSelect<T extends boolean = true> {
                   };
               mosiaShowSlideCounter?: T;
               mosiaShowPlayPause?: T;
+              ribbonHeroOptions?:
+                | T
+                | {
+                    backgroundImage?: T;
+                    cutoutImage?: T;
+                    fontFamily?: T;
+                    overlayColor?: T;
+                    overlayOpacity?: T;
+                  };
               quickAccessBar?:
                 | T
                 | {
@@ -3150,10 +3628,16 @@ export interface PagesSelect<T extends boolean = true> {
                   };
               galleryItems?: T;
               layout?: T;
+              bentoHoverColor?: T;
               columns?: T;
               hoverEffect?: T;
+              autoplay?: T;
+              autoplaySpeed?: T;
               enableViewMore?: T;
               initialVisibleCount?: T;
+              circularBend?: T;
+              circularTextColor?: T;
+              circularBorderRadius?: T;
               id?: T;
               blockName?: T;
             };
@@ -3298,6 +3782,7 @@ export interface PagesSelect<T extends boolean = true> {
                           flexCarousel?:
                             | T
                             | {
+                                layout?: T;
                                 slides?:
                                   | T
                                   | {
@@ -3306,6 +3791,12 @@ export interface PagesSelect<T extends boolean = true> {
                                       video?: T;
                                       youtubeUrl?: T;
                                       caption?: T;
+                                      title?: T;
+                                      subtitle?: T;
+                                      category?: T;
+                                      buttonText?: T;
+                                      buttonLink?: T;
+                                      backgroundColor?: T;
                                       id?: T;
                                     };
                                 autoplay?: T;
@@ -3503,6 +3994,7 @@ export interface PagesSelect<T extends boolean = true> {
                                 iconColor?: T;
                                 content?: T;
                                 style?: T;
+                                animation?: T;
                                 id?: T;
                                 blockName?: T;
                               };
@@ -3531,6 +4023,30 @@ export interface PagesSelect<T extends boolean = true> {
         fileDownloads?: T | FileDownloadsBlockSelect<T>;
         resourceLinks?: T | ResourceLinksBlockSelect<T>;
         membersDirectory?: T | MembersDirectoryBlockSelect<T>;
+        layoutCards?:
+          | T
+          | {
+              sectionHeading?: T;
+              sectionDescription?: T;
+              headingAlignment?: T;
+              columns?: T;
+              cards?:
+                | T
+                | {
+                    icon?: T;
+                    cardTitle?: T;
+                    cardSubtitle?: T;
+                    backgroundImage?: T;
+                    overlayColor?: T;
+                    overlayOpacity?: T;
+                    link?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        ribbonHero?: T | RibbonHeroBlockSelect<T>;
+        heroMosai?: T | HeroMOSAIBlockSelect<T>;
       };
   seo?:
     | T
@@ -3764,6 +4280,14 @@ export interface NewsAndUpdatesBlockSelect<T extends boolean = true> {
   description?: T;
   align?: T;
   layout?: T;
+  enableRollingMotion?: T;
+  animationDuration?: T;
+  cardSwapDelay?: T;
+  cardSwapCardDistance?: T;
+  cardSwapVerticalDistance?: T;
+  cardSwapSkewAmount?: T;
+  cardSwapEasing?: T;
+  cardSwapPauseOnHover?: T;
   newsSource?: T;
   limit?: T;
   sortBy?: T;
@@ -3776,6 +4300,8 @@ export interface NewsAndUpdatesBlockSelect<T extends boolean = true> {
         tag?: T;
         excerpt?: T;
         externalLink?: T;
+        cardOverlayColor?: T;
+        cardOverlayOpacity?: T;
         publishedAt?: T;
         featured?: T;
         id?: T;
@@ -3783,6 +4309,8 @@ export interface NewsAndUpdatesBlockSelect<T extends boolean = true> {
   viewAllEnabled?: T;
   viewAllLabel?: T;
   viewAllUrl?: T;
+  cardOverlayColor?: T;
+  cardOverlayOpacity?: T;
   sectionBgColor?: T;
   headingColor?: T;
   descriptionColor?: T;
@@ -3892,6 +4420,8 @@ export interface StepsBlockSelect<T extends boolean = true> {
   hoverLuminous?: T;
   hoverBulge?: T;
   layout?: T;
+  enableStepAnimations?: T;
+  staggerDelay?: T;
   steps?:
     | T
     | {
@@ -3938,6 +4468,115 @@ export interface MembersDirectoryBlockSelect<T extends boolean = true> {
   searchFields?: T;
   showFields?: T;
   designationFilter?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "RibbonHeroBlock_select".
+ */
+export interface RibbonHeroBlockSelect<T extends boolean = true> {
+  subtitle?: T;
+  title?: T;
+  description?: T;
+  buttons?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        variant?: T;
+        id?: T;
+      };
+  backgroundImage?: T;
+  cutoutImage?: T;
+  ribbonImage?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroMOSAIBlock_select".
+ */
+export interface HeroMOSAIBlockSelect<T extends boolean = true> {
+  subtitle?: T;
+  heading?: T;
+  description?: T;
+  textColor?: T;
+  height?: T;
+  textAlignment?: T;
+  textVerticalPosition?: T;
+  contentMaxWidth?: T;
+  contentPaddingX?: T;
+  contentPaddingY?: T;
+  buttons?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
+        buttonColor?: T;
+        buttonTextColor?: T;
+        id?: T;
+      };
+  backgroundImage?: T;
+  bgImageScaleX?: T;
+  bgImageScaleY?: T;
+  bgImageOpacity?: T;
+  bgImageShiftX?: T;
+  bgImageShiftY?: T;
+  mode?: T;
+  heroImage?: T;
+  heroSlides?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  heroImageScaleX?: T;
+  heroImageScaleY?: T;
+  heroImageOpacity?: T;
+  heroImageShiftX?: T;
+  heroImageShiftY?: T;
+  heroImageEdgeBlend?: T;
+  heroImageEdgePixelBlur?: T;
+  heroImageShadow?: T;
+  ribbonImage?: T;
+  ribbonImageScaleX?: T;
+  ribbonImageScaleY?: T;
+  ribbonImageOpacity?: T;
+  ribbonImageShiftX?: T;
+  ribbonImageShiftY?: T;
+  featureStripScale?: T;
+  featureStripShiftX?: T;
+  featureStripShiftY?: T;
+  features?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  enabled?: T;
+  backgroundColor?: T;
+  containerWidth?: T;
+  paddingTop?: T;
+  paddingBottom?: T;
+  backgroundSettings?:
+    | T
+    | {
+        backgroundGradient?: T;
+        radialGlow?: T;
+        overlayOpacity?: T;
+        paperTexture?: T;
+      };
   id?: T;
   blockName?: T;
 }
@@ -4042,6 +4681,8 @@ export interface NewsSelect<T extends boolean = true> {
   slug?: T;
   content?: T;
   contentColor?: T;
+  cardOverlayColor?: T;
+  cardOverlayOpacity?: T;
   externalLink?: T;
   publishedAt?: T;
   featured?: T;
@@ -4462,6 +5103,14 @@ export interface Header {
   id: number;
   logo: number | Media;
   /**
+   * Pick a color or enter hex value
+   */
+  headerTextColor?: string | null;
+  /**
+   * Pick a color or enter hex value
+   */
+  headerBackgroundColor?: string | null;
+  /**
    * Optional compact logo for small screens. Falls back to main logo if not set.
    */
   logoMobile?: (number | null) | Media;
@@ -4603,7 +5252,7 @@ export interface SiteSetting {
   /**
    * Choose a website theme. Selecting a preset automatically updates the colors, typography, header, and block layouts.
    */
-  themePreset?: ('default' | 'mosai' | 'mosaiClassic' | 'learner') | null;
+  themePreset?: ('default' | 'mosai' | 'mosaiClassic' | 'learner' | 'mosaiEnhanced' | 'crimsonAuthoritative') | null;
   headingFont?: ('Playfair Display' | 'Raleway' | 'Montserrat' | 'Inter' | 'Roboto' | 'Poppins') | null;
   bodyFont?: ('Inter' | 'Roboto' | 'Open Sans' | 'Poppins' | 'Lato') | null;
   themeColors?: {
@@ -4777,6 +5426,8 @@ export interface SiteSetting {
  */
 export interface HeaderSelect<T extends boolean = true> {
   logo?: T;
+  headerTextColor?: T;
+  headerBackgroundColor?: T;
   logoMobile?: T;
   logoWidth?: T;
   logoHeight?: T;

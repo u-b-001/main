@@ -82,13 +82,23 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
       <header
         className={cn(
           'w-full z-50 transition-all duration-300',
-          isSticky ? 'fixed top-0 left-0' : 'relative',
+          isSticky && !shouldOverlap 
+            ? 'sticky top-0' 
+            : isSticky && shouldOverlap 
+              ? 'fixed top-0 left-0' 
+              : shouldOverlap 
+                ? 'absolute top-0 left-0' 
+                : 'relative',
           isSticky && scrolled
-            ? 'bg-white/95 backdrop-blur-md shadow-md py-3 dark:bg-slate-950/95 text-brand-navy dark:text-white'
+            ? cn('backdrop-blur-md shadow-md', !(data as any)?.headerBackgroundColor && 'bg-white/95 dark:bg-slate-950/95', !data?.headerTextColor && 'text-brand-navy dark:text-white')
             : shouldOverlap
-              ? 'bg-transparent py-5 text-white'
-              : 'bg-white py-5 dark:bg-slate-950 text-brand-navy dark:text-white',
+              ? 'bg-transparent text-white'
+              : cn(!(data as any)?.headerBackgroundColor && 'bg-white dark:bg-slate-950', !data?.headerTextColor && 'text-brand-navy dark:text-white'),
         )}
+        style={{
+          color: data?.headerTextColor && (!shouldOverlap || scrolled) ? data.headerTextColor : undefined,
+          backgroundColor: (data as any)?.headerBackgroundColor && (!shouldOverlap || scrolled) ? (data as any).headerBackgroundColor : undefined,
+        }}
       >
         <div className="w-full max-w-[1920px] relative mx-auto px-4 xl:px-6 flex justify-between xl:justify-center xl:gap-8 2xl:gap-16 items-center">
           {/* Logo */}
@@ -128,7 +138,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
               <span
                 className={cn(
                   'font-serif font-bold text-2xl tracking-wide transition-colors duration-200',
-                  shouldOverlap && !scrolled ? 'text-white' : 'text-brand-navy dark:text-white',
+                  shouldOverlap && !scrolled ? 'text-white' : (data?.headerTextColor ? '' : 'text-brand-navy dark:text-white'),
                 )}
               >
                 MOSAI
@@ -174,7 +184,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
                           ? 'text-brand-red'
                           : shouldOverlap && !scrolled
                             ? 'text-white hover:text-brand-red/90'
-                            : 'text-brand-navy hover:text-brand-red dark:text-slate-200 dark:hover:text-brand-red',
+                            : (data?.headerTextColor ? 'hover:text-brand-red dark:hover:text-brand-red' : 'text-brand-navy hover:text-brand-red dark:text-slate-200 dark:hover:text-brand-red'),
                       )}
                     >
                       {item.label}
@@ -198,7 +208,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
                           ? 'text-brand-red'
                           : shouldOverlap && !scrolled
                             ? 'text-white hover:text-brand-red/90'
-                            : 'text-brand-navy hover:text-brand-red dark:text-slate-200 dark:hover:text-brand-red',
+                            : (data?.headerTextColor ? 'hover:text-brand-red dark:hover:text-brand-red' : 'text-brand-navy hover:text-brand-red dark:text-slate-200 dark:hover:text-brand-red'),
                       )}
                     >
                       {item.label}
@@ -226,13 +236,15 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
                           <div key={childIdx} className="relative group/sub py-1 px-2">
                             {hasSubChildren ? (
                               <div className="relative">
-                                <span
+                                <Link
+                                  href={child.link}
+                                  target={child.openInNewTab ? '_blank' : undefined}
                                   tabIndex={0}
                                   className="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium text-brand-navy dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer focus:outline-none focus:ring-2 focus:ring-brand-red/40"
                                 >
                                   {child.label}
                                   <ChevronRight className="w-4 h-4 opacity-75" />
-                                </span>
+                                </Link>
 
                                 {/* Sub-dropdown Menu */}
                                 <div
@@ -290,7 +302,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
               'xl:hidden p-2 rounded-lg transition-colors focus:outline-hidden',
               shouldOverlap && !scrolled
                 ? 'text-white hover:text-brand-red/90'
-                : 'text-brand-navy hover:text-brand-red dark:text-slate-200 dark:hover:text-brand-red',
+                : (data?.headerTextColor ? 'hover:text-brand-red dark:hover:text-brand-red' : 'text-brand-navy hover:text-brand-red dark:text-slate-200 dark:hover:text-brand-red'),
             )}
             aria-label={isOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={isOpen}
@@ -301,8 +313,6 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
         </div>
       </header>
 
-      {/* Spacer to avoid content being covered by the sticky header */}
-      {isSticky && !shouldOverlap && <div className="h-[96px] lg:h-[104px] w-full" />}
 
       {/* Mobile Slide-in Menu */}
       <div
@@ -386,9 +396,18 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
                         <div key={childIdx} className="space-y-1">
                           <div className="flex justify-between items-center py-1">
                             {hasSubChildren ? (
-                              <span className="text-sm font-medium text-brand-navy/80 dark:text-slate-300">
+                              <Link
+                                href={child.link}
+                                target={child.openInNewTab ? '_blank' : undefined}
+                                className={cn(
+                                  'text-sm font-medium transition-colors',
+                                  isChildActive
+                                    ? 'text-brand-red'
+                                    : 'text-brand-navy/80 dark:text-slate-300 hover:text-brand-red',
+                                )}
+                              >
                                 {child.label}
-                              </span>
+                              </Link>
                             ) : (
                               <Link
                                 href={child.link}

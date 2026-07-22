@@ -198,6 +198,84 @@ export const themePresets: Record<string, ThemePreset> = {
       faq: 'mosaiAccordion',
     },
   },
+
+  /**
+   * MOSAI Enhanced Theme
+   * Navy Blue, Bright Green, and Orange
+   */
+  mosaiEnhanced: {
+    colors: {
+      primary: '#142890',
+      secondary: '#00AF00',
+      accent: '#F48C06',
+      background: '#FFFFFF',
+      surface: '#FFFFFF',
+      muted: '#F1F1F1',
+      text: '#0E0E0E',
+    },
+    fonts: {
+      heading: 'Poppins',
+      body: 'Inter',
+    },
+    header: {
+      layout: 'mosai',
+      showTopBar: true,
+      height: 90,
+      showBottomBorder: true,
+      ctaStyle: 'square',
+    },
+    layouts: {
+      hero: 'default',
+      featureCards: 'default',
+      featureCardsTheme: 'light',
+      featureCardsShowButton: true,
+      news: 'grid',
+      gallery: 'grid',
+      statistics: 'default',
+      testimonials: 'default',
+      callToAction: 'default',
+      faq: 'default',
+    },
+  },
+
+  /**
+   * Crimson Authoritative Theme
+   * Deep Crimson, Dark Indigo, Warm Cream
+   */
+  crimsonAuthoritative: {
+    colors: {
+      primary: '#B32424',
+      secondary: '#1D2D44',
+      accent: '#2F3E46',
+      background: '#FDFBF7',
+      surface: '#FFFFFF',
+      muted: '#FDFBF7',
+      text: '#1D2D44',
+    },
+    fonts: {
+      heading: 'Playfair Display',
+      body: 'Inter',
+    },
+    header: {
+      layout: 'mosai',
+      showTopBar: true,
+      height: 90,
+      showBottomBorder: true,
+      ctaStyle: 'square',
+    },
+    layouts: {
+      hero: 'mosaiFullscreen',
+      featureCards: 'classic',
+      featureCardsTheme: 'light',
+      featureCardsShowButton: true,
+      news: 'grid',
+      gallery: 'bento',
+      statistics: 'mosaiStrip',
+      testimonials: 'mosaiQuote',
+      callToAction: 'mosaiBanner',
+      faq: 'mosaiAccordion',
+    },
+  },
 }
 
 export function getPreset(name?: string | null): ThemePreset {

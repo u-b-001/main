@@ -3,6 +3,7 @@ import { cn } from '@/utilities/ui'
 import type { StepsBlock as StepsProps } from '@/payload-types'
 import * as LucideIcons from 'lucide-react'
 import RichText from '@/components/RichText'
+import { StaggerContainer, StaggerItem } from '@/components/ui/StaggerAnimation'
 
 export const StepsComponent: React.FC<StepsProps> = ({
   title,
@@ -12,6 +13,8 @@ export const StepsComponent: React.FC<StepsProps> = ({
   hoverLuminous,
   backgroundColor,
   layout = 'vertical',
+  enableStepAnimations = true,
+  staggerDelay = 0.2,
 }) => {
   return (
     <section 
@@ -38,7 +41,7 @@ export const StepsComponent: React.FC<StepsProps> = ({
                 @media (min-width: 768px) { .snake-item { order: var(--order-md); } }
                 @media (min-width: 1024px) { .snake-item { order: var(--order-lg); } }
               `}</style>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16 relative">
+              <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16 relative" enabled={enableStepAnimations ?? undefined} staggerDelay={staggerDelay ?? undefined}>
                 {steps?.map((step, idx) => {
                   const IconComponent = step.icon ? (LucideIcons as any)[step.icon] : null;
                   const isLastItem = idx === steps.length - 1;
@@ -56,14 +59,15 @@ export const StepsComponent: React.FC<StepsProps> = ({
                   const isMdRowEnd = isMdEvenRow ? idx % 2 === 1 : idx % 2 === 0;
 
                   return (
-                    <div 
+                    <StaggerItem 
                       key={idx} 
                       className="snake-item flex flex-col items-center relative group"
+                      enabled={enableStepAnimations ?? undefined}
                       style={{
                         '--order-lg': lgOrder,
                         '--order-md': mdOrder,
                         '--order-sm': idx + 1,
-                      } as any}
+                      }}
                     >
                       {/* Arrow logic for LG */}
                       {!isLastItem && (
@@ -137,23 +141,23 @@ export const StepsComponent: React.FC<StepsProps> = ({
                            </div>
                         )}
                       </div>
-                    </div>
+                    </StaggerItem>
                   )
                 })}
-              </div>
+              </StaggerContainer>
             </>
           ) : (
             <>
               {/* Vertical line connecting steps */}
               <div className="absolute left-6 md:left-1/2 top-4 bottom-4 w-0.5 bg-gray-200 dark:bg-gray-700 transform md:-translate-x-1/2"></div>
 
-              <div className="space-y-8">
+              <StaggerContainer className="space-y-8" enabled={enableStepAnimations ?? undefined} staggerDelay={staggerDelay ?? undefined}>
                 {steps?.map((step, idx) => {
                   const isEven = idx % 2 === 0
                   const IconComponent = step.icon ? (LucideIcons as any)[step.icon] : null
 
                   return (
-                    <div key={idx} className={cn("relative flex items-center md:justify-between w-full")}>
+                    <StaggerItem key={idx} className={cn("relative flex items-center md:justify-between w-full")} enabled={enableStepAnimations ?? undefined}>
                       
                       {/* Left / Right spacing logic for Desktop */}
                       <div className={cn("w-full md:w-[45%] ml-16 md:ml-0 flex", isEven ? "md:justify-end" : "md:justify-start", !isEven && "md:order-3")}>
@@ -182,10 +186,10 @@ export const StepsComponent: React.FC<StepsProps> = ({
                       {/* Empty spacer for opposite side on Desktop */}
                       <div className="hidden md:block md:w-[45%] md:order-1"></div>
 
-                    </div>
+                    </StaggerItem>
                   )
                 })}
-              </div>
+              </StaggerContainer>
             </>
           )}
         </div>

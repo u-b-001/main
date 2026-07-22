@@ -1,4 +1,5 @@
 import type { Block } from 'payload'
+import { opacityField } from '../shared'
 
 export const NewsAndUpdatesBlock: Block = {
   slug: 'newsAndUpdates',
@@ -39,7 +40,89 @@ export const NewsAndUpdatesBlock: Block = {
         { label: 'Spotlight (featured + side list)', value: 'spotlight' },
         { label: 'Card Grid', value: 'grid' },
         { label: 'List View', value: 'list' },
+        { label: 'Horizontal Slide View', value: 'horizontal-slide' },
+        { label: 'Card Swap Stack', value: 'card-swap' },
       ],
+    },
+    {
+      name: 'enableRollingMotion',
+      type: 'checkbox',
+      label: 'Enable Rolling Motion',
+      defaultValue: false,
+      admin: {
+        description: 'Auto-scroll the news cards vertically',
+        condition: (_, siblingData) => siblingData?.layout === 'list',
+      },
+    },
+    {
+      name: 'animationDuration',
+      type: 'number',
+      label: 'Animation Duration (seconds)',
+      defaultValue: 20,
+      admin: {
+        description: 'Duration of one complete scroll cycle in seconds (e.g. 20 for fast, 40 for slow)',
+        condition: (_, siblingData) => 
+          siblingData?.layout === 'horizontal-slide' || 
+          (siblingData?.layout === 'list' && siblingData?.enableRollingMotion),
+      },
+    },
+    {
+      name: 'cardSwapDelay',
+      type: 'number',
+      label: 'Card Swap Delay (ms)',
+      defaultValue: 5000,
+      admin: {
+        condition: (_, siblingData) => siblingData?.layout === 'card-swap',
+      },
+    },
+    {
+      name: 'cardSwapCardDistance',
+      type: 'number',
+      label: 'Card Swap Horizontal Distance',
+      defaultValue: 60,
+      admin: {
+        condition: (_, siblingData) => siblingData?.layout === 'card-swap',
+      },
+    },
+    {
+      name: 'cardSwapVerticalDistance',
+      type: 'number',
+      label: 'Card Swap Vertical Distance',
+      defaultValue: 70,
+      admin: {
+        condition: (_, siblingData) => siblingData?.layout === 'card-swap',
+      },
+    },
+    {
+      name: 'cardSwapSkewAmount',
+      type: 'number',
+      label: 'Card Swap Skew Amount',
+      defaultValue: 6,
+      admin: {
+        condition: (_, siblingData) => siblingData?.layout === 'card-swap',
+      },
+    },
+    {
+      name: 'cardSwapEasing',
+      type: 'select',
+      label: 'Card Swap Easing',
+      defaultValue: 'elastic',
+      options: [
+        { label: 'Elastic', value: 'elastic' },
+        { label: 'Linear', value: 'linear' },
+      ],
+      admin: {
+        condition: (_, siblingData) => siblingData?.layout === 'card-swap',
+      },
+    },
+    {
+      name: 'cardSwapPauseOnHover',
+      type: 'checkbox',
+      label: 'Pause on Hover',
+      defaultValue: true,
+      admin: {
+        condition: (_, siblingData) => siblingData?.layout === 'card-swap',
+      },
     },
     {
       name: 'newsSource',
@@ -145,6 +228,16 @@ export const NewsAndUpdatesBlock: Block = {
           label: 'External Link (Optional)',
         },
         {
+          name: 'cardOverlayColor',
+          type: 'text',
+          label: 'Card Overlay Color',
+          admin: {
+            description: 'Pick a background / overlay color for the card (overrides block settings)',
+            components: { Field: '@/globals/ColorPickerField.tsx#ColorPickerField' },
+          },
+        },
+        opacityField('cardOverlayOpacity', 'Card Overlay Opacity', 100),
+        {
           name: 'publishedAt',
           type: 'date',
           label: 'Published At',
@@ -183,6 +276,19 @@ export const NewsAndUpdatesBlock: Block = {
         condition: (_, siblingData) => siblingData?.viewAllEnabled === true,
       },
     },
+    // Card Overlay Color
+    {
+      name: 'cardOverlayColor',
+      type: 'text',
+      label: 'Card Overlay Color',
+      admin: {
+        description: 'Pick an overlay / background color for the cards',
+        components: {
+          Field: '@/globals/ColorPickerField.tsx#ColorPickerField',
+        },
+      },
+    },
+    opacityField('cardOverlayOpacity', 'Card Overlay Opacity', 100),
     // Section Background Color
     {
       name: 'sectionBgColor',

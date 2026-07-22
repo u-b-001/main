@@ -3,6 +3,7 @@ import type { GlobalConfig } from 'payload'
 import { isSuperAdmin } from '../access/roles'
 import { revalidateHeader } from './hooks/revalidateHeader'
 import { link } from '@/fields/link' // reuse existing link field util if present, else see note below
+import { colorField } from '../blocks/shared'
 
 export const Header: GlobalConfig = {
   slug: 'header',
@@ -20,6 +21,8 @@ export const Header: GlobalConfig = {
       relationTo: 'media',
       required: true,
     },
+    colorField('headerTextColor', 'Header Text Color'),
+    colorField('headerBackgroundColor', 'Header Background Color'),
     {
       name: 'logoMobile',
       type: 'upload',

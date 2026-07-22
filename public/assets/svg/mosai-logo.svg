@@ -1,0 +1,5 @@
+<svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+    <path d="M18 10 c 0,25 0,25 15,25 c 10,0 15,-10 15,-20 M48 10 c 0,25 0,25 15,25 c 10,0 15,-10 15,-20 M78 10 c 0,25 0,25 15,25 c 10,0 15,-10 15,-20" fill="none" stroke="#a92a34" stroke-width="3" stroke-linecap="round"/>
+    <path d="M10 10 h 90" stroke="#a92a34" stroke-width="3" stroke-linecap="round"/>
+    <text x="55" y="52" font-family="sans-serif" font-weight="bold" font-size="18" fill="#a92a34" text-anchor="middle" letter-spacing="1">MOSAI</text>
+  </svg>

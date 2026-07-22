@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { cn } from '@/utilities/ui'
 import * as LucideIcons from 'lucide-react'
+import { motion } from 'framer-motion'
 
 import { Media } from '@/components/Media'
 
@@ -940,6 +941,10 @@ function QuickAccessBarSection({ bar }: { bar?: QuickAccessBar }) {
     </div>
   )
 }
+
+
+
+
 
 /* ────────────────────────────────────────────────────────────────────────
    Main export — picks the right layout renderer

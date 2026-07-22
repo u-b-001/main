@@ -261,6 +261,15 @@ const CarouselSub: Block = {
   labels: { singular: 'Carousel', plural: 'Carousels' },
   fields: [
     {
+      name: 'layout',
+      type: 'select',
+      defaultValue: 'default',
+      options: [
+        { label: 'Default', value: 'default' },
+        { label: 'Stacked 3D', value: 'stacked' },
+      ],
+    },
+    {
       name: 'slides',
       type: 'array',
       required: true,
@@ -308,6 +317,34 @@ const CarouselSub: Block = {
         {
           name: 'caption',
           type: 'text',
+        },
+        {
+          name: 'title',
+          type: 'text',
+          admin: { description: 'Used for Stacked 3D layout.' },
+        },
+        {
+          name: 'subtitle',
+          type: 'text',
+          admin: { description: 'e.g. "5 mins ago" (Used for Stacked 3D layout).' },
+        },
+        {
+          name: 'category',
+          type: 'text',
+          admin: { description: 'e.g. "NEWS" (Used for Stacked 3D layout).' },
+        },
+        {
+          name: 'buttonText',
+          type: 'text',
+          admin: { description: 'e.g. "Read more" (Used for Stacked 3D layout).' },
+        },
+        {
+          name: 'buttonLink',
+          type: 'text',
+          admin: { description: 'URL for the button.' },
+        },
+        {
+          ...colorField('backgroundColor', 'Background Transition Color', 'transparent'),
         },
       ],
     },
@@ -967,6 +1004,22 @@ const InfoCardSub: Block = {
       ],
       defaultValue: 'default',
       required: true,
+    },
+    {
+      name: 'animation',
+      type: 'select',
+      options: [
+        { label: 'None', value: 'none' },
+        { label: 'Fade In', value: 'fade-in' },
+        { label: 'Slide Up', value: 'slide-up' },
+        { label: 'Pulse', value: 'pulse' },
+        { label: 'Bounce', value: 'bounce' },
+        { label: 'Lift Up (Hover)', value: 'lift-up' }
+      ],
+      defaultValue: 'none',
+      admin: {
+        description: 'Select an animation for this info card',
+      },
     },
   ],
 }

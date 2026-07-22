@@ -159,7 +159,7 @@ export const FeaturedCardsComponent: React.FC<FeaturedCardsProps> = ({
                   {card.descriptionRichText && (
                     <div
                       className={cn(
-                        'text-sm leading-relaxed mb-6 flex-grow [&_p]:mb-2 last:[&_p]:mb-0',
+                        'text-sm leading-relaxed mb-6 flex-grow [&_p]:mb-2 last:[&_p]:mb-0 [&_ol]:list-decimal [&_ol]:ml-5 [&_ol]:mb-2 [&_ul]:list-disc [&_ul]:ml-5 [&_ul]:mb-2 [&_li]:mb-1',
                         isLightCardText ? 'text-white/80' : 'text-slate-600 dark:text-slate-400',
                       )}
                     >

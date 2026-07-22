@@ -111,6 +111,14 @@ export const SiteSettings: GlobalConfig = {
           label: 'Learner (Teal & Navy)',
           value: 'learner',
         },
+        {
+          label: 'MOSAI Enhanced (Navy, Green & Orange)',
+          value: 'mosaiEnhanced',
+        },
+        {
+          label: 'Authoritative (Crimson & Indigo)',
+          value: 'crimsonAuthoritative',
+        },
       ],
       admin: {
         description:

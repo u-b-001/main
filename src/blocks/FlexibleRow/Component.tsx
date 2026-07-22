@@ -7,6 +7,7 @@ import * as LucideIcons from 'lucide-react'
 import { StatsImpactBlock } from '@/blocks/Statistics/Component'
 import { FileDownloadsComponent } from '@/blocks/FileDownloads/Component'
 import { blockComponents } from '@/blocks/RenderBlocks'
+import { StackedCarousel } from '@/components/StackedCarousel'
 
 // Simple placeholder renderer for missing complex blocks
 const PlaceholderBlock = ({ name }: { name: string }) => (
@@ -336,6 +337,9 @@ export const FlexibleRowComponent: React.FC<any> = ({
                     }
                     case 'flexCarousel': {
                       if (!block.slides || block.slides.length === 0) return null;
+                      if (block.layout === 'stacked') {
+                        return <StackedCarousel key={bIdx} slides={block.slides} />
+                      }
                       return (
                         <div key={bIdx} className="w-full overflow-hidden rounded-xl shadow-lg relative group">
                           <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4">
@@ -923,8 +927,18 @@ export const FlexibleRowComponent: React.FC<any> = ({
                         highlight: 'bg-brand-cream border border-brand-gold text-brand-navy shadow-sm',
                         warning: 'bg-red-50 border-l-4 border-brand-red text-red-900',
                       }
+                      const animationClasses = {
+                        'none': '',
+                        'fade-in': 'animate-fade-in',
+                        'slide-up': 'animate-in fade-in slide-in-from-bottom-8 duration-500',
+                        'pulse': 'animate-pulse',
+                        'bounce': 'animate-bounce',
+                        'lift-up': 'hover:-translate-y-2 hover:shadow-lg transition-all duration-300',
+                      }
+                      const animClass = block.animation ? (animationClasses as any)[block.animation] : ''
+
                       return (
-                        <div key={bIdx} className={cn('p-6 rounded-lg shadow-xs transition-shadow hover:shadow-md my-4 w-full', styles[block.style as keyof typeof styles || 'default'])}>
+                        <div key={bIdx} className={cn('p-6 rounded-lg shadow-xs transition-all duration-300 hover:shadow-md my-4 w-full', styles[block.style as keyof typeof styles || 'default'], animClass)}>
                           {(block.title || block.icon) && (
                             <div className="flex items-center gap-3 mb-3">
                               {(() => {

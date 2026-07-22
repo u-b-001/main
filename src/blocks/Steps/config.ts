@@ -42,6 +42,26 @@ export const StepsBlock: Block = {
       }
     },
     {
+      name: 'enableStepAnimations',
+      type: 'checkbox',
+      label: 'Enable Staggered Step Animations',
+      defaultValue: true,
+      admin: {
+        description: 'Animate steps one by one as they scroll into view.',
+      }
+    },
+    {
+      name: 'staggerDelay',
+      type: 'number',
+      label: 'Stagger Delay (Seconds)',
+      defaultValue: 0.2,
+      admin: {
+        description: 'The delay between each step animating in.',
+        condition: (_, siblingData) => siblingData?.enableStepAnimations,
+        step: 0.1,
+      }
+    },
+    {
       name: 'steps',
       type: 'array',
       required: true,
