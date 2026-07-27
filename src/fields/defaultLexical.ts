@@ -28,6 +28,7 @@ import {
 
 import { ColorPickerFeature } from './features/ColorPicker/feature.server'
 import { FontPickerFeature } from './features/FontPicker/feature.server'
+import { FontSizePickerFeature } from './features/FontSizePicker/feature.server'
 
 export const getDefaultLexicalFeatures = () => [
     ParagraphFeature(),
@@ -49,6 +50,7 @@ export const getDefaultLexicalFeatures = () => [
     ChecklistFeature(),
     ColorPickerFeature(),
     FontPickerFeature(),
+    FontSizePickerFeature(),
     RelationshipFeature({ enabledCollections: ['pages', 'news'] }),
     UploadFeature({ enabledCollections: ['media'] }),
     BlocksFeature({
