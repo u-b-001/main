@@ -1,4 +1,5 @@
-import type { Field } from 'payload'
+import type { Field, NumberField, TextField } from 'payload'
+import deepMerge from '@/utilities/deepMerge'
 
 export const sectionHeadingFields: Field[] = [
   {
@@ -43,42 +44,64 @@ const commonLucideIcons = [
   'address', 'phone', 'email', 'hours', 'general' // legacy mapping support
 ].map(icon => ({ label: icon, value: icon }));
 
-export const iconField = (name: string, label?: string): Field => ({
-  name,
-  type: 'text',
-  label: label || 'Icon',
-  admin: {
-    components: {
-      Field: '@/globals/IconPickerField#IconPickerField',
+export const iconField = (name: string, label?: string, overrides?: Partial<TextField>): Field => {
+  const defaultField: TextField = {
+    name,
+    type: 'text',
+    label: label || 'Icon',
+    admin: {
+      components: {
+        Field: '@/globals/IconPickerField#IconPickerField',
+      },
+      description: 'Select a Lucide icon',
     },
-    description: 'Select a Lucide icon',
-  },
-})
+  }
 
-export const colorField = (name: string, label: string, defaultVal?: string): Field => ({
-  name,
-  type: 'text',
-  label,
-  defaultValue: defaultVal,
-  admin: {
-    components: {
-      Field: '@/components/admin/ColorPickerField#ColorPickerField',
-    },
-    description: 'Pick a color or enter hex value',
-  },
-})
+  return deepMerge(defaultField, overrides || {})
+}
 
-export const opacityField = (name: string, label: string, defaultVal = 50): Field => ({
-  name,
-  type: 'number',
-  label,
-  defaultValue: defaultVal,
-  min: 0,
-  max: 100,
-  admin: {
-    components: {
-      Field: '@/components/admin/OpacitySliderField#OpacitySliderField',
+export const colorField = (
+  name: string,
+  label: string,
+  defaultVal?: string,
+  overrides?: Partial<TextField>,
+): Field => {
+  const defaultField: TextField = {
+    name,
+    type: 'text',
+    label,
+    defaultValue: defaultVal,
+    admin: {
+      components: {
+        Field: '@/components/admin/ColorPickerField#ColorPickerField',
+      },
+      description: 'Pick a color or enter hex value',
     },
-    description: 'Opacity percentage (0-100)',
-  },
-})
+  }
+
+  return deepMerge(defaultField, overrides || {})
+}
+
+export const opacityField = (
+  name: string,
+  label: string,
+  defaultVal = 50,
+  overrides?: Partial<NumberField>,
+): Field => {
+  const defaultField: NumberField = {
+    name,
+    type: 'number',
+    label,
+    defaultValue: defaultVal,
+    min: 0,
+    max: 100,
+    admin: {
+      components: {
+        Field: '@/components/admin/OpacitySliderField#OpacitySliderField',
+      },
+      description: 'Opacity percentage (0-100)',
+    },
+  }
+
+  return deepMerge(defaultField, overrides || {})
+}

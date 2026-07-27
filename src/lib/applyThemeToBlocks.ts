@@ -21,10 +21,16 @@ function translateLayout(blockType: string, layout: string): string {
   return layout
 }
 
+interface BlockMapping {
+  toLayout: string
+  fromLayouts: string[]
+  extraProps: Record<string, any>
+}
+
 /**
  * Layout mapping rules: maps block layouts between themes.
  */
-function getLayoutMappings(preset: ThemePreset, targetTheme: string) {
+function getLayoutMappings(preset: ThemePreset, targetTheme: string): Record<string, BlockMapping> {
   const getFromLayouts = (blockName: keyof ThemePreset['layouts'], blockType: string) => {
     const rawToLayout = preset.layouts[blockName]
     if (typeof rawToLayout !== 'string') return []
@@ -44,7 +50,41 @@ function getLayoutMappings(preset: ThemePreset, targetTheme: string) {
     return Array.from(otherLayouts)
   }
 
-  return {}
+  const mappings: Record<string, BlockMapping> = {}
+
+  if (typeof preset.layouts.featureCards === 'string') {
+    const toLayout = translateLayout('featuredCards', preset.layouts.featureCards)
+    mappings.featuredCards = {
+      toLayout,
+      fromLayouts: getFromLayouts('featureCards', 'featuredCards'),
+      extraProps: {
+        ...(preset.layouts.featureCardsTheme ? { theme: preset.layouts.featureCardsTheme } : {}),
+        ...(typeof preset.layouts.featureCardsShowButton === 'boolean'
+          ? { show_button: preset.layouts.featureCardsShowButton }
+          : {}),
+      },
+    }
+  }
+
+  if (typeof preset.layouts.news === 'string') {
+    const toLayout = translateLayout('newsAndUpdates', preset.layouts.news)
+    mappings.newsAndUpdates = {
+      toLayout,
+      fromLayouts: getFromLayouts('news', 'newsAndUpdates'),
+      extraProps: {},
+    }
+  }
+
+  if (typeof preset.layouts.gallery === 'string') {
+    const toLayout = translateLayout('imageGallery', preset.layouts.gallery)
+    mappings.imageGallery = {
+      toLayout,
+      fromLayouts: getFromLayouts('gallery', 'imageGallery'),
+      extraProps: {},
+    }
+  }
+
+  return mappings
 }
 
 /**

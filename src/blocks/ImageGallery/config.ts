@@ -44,16 +44,12 @@ export const ImageGallery: Block = {
       defaultValue: 'grid',
       options: ['grid', 'masonry', 'bento', 'carousel', 'circular'],
     },
-    {
-      ...colorField('bentoHoverColor', 'Bento Hover Glow Color (Hex)', '#8400ff'),
+    colorField('bentoHoverColor', 'Bento Hover Glow Color (Hex)', '#8400ff', {
       admin: {
         condition: (_, siblingData) => siblingData?.layout === 'bento',
         description: 'Pick a glow color for the Bento hover effect.',
-        components: {
-          Field: '@/components/admin/ColorPickerField#ColorPickerField',
-        },
       },
-    },
+    }),
     {
       name: 'columns',
       type: 'select',

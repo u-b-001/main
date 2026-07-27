@@ -38,6 +38,7 @@ export const FeaturedCardsBlock: Block = {
         { label: 'Navy Theme', value: 'navy' },
         { label: 'Red Theme', value: 'red' },
         { label: 'Bordered/Minimal', value: 'bordered' },
+        { label: 'Course / Step Badge Card', value: 'courseCard' },
       ],
       defaultValue: 'standard',
       required: true,
@@ -56,26 +57,59 @@ export const FeaturedCardsBlock: Block = {
           required: true,
         },
         {
+          name: 'stepNumber',
+          type: 'text',
+          label: 'Step / Index Number (e.g. "01")',
+          admin: {
+            description: 'Index number with accent lines (e.g. "01", "02")',
+          },
+        },
+        {
           name: 'descriptionRichText',
           type: 'richText',
           label: 'Card Description',
         },
         {
           name: 'icon',
-          type: 'select',
+          type: 'text',
           label: 'Card Icon',
-          options: [
-            { label: 'None', value: 'none' },
-            { label: 'Academic/Education', value: 'academic' },
-            { label: 'Globe/Language', value: 'globe' },
-            { label: 'Calendar/Event', value: 'calendar' },
-            { label: 'Award/Scholarship', value: 'award' },
-            { label: 'Book/Study', value: 'book' },
-            { label: 'Group/Community', value: 'group' },
-            { label: 'Info/About', value: 'info' },
-            { label: 'Star/Featured', value: 'star' },
-          ],
-          defaultValue: 'info',
+          admin: {
+            components: {
+              Field: '@/globals/IconPickerField#IconPickerField',
+            },
+            description: 'Select a Lucide icon',
+          },
+        },
+        {
+          name: 'badgeImage',
+          type: 'upload',
+          relationTo: 'media',
+          label: 'Custom Badge Icon Image (Optional)',
+          admin: {
+            description: 'Custom icon/graphic image for the circular badge (e.g. pink book icon)',
+          },
+        },
+        {
+          name: 'badgeColor',
+          type: 'text',
+          label: 'Accent / Badge Color (Hex)',
+          admin: {
+            components: {
+              Field: '@/components/admin/ColorPickerField#ColorPickerField',
+            },
+            description: 'Color for index number & accent lines (e.g. #E11D48)',
+          },
+        },
+        {
+          name: 'cardBgColor',
+          type: 'text',
+          label: 'Card Background Color (Hex)',
+          admin: {
+            components: {
+              Field: '@/components/admin/ColorPickerField#ColorPickerField',
+            },
+            description: 'Custom background color for this card (e.g. #FDF2F4)',
+          },
         },
         {
           name: 'image',

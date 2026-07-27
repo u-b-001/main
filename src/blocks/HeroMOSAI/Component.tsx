@@ -350,15 +350,8 @@ export const HeroMOSAIBlock: React.FC<HeroMOSAIBlockProps> = (props) => {
             )}
           </div>
 
-          <div className="hidden lg:block w-full lg:w-[55%] relative z-20 pointer-events-none">
-            {placeholderImage?.url && (
-              <img
-                src={placeholderImage.url}
-                alt=""
-                className="w-full h-auto opacity-0 pointer-events-none block"
-              />
-            )}
-            <AnimatePresence>
+          <div className="hidden lg:flex w-full lg:w-[55%] h-[460px] relative z-20 pointer-events-none items-center justify-center">
+            <AnimatePresence mode="wait">
               {activeImage?.url ? (
                 <motion.div
                   key={activeImage.url}
@@ -366,31 +359,31 @@ export const HeroMOSAIBlock: React.FC<HeroMOSAIBlockProps> = (props) => {
                   animate={{ opacity: heroImageOpacity / 100 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 1.5, ease: 'easeInOut' }}
-                style={{
-                  transform: `translate(${heroImageShiftX}%, ${heroImageShiftY}%) scale(${heroImageScaleX / 100}, ${heroImageScaleY / 100})`,
-                  transformOrigin: 'center center'
-                }}
-                className={`absolute inset-0 w-full h-full flex items-center justify-center ${getShadowClass(heroImageShadow)}`}
-              >
-                {heroImageEdgePixelBlur && heroImageEdgeBlend !== 'none' && (
+                  style={{
+                    transform: `translate(${heroImageShiftX}%, ${heroImageShiftY}%) scale(${heroImageScaleX / 100}, ${heroImageScaleY / 100})`,
+                    transformOrigin: 'center center'
+                  }}
+                  className={`relative w-full h-full flex items-center justify-center ${getShadowClass(heroImageShadow)}`}
+                >
+                  {heroImageEdgePixelBlur && heroImageEdgeBlend !== 'none' && (
+                    <img
+                      src={activeImage.url}
+                      alt=""
+                      className="absolute inset-0 w-full h-full object-cover pointer-events-none blur-xl opacity-90 scale-105 brightness-110 contrast-105"
+                      style={getEdgeBlendStyle(heroImageEdgeBlend)}
+                    />
+                  )}
                   <img
                     src={activeImage.url}
-                    alt=""
-                    className="absolute w-full h-full object-cover pointer-events-none blur-xl opacity-90 scale-105"
+                    alt={activeImage.alt || 'Hero Image'}
+                    className="w-full h-full object-cover pointer-events-auto relative z-10 brightness-110 contrast-105"
                     style={getEdgeBlendStyle(heroImageEdgeBlend)}
                   />
-                )}
-                <img
-                  src={activeImage.url}
-                  alt={activeImage.alt || 'Hero Image'}
-                  className="w-full h-full object-cover pointer-events-auto relative z-10"
-                  style={getEdgeBlendStyle(heroImageEdgeBlend)}
-                />
-              </motion.div>
-            ) : (
-              /* The right side is empty if no hero image is provided so the background image can be seen clearly */
-              null
-            )}
+                </motion.div>
+              ) : (
+                /* The right side is empty if no hero image is provided so the background image can be seen clearly */
+                null
+              )}
             </AnimatePresence>
           </div>
 

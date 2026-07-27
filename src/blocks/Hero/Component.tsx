@@ -74,7 +74,7 @@ function SlideMedia({ slide, priority }: { slide: any; priority?: boolean }) {
         resource={slide.image}
         priority={priority}
         fill
-        imgClassName="object-cover"
+        imgClassName="object-cover brightness-110 contrast-105"
         className="w-full h-full"
       />
     )

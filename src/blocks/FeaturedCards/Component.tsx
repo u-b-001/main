@@ -19,6 +19,21 @@ const iconMap = {
   star: Star,
 }
 
+const getIconComponent = (iconName?: string | null) => {
+  if (!iconName || iconName === 'none') return null
+  if (iconName in iconMap) {
+    return iconMap[iconName as keyof typeof iconMap]
+  }
+  if ((LucideIcons as any)[iconName]) {
+    return (LucideIcons as any)[iconName]
+  }
+  const pascalName = iconName.replace(/(^\w|-\w)/g, (g) => g.replace('-', '').toUpperCase())
+  if ((LucideIcons as any)[pascalName]) {
+    return (LucideIcons as any)[pascalName]
+  }
+  return null
+}
+
 const columnClasses = {
   '1': 'grid-cols-1 gap-8 max-w-3xl mx-auto',
   '2': 'grid-cols-1 md:grid-cols-2 gap-8',
@@ -35,6 +50,8 @@ const cardThemeClasses = {
   red: 'bg-brand-red text-white border border-red-700/20 shadow-md hover:shadow-lg',
   bordered:
     'bg-transparent border-2 border-slate-200 dark:border-slate-800 hover:border-brand-gold/60 text-slate-800 dark:text-slate-200',
+  courseCard:
+    'bg-[#fdf2f4] dark:bg-slate-900/90 border border-rose-100/80 dark:border-slate-800/80 shadow-xs hover:shadow-md text-slate-800 dark:text-slate-200',
 }
 
 export const FeaturedCardsComponent: React.FC<FeaturedCardsProps> = ({
@@ -70,11 +87,80 @@ export const FeaturedCardsComponent: React.FC<FeaturedCardsProps> = ({
       {/* Grid of Cards */}
       <div className={cn('grid', columnClasses[columns || '3'])}>
         {cards.map((card, idx) => {
-          const IconComponent =
-            card.icon && card.icon !== 'none'
-              ? iconMap[card.icon as keyof typeof iconMap] || (LucideIcons as any)[card.icon]
-              : null
+          const IconComponent = getIconComponent(card.icon)
           const hasImage = card.image && typeof card.image === 'object'
+          const isCourseCard = cardStyle === 'courseCard' || Boolean((card as any).stepNumber) || Boolean((card as any).badgeImage)
+          const stepNum = (card as any).stepNumber
+          const badgeImg = (card as any).badgeImage
+          const accentColor = (card as any).badgeColor || '#E11D48'
+          const customBg = (card as any).cardBgColor
+
+          if (isCourseCard) {
+            return (
+              <div
+                key={idx}
+                className="group flex items-center gap-6 p-6 md:p-8 rounded-2xl transition-all duration-300 transform hover:-translate-y-1 shadow-xs hover:shadow-md border border-rose-100/80 dark:border-slate-800/80"
+                style={{
+                  backgroundColor: customBg || (cardStyle === 'courseCard' ? '#fdf2f4' : undefined),
+                }}
+              >
+                {/* Left Circular Badge Icon */}
+                <div
+                  className="relative shrink-0 w-20 h-20 md:w-24 md:h-24 rounded-full bg-white dark:bg-slate-800 flex items-center justify-center border border-white/60 dark:border-slate-700/60"
+                  style={{
+                    boxShadow: `0 8px 24px -4px ${accentColor}30`,
+                  }}
+                >
+                  {badgeImg && typeof badgeImg === 'object' ? (
+                    <Media
+                      resource={badgeImg}
+                      className="w-10 h-10 md:w-12 md:h-12"
+                      imgClassName="w-10 h-10 md:w-12 md:h-12 object-contain"
+                    />
+                  ) : IconComponent ? (
+                    <IconComponent className="w-10 h-10 md:w-12 md:h-12" style={{ color: accentColor }} />
+                  ) : (
+                    <LucideIcons.BookOpen className="w-10 h-10 md:w-12 md:h-12" style={{ color: accentColor }} />
+                  )}
+                </div>
+
+                {/* Right Text Content */}
+                <div className="flex flex-col justify-center gap-1.5 flex-grow">
+                  {stepNum && (
+                    <div
+                      className="flex items-center gap-2 font-serif font-bold text-xl md:text-2xl tracking-wide"
+                      style={{ color: accentColor }}
+                    >
+                      <span className="h-[1.5px] w-6 inline-block" style={{ backgroundColor: accentColor, opacity: 0.6 }} />
+                      <span>{stepNum}</span>
+                      <span className="h-[1.5px] w-6 inline-block" style={{ backgroundColor: accentColor, opacity: 0.6 }} />
+                    </div>
+                  )}
+                  <h3 className="text-xl md:text-2xl font-bold font-serif text-brand-navy dark:text-white leading-snug">
+                    {card.title}
+                  </h3>
+                  {card.descriptionRichText && (
+                    <div className="text-sm text-slate-600 dark:text-slate-400 mt-1 [&_p]:mb-1 last:[&_p]:mb-0">
+                      <RichText data={card.descriptionRichText} enableGutter={false} enableProse={false} />
+                    </div>
+                  )}
+                  {card.buttonUrl && (
+                    <div className="pt-2">
+                      <Link
+                        href={card.buttonUrl}
+                        target={card.externalLink ? '_blank' : undefined}
+                        className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider transition-colors hover:underline"
+                        style={{ color: accentColor }}
+                      >
+                        <span>{card.buttonLabel || 'Learn More'}</span>
+                        <ArrowRight size={14} />
+                      </Link>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )
+          }
 
           return (
             <div

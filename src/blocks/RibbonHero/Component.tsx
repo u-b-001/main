@@ -113,6 +113,7 @@ export const RibbonHeroBlock: React.FC<RibbonHeroBlockProps> = ({
         <img
           src={cutoutImage.url}
           alt={cutoutImage.alt || ''}
+          className="brightness-110 contrast-105"
           style={{
             position: 'absolute',
             top: 0,

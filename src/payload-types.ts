@@ -1326,6 +1326,8 @@ export interface Page {
                     borderRadius?: ('none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl') | null;
                     shadow?: ('none' | 'xs' | 'sm' | 'md' | 'lg') | null;
                     cellPadding?: ('compact' | 'medium' | 'spacious') | null;
+                    headerAlignment?: ('left' | 'center' | 'right') | null;
+                    cellAlignment?: ('left' | 'center' | 'right' | 'auto') | null;
                     showScrollHint?: boolean | null;
                     caption?: string | null;
                     rows: {
@@ -1333,6 +1335,7 @@ export interface Page {
                       cells?:
                         | {
                             value?: string | null;
+                            alignment?: ('default' | 'left' | 'center' | 'right') | null;
                             id?: string | null;
                           }[]
                         | null;
@@ -1707,6 +1710,8 @@ export interface TableBlock {
   borderRadius?: ('none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl') | null;
   shadow?: ('none' | 'xs' | 'sm' | 'md' | 'lg') | null;
   cellPadding?: ('compact' | 'medium' | 'spacious') | null;
+  headerAlignment?: ('left' | 'center' | 'right') | null;
+  cellAlignment?: ('left' | 'center' | 'right' | 'auto') | null;
   showScrollHint?: boolean | null;
   caption?: string | null;
   rows: {
@@ -1714,6 +1719,7 @@ export interface TableBlock {
     cells?:
       | {
           value?: string | null;
+          alignment?: ('default' | 'left' | 'center' | 'right') | null;
           id?: string | null;
         }[]
       | null;
@@ -2167,9 +2173,13 @@ export interface FeaturedCardsBlock {
   heading?: string | null;
   subheading?: string | null;
   columns: '1' | '2' | '3' | '4';
-  cardStyle: 'standard' | 'glassmorphism' | 'navy' | 'red' | 'bordered';
+  cardStyle: 'standard' | 'glassmorphism' | 'navy' | 'red' | 'bordered' | 'courseCard';
   cards: {
     title: string;
+    /**
+     * Index number with accent lines (e.g. "01", "02")
+     */
+    stepNumber?: string | null;
     descriptionRichText?: {
       root: {
         type: string;
@@ -2185,7 +2195,22 @@ export interface FeaturedCardsBlock {
       };
       [k: string]: unknown;
     } | null;
-    icon?: ('none' | 'academic' | 'globe' | 'calendar' | 'award' | 'book' | 'group' | 'info' | 'star') | null;
+    /**
+     * Select a Lucide icon
+     */
+    icon?: string | null;
+    /**
+     * Custom icon/graphic image for the circular badge (e.g. pink book icon)
+     */
+    badgeImage?: (number | null) | Media;
+    /**
+     * Color for index number & accent lines (e.g. #E11D48)
+     */
+    badgeColor?: string | null;
+    /**
+     * Custom background color for this card (e.g. #FDF2F4)
+     */
+    cardBgColor?: string | null;
     /**
      * Image for this card. WARNING: To change this image, click the "X" button to clear the field, then select or upload a new one. DO NOT click the pencil "Edit" icon to replace the file inside the media drawer, as that will overwrite the shared media asset globally across all pages!
      */
@@ -2286,7 +2311,10 @@ export interface NewsAndUpdatesBlock {
    * Maximum number of cards to fetch
    */
   limit?: number | null;
-  sortBy?: ('latest' | 'oldest' | 'featured') | null;
+  /**
+   * Choose the order in which news cards are arranged
+   */
+  sortBy?: ('latest' | 'oldest' | 'featured' | 'title-asc' | 'title-desc' | 'manual') | null;
   /**
    * Optional category filter (exact match)
    */
@@ -4053,6 +4081,8 @@ export interface PagesSelect<T extends boolean = true> {
                                 borderRadius?: T;
                                 shadow?: T;
                                 cellPadding?: T;
+                                headerAlignment?: T;
+                                cellAlignment?: T;
                                 showScrollHint?: T;
                                 caption?: T;
                                 rows?:
@@ -4063,6 +4093,7 @@ export interface PagesSelect<T extends boolean = true> {
                                         | T
                                         | {
                                             value?: T;
+                                            alignment?: T;
                                             id?: T;
                                           };
                                       id?: T;
@@ -4212,6 +4243,8 @@ export interface TableBlockSelect<T extends boolean = true> {
   borderRadius?: T;
   shadow?: T;
   cellPadding?: T;
+  headerAlignment?: T;
+  cellAlignment?: T;
   showScrollHint?: T;
   caption?: T;
   rows?:
@@ -4222,6 +4255,7 @@ export interface TableBlockSelect<T extends boolean = true> {
           | T
           | {
               value?: T;
+              alignment?: T;
               id?: T;
             };
         id?: T;
@@ -4330,8 +4364,12 @@ export interface FeaturedCardsBlockSelect<T extends boolean = true> {
     | T
     | {
         title?: T;
+        stepNumber?: T;
         descriptionRichText?: T;
         icon?: T;
+        badgeImage?: T;
+        badgeColor?: T;
+        cardBgColor?: T;
         image?: T;
         tag?: T;
         externalLink?: T;

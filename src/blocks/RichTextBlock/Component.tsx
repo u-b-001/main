@@ -10,7 +10,7 @@ export const RichTextBlock: React.FC<RichTextBlockProps> = ({
   if (!content) return null
   return (
     <div
-      className="container max-w-[48rem] mx-auto px-4 py-6"
+      className="container max-w-[48rem] mx-auto px-6 md:px-12 py-6"
       style={
         {
           ...(textColor

@@ -13,19 +13,20 @@ export const ImageWithTextBlock: React.FC<ImageWithTextBlockProps> = ({
     <div className="container mx-auto px-4 py-8">
       <div
         className={cn(
-          'grid grid-cols-1 md:grid-cols-2 gap-8 items-center',
+          'flex flex-col md:flex-row gap-8 items-center',
           imagePosition === 'left' ? 'md:flex-row-reverse' : ''
         )}
       >
-        <div className={cn('w-full', imagePosition === 'left' ? 'md:order-last' : '')}>
+        <div className={cn('w-full md:w-1/2 flex-1')}>
           {content && <RichText data={content} enableGutter={false} />}
         </div>
-        <div className="w-full">
+        <div className="w-full md:w-1/2 flex justify-center items-center">
           {image && typeof image === 'object' && (
             <Media
               resource={image}
-              className="rounded-lg shadow-md overflow-hidden w-full max-h-[450px]"
-              imgClassName="w-full h-full object-cover max-h-[450px] rounded-lg"
+              className="inline-block max-w-full rounded-lg shadow-md overflow-hidden"
+              pictureClassName="inline-block max-w-full"
+              imgClassName="w-auto h-auto max-w-full max-h-[500px] object-contain rounded-lg"
             />
           )}
         </div>

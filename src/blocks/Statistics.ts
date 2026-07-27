@@ -73,33 +73,27 @@ export const Statistics: Block = {
         },
       ],
     },
-    {
-      ...colorField('ribbonBaseColor', 'Base Ribbon Color', '#e3e4e4'),
+    colorField('ribbonBaseColor', 'Base Ribbon Color', '#e3e4e4', {
       admin: {
-        ...colorField('ribbonBaseColor', 'Base Ribbon Color', '#e3e4e4').admin,
         condition: (_: unknown, siblingData: Record<string, unknown>) =>
           siblingData?.layout === 'interlockingRings',
         description: 'Color of the back ribbon (default gray)',
       },
-    } as Field,
-    {
-      ...colorField('ribbonWaveStartColor', 'Wave Ribbon Start Color', '#3B82F6'),
+    }),
+    colorField('ribbonWaveStartColor', 'Wave Ribbon Start Color', '#3B82F6', {
       admin: {
-        ...colorField('ribbonWaveStartColor', 'Wave Ribbon Start Color', '#3B82F6').admin,
         condition: (_: unknown, siblingData: Record<string, unknown>) =>
           siblingData?.layout === 'interlockingRings',
         description: 'Gradient start color of the front weave ribbon',
       },
-    } as Field,
-    {
-      ...colorField('ribbonWaveEndColor', 'Wave Ribbon End Color', '#FF4500'),
+    }),
+    colorField('ribbonWaveEndColor', 'Wave Ribbon End Color', '#FF4500', {
       admin: {
-        ...colorField('ribbonWaveEndColor', 'Wave Ribbon End Color', '#FF4500').admin,
         condition: (_: unknown, siblingData: Record<string, unknown>) =>
           siblingData?.layout === 'interlockingRings',
         description: 'Gradient end color of the front weave ribbon',
       },
-    } as Field,
+    }),
     colorField('backgroundColor', 'Section Background Color', '#FFFFFF'),
     colorField('cardBgColor', 'Card Background Color', '#FFFFFF'),
     {

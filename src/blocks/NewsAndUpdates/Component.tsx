@@ -125,6 +125,12 @@ export const NewsAndUpdatesComponent = async ({
         sort = 'publishedAt'
       } else if (sortBy === 'featured') {
         sort = '-featured,-publishedAt'
+      } else if (sortBy === 'title-asc') {
+        sort = 'title'
+      } else if (sortBy === 'title-desc') {
+        sort = '-title'
+      } else if (sortBy === 'manual') {
+        sort = 'createdAt'
       }
 
       const fetched = await payload.find({
@@ -140,7 +146,18 @@ export const NewsAndUpdatesComponent = async ({
       console.error('Error fetching dynamic news articles:', err)
     }
   } else {
-    newsItems = manualNews || []
+    newsItems = [...(manualNews || [])]
+    if (sortBy === 'latest') {
+      newsItems.sort((a, b) => new Date(b.publishedAt || 0).getTime() - new Date(a.publishedAt || 0).getTime())
+    } else if (sortBy === 'oldest') {
+      newsItems.sort((a, b) => new Date(a.publishedAt || 0).getTime() - new Date(b.publishedAt || 0).getTime())
+    } else if (sortBy === 'featured') {
+      newsItems.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0))
+    } else if (sortBy === 'title-asc') {
+      newsItems.sort((a, b) => (a.title || '').localeCompare(b.title || ''))
+    } else if (sortBy === 'title-desc') {
+      newsItems.sort((a, b) => (b.title || '').localeCompare(a.title || ''))
+    }
   }
 
   if (newsItems.length === 0) return null

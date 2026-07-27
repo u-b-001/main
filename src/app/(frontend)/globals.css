@@ -225,6 +225,10 @@ html[data-color-scheme='learner'] .flexible-row-column {
 }
 
 /* Info Cards & Highlight Cards Overrides */
+.info-card {
+  padding-left: max(1.75rem, 5%) !important;
+  padding-right: max(1.75rem, 5%) !important;
+}
 html[data-color-scheme='mosai'] .info-card {
   border-left-width: 5px !important;
   border-left-color: var(--brand-red) !important;

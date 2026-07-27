@@ -97,9 +97,9 @@ export const PageHero: React.FC<PageHeroProps> = ({
   // SVG Bottom Shape Curve
   let shapePath = ''
   if (heroShape === 'curved') {
-    shapePath = 'M0,80 C480,120 960,40 1440,80 L1440,120 L0,120 Z'
+    shapePath = 'M0,80 C480,120 960,40 1440,80 L1440,130 L0,130 Z'
   } else if (heroShape === 'wavy') {
-    shapePath = 'M0,60 C180,90 360,90 540,60 C720,30 900,30 1080,60 C1260,90 1350,90 1440,60 L1440,120 L0,120 Z'
+    shapePath = 'M0,60 C180,90 360,90 540,60 C720,30 900,30 1080,60 C1260,90 1350,90 1440,60 L1440,130 L0,130 Z'
   }
 
   // Dynamic Fill Color for SVG path to blend seamlessly with breadcrumb / content background
@@ -134,7 +134,7 @@ export const PageHero: React.FC<PageHeroProps> = ({
               <Media
                 resource={heroImage}
                 className="w-full h-full"
-                imgClassName="w-full h-full object-cover opacity-60 filter brightness-90"
+                imgClassName="w-full h-full object-cover opacity-75 filter brightness-110 contrast-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-brand-navy/80 via-transparent to-black/30" />
             </div>
@@ -172,12 +172,12 @@ export const PageHero: React.FC<PageHeroProps> = ({
 
       {/* Curve SVG bottom overlay */}
       {heroShape !== 'straight' && shapePath && (
-        <div className="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-[0] z-20 pointer-events-none">
+        <div className="absolute -bottom-1 left-0 right-0 w-full overflow-hidden leading-[0] z-20 pointer-events-none">
           <svg
             viewBox="0 0 1440 120"
             fill="none"
             preserveAspectRatio="none"
-            className="w-full h-10 md:h-16"
+            className="w-full h-10 md:h-16 translate-y-1 scale-y-105 origin-bottom"
           >
             <path
               d={shapePath}

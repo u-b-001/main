@@ -97,7 +97,7 @@ export const FlexibleRowComponent: React.FC<any> = ({
         >
           {columns.map((column: any, idx: number) => {
             const colWidth = widthClassMap[column.width || 'auto']
-            const colPadding = paddingClassMap[column.padding || '0']
+            const colPadding = paddingClassMap[column.padding] || ((column.colorTheme && column.colorTheme !== 'none' && column.colorTheme !== 'default') || column.columnBgColor ? 'p-6 md:p-8' : 'px-4 py-2 md:px-6 md:py-4')
             
             const colTheme = column.colorTheme || 'default'
             const themeClasses: Record<string, string> = {
@@ -120,7 +120,7 @@ export const FlexibleRowComponent: React.FC<any> = ({
                   switch (block.blockType) {
                     case 'flexRichText':
                       return (
-                        <div key={bIdx} className="prose prose-sm md:prose-base max-w-none" style={{ color: block.textColor }}>
+                        <div key={bIdx} className="prose prose-sm md:prose-base max-w-none px-4 md:px-6 py-2" style={{ color: block.textColor }}>
                           <RichText data={block.content} enableGutter={false} />
                         </div>
                       )
@@ -764,6 +764,32 @@ export const FlexibleRowComponent: React.FC<any> = ({
                         color: '#FFFFFF'
                       }
 
+                      const getHeaderAlignClass = (cell: any) => {
+                        if (cell?.alignment && cell.alignment !== 'default') {
+                          if (cell.alignment === 'center') return 'text-center'
+                          if (cell.alignment === 'right') return 'text-right'
+                          return 'text-left'
+                        }
+                        if (block.headerAlignment === 'center') return 'text-center'
+                        if (block.headerAlignment === 'right') return 'text-right'
+                        return 'text-left'
+                      }
+
+                      const getCellAlignClass = (cell: any) => {
+                        const cellVal = cell?.value || ''
+                        const isNumeric = !isNaN(Number(cellVal.replace(/[^0-9.-]/g, ''))) && cellVal.trim() !== ''
+
+                        if (cell?.alignment && cell.alignment !== 'default') {
+                          if (cell.alignment === 'center') return 'text-center'
+                          if (cell.alignment === 'right') return 'text-right'
+                          return 'text-left'
+                        }
+                        if (block.cellAlignment === 'center') return 'text-center'
+                        if (block.cellAlignment === 'right') return 'text-right'
+                        if (block.cellAlignment === 'auto') return isNumeric ? 'text-right tabular-nums' : 'text-left'
+                        return 'text-left'
+                      }
+
                       return (
                         <div key={bIdx} className="w-full my-8 group/table">
                           {/* Heading & Subtitle Block */}
@@ -808,7 +834,6 @@ export const FlexibleRowComponent: React.FC<any> = ({
                             </div>
                           )}
 
-                          {/* Scroll wrapper */}
                           <div className="relative">
                             <div className={tableContainerClass}>
                               <table className={tableElementClass}>
@@ -823,14 +848,14 @@ export const FlexibleRowComponent: React.FC<any> = ({
                                           key={rowIndex} 
                                           className={cn(
                                             "font-semibold tracking-wide uppercase text-sm border-b",
-                                            isSingleCell ? "text-center" : "text-left"
+                                            isSingleCell ? "text-center" : getHeaderAlignClass(cells[0])
                                           )}
                                           style={headerStyle}
                                         >
                                           {isSingleCell ? (
                                             <th
                                               colSpan={maxCols}
-                                              className={cellPaddingClass}
+                                              className={cn(cellPaddingClass, getHeaderAlignClass(cells[0]))}
                                             >
                                               {cells[0].value || ''}
                                             </th>
@@ -840,6 +865,7 @@ export const FlexibleRowComponent: React.FC<any> = ({
                                                 key={cellIndex}
                                                 className={cn(
                                                   cellPaddingClass,
+                                                  getHeaderAlignClass(cell),
                                                   block.bordered && !isMinimal ? "border-r border-white/10 last:border-r-0" : ""
                                                 )}
                                               >
@@ -877,7 +903,8 @@ export const FlexibleRowComponent: React.FC<any> = ({
                                             colSpan={maxCols}
                                             className={cn(
                                               cellPaddingClass,
-                                              "text-slate-700 dark:text-slate-300 font-serif leading-relaxed text-center font-medium"
+                                              "text-slate-700 dark:text-slate-300 font-serif leading-relaxed font-medium",
+                                              getCellAlignClass(cells[0])
                                             )}
                                           >
                                             {cells[0].value || ''}
@@ -885,8 +912,6 @@ export const FlexibleRowComponent: React.FC<any> = ({
                                         ) : (
                                           cells.map((cell: any, cellIndex: number) => {
                                             const cellVal = cell.value || ''
-                                            // Check if it's a number to right align
-                                            const isNumeric = !isNaN(Number(cellVal.replace(/[^0-9.-]/g, ''))) && cellVal.trim() !== ''
 
                                             return (
                                               <td
@@ -895,7 +920,7 @@ export const FlexibleRowComponent: React.FC<any> = ({
                                                   cellPaddingClass,
                                                   "text-slate-700 dark:text-slate-300 font-serif leading-relaxed font-sans",
                                                   cellBorderClass,
-                                                  isNumeric ? "text-right tabular-nums" : "text-left"
+                                                  getCellAlignClass(cell)
                                                 )}
                                               >
                                                 {cellVal}
@@ -909,16 +934,16 @@ export const FlexibleRowComponent: React.FC<any> = ({
                                 </tbody>
                               </table>
                             </div>
-
-                            {/* Swipe Hint overlay (appears on mobile only if width overflows) */}
-                            {block.showScrollHint && (
-                              <div className="lg:hidden flex items-center justify-center gap-1.5 mt-2.5 text-xs text-slate-400 dark:text-slate-500 select-none">
-                                <LucideIcons.ArrowLeft className="w-3.5 h-3.5" />
-                                <span>Swipe horizontally to view full table</span>
-                                <LucideIcons.ArrowRight className="w-3.5 h-3.5" />
-                              </div>
-                            )}
                           </div>
+
+                          {/* Swipe Hint overlay (appears on mobile only if width overflows) */}
+                          {block.showScrollHint && (
+                            <div className="lg:hidden flex items-center justify-center gap-1.5 mt-2.5 text-xs text-slate-400 dark:text-slate-500 select-none">
+                              <LucideIcons.ArrowLeft className="w-3.5 h-3.5" />
+                              <span>Swipe horizontally to view full table</span>
+                              <LucideIcons.ArrowRight className="w-3.5 h-3.5" />
+                            </div>
+                          )}
 
                           {block.caption && (
                             <p className="mt-2 text-xs text-slate-400 dark:text-slate-500 font-semibold text-center italic font-sans">

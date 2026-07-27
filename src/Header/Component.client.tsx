@@ -20,6 +20,18 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   const [activeDropdown, setActiveDropdown] = useState<number | null>(null)
   const [activeMobileDropdown, setActiveMobileDropdown] = useState<number | null>(null)
   const [activeMobileSubDropdown, setActiveMobileSubDropdown] = useState<string | null>(null)
+  const [closedDropdowns, setClosedDropdowns] = useState<Record<number, boolean>>({})
+
+  const handleChildClick = (idx?: number) => {
+    if (typeof idx === 'number') {
+      setClosedDropdowns((prev) => ({ ...prev, [idx]: true }))
+    }
+    setActiveDropdown(null)
+    setIsOpen(false)
+    if (typeof document !== 'undefined') {
+      ;(document.activeElement as HTMLElement)?.blur()
+    }
+  }
 
   const isSticky = data?.sticky !== false
   const isHomepage = pathname === '/'
@@ -44,6 +56,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   // Close mobile menu on path changes
   useEffect(() => {
     setIsOpen(false)
+    setActiveDropdown(null)
     setActiveMobileDropdown(null)
     setActiveMobileSubDropdown(null)
   }, [pathname])
@@ -160,6 +173,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
               const hasChildren = item.children && item.children.length > 0
               const isActive = isLinkActive(item.link)
               const isDropdownOpen = activeDropdown === idx
+              const isClosed = closedDropdowns[idx]
 
               return (
                 <div
@@ -170,13 +184,22 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
                     'hover:[&_.dropdown-panel]:opacity-100 hover:[&_.dropdown-panel]:translate-y-0 hover:[&_.dropdown-panel]:pointer-events-auto',
                     'focus-within:[&_.dropdown-panel]:opacity-100 focus-within:[&_.dropdown-panel]:translate-y-0 focus-within:[&_.dropdown-panel]:pointer-events-auto',
                   )}
-                  onMouseEnter={() => hasChildren && setActiveDropdown(idx)}
-                  onMouseLeave={() => setActiveDropdown(null)}
+                  onMouseEnter={() => {
+                    if (hasChildren) {
+                      setClosedDropdowns((prev) => ({ ...prev, [idx]: false }))
+                      setActiveDropdown(idx)
+                    }
+                  }}
+                  onMouseLeave={() => {
+                    setClosedDropdowns((prev) => ({ ...prev, [idx]: false }))
+                    setActiveDropdown(null)
+                  }}
                 >
                   {item.link ? (
                     <Link
                       href={item.link}
                       target={item.openInNewTab ? '_blank' : undefined}
+                      onClick={() => handleChildClick(idx)}
                       aria-haspopup={hasChildren ? 'true' : undefined}
                       aria-expanded={hasChildren ? isDropdownOpen : undefined}
                       className={cn(
@@ -227,6 +250,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
                     <div
                       className={cn(
                         'dropdown-panel absolute top-full left-0 mt-1 min-w-[240px] bg-white dark:bg-slate-900 shadow-[0_10px_25px_-5px_rgba(0,0,0,0.1)] rounded-lg border border-gray-100 dark:border-slate-800 py-2 transition-all duration-200 origin-top z-50',
+                        isClosed && '!opacity-0 !translate-y-2 !pointer-events-none',
                       )}
                     >
                       {item.children?.map((child, childIdx) => {
@@ -241,6 +265,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
                                   href={child.link}
                                   target={child.openInNewTab ? '_blank' : undefined}
                                   tabIndex={0}
+                                  onClick={() => handleChildClick(idx)}
                                   className="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium text-brand-navy dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer focus:outline-none focus:ring-2 focus:ring-brand-red/40"
                                 >
                                   {child.label}
@@ -253,12 +278,14 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
                                     'absolute left-full top-0 ml-1 min-w-[220px] bg-white dark:bg-slate-900 shadow-[0_10px_25px_-5px_rgba(0,0,0,0.1)] rounded-lg border border-gray-100 dark:border-slate-800 py-2 transition-all duration-200 opacity-0 translate-x-2 pointer-events-none',
                                     'group-hover/sub:opacity-100 group-hover/sub:translate-x-0 group-hover/sub:pointer-events-auto',
                                     'focus-within:opacity-100 focus-within:translate-x-0 focus-within:pointer-events-auto',
+                                    isClosed && '!opacity-0 !translate-x-2 !pointer-events-none',
                                   )}
                                 >
                                   {child.subChildren?.map((subChild, subIdx) => (
                                     <Link
                                       key={subIdx}
                                       href={subChild.link}
+                                      onClick={() => handleChildClick(idx)}
                                       className={cn(
                                         'block px-4 py-2 text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors',
                                         isLinkActive(subChild.link)
@@ -275,6 +302,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
                               <Link
                                 href={child.link}
                                 target={child.openInNewTab ? '_blank' : undefined}
+                                onClick={() => handleChildClick(idx)}
                                 className={cn(
                                   'block px-3 py-2 rounded-md text-sm font-medium transition-colors',
                                   isChildActive
@@ -354,6 +382,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
                     <Link
                       href={item.link}
                       target={item.openInNewTab ? '_blank' : undefined}
+                      onClick={() => handleChildClick(idx)}
                       className={cn(
                         'font-semibold text-base transition-colors',
                         isActive ? 'text-brand-red' : 'text-brand-navy dark:text-slate-200',
@@ -400,6 +429,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
                               <Link
                                 href={child.link}
                                 target={child.openInNewTab ? '_blank' : undefined}
+                                onClick={() => handleChildClick(idx)}
                                 className={cn(
                                   'text-sm font-medium transition-colors',
                                   isChildActive
@@ -413,6 +443,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
                               <Link
                                 href={child.link}
                                 target={child.openInNewTab ? '_blank' : undefined}
+                                onClick={() => handleChildClick(idx)}
                                 className={cn(
                                   'text-sm font-medium transition-colors',
                                   isChildActive
@@ -452,6 +483,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
                                 <Link
                                   key={subIdx}
                                   href={subChild.link}
+                                  onClick={() => handleChildClick(idx)}
                                   className={cn(
                                     'block text-xs font-medium transition-colors',
                                     isLinkActive(subChild.link)

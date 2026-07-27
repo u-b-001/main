@@ -938,6 +938,29 @@ const TableSub: Block = {
       ],
     },
     {
+      name: 'headerAlignment',
+      type: 'select',
+      defaultValue: 'left',
+      label: 'Header Text Alignment',
+      options: [
+        { label: 'Left', value: 'left' },
+        { label: 'Center', value: 'center' },
+        { label: 'Right', value: 'right' },
+      ],
+    },
+    {
+      name: 'cellAlignment',
+      type: 'select',
+      defaultValue: 'left',
+      label: 'Default Cell Text Alignment',
+      options: [
+        { label: 'Left', value: 'left' },
+        { label: 'Center', value: 'center' },
+        { label: 'Right', value: 'right' },
+        { label: 'Auto (Numeric Right / Text Left)', value: 'auto' },
+      ],
+    },
+    {
       name: 'showScrollHint',
       type: 'checkbox',
       label: 'Show mobile scroll indicator hint',
@@ -969,6 +992,18 @@ const TableSub: Block = {
               name: 'value',
               type: 'text',
               label: 'Cell Value',
+            },
+            {
+              name: 'alignment',
+              type: 'select',
+              label: 'Alignment Override',
+              defaultValue: 'default',
+              options: [
+                { label: 'Default', value: 'default' },
+                { label: 'Left', value: 'left' },
+                { label: 'Center', value: 'center' },
+                { label: 'Right', value: 'right' },
+              ],
             },
           ],
         },

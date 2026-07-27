@@ -24,7 +24,7 @@ export const InfoCardBlock: React.FC<InfoCardBlockProps> = ({ title, content, st
 
   return (
     <div className="container mx-auto px-4 py-4 max-w-[48rem] block-info-card">
-      <div className={cn('p-6 rounded-lg shadow-xs transition-all duration-300 hover:shadow-md info-card', styles[style || 'default'], animationClass)}>
+      <div className={cn('p-6 md:p-8 px-6 md:px-10 rounded-lg shadow-xs transition-all duration-300 hover:shadow-md info-card', styles[style || 'default'], animationClass)}>
         {(title || icon) && (
           <div className="flex items-center gap-3 mb-3">
             {(() => {
@@ -40,7 +40,7 @@ export const InfoCardBlock: React.FC<InfoCardBlockProps> = ({ title, content, st
             {title && <h3 className="text-xl font-bold font-serif leading-tight">{title}</h3>}
           </div>
         )}
-        {content && <RichText data={content} enableGutter={false} className="prose-sm" />}
+        {content && <RichText data={content} enableGutter={false} className="prose-sm px-2 md:px-4" />}
       </div>
     </div>
   )

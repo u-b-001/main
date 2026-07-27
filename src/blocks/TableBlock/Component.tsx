@@ -18,11 +18,41 @@ export const TableBlock: React.FC<TableBlockProps> = ({
   borderRadius = 'xl',
   shadow = 'sm',
   cellPadding = 'medium',
+  headerAlignment = 'left',
+  cellAlignment = 'left',
   showScrollHint = true,
   caption,
   rows,
 }) => {
   if (!rows || rows.length === 0) return null
+
+  // Helper function to resolve header alignment
+  const getHeaderAlignClass = (cell: any) => {
+    if (cell?.alignment && cell.alignment !== 'default') {
+      if (cell.alignment === 'center') return 'text-center'
+      if (cell.alignment === 'right') return 'text-right'
+      return 'text-left'
+    }
+    if (headerAlignment === 'center') return 'text-center'
+    if (headerAlignment === 'right') return 'text-right'
+    return 'text-left'
+  }
+
+  // Helper function to resolve cell alignment
+  const getCellAlignClass = (cell: any) => {
+    const cellVal = cell?.value || ''
+    const isNumeric = !isNaN(Number(cellVal.replace(/[^0-9.-]/g, ''))) && cellVal.trim() !== ''
+
+    if (cell?.alignment && cell.alignment !== 'default') {
+      if (cell.alignment === 'center') return 'text-center'
+      if (cell.alignment === 'right') return 'text-right'
+      return 'text-left'
+    }
+    if (cellAlignment === 'center') return 'text-center'
+    if (cellAlignment === 'right') return 'text-right'
+    if (cellAlignment === 'auto') return isNumeric ? 'text-right tabular-nums' : 'text-left'
+    return 'text-left'
+  }
 
   // 1. Padding classes based on selection
   const paddingMap = {
@@ -143,14 +173,14 @@ export const TableBlock: React.FC<TableBlockProps> = ({
                         key={rowIndex} 
                         className={cn(
                           "font-semibold tracking-wide uppercase text-sm border-b",
-                          isSingleCell ? "text-center" : "text-left"
+                          isSingleCell ? "text-center" : getHeaderAlignClass(cells[0])
                         )}
                         style={headerStyle}
                       >
                         {isSingleCell ? (
                           <th
                             colSpan={maxCols}
-                            className={cellPaddingClass}
+                            className={cn(cellPaddingClass, getHeaderAlignClass(cells[0]))}
                           >
                             {cells[0].value || ''}
                           </th>
@@ -160,6 +190,7 @@ export const TableBlock: React.FC<TableBlockProps> = ({
                               key={cellIndex}
                               className={cn(
                                 cellPaddingClass,
+                                getHeaderAlignClass(cell),
                                 bordered && !isMinimal ? "border-r border-white/10 last:border-r-0" : ""
                               )}
                             >
@@ -197,7 +228,8 @@ export const TableBlock: React.FC<TableBlockProps> = ({
                           colSpan={maxCols}
                           className={cn(
                             cellPaddingClass,
-                            "text-slate-700 dark:text-slate-300 font-serif leading-relaxed text-center font-medium"
+                            "text-slate-700 dark:text-slate-300 font-serif leading-relaxed font-medium",
+                            getCellAlignClass(cells[0])
                           )}
                         >
                           {cells[0].value || ''}
@@ -205,8 +237,6 @@ export const TableBlock: React.FC<TableBlockProps> = ({
                       ) : (
                         cells.map((cell: any, cellIndex: number) => {
                           const cellVal = cell.value || ''
-                          // Check if it's a number to right align
-                          const isNumeric = !isNaN(Number(cellVal.replace(/[^0-9.-]/g, ''))) && cellVal.trim() !== ''
 
                           return (
                             <td
@@ -215,7 +245,7 @@ export const TableBlock: React.FC<TableBlockProps> = ({
                                 cellPaddingClass,
                                 "text-slate-700 dark:text-slate-300 font-serif leading-relaxed font-sans",
                                 cellBorderClass,
-                                isNumeric ? "text-right tabular-nums" : "text-left"
+                                getCellAlignClass(cell)
                               )}
                             >
                               {cellVal}

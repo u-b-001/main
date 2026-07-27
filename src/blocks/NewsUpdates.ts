@@ -99,10 +99,15 @@ export const NewsUpdates: Block = {
         {
           name: 'sortBy',
           type: 'select',
+          label: 'Card Order / Sorting',
           defaultValue: 'latest',
           options: [
-            { label: 'Latest First', value: 'latest' },
-            { label: 'Oldest First', value: 'oldest' },
+            { label: 'Latest First (Newest Published)', value: 'latest' },
+            { label: 'Oldest First (Chronological)', value: 'oldest' },
+            { label: 'Featured / Pinned First', value: 'featured' },
+            { label: 'Alphabetical by Title (A - Z)', value: 'title-asc' },
+            { label: 'Reverse Alphabetical (Z - A)', value: 'title-desc' },
+            { label: 'Manual Order (As Entered)', value: 'manual' },
           ],
         },
         {

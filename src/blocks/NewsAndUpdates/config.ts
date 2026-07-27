@@ -151,15 +151,18 @@ export const NewsAndUpdatesBlock: Block = {
     {
       name: 'sortBy',
       type: 'select',
-      label: 'Sort By',
+      label: 'Card Order / Sorting',
       defaultValue: 'latest',
       admin: {
-        condition: (_, siblingData) => siblingData?.newsSource === 'fetch',
+        description: 'Choose the order in which news cards are arranged',
       },
       options: [
-        { label: 'Latest First', value: 'latest' },
-        { label: 'Oldest First', value: 'oldest' },
-        { label: 'Featured Pin First', value: 'featured' },
+        { label: 'Latest First (Newest Published)', value: 'latest' },
+        { label: 'Oldest First (Chronological)', value: 'oldest' },
+        { label: 'Featured / Pinned First', value: 'featured' },
+        { label: 'Alphabetical by Title (A - Z)', value: 'title-asc' },
+        { label: 'Reverse Alphabetical (Z - A)', value: 'title-desc' },
+        { label: 'Manual Order (As Entered)', value: 'manual' },
       ],
     },
     {
